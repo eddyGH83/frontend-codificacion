@@ -1,0 +1,56 @@
+<div class="card">
+
+    <h4>Variables para codificación</h4> <!-- Variables para supervisión -->
+    <hr>
+
+    <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
+
+    <p-table #dt1 [value]="registros" [(selection)]="selectedCustomer1" dataKey="id_catalogo"
+        styleClass="p-datatable-customers" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="10"
+        [rowsPerPageOptions]="[10]" [paginator]="true" stateStorage="local" stateKey="statedemo-local">
+        <ng-template pTemplate="header">
+            <!--  -->
+            <tr>
+                <th>VARIABLE</th>
+                <th>TOTAL</th>
+                <th>ACCIONES</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-reg>
+            <tr [pSelectableRow]="reg">
+                <td>
+                    <span class="p-column-title">VARIABLE</span>
+                    <span class="image-text"><strong>Pregunta </strong>
+                        <p-chip label="{{reg.nroPreg}}" styleClass="mr-2"></p-chip>
+                        {{reg.variable}}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">TOTAL</span>
+                    <span class="image-text">{{reg.total}}</span>
+                </td>
+
+                <td>
+                    <button routerLink="/codificacion/codificacion-simple" pButton pRipple label="Codificar" icon="pi pi-check" class="p-button-info mr-2"
+                        *ngIf="reg.total>0"></button>
+                    <button pButton pRipple label="Codificar" icon="pi pi-check"
+                        class="p-button-outlined p-button-secondary mr-2" disabled *ngIf="reg.total==0"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="4">No hay registros para mostrar</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="paginatorleft">
+            <p-button type="button" icon="pi pi-refresh" styleClass="p-button-text" label="Actualizar"
+                pTooltip="Click para actualizar la tabla"></p-button>
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+        </ng-template>
+    </p-table>
+
+</div>
+<br>
+

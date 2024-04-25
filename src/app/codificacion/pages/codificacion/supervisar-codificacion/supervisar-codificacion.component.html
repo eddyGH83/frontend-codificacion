@@ -1,0 +1,63 @@
+<div class="card">
+
+    <h4>Variables para supervisión</h4> 
+    <hr>
+
+
+    <button pButton pRipple label="Actualizar"
+                        icon="pi pi-refresh" class="p-button-warning"
+                        pTooltip="Actualizar tabla" placeholder="Right"></button>
+                        <br><br>
+
+    <p-table #dt1 [value]="registros" dataKey="id_catalogo" styleClass="p-datatable-customers"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros"  stateStorage="local" stateKey="statedemo-local">
+        <ng-template pTemplate="header">
+            <!--  -->
+            <tr>
+                <th>VARIABLE</th>
+                <th>TOTAL</th>
+                <th>ACCIONES</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-reg>
+            <tr [pSelectableRow]="reg">
+                <td>
+                    <span class="p-column-title">VARIABLE</span>
+                    <span class="image-text"><strong>Pregunta </strong>
+                        <p-chip label="{{reg.nroPreg}}" styleClass="mr-2"></p-chip>
+                        {{reg.variable}}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">TOTAL</span>
+                    <span class="image-text"> Cod {{reg.totalCod}} + Aut {{reg.totalAut}} = {{reg.totalCod +
+                        reg.totalAut }}</span>
+                </td>
+                <td>
+                    <button routerLink="/codificacion/codificacion-simple" pButton pRipple label="Por lotes"
+                        icon="pi pi-table" class="p-button-info mr-3" *ngIf="reg.totalCod>0 || reg.totalAut>0"
+                        pTooltip="Supervisión por lotes" placeholder="Right"></button>
+
+                    <button pButton pRipple label="Por lotes" icon="pi pi-table"
+                        class="p-button-outlined p-button-secondary mr-3" disabled
+                        *ngIf="reg.totalCod==0 && reg.totalAut==0"></button>
+
+                    <button routerLink="/codificacion/codificacion-simple" pButton pRipple label="Individual"
+                        icon="pi pi-stop" class="p-button-danger mr-2" *ngIf="reg.totalCod>0 || reg.totalAut>0"
+                        pTooltip="Supervisión individual" placeholder="Right"></button>
+
+                    <button pButton pRipple label="Individual" icon="pi pi-stop"
+                        class="p-button-outlined p-button-secondary mr-2" disabled
+                        *ngIf="reg.totalCod==0 && reg.totalAut==0"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="4">No hay registros para mostrar</td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+</div>
+<br>

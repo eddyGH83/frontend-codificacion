@@ -1,0 +1,205 @@
+<div class="card">
+
+    <h5>Gestión de matriz de descripciones de ocupación y actividad económica
+        <!-- <p-dropdown [options]="catalogos" [(ngModel)]="selectedCatalogo" placeholder="Seleccione un Catalogo"
+            optionLabel="name"></p-dropdown> -->
+    </h5>
+
+    <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
+
+    <p-table #dt1 [value]="registros" dataKey="id_catalogo" styleClass="p-datatable-customers"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
+        [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" stateStorage="local" stateKey="statedemo-local">
+        <ng-template pTemplate="header">
+
+            <!--  -->
+            <tr>
+                <!-- <th pSortableColumn="catalogo">CATALOGO <p-sortIcon field="catalogo"></p-sortIcon></th> -->
+                <th pSortableColumn="codigo_ocupacion">CODIGO OCUPACION<p-sortIcon
+                        field="codigo_ocupacion"></p-sortIcon></th>
+                <th pSortableColumn="descripcion_ocupacion"> DESCRIPCION OCUPACION <p-sortIcon
+                        field="descripcion_ocupacion"></p-sortIcon></th>
+                <th pSortableColumn="codigo_acteco"> CODIGO ACTIVIDAD <p-sortIcon field="codigo_acteco"></p-sortIcon>
+                </th>
+                <th pSortableColumn="descripcion_acteco"> DESCRIPCION ACTIVIDAD <p-sortIcon
+                        field="descripcion_acteco"></p-sortIcon></th>
+                <th pSortableColumn="feccre"> FECHA DE CREACION <p-sortIcon field="feccre"></p-sortIcon></th>
+                <th pSortableColumn="usucre"> CREADOR <p-sortIcon field="usucre"></p-sortIcon></th>
+                <th pSortableColumn="usumod"> MODIFICADOR <p-sortIcon field="usumod"></p-sortIcon></th>
+                <!-- Bton + Nuevo -->
+                <th><button pButton pRipple type="button" icon="pi pi-plus" label="Nuevo" class="p-button-info"
+                        (click)="openNew()"></button></th>
+            </tr>
+            <!--  -->
+            <tr>
+                <th>
+                    <input pInputText type="text"
+                        (input)="dt1.filter($event.target.value, 'codigo_ocupacion', 'contains')"
+                        [value]="dt1.filters['codigo_ocupacion']?.value" placeholder="Buscar por código"
+                        class="p-column-filter">
+                </th>
+                <th>
+                    <input pInputText type="text"
+                        (input)="dt1.filter($event.target.value, 'descripcion_ocupacion', 'contains')"
+                        [value]="dt1.filters['descripcion_ocupacion']?.value" placeholder="Buscar por descripción"
+                        class="p-column-filter">
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'codigo_acteco', 'contains')"
+                        [value]="dt1.filters['codigo_acteco']?.value" placeholder="Buscar por código"
+                        class="p-column-filter">
+                </th>
+                <th>
+                    <input pInputText type="text"
+                        (input)="dt1.filter($event.target.value, 'descripcion_acteco', 'contains')"
+                        [value]="dt1.filters['descripcion_acteco']?.value" placeholder="Buscar por descripción"
+                        class="p-column-filter">
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'feccre', 'contains')"
+                        [value]="dt1.filters['feccre']?.value" placeholder="Buscar por fecha" class="p-column-filter">
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'usucre', 'contains')"
+                        [value]="dt1.filters['usucre']?.value" placeholder="Buscar por usu creador"
+                        class="p-column-filter">
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'usumod', 'contains')"
+                        [value]="dt1.filters['usumod']?.value" placeholder="Buscar por usu modificador"
+                        class="p-column-filter">
+                </th>
+                <th>Acciones</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-reg>
+            <tr [pSelectableRow]="reg">
+                <td>
+                    <span class="p-column-title">CODIGO OCUPACION</span>
+                    <span class="image-text">{{reg.codigo_ocupacion}}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">DESCRIPCION OCUPACION</span>
+                    <span class="image-text">{{reg.descripcion_ocupacion}}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">CODIGO ACTIVIDAD</span>
+                    <span class="image-text">{{reg.codigo_acteco}}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">DESCRIPCION ACTIVIDAD</span>
+                    <span class="image-text">{{reg.descripcion_acteco}}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">FECHA DE CREACION</span>
+                    <span class="image-text">{{reg.feccre | date:'dd-MM-yyyy'}}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">CREADOR</span>
+                    <span class="image-text">{{reg.usucre }}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">MODIFICADOR</span>
+                    <span class="image-text">{{reg.usumod }}</span>
+                </td>
+                <td>
+                    <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-info"
+                        (click)="editRegistro(reg)"></button>
+                    <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                        (click)="deleteSelectedProducts()"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="4">No hay registros para mostrar</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="paginatorleft">
+            <p-button type="button" icon="pi pi-refresh" styleClass="p-button-text" label="Actualizar" (click)="datosTablaDetalle()"></p-button>
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+            <!-- <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button> -->
+        </ng-template>
+    </p-table>
+
+
+    <!-- Dialog -->
+    <p-dialog [(visible)]="registroDialog" [style]="{width: '450px'}" header="Catálogo Detalles" [modal]="true"
+        styleClass="p-fluid">
+
+        <ng-template pTemplate="content">
+
+            <!-- <h6>id_cod_matriz: {{registro.id_cod_matriz}}</h6>
+            <h6>codigo_ocupacion: {{registro.codigo_ocupacion}}</h6>
+            <h6>descripcion_ocupacion: {{registro.descripcion_ocupacion}}</h6>
+            <h6>codigo_acteco: {{registro.codigo_acteco}}</h6>
+            <h6>descripcion_acteco: {{registro.descripcion_acteco}}</h6>
+            <h6>desc_ocu_norm: {{registro.desc_ocu_norm}}</h6>
+            <h6>cat_ocupacion: {{registro.cat_ocupacion}}</h6>
+            <h6>cat_acteco: {{registro.cat_acteco}}</h6>
+
+            <h6>estado: {{registro.estado}}</h6>
+            <h6>usucre: {{registro.usucre}}</h6>
+            <h6>feccre: {{registro.feccre}}</h6>
+            <h6>usumod: {{registro.usumod}}</h6>
+            <h6>fecmod: {{registro.fecmod}}</h6> -->
+
+            <h5 class="text-primary">Ocupación</h5>
+
+            <div class="field">
+                <label for="codigo_ocupacion">Código de ocupación</label>
+                <input type="text" pInputText id="codigo_ocupacion" [(ngModel)]="registro.codigo_ocupacion" required
+                    autofocus />
+                <small class="p-invalid" *ngIf="submitted && !registro.codigo_ocupacion" style="color: #d32f2f;">
+                    <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
+                    Este campo es requerido.</small>
+            </div>
+
+            <div class="field">
+                <label for="descripcion_ocupacion">Descripcion de ocupación</label>
+                <textarea id="descripcion_ocupacion" pInputTextarea [(ngModel)]="registro.descripcion_ocupacion"
+                    required rows="4" cols="20"></textarea>
+                <small class="p-invalid" *ngIf="submitted && !registro.descripcion_ocupacion" style="color: #d32f2f;">
+                    <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
+                    Este campo es requerido.
+                </small>
+            </div>
+
+
+            <h5 class="text-primary">Actividad económica</h5>
+
+            <div class="field">
+                <label for="codigo_acteco">Código de actividad económica</label>
+                <input type="text" pInputText id="codigo_acteco" [(ngModel)]="registro.codigo_acteco" required
+                    autofocus />
+                <small class="p-invalid" *ngIf="submitted && !registro.codigo_acteco" style="color: #d32f2f;">
+                    <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
+                    Este campo es requerido.</small>
+            </div>
+
+            <div class="field">
+                <label for="descripcion_acteco">Descripción de actividad económica</label>
+                <textarea id="descripcion_acteco" pInputTextarea [(ngModel)]="registro.descripcion_acteco" required
+                    rows="4" cols="20"></textarea>
+                <small class="p-invalid" *ngIf="submitted && !registro.descripcion_acteco" style="color: #d32f2f;">
+                    <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
+                    Este campo es requerido.
+                </small>
+            </div>
+
+        </ng-template>
+
+        <!--  -->
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text "
+                (click)="hideDialog()"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text mr-2"
+                (click)="saveRegistro()"></button>
+        </ng-template>
+
+    </p-dialog>
+    <p-messages></p-messages>
+
+</div>

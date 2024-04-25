@@ -1,0 +1,60 @@
+<div class="surface-section px-4 py-8 md:px-6 lg:px-8">
+    <div class="text-700 text-center">
+        <div class="text-blue-600 font-bold mb-3"><i class="pi pi-desktop"></i>&nbsp;SISTEMA DE CODIFICACIÓN</div>
+        <div class="text-900 font-bold text-5xl mb-3">!BIENVENIDO¡</div>
+        <div class="text-700 text-2xl mb-5" *ngIf="infoRapida">A continuación te mostramos información que te puede interesar:</div>
+
+        <div class="grid" *ngIf="infoRapida">
+            <div class="col-12 md:col-6 lg:col-2"></div>
+            <div class="col-12 md:col-6 lg:col-3">
+                <div class="surface-card shadow-2 p-3 border-round">
+                    <div class="flex justify-content-between mb-3">
+                        <div>
+                            <span class="block text-500 font-medium mb-3">Codificados</span>
+                            <div class="text-900 font-medium text-2xl">0</div>
+                        </div>
+                        <div class="flex align-items-center justify-content-center bg-green-100 border-round" style="width:2.5rem;height:2.5rem">
+                            <i class="pi pi-check-square text-green-500 text-xl"></i>
+                        </div>
+                    </div>
+                    <span class="text-green-500 font-medium">0 % </span>
+                    <span class="text-500"> Avance</span>
+                </div>
+            </div>
+            <div class="col-12 md:col-6 lg:col-3">
+                <div class="surface-card shadow-2 p-3 border-round">
+                    <div class="flex justify-content-between mb-3">
+                        <div>
+                            <span class="block text-500 font-medium mb-3">Pendientes</span>
+                            <div class="text-900 font-medium text-2xl">0</div>
+                        </div>
+                        <div class="flex align-items-center justify-content-center bg-green-100 border-round" style="width:2.5rem;height:2.5rem">
+                            <i class="pi pi-stop text-green-500 text-xl"></i>
+                        </div>
+                    </div>
+                    <span class="text-green-500 font-medium">0 % </span>
+                    <span class="text-500">Avance</span>
+                </div>
+            </div>
+            <div class="col-12 md:col-6 lg:col-3">
+                <div class="surface-card shadow-2 p-3 border-round">
+                    <div class="flex justify-content-between mb-3">
+                        <div>
+                            <span class="block text-500 font-medium mb-3">Total asignados</span>
+                            <div class="text-900 font-medium text-2xl">0</div>
+                        </div>
+                        <div class="flex align-items-center justify-content-center bg-green-100 border-round" style="width:2.5rem;height:2.5rem">
+                            <i class="pi pi-list text-green-500 text-xl"></i>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <div class="col-12 md:col-6 lg:col-1"></div>            
+        </div>
+        <br> <br>
+        <button routerLink="/perfil"  pButton pRipple label="Mi perfil" icon="pi pi-user"
+            class="font-bold px-5 py-3 p-button-raised p-button-rounded white-space-nowrap"></button>
+    </div>
+</div>
+

@@ -1,0 +1,156 @@
+<div class="card">
+
+    <h4>Gestor de catálogos</h4>
+    <hr>
+
+    <label for="username2">Catálogo seleccionado </label>
+    <p-dropdown (onChange)="registrosTabla()" [options]="catalogos" [(ngModel)]="selectedCatalogo"
+        placeholder="Seleccione un Catalogo" optionLabel="value"></p-dropdown> <br> <br>
+
+    <!-- {{ selectedCatalogo | json }} -->
+    <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
+
+    <p-table #dt1 [value]="registros"  dataKey="id_catalogo"
+        styleClass="p-datatable-customers" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
+        [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" stateStorage="local" stateKey="statedemo-local">
+        <ng-template pTemplate="header">
+            <!--  -->
+            <tr>
+                <!-- <th pSortableColumn="catalogo">CATALOGO <p-sortIcon field="catalogo"></p-sortIcon></th> -->
+                <th pSortableColumn="codigo">CODIGO<p-sortIcon field="codigo"></p-sortIcon></th>
+                <th pSortableColumn="descripcion">DESCRIPCION <p-sortIcon field="descripcion"></p-sortIcon></th>
+                <th pSortableColumn="feccre"> FECHA CREACION <p-sortIcon field="feccre"></p-sortIcon></th>
+                <th pSortableColumn="usucre"> CREADOR <p-sortIcon field="usucre"></p-sortIcon></th>
+                <th pSortableColumn="usumod"> MODIFICADOR <p-sortIcon field="usumod"></p-sortIcon></th>
+                <!-- Bton + Nuevo -->
+                <th><button pButton pRipple type="button" icon="pi pi-plus" label="Nuevo" class="p-button-info"
+                        (click)="openNew()"></button></th>
+            </tr>
+            <!--  -->
+            <tr>
+                <th>
+                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'codigo', 'contains')"
+                        [value]="dt1.filters['codigo']?.value" placeholder="Buscar por codigo" class="p-column-filter">
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'descripcion', 'contains')"
+                        [value]="dt1.filters['descripcion']?.value" placeholder="Buscar por descripcion"
+                        class="p-column-filter">
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'feccre', 'contains')"
+                        [value]="dt1.filters['feccre']?.value" placeholder="Buscar por fecha de creación"
+                        class="p-column-filter">
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'usucre', 'contains')"
+                        [value]="dt1.filters['usucre']?.value" placeholder="Buscar por usuario creador"
+                        class="p-column-filter">
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'usumod', 'contains')"
+                        [value]="dt1.filters['usumod']?.value" placeholder="Buscar por usuario modificador"
+                        class="p-column-filter">
+                </th>
+                <th>Acciones</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-reg>
+            <tr [pSelectableRow]="reg">
+                <td>
+                    <span class="p-column-title">CODIGO</span>
+                    <span class="image-text">{{reg.codigo}}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">DESCRIPCION</span>
+                    <span class="image-text">{{reg.descripcion}}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">FECHA CREACION</span>
+                    <span class="image-text">{{reg.feccre | date:'dd-MM-yyyy'}}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">CREADOR</span>
+                    <span class="image-text">{{reg.usucre }}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">MODIFICADOR</span>
+                    <span class="image-text">{{reg.usumod }}</span>
+                </td>
+                <td>
+                    <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"
+                        (click)="editRegistro(reg)"></button>
+                    <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                        (click)="deleteSelectedRegistro(reg)"></button>
+                    <!-- {{customer.id_catalogo | json}} -->
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="4">No hay registros para mostrar</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="paginatorleft">
+            <p-button (click)="registrosTabla()" type="button" icon="pi pi-refresh" styleClass="p-button-text"
+                label="Actualizar"></p-button>
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+            <!-- <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button> -->
+        </ng-template>
+    </p-table>
+
+
+    <!-- Dialog -->
+    <p-dialog [(visible)]="registroDialog" [style]="{width: '450px'}" header="Catálogo Detalles" [modal]="true"
+        styleClass="p-fluid">
+
+        <ng-template pTemplate="content">
+
+            <h6>id_catalogo: {{registro.id_catalogo}}</h6>
+            <h6>id_catalogo: {{registro.codigo}}</h6>
+            <h6>id_catalogo: {{registro.descripcion}}</h6>
+            <!-- <h6>catalogo: {{registro.catalogo}}</h6>
+
+            <h6>estado: {{registro.estado}}</h6>
+            <h6>usucre: {{registro.usucre}}</h6>
+            <h6>feccre: {{registro.feccre}}</h6>
+            <h6>usumod: {{registro.usumod}}</h6>
+            <h6>fecmod: {{registro.fecmod}}</h6>
+            <h6>descripcion_unida: {{registro.descripcion_unida}}</h6>
+            <h6>unico: {{registro.unico}}</h6> -->
+
+            <div class="field">
+                <label for="codigo">Código</label>
+                <input type="text" pInputText id="codigo" [(ngModel)]="registro.codigo" required autofocus />
+                <small class="p-invalid" *ngIf="submitted && !registro.codigo" style="color: #d32f2f;">
+                    <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
+                    Este campo es requerido.</small>
+            </div>
+
+            <div class="field">
+                <label for="descripcion">Descripción</label>
+                <textarea id="descripcion" pInputTextarea [(ngModel)]="registro.descripcion" required rows="4"
+                    cols="20"></textarea>
+                <small class="p-invalid" *ngIf="submitted && !registro.descripcion" style="color: #d32f2f;">
+                    <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
+                    Este campo es requerido.
+                </small>
+            </div>
+
+        </ng-template>
+
+        <!--  -->
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text "
+                (click)="hideDialog()"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text mr-2"
+                (click)="saveRegistro()"></button>
+        </ng-template>
+
+    </p-dialog>
+
+</div>
+<p-messages [closable]="false"></p-messages>
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
