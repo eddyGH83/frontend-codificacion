@@ -50,6 +50,9 @@
             <th pSortableColumn="login">
               USUARIO <p-sortIcon field="login"></p-sortIcon>
             </th>
+            <th pSortableColumn="turno">
+              TURNO<p-sortIcon field="turno"></p-sortIcon>
+            </th>
             <th>ACCIONES</th>
             <!-- Bton + Nuevo -->
             <!-- <th><button pButton pRipple type="button" icon="pi pi-plus" label="Nuevo" class="p-button-info"
@@ -103,6 +106,10 @@
               <span class="p-column-title">USUARIO</span>
               <span class="image-text">{{ reg.login }}</span>
             </td>
+            <td>
+              <span class="p-column-title">TURNO</span>
+              <span class="image-text">{{ reg.turno }}</span>
+            </td>
             <!-- <td>
                       <span class="p-column-title">MODIFICADOR</span>
                       <span class="image-text">{{reg.usumod }}</span>
@@ -116,7 +123,7 @@
                 class="p-button-rounded p-button-danger  mr-2" (click)="deleteSelectedRegistro(reg)"
                 pTooltip="Eliminar Usuario" tooltipPosition="top"></button>
 
-              <button [disabled]="btnReasignar" pButton type="button" icon="pi pi-key"
+              <button [disabled]="btnResetPass" pButton type="button" icon="pi pi-key"
                 class="p-button-rounded p-button-warning mr-2" pTooltip="Resetear Contraseña"
                 (click)="resetPassRegistro(reg)" tooltipPosition="top"></button>
 
@@ -249,8 +256,6 @@
             <p-dropdown [options]="supervisores" [(ngModel)]="selectedSupervisores" placeholder="Seleccione un Rol"
               optionLabel="nombre"></p-dropdown>
           </div> <br><br><br>
-
-
 
 
           <div class="field" *ngIf="selectedRol.value=='5'">

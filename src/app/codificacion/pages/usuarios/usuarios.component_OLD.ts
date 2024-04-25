@@ -58,7 +58,7 @@ export class UsuariosComponent implements OnInit {
     btnEditar: boolean = false;
     btnEliminar: boolean = false;
     btnResetPass: boolean = false;
-
+    btnReasignar: boolean = false;
 
     // dropdowns
     dropdownRoles: boolean = false;
@@ -83,10 +83,78 @@ export class UsuariosComponent implements OnInit {
             { turno: 'TARDE', descripcion: 'TARDE' }
         ];
         this.selectedTurno = { turno: 'MAÑANA', descripcion: 'MAÑANA' };
-        
+
+        this.validarRol();
         this.registrosTabla();
+        
+    }
+
+
+
+    validarRol() {
+
+        // Admin del Sistema
+        if (localStorage.getItem("rol_id") == "1") {
+            this.roles = [
+                { rol_id: 1, descripcion: 'ADMINISTRADOR DEL SISTEMA' },
+                { rol_id: 2, descripcion: 'RESPONSABLE ESPECIALISTA DE CODIFICACIÓN' },
+                { rol_id: 3, descripcion: 'JEFE DE TURNO' },
+                { rol_id: 4, descripcion: 'SUPERVISOR DE CODIFICACIÓN' },
+                { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' },
+                { rol_id: 6, descripcion: 'TÉCNICO DE CONTINGENCIA' }
+            ];
+            this.selectedRol = { rol_id: 1, descripcion: 'ADMINISTRADOR DEL SISTEMA' };
+        }
+
+        // Esp/Resp de Codificación
+        if (localStorage.getItem("rol_id") == "2") {
+            this.roles = [
+                { rol_id: 3, descripcion: 'JEFE DE TURNO' },
+                { rol_id: 4, descripcion: 'SUPERVISOR DE CODIFICACIÓN' },
+                { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' },
+                { rol_id: 6, descripcion: 'TÉCNICO DE CONTINGENCIA' }
+            ];
+            this.selectedRol = { rol_id: 3, descripcion: 'JEFE DE TURNO' };
+            //
+            this.btnEditar = false;
+            this.btnEliminar = false; //true;
+            this.btnResetPass = false;
+            this.btnReasignar = false;
+        }
+
+        // Jefe de Turno
+        if (localStorage.getItem("rol_id") == "3") {
+            this.roles = [
+                { rol_id: 4, descripcion: 'SUPERVISOR DE CODIFICACIÓN' },
+                { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' },
+                { rol_id: 6, descripcion: 'TÉCNICO DE CONTINGENCIA' }
+            ];
+            this.selectedRol = { rol_id: 4, descripcion: 'SUPERVISOR DE CODIFICACIÓN' };
+
+            //
+            this.btnEditar = false;
+            this.btnEliminar = false; //true;
+            this.btnResetPass = false;
+            this.btnReasignar = false;
+        }
+
+        // Supervisor de Codificación
+        if (localStorage.getItem("rol_id") == "4") {
+
+            this.roles = [
+                { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' }
+            ];
+            this.selectedRol = { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' };
+
+            //
+            this.btnEditar = false;
+            this.btnEliminar = true; //true;
+            this.btnResetPass = false;
+            this.btnReasignar = false;
+        }
 
     }
+
 
 
     registrosTabla() {
@@ -114,9 +182,11 @@ export class UsuariosComponent implements OnInit {
             })
     }
 
-    // CUANDO SELECCIONA UN ROL
-    opcionesRol() {
 
+
+
+    // + Nuevo
+    opcionesRol() {
         // Tecnico de Contingencia
         if (this.selectedRol.rol_id == 6) {
             this.dropdownSupervisores = false;
@@ -140,67 +210,10 @@ export class UsuariosComponent implements OnInit {
     }
 
 
+
     openNew() {
-        /* 1 */
-        // Admin del Sistema
-        if (localStorage.getItem("rol_id") == "1") {
-            this.roles = [
-                { rol_id: 1, descripcion: 'ADMINISTRADOR DEL SISTEMA' },
-                { rol_id: 2, descripcion: 'RESPONSABLE ESPECIALISTA DE CODIFICACIÓN' },
-                { rol_id: 3, descripcion: 'JEFE DE TURNO' },
-                { rol_id: 4, descripcion: 'SUPERVISOR DE CODIFICACIÓN' },
-                { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' },
-                { rol_id: 6, descripcion: 'TÉCNICO DE CONTINGENCIA' }
-            ];
-            this.selectedRol = { rol_id: 1, descripcion: 'ADMINISTRADOR DEL SISTEMA' };
-        }
-
-        // Esp/Resp de Codificación
-        if (localStorage.getItem("rol_id") == "2") {
-            this.roles = [
-                { rol_id: 3, descripcion: 'JEFE DE TURNO' },
-                { rol_id: 4, descripcion: 'SUPERVISOR DE CODIFICACIÓN' },
-                { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' },
-                { rol_id: 6, descripcion: 'TÉCNICO DE CONTINGENCIA' }
-            ];
-            this.selectedRol = { rol_id: 3, descripcion: 'JEFE DE TURNO' };
-            //
-            this.btnEditar = false;
-            this.btnEliminar = false;
-            this.btnResetPass = false;
-        }
-
-        // Jefe de Turno
-        if (localStorage.getItem("rol_id") == "3") {
-            this.roles = [
-                { rol_id: 4, descripcion: 'SUPERVISOR DE CODIFICACIÓN' },
-                { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' },
-                { rol_id: 6, descripcion: 'TÉCNICO DE CONTINGENCIA' }
-            ];
-            this.selectedRol = { rol_id: 4, descripcion: 'SUPERVISOR DE CODIFICACIÓN' };
-
-            //
-            this.btnEditar = false;
-            this.btnEliminar = false;
-            this.btnResetPass = false;
-        }
-
-        // Supervisor de Codificación
-        if (localStorage.getItem("rol_id") == "4") {
-            this.roles = [
-                { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' }
-            ];
-            this.selectedRol = { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' };
-
-            //
-            this.btnEditar = false;
-            this.btnEliminar = true;
-            this.btnResetPass = false;
-        }
-
-        /* fin 1 */
-
         this.registrosSupervisores();
+        this.validarRol();
 
         this.submitted = false;
         this.registro = {};
@@ -221,8 +234,10 @@ export class UsuariosComponent implements OnInit {
     }
 
 
+
+
     editRegistro(registro: any) {
-        this.registrosSupervisores();
+      this.registrosSupervisores();
 
         // contingencia
         if (registro.rol_id == 6) {
@@ -357,7 +372,7 @@ export class UsuariosComponent implements OnInit {
                     nombres: this.registro.nombres,
                     apellidos: this.registro.apellidos,
                     login: this.registro.login,
-                    telefono: this.registro.telefono !== '' ? this.registro.telefono : '',
+                    telefono: this.registro.telefono !== ''? this.registro.telefono : '',
                     rol_id: this.selectedRol.rol_id,
                     usucre: localStorage.getItem('login'),
                     turno: null,// this.selectedRol.rol_id == 3 || this.selectedRol.rol_id == 4 ||this.selectedRol.rol_id == 6 ? this.selectedTurno.descripcion : null,
@@ -365,16 +380,16 @@ export class UsuariosComponent implements OnInit {
                 }
 
                 // turno
-                if (this.selectedRol.rol_id == 3 || this.selectedRol.rol_id == 4 || this.selectedRol.rol_id == 6) {
-                    body.turno = this.selectedTurno.descripcion;
+                if (this.selectedRol.rol_id == 3 || this.selectedRol.rol_id == 4 ||this.selectedRol.rol_id == 6) {
+                    body.turno =this.selectedTurno.descripcion;
                 }
 
                 // cod_supvsr
-                if (Number(localStorage.getItem('rol_id')) == 4) {
-                    body.cod_supvsr = Number(localStorage.getItem('id_usuario'))
+                if (Number( localStorage.getItem('rol_id')) == 4) {
+                    body.cod_supvsr= Number(localStorage.getItem('id_usuario'))
                 }
-                if (Number(localStorage.getItem('rol_id')) == 3 || Number(localStorage.getItem('rol_id')) == 2) {
-                    body.cod_supvsr = this.selectedSupervisor.id_usuario;
+                if (Number( localStorage.getItem('rol_id')) == 3 || Number(localStorage.getItem('rol_id')) == 2){
+                    body.cod_supvsr= this.selectedSupervisor.id_usuario;
                 }
 
 
@@ -439,7 +454,7 @@ export class UsuariosComponent implements OnInit {
 
             // this.registros = [...this.registros];
             //this.registroDialog = false;
-
+           
         }
 
         // this.registroDialog = false;
