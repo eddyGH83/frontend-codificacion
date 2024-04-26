@@ -1,0 +1,115 @@
+<div class="card">
+
+    <h4>Asignación de carga a codificadores</h4>
+    <hr>
+
+    <label for="username2">Departamento: </label>
+    <p-dropdown (onChange)="registrosTabla()" [options]="departamentos" [(ngModel)]="selectedDepartamento"
+        placeholder="Seleccione un Catalogo" optionLabel="value"></p-dropdown>
+
+    <button pButton pRipple label="Actualizar" icon="pi pi-refresh" class="p-button-warning ml-2"
+        pTooltip="Actualizar registros" placeholder="Right"></button> <br> <br>
+
+
+    <!-- {{ selectedCatalogo | json }} -->
+    <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
+
+
+
+    <p-table #dt1 [value]="registros" dataKey="id_catalogo" styleClass="p-datatable-customers"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" stateStorage="local"
+        stateKey="statedemo-local">
+        <ng-template pTemplate="header">
+            <!--  -->
+            <tr>
+                <th>DEPARTAMENTO</th>
+                <th>VARIABLE</th>
+                <th>TOTAL</th>
+                <th>ACCIONES</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-reg>
+            <tr [pSelectableRow]="reg">
+                <td>
+                    <span class="p-column-title">DEPARTAMENTO</span>
+                    <span class="image-text">{{reg.depto}}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">VARIABLE</span>
+                    <span class="image-text"><strong>Pregunta </strong>
+                        <p-chip label="{{reg.nroPreg}}" styleClass="mr-2"></p-chip>
+                        {{reg.variable}}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">TOTAL</span>
+                    <span class="image-text"> {{reg.totalCarga}}</span>
+                </td>
+                <td>
+                    <button (click)="asignarCarga()" pButton pRipple label="Asignar" icon="pi pi-user-plus" class="p-button-info mr-3"
+                        *ngIf="reg.totalCarga>0 || reg.totalAut>0" pTooltip="Asignar carga" tooltipPosition="left"></button>
+
+                    <button pButton pRipple label="Asignar" icon="pi pi-user-plus"
+                        class="p-button-outlined p-button-secondary mr-3" disabled
+                        *ngIf="reg.totalCarga==0 "></button>
+
+
+                    <button pButton pRipple label="Reasignar" icon="pi pi-user-minus" class="p-button-danger mr-2"
+                        *ngIf="reg.totalCarga>0 || reg.totalAut>0" pTooltip="Reasignar carga"
+                        placeholder="Right"></button>
+
+                    <button pButton pRipple label="Reasignar" icon="pi pi-user-minus"
+                        class="p-button-outlined p-button-secondary mr-2" disabled
+                        *ngIf="reg.totalCarga==0 "></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="4">No hay registros para mostrar</td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+
+
+
+
+    <!-- Dialog -->
+    <p-dialog [(visible)]="asignacionDialog" [style]="{width: '550px'}" header="Asignación de carga" [modal]="true"
+        styleClass="p-fluid">
+
+        <ng-template pTemplate="content">
+
+            <p-table [value]="asignacion">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th> <p-checkbox (onChange)="seleccionarTodo()" class="mr-2" [(ngModel)]="checkedTodo" [binary]="true" ></p-checkbox> Seleccionar todo</th>
+                        <th>Codificadores</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-asig>
+                    <tr>
+                        <td>
+                            <p-checkbox class="ml-8" [(ngModel)]="asig.check" [binary]="true" ></p-checkbox>
+                        </td>
+                        <td>{{asig.nombre}}</td>
+                        <td><input type="number" pInputText [(ngModel)]="asig.cantidad"> </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text "
+                (click)="asignacionDialog=false"></button>
+            <button pButton pRipple label="Asignar" icon="pi pi-check" class="p-button-text mr-2"
+                (click)="saveRegistro()"></button>
+        </ng-template>
+
+    </p-dialog>
+
+</div>
+<p-messages [closable]="false"></p-messages>
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>

@@ -69,6 +69,10 @@ import { BlocksComponent } from './blocks/blocks/blocks.component';
                     // UsuCodificador
                     { path: 'usuCodificador', loadChildren: () => import('./codificacion/pages/usucodificador/usucodificador.module').then(m => m.UsucodificadorModule) },
 
+                    // Asignación
+                    { path: 'asignacion', loadChildren: () => import('./codificacion/pages/asignacion/asignacion.module').then(m => m.AsignacionModule) },
+
+
 
                     // Dashboard
                     //{ path: 'perfil', loadChildren: () => import('./codificacion/pages/perfil/perfil.module').then(m => m.PerfilModule) },
