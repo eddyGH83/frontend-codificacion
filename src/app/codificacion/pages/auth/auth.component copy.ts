@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './service/auth.service';
 import { Router } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-auth',
@@ -9,16 +8,6 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
   styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent implements OnInit {
-
-  // fr
-  miFormulario: FormGroup = this.fb.group({
-    // validar que el nombre de usuario tenga al menos 3 caracteres y que no tenga numeros
-    usu: this.fb.control('', [ Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z]*$/)]),
-    // validar que la contraseña tenga al menos 6 caracteres
-    pass: this.fb.control('', [ Validators.required, Validators.minLength(6)]),
-    // validar que el año sea mayor a 2020
-    anio: this.fb.control(2000, [ Validators.required, Validators.min(2020)]),
-  })
 
 
 
@@ -35,15 +24,10 @@ export class AuthComponent implements OnInit {
 
   registros: any;
 
-  constructor(private router: Router, private authService: AuthService, private fb: FormBuilder) { }
+  constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
 
-  }
-
-
-  validar(){
-    return this.miFormulario.invalid && this.miFormulario.touched
   }
 
   verificarUsuario() {

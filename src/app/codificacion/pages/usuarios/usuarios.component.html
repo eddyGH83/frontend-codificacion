@@ -186,8 +186,8 @@
           <div class="field" *ngIf="dropdownRoles">
             <label>Rol</label>
             <!-- {{selectedRol | json}} -->
-            <p-dropdown (onChange)="opcionesRol()"  [options]="roles" [(ngModel)]="selectedRol" placeholder="Seleccione un Rol"
-              optionLabel="descripcion"></p-dropdown>
+            <p-dropdown (onChange)="opcionesRol()" [options]="roles" [(ngModel)]="selectedRol"
+              placeholder="Seleccione un Rol" optionLabel="descripcion"></p-dropdown>
           </div>
 
           <div class="field" *ngIf="dropdownSupervisores">
@@ -213,7 +213,7 @@
 
             <small class="p-invalid ml-2" *ngIf="nomUsuExistente" style="color: #b38c00">
               <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
-              Este nombre de usuario ya existe.</small>             
+              Este nombre de usuario ya existe.</small>
 
           </div>
 
