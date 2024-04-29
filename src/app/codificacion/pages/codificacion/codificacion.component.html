@@ -2,19 +2,22 @@
 
     <h4>Variables para codificación</h4> <!-- Variables para supervisión -->
     <hr>
+    <button pButton pRipple label="Actualizar" icon="pi pi-refresh" class="p-button-warning ml-2"
+        pTooltip="Actualizar registros" placeholder="Right"></button> <br> <br>
+
+
 
     <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
 
     <p-table #dt1 [value]="registros" [(selection)]="selectedCustomer1" dataKey="id_catalogo"
         styleClass="p-datatable-customers" [showCurrentPageReport]="true"
-        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="10"
-        [rowsPerPageOptions]="[10]" [paginator]="true" stateStorage="local" stateKey="statedemo-local">
+        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" stateStorage="local" stateKey="statedemo-local">
         <ng-template pTemplate="header">
             <!--  -->
             <tr>
-                <th>VARIABLE</th>
-                <th>TOTAL</th>
-                <th>ACCIONES</th>
+                <th style="width: 80%;">VARIABLE</th>
+                <th style="width: 10%;">TOTAL</th>
+                <th style="width: 10%;">ACCIONES</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-reg>
@@ -32,7 +35,7 @@
 
                 <td>
                     <button routerLink="/codificacion/codificacion-simple" pButton pRipple label="Codificar" icon="pi pi-check" class="p-button-info mr-2"
-                        *ngIf="reg.total>0"></button>
+                        *ngIf="reg.total>0" pTooltip="Codificar" tooltipPosition="right"></button>
                     <button pButton pRipple label="Codificar" icon="pi pi-check"
                         class="p-button-outlined p-button-secondary mr-2" disabled *ngIf="reg.total==0"></button>
                 </td>

@@ -18,7 +18,11 @@ export class AsignacionService {
   // devuelve lista de codificadores
   devuelveCodificadores(body: object): Observable<any> {
     return this.http.post(`${this._apiUrl}/diccionarios/devuelveCodificadores`, body)
+  }
 
+  // Listar codificadores 
+  codificadores(id: any): Observable<any> {      
+    return this.http.get(`${this._apiUrl}/codificacion/codificadores/${id}`)
   }
 
 

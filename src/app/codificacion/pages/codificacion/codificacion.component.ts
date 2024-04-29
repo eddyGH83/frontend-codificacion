@@ -88,7 +88,17 @@ ngOnInit(): void {
     },
     {
       nroPreg:"33",
-      variable: "¿Qué idiomas o lenguas habla?, según el mayor uso:",
+      variable: "Idioma 1",
+      total: 0
+    },
+    {
+      nroPreg:"33",
+      variable: "Idioma 2",
+      total: 16
+    },
+    {
+      nroPreg:"33",
+      variable: "Idioma 3",
       total: 0
     },
     {

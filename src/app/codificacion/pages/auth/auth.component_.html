@@ -126,41 +126,47 @@
         <div class="surface-card p-4 shadow-1 border-round w-full ">
             <div class="text-center mb-5">
                 <img src="assets/demo/images/blocks/logos/hyper.svg" alt="Image" height="200" class="mb-4">
-                <div class="text-900 text-3xl font-medium mb-3">Sistema de codificación informatizada</div>
+                <div class="text-900 text-3xl font-medium mb-3">Sistddddema de codificación informatizada</div>
                 <span class="text-600 font-medium line-height-3">INE - CPV |</span>
                 <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Censo-2024</a>
             </div>
 
             <div>
 
-                <form>
+                <div [formGroup]="miFormulario" autocomplete="off">
 
-                <label for="email1" class="block text-900 font-medium mb-2">Usuario</label>
-                <input type="text" pInputText class="w-full mb-3" [(ngModel)]="usuario.usu">
-                <small class="p-invalid" *ngIf="!validUsu" style="color: #d32f2f;">
-                    <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
-                    Ingrese su nombre de <strong>USUARIO</strong></small>
+                    <pre>{{miFormulario.invalid}}</pre>
+
+                    <small class="p-invalid" *ngIf="validar()" style="color: #d32f2f;">
+                        <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
+                        Formulario <strong>no válido</strong></small>
+
+                    <label for="email1" class="block text-900 font-medium mb-2">Usuario</label>
+                    <input type="text" pInputText class="w-full mb-3" formControlName="usu">
+                    <!-- {{miFormulario.controls['usu'].value}} -->
+
+                    <label for="password1" class="block text-900 font-medium mb-2">Contraseña</label>
+                    <input type="password" pInputText class="w-full mb-3" formControlName="pass">
 
 
-                <label for="password1" class="block text-900 font-medium mb-2">Contraseña</label>
-                <input type="password" pInputText class="w-full mb-3" [(ngModel)]="usuario.pass">
-                <small class="p-invalid" *ngIf="!validPass" style="color: #d32f2f;">
-                    <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
-                    Ingrese su <strong>CONTRASEÑA</strong></small>
+                    <label for="password1" class="block text-900 font-medium mb-2">año</label>
+                    <input type="number" pInputText class="w-full mb-3" formControlName="anio">
 
-                <div class="flex align-items-center justify-content-between mb-6">
 
-                    <br><br>
+                    <div class="flex align-items-center justify-content-between mb-6">
 
-                    <a pTooltip="Comuniquese con el Admin. de Sistemas"
-                        class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">¿Has olvidado tu
-                        contraseña?</a>
+                        <br><br>
+
+                        <a pTooltip="Comuniquese con el Admin. de Sistemas"
+                            class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">¿Has olvidado
+                            tu
+                            contraseña?</a>
+                    </div>
+
+                    <button (click)="validar()" pButton pRipple label="Ingresar" icon="pi pi-user"
+                        class="w-full p-button-info p-3"></button>
+
                 </div>
-
-                <button (click)="verificarUsuario()" pButton pRipple label="Ingresar" icon="pi pi-user"
-                    class="w-full p-button-info p-3"></button>
-
-                </form>
 
             </div>
         </div>
