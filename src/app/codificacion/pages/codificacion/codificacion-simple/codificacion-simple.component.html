@@ -4,13 +4,12 @@
     <h4> <a [routerLink]="['/codificacion']">Variables para codificación | </a> Codificación simple</h4>
     <!-- Variables para supervisión -->
 
-
     <!-- dos columas -->
     <div class="grid">
         <div class="col-6 md:col-6 lg:6">
 
 
-            <div class="card  border-1 surface-border">
+            <!-- <div class="card  border-1 surface-border">
                 <p-table [value]="products">
                     <ng-template pTemplate="header">
                         <tr>
@@ -25,15 +24,42 @@
                             <td>{{product.identificador}}</td>
                             <td>{{product.porCodificar}}</td>
                         </tr>
-                        <!-- <tr>
-                            <td colspan="3" >{{product.depto}}</td>
-                        </tr> -->
                     </ng-template>
                 </p-table>
-                <p class="ml-3 mt-2"><strong>PREGUNTA: </strong> Lorem ipsum dolor sit amet.</p>
-                <p class="ml-3 mt-2"><strong>RESPUESTA: </strong> Lorem ipsum dolor sit amet.</p>
-                <p class="ml-3 "><strong>ESTADO: </strong> Asignado.</p>
+                <p class="ml-2 mt-2"><strong style="color:rgb(2, 136, 209)">PREGUNTA: </strong> <span
+                        class="image-text"> <p-chip label="0" styleClass="mr-2"></p-chip>
+                        {{"reg.variable"}}</span></p>
+                <p class="ml-2 mt-2"><strong style="color:rgb(2, 136, 209)">RESPUESTA: </strong> resp </p>
+                <p class="ml-2 "><strong style="color:rgb(2, 136, 209)">ESTADO: </strong> asig </p>
+            </div> -->
+
+
+            <div class="card  border-1 surface-border">
+                <p-table [value]="products">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="background-color: rgb(2, 136, 209); color: rgb(42, 42, 42); text-align: center;">
+                                DEPARTAMENTO <br> <strong
+                                    style="font-family:Arial, Helvetica, sans-serif ">depto</strong></th>
+                            <th style="background-color: rgb(2, 136, 209); color: rgb(42, 42, 42); text-align: center;">
+                                IDENTIFICADOR <br> <strong
+                                    style="font-family:Arial, Helvetica, sans-serif ">0-0</strong></th>
+                            <th style="background-color: rgb(2, 136, 209); color: rgb(42, 42, 42); text-align: center;">
+                                POR CODIFICAR <br> <strong style="font-family:Arial, Helvetica, sans-serif ">0</strong>
+                            </th>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <p class="ml-2 mt-2"><strong style="color:rgb(2, 136, 209)">PREGUNTA: </strong> <span
+                        class="image-text"> <p-chip label="0" styleClass="mr-2"></p-chip>
+                        {{"reg.variable"}}</span></p>
+                <p class="ml-2 mt-2"><strong style="color:rgb(2, 136, 209)">RESPUESTA: </strong> resp </p>
+                <p class="ml-2 "><strong style="color:rgb(2, 136, 209)">ESTADO: </strong> asig </p>
             </div>
+
+            
+            
+
 
 
         </div>
@@ -49,7 +75,7 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-product>
                         <tr>
-                            <td>¿En que departamento? <strong>POTOSI</strong></td>
+                            <td>¿En que departamento? <strong>depto</strong></td>
                         </tr>
                     </ng-template>
                 </p-table>
@@ -120,9 +146,24 @@
         <ng-template pTemplate="header">
             <!--  -->
             <tr>
-                <th>CODIGO CODIFICACION</th>
-                <th>RESPUESTA</th>
+                <th pSortableColumn="variable">CÓDIGO CODIFICACIÓN <p-sortIcon field="variable"></p-sortIcon> </th>
+                <th pSortableColumn="total">RESPUESTA <p-sortIcon field="total"></p-sortIcon></th>
                 <th>ACCIONES</th>
+            </tr>
+            <tr>
+                <th>
+                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'variable', 'contains')"
+                        [value]="dt1.filters['variable']?.value" placeholder="Buscar por código" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'total', 'contains')"
+                        [value]="dt1.filters['total']?.value" placeholder="Buscar por respuesta" class="w-full">
+                </th>
+                <th>
+                    <!-- <button pButton pRipple icon="pi pi-eye"
+                        class="p-button-danger  white-space-nowrap"></button> -->
+                    <!-- <input pInputText type="text" (input)="dt1.filter($event.target.value, 'representative.name', 'contains')" [value]="dt1.filters['representative.name']?.value" placeholder="Search by Representative" class="w-full"> -->
+                </th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-reg>
@@ -137,7 +178,7 @@
                 </td>
 
                 <td>
-                    <button styleClass="p-button-lg" label="Codificar" pButton pRipple icon="pi pi-check"
+                    <button styleClass="p-button-lg" pTooltip="Codificar" tooltipPosition="right" pButton pRipple icon="pi pi-check"
                         class="p-button-info mr-2"></button>
                 </td>
             </tr>
@@ -148,8 +189,8 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="paginatorleft">
-            <p-button type="button" icon="pi pi-refresh" styleClass="p-button-text" label="Actualizar"
-                pTooltip="Click para actualizar la tabla"></p-button>
+            <!-- <p-button type="button" icon="pi pi-refresh" styleClass="p-button-text" label="Actualizar"
+                pTooltip="Click para actualizar la tabla"></p-button> -->
         </ng-template>
         <ng-template pTemplate="paginatorright">
         </ng-template>

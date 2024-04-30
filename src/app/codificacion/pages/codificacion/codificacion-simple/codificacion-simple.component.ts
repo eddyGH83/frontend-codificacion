@@ -58,8 +58,9 @@ constructor(private messageService: MessageService, private codificacionService:
 
 
 ngOnInit(): void {
+
  this.products = [
-   { depto: 'CHUQUISACA', identificador: '456-54456', porCodificar:456 }
+   { depto: 'depto', identificador: '0-0', porCodificar:0 }
  ];
 
  this.selectedCatalogo = { label: 'La Paz', value: 'LA PAZ' };
@@ -68,54 +69,54 @@ ngOnInit(): void {
  this.registros = [
    {
      nroPreg:"20",
-     variable: "45665",
-     total: "Respuesta"
+     variable: "520520",
+     total: "Tomina"
     
    },
    {
      nroPreg:"32",
-     variable: "45665",
-     total: "Respuesta"
+     variable: "145020",
+     total: "Tomina"
    },
    {
      nroPreg:"33",
-     variable: "45665",
-     total: "Respuesta"
+     variable: "050204",
+     total: "Tomave"
    },
    {
      nroPreg:"34",
-     variable: "45665",
-     total: "Respuesta"
+     variable: "400157",
+     total: "Toco"
    },
    {
      nroPreg:"35",
-     variable: "45665",
-     total: "Respuesta"
+     variable: "600250",
+     total: "Toro Toro"
    },
    {
      nroPreg:"36",
-     variable: "45665",
-     total: "Respuesta"
+     variable: "652305",
+     total: "Santo Tomé"
    },
    {
      nroPreg:"37",
-     variable: "45665",
-     total: "Respuesta"
+     variable: "152004",
+     total: "Togo"
    },
    {
      nroPreg:"48",
-     variable: "45665",
-     total: "Respuesta"
+     variable: "605077",
+     total: "Tomino"
    },
    {
      nroPreg:"49-51",
-     variable: "45665",
-     total: "Respuesta"
+     variable: "909050",
+     total: "Tomeave"
    },
    {
      nroPreg:"52",
-     variable: "45665",
-     total: "Respuesta"
+     variable: "101210",
+     total: "Tomena"
    },
  ];
 

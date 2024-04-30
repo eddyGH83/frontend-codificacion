@@ -21,6 +21,7 @@ import { ChipModule } from 'primeng/chip';
 import { BadgeModule } from 'primeng/badge';
 import { TooltipModule } from 'primeng/tooltip';
 import { CodificacionSimpleComponent } from './codificacion-simple/codificacion-simple.component';
+import { CodificacionDobleComponent } from './codificacion-doble/codificacion-doble.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { CodificacionSimpleComponent } from './codificacion-simple/codificacion-
     AsignarCargaSupervisionComponent,
     SupervisarCodificacionComponent,
     CodificacionComponent,
-    CodificacionSimpleComponent
+    CodificacionSimpleComponent,
+    CodificacionDobleComponent
   ],
   imports: [
     CommonModule,

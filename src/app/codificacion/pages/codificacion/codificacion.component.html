@@ -9,9 +9,7 @@
 
     <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
 
-    <p-table #dt1 [value]="registros" [(selection)]="selectedCustomer1" dataKey="id_catalogo"
-        styleClass="p-datatable-customers" [showCurrentPageReport]="true"
-        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" stateStorage="local" stateKey="statedemo-local">
+    <p-table [value]="registros">
         <ng-template pTemplate="header">
             <!--  -->
             <tr>
@@ -34,8 +32,14 @@
                 </td>
 
                 <td>
-                    <button routerLink="/codificacion/codificacion-simple" pButton pRipple label="Codificar" icon="pi pi-check" class="p-button-info mr-2"
-                        *ngIf="reg.total>0" pTooltip="Codificar" tooltipPosition="right"></button>
+                    <button routerLink="/codificacion/codificacion-simple" pButton pRipple label="Codificar"
+                        icon="pi pi-check" class="p-button-info mr-2" *ngIf="reg.total>0 && reg.nroPreg!=='49-51'"
+                        pTooltip="Codificar" tooltipPosition="right"></button>
+
+                    <button routerLink="/codificacion/codificacion-doble" pButton pRipple label="Codificar"
+                        icon="pi pi-check" class="p-button-primary mr-2" *ngIf="reg.total>0 && reg.nroPreg=='49-51'"
+                        pTooltip="Codificar" tooltipPosition="right"></button>
+
                     <button pButton pRipple label="Codificar" icon="pi pi-check"
                         class="p-button-outlined p-button-secondary mr-2" disabled *ngIf="reg.total==0"></button>
                 </td>
@@ -56,4 +60,3 @@
 
 </div>
 <br>
-

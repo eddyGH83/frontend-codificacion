@@ -5,6 +5,7 @@ import { AsignarCargaSupervisionComponent } from './asignar-carga-supervision/as
 import { SupervisarCodificacionComponent } from './supervisar-codificacion/supervisar-codificacion.component';
 import { CodificacionComponent } from './codificacion.component';
 import { CodificacionSimpleComponent } from './codificacion-simple/codificacion-simple.component';
+import { CodificacionDobleComponent } from './codificacion-doble/codificacion-doble.component';
 
 const routes: Routes = [];
 
@@ -12,6 +13,7 @@ const routes: Routes = [];
   imports: [RouterModule.forChild([
     { path: '', component: CodificacionComponent },
     { path: 'codificacion-simple', component: CodificacionSimpleComponent },
+    { path: 'codificacion-doble', component: CodificacionDobleComponent },
     { path: 'asignar-carga-codificacion', component: AsignarCargaCodificacionComponent },
     { path: 'asignar-carga-supervision', component: AsignarCargaSupervisionComponent },
     { path: 'supervisar-codificacion', component: SupervisarCodificacionComponent },

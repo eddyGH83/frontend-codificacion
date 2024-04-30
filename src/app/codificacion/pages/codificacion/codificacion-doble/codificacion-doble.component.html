@@ -1,0 +1,324 @@
+<div class="card">
+
+
+    <h4> <a [routerLink]="['/codificacion']">Variables para codificación | </a> Codificación doble</h4>
+    <!-- Variables para supervisión -->
+
+
+    <!-- dos columas -->
+    <div class="grid">
+
+        <div class="col-4 md:col-4 lg:6">
+
+            <div class="card  border-1 surface-border">
+                <p-table [value]="products">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="background-color: rgb(2, 136, 209); color: rgb(42, 42, 42); text-align: center;">
+                                DEPARTAMENTO <br> <strong
+                                    style="font-family:Arial, Helvetica, sans-serif ">depto</strong></th>
+                            <th style="background-color: rgb(2, 136, 209); color: rgb(42, 42, 42); text-align: center;">
+                                IDENTIFICADOR <br> <strong
+                                    style="font-family:Arial, Helvetica, sans-serif ">0-0</strong></th>
+                            <th style="background-color: rgb(2, 136, 209); color: rgb(42, 42, 42); text-align: center;">
+                                POR CODIFICAR <br> <strong style="font-family:Arial, Helvetica, sans-serif ">0</strong>
+                            </th>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <p class="ml-2 mt-2"><strong style="color:rgb(2, 136, 209)">PREGUNTA: </strong> <span
+                        class="image-text"> <p-chip label="0" styleClass="mr-2"></p-chip>
+                        {{"reg.variable"}}</span></p>
+                <p class="ml-2 mt-2"><strong style="color:rgb(2, 136, 209)">RESPUESTA: </strong> resp </p>
+                <p class="ml-2 "><strong style="color:rgb(2, 136, 209)">ESTADO: </strong> asig </p>
+                <p class="ml-2 "><strong style="color:rgb(2, 136, 209)">CÓDIGO: </strong> cod </p>
+            </div>
+
+        </div>
+
+        <div class="col-4 md:col-4 lg:6">
+
+            <div class="card  border-1 surface-border">
+                <p-table [value]="products">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th
+                                style="background-color: rgb(17, 173, 228); color: rgb(42, 42, 42); text-align: center;">
+                                DEPARTAMENTO <br> <strong
+                                    style="font-family:Arial, Helvetica, sans-serif ">depto</strong></th>
+                            <th
+                                style="background-color: rgb(17, 173, 228); color: rgb(42, 42, 42); text-align: center;">
+                                IDENTIFICADOR <br> <strong
+                                    style="font-family:Arial, Helvetica, sans-serif ">0-0</strong></th>
+                            <th
+                                style="background-color: rgb(17, 173, 228); color: rgb(42, 42, 42); text-align: center;">
+                                POR CODIFICAR <br> <strong style="font-family:Arial, Helvetica, sans-serif ">0</strong>
+                            </th>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <p class="ml-2 mt-2"><strong style="color:rgb(17, 173, 228)">PREGUNTA: </strong> <span
+                        class="image-text"> <p-chip label="0" styleClass="mr-2"></p-chip>
+                        {{"reg.variable"}}</span></p>
+                <p class="ml-2 mt-2"><strong style="color:rgb(17, 173, 228)">RESPUESTA: </strong> resp </p>
+                <p class="ml-2 "><strong style="color:rgb(17, 173, 228)">ESTADO: </strong> asig </p>
+                <p class="ml-2 "><strong style="color:rgb(17, 173, 228)">CÓDIGO: </strong> cod </p>
+            </div>
+
+        </div>
+
+
+
+
+
+
+        <div class="col-4 md:col-4 lg:6">
+            <div class="card  border-1 surface-border">
+
+                <p-table [value]="products">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="background-color: rgb(16, 177, 99); color: rgb(42, 42, 42);">VARIABLES DE
+                                CONTEXTO</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-product>
+                        <tr>
+                            <td>¿En que departamento? <strong>depto</strong></td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+    <!-- <div class="grid">
+        <div class="col-12 md:col-12 lg:col-12">
+            <p-table [value]="products" >
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="background-color: rgb(7, 114, 179); color: white;">DEPARTAMENTO</th>
+                        <th style="background-color: rgb(7, 114, 179); color: white;">IDENTIFICADOR</th>
+                        <th style="background-color: rgb(7, 114, 179); color: white;">POR CODIFICAR</th>
+                        <th style="background-color: rgb(226, 132, 26);  color: white;">PREGUNTA</th>
+                        <th style="background-color: rgb(226, 132, 26);  color: white;">RESPUESTA</th>
+                        <th style="background-color: rgb(226, 132, 26);  color: white;">ESTADO</th>
+                        <th style="background-color: rgb(16, 177, 99);  color: white;">VARIABLES DE CONTEXTO</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                    <tr>
+                        <td>{{product.depto}}</td>
+                        <td>{{product.identificador}}</td>
+                        <td>{{product.porCodificar}}</td>
+                        <td>35:Municipio donde nació </td>
+                        <td>Yancarani</td>
+                        <td>ASIGNADO</td>
+                        <td>¿En que departamento? <strong>POTOSI</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" >{{product.depto}}</td>
+                        <td>{{product.depto}}</td>
+                        <td>{{product.identificador}}</td>
+                        <td>{{product.porCodificar}}</td>
+                        <td>35:Municipio donde nació </td>
+                        <td>Yancarani</td>
+                        <td>ASIGNADO</td>
+                        <td>¿En que departamento? <strong>POTOSI</strong></td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div> -->
+
+    <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
+
+    <div class="text-700 text-center">
+
+        <button pButton pRipple label="Anular anterior" icon="pi pi-trash"
+            class="p-button-danger mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
+        <button pButton pRipple label="Primero" icon="pi pi-fast-backward"
+            class="p-button-info mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
+        <button pButton pRipple label="Siguiente" icon="pi pi-forward"
+            class="p-button-info mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-save"
+            class="p-button-secondary mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
+    </div>
+
+
+
+
+
+
+    <div class="grid">
+
+
+        <div class="col-6 md:col-6 lg:6">
+
+            <div class="card  border-1 surface-border">
+                <!-- Tabla 2 -->
+                <p-table #dt1 [value]="registros" [(selection)]="selectedCustomer1" dataKey="id_catalogo"
+                    [scrollable]="true" scrollHeight="400px" styleClass="p-datatable-customers"
+                    [showCurrentPageReport]="true"
+                    currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="10"
+                    [rowsPerPageOptions]="[10]" [paginator]="true" stateStorage="local" stateKey="statedemo-local">
+                    <ng-template pTemplate="header">
+                        <!--  -->
+                        <tr>
+                            <th pSortableColumn="variable">CÓDIGO CODIFICACIÓN <p-sortIcon
+                                    field="variable"></p-sortIcon> </th>
+                            <th pSortableColumn="total">RESPUESTA <p-sortIcon field="total"></p-sortIcon></th>
+                            <th>ACCIONES</th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input pInputText type="text"
+                                    (input)="dt1.filter($event.target.value, 'variable', 'contains')"
+                                    [value]="dt1.filters['variable']?.value" placeholder="Buscar por código"
+                                    class="w-full">
+                            </th>
+                            <th>
+                                <input pInputText type="text"
+                                    (input)="dt1.filter($event.target.value, 'total', 'contains')"
+                                    [value]="dt1.filters['total']?.value" placeholder="Buscar por respuesta"
+                                    class="w-full">
+                            </th>
+                            <th>
+                                <!-- <button pButton pRipple icon="pi pi-eye"
+                            class="p-button-danger  white-space-nowrap"></button> -->
+                                <!-- <input pInputText type="text" (input)="dt1.filter($event.target.value, 'representative.name', 'contains')" [value]="dt1.filters['representative.name']?.value" placeholder="Search by Representative" class="w-full"> -->
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-reg>
+                        <tr [pSelectableRow]="reg">
+                            <td>
+                                <span class="p-column-title">VARIABLE</span>
+                                <span class="image-text"> <strong> {{reg.variable}}</strong></span>
+                            </td>
+                            <td>
+                                <span class="p-column-title">TOTAL</span>
+                                <span class="image-text">{{reg.total}}</span>
+                            </td>
+
+                            <td>
+                                <button styleClass="p-button-lg" pButton pRipple icon="pi pi-check" pTooltip="Codificar"
+                                    tooltipPosition="right" class="p-button-info mr-2"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="4">No hay registros para mostrar</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="paginatorleft">
+                        <!-- <p-button type="button" icon="pi pi-refresh" styleClass="p-button-text" label="Actualizar"
+                    pTooltip="Click para actualizar la tabla"></p-button> -->
+                    </ng-template>
+                    <ng-template pTemplate="paginatorright">
+                    </ng-template>
+                </p-table>
+
+
+            </div>
+
+        </div>
+
+
+        <div class="col-6 md:col-6 lg:6">
+
+            <div class="card  border-1 surface-border">
+                <!-- Tabla 1 -->
+
+                <p-table #dt1 [value]="registros" [(selection)]="selectedCustomer1" dataKey="id_catalogo"
+                    [scrollable]="true" scrollHeight="400px" styleClass="p-datatable-customers"
+                    [showCurrentPageReport]="true"
+                    currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="10"
+                    [rowsPerPageOptions]="[10]" [paginator]="true" stateStorage="local" stateKey="statedemo-local">
+                    <ng-template pTemplate="header">
+                        <!--  -->
+                        <tr>
+                            <th pSortableColumn="variable">CÓDIGO CODIFICACIÓN <p-sortIcon
+                                    field="variable"></p-sortIcon> </th>
+                            <th pSortableColumn="total">RESPUESTA <p-sortIcon field="total"></p-sortIcon></th>
+                            <th>ACCIONES</th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input pInputText type="text"
+                                    (input)="dt1.filter($event.target.value, 'variable', 'contains')"
+                                    [value]="dt1.filters['variable']?.value" placeholder="Buscar por código"
+                                    class="w-full">
+                            </th>
+                            <th>
+                                <input pInputText type="text"
+                                    (input)="dt1.filter($event.target.value, 'total', 'contains')"
+                                    [value]="dt1.filters['total']?.value" placeholder="Buscar por respuesta"
+                                    class="w-full">
+                            </th>
+                            <th>
+                                <!-- <button pButton pRipple icon="pi pi-eye"
+                                class="p-button-danger  white-space-nowrap"></button> -->
+                                <!-- <input pInputText type="text" (input)="dt1.filter($event.target.value, 'representative.name', 'contains')" [value]="dt1.filters['representative.name']?.value" placeholder="Search by Representative" class="w-full"> -->
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-reg>
+                        <tr [pSelectableRow]="reg">
+                            <td>
+                                <span class="p-column-title">VARIABLE</span>
+                                <span class="image-text"> <strong> {{reg.variable}}</strong></span>
+                            </td>
+                            <td>
+                                <span class="p-column-title">TOTAL</span>
+                                <span class="image-text">{{reg.total}}</span>
+                            </td>
+
+                            <td>
+                                <button styleClass="p-button-lg" pButton pRipple icon="pi pi-check" pTooltip="Codificar"
+                                    tooltipPosition="right" class="p-button-primary mr-2"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="4">No hay registros para mostrar</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="paginatorleft">
+                        <!-- <p-button type="button" icon="pi pi-refresh" styleClass="p-button-text" label="Actualizar"
+                        pTooltip="Click para actualizar la tabla"></p-button> -->
+                    </ng-template>
+                    <ng-template pTemplate="paginatorright">
+                    </ng-template>
+                </p-table>
+
+
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+
+
+</div>

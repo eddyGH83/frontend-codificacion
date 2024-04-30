@@ -52,6 +52,7 @@ constructor(private messageService: MessageService, private codificacionService:
 
 
 ngOnInit(): void {
+  
   this.catalogos = [
     { label: 'Chuquisaca', value: 'CHUQUISACA' },
     { label: 'La Paz', value: 'LA PAZ' },
@@ -78,13 +79,13 @@ ngOnInit(): void {
     {
       nroPreg:"20",
       variable: "Alguna persona que vivía con usted(es) en este hogar, ¿actualmente vive en otro país?",
-      total: 200
+      total: 0
      
     },
     {
       nroPreg:"32",
       variable: "¿Se autoidentifica con alguna nación, pueblo indígena originario campesino o afroboliviano?",
-      total: 45
+      total: 0
     },
     {
       nroPreg:"33",
@@ -94,32 +95,32 @@ ngOnInit(): void {
     {
       nroPreg:"33",
       variable: "Idioma 2",
-      total: 16
+      total: 0
     },
     {
       nroPreg:"33",
       variable: "Idioma 3",
-      total: 0
+      total: 1
     },
     {
       nroPreg:"34",
       variable: "¿Cuál es el primer idioma o lengua en el que aprendió a hablar en su niñez?",
-      total: 200
+      total: 0
     },
     {
       nroPreg:"35",
       variable: "¿Dónde nació?",
-      total: 192
+      total: 0
     },
     {
       nroPreg:"36",
       variable: "¿Dónde vive habitualmente?",
-      total: 301
+      total: 0
     },
     {
       nroPreg:"37",
       variable: "¿Dónde vivía el año 2019?",
-      total: 420
+      total: 0
     },
     {
       nroPreg:"48",
@@ -129,7 +130,7 @@ ngOnInit(): void {
     {
       nroPreg:"49-51",
       variable: "Ocupación - Actividad Económica",
-      total: 45
+      total: 1
     },
     {
       nroPreg:"52",
