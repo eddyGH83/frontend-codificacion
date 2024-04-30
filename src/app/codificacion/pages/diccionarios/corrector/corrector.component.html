@@ -1,94 +1,99 @@
+<!-- <p-toast></p-toast>
+<button pButton pRipple type="button" icon="pi pi-plus" label="Nuevo" class="p-button-info" (click)="saveProduct()"></button> -->
+
 <div class="card">
+    <p-toast></p-toast>
+    <h4>Gestor de diccionario Corrector</h4>
+    <p-divider></p-divider>
 
-    <h5>Gestor de Corrector
-        <!-- <p-dropdown [options]="catalogos" [(ngModel)]="selectedCatalogo" placeholder="Seleccione un Catalogo"
-            optionLabel="name"></p-dropdown> -->
-    </h5>
-   
+    <button pButton pRipple type="button" icon="pi pi-refresh" label="Actualizar" class="p-button-warning mr-2"
+        (click)="registrosTabla()" pTooltip="Actualizar registros" tooltipPosition="bottom"></button>
 
-    <p-table #dt1 [value]="registros" [(selection)]="selectedCustomer1" dataKey="id_catalogo"
-        styleClass="p-datatable-customers" [showCurrentPageReport]="true"
-        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
+    <button pButton pRipple type="button" icon="pi pi-file-excel" label="Exportar" class="p-button-success"
+        (click)="exportExcel()" pTooltip="Exportar registros a excel (.xlsx)" tooltipPosition="right"></button> <br>
+    <br>
+
+    <!-- {{ selectedCatalogo | json }} -->
+    <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
+
+    <p-table #dt_catalogo [value]="registros" dataKey="id_catalogo" styleClass="p-datatable-customers"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="10"
         [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" stateStorage="local" stateKey="statedemo-local">
         <ng-template pTemplate="header">
-
             <!--  -->
             <tr>
                 <!-- <th pSortableColumn="catalogo">CATALOGO <p-sortIcon field="catalogo"></p-sortIcon></th> -->
-                <th pSortableColumn="id">CODIGO<p-sortIcon field="id"></p-sortIcon></th>
-                <th pSortableColumn="erradas">  ERRADAS <p-sortIcon field="erradas"></p-sortIcon></th>
+                <th pSortableColumn="id">CÓDIGO<p-sortIcon field="id"></p-sortIcon></th>
+                <th pSortableColumn="erradas">ERRADAS <p-sortIcon field="erradas"></p-sortIcon></th>
                 <th pSortableColumn="corregidas"> CORREGIDAS <p-sortIcon field="corregidas"></p-sortIcon></th>
                 <th pSortableColumn="usucre"> CREADOR <p-sortIcon field="usucre"></p-sortIcon></th>
                 <th pSortableColumn="usumod"> MODIFICADOR <p-sortIcon field="usumod"></p-sortIcon></th>
                 <!-- Bton + Nuevo -->
                 <th><button pButton pRipple type="button" icon="pi pi-plus" label="Nuevo" class="p-button-info"
-                        (click)="openNew()"></button></th>
+                        (click)="openNew()" pTooltip="Nuevo registro" tooltipPosition="top"></button></th>
             </tr>
             <!--  -->
             <tr>
-                <!-- <th>
-                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'catalogo', 'contains')"
-                        [value]="dt1.filters['catalogo']?.value" placeholder="Buscar por catalogo" class="p-column-filter">
-                </th> -->
                 <th>
-                    <input pInputText type="number" (input)="dt1.filter($event.target.value, 'id', 'contains')"
-                        [value]="dt1.filters['id']?.value" placeholder="Buscar por id" class="p-column-filter">
-                </th>
-                <th>
-                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'erradas', 'contains')"
-                        [value]="dt1.filters['erradas']?.value" placeholder="Buscar por erradas"
+                    <input pInputText type="text" (input)="dt_catalogo.filter($event.target.value, 'id', 'contains')"
+                        [value]="dt_catalogo.filters['id']?.value" placeholder="Buscar por código"
                         class="p-column-filter">
                 </th>
                 <th>
-                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'corregidas', 'contains')"
-                        [value]="dt1.filters['corregidas']?.value" placeholder="Buscar por corregidas" class="p-column-filter">
+                    <input pInputText type="text"
+                        (input)="dt_catalogo.filter($event.target.value, 'erradas', 'contains')"
+                        [value]="dt_catalogo.filters['erradas']?.value" placeholder="Buscar por erradas"
+                        class="p-column-filter">
                 </th>
                 <th>
-                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'usucre', 'contains')"
-                        [value]="dt1.filters['usucre']?.value" placeholder="Buscar por Usu Creador" class="p-column-filter">
+                    <input pInputText type="text"
+                        (input)="dt_catalogo.filter($event.target.value, 'corregidas', 'contains')"
+                        [value]="dt_catalogo.filters['corregidas']?.value" placeholder="Buscar por corregidas"
+                        class="p-column-filter">
                 </th>
                 <th>
-                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'usumod', 'contains')"
-                        [value]="dt1.filters['usumod']?.value" placeholder="Buscar por Usu Modificador" class="p-column-filter">
+                    <input pInputText type="text"
+                        (input)="dt_catalogo.filter($event.target.value, 'usucre', 'contains')"
+                        [value]="dt_catalogo.filters['usucre']?.value" placeholder="Buscar el creador"
+                        class="p-column-filter">
+                </th>
+                <th>
+                    <input pInputText type="text"
+                        (input)="dt_catalogo.filter($event.target.value, 'usumod', 'contains')"
+                        [value]="dt_catalogo.filters['usumod']?.value" placeholder="Buscar por el modificador"
+                        class="p-column-filter">
                 </th>
                 <th>Acciones</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-customer>
-            <tr [pSelectableRow]="customer">
-                <!-- <td>
-                    <span class="p-column-title">catalogo</span>
-                    {{customer.catalogo}}
-                </td> -->
+        <ng-template pTemplate="body" let-reg>
+            <tr [pSelectableRow]="reg">
                 <td>
-                    <span class="p-column-title">CODIGO</span>
-                    <span class="image-text">{{customer.id}}</span>
+                    <span class="p-column-title">CÓDIGO</span>
+                    <span class="image-text">{{reg.id}}</span>
                 </td>
                 <td>
                     <span class="p-column-title">ERRADAS</span>
-                    <span class="image-text">{{customer.erradas}}</span>
+                    <span class="image-text">{{reg.erradas}}</span>
                 </td>
                 <td>
                     <span class="p-column-title">CORREGIDAS</span>
-                    <span class="image-text">{{customer.corregidas}}</span>
+                    <span class="image-text">{{reg.corregidas}}</span>
                 </td>
                 <td>
                     <span class="p-column-title">CREADOR</span>
-                    <span class="image-text">{{customer.usucre }}</span>
+                    <span class="image-text">{{reg.usucre }}</span>
                 </td>
                 <td>
                     <span class="p-column-title">MODIFICADOR</span>
-                    <span class="image-text">{{customer.usumod }}</span>
+                    <span class="image-text">{{reg.usumod }}</span>
                 </td>
-                <!-- <td>
-                    <span class="p-column-title">Status</span>
-                    <span [class]="'customer-badge status-' + customer.status">{{customer.status}}</span>
-                </td> -->
                 <td>
-                    <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-info"
-                        (click)="editRegistro(customer)"></button>
+                    <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"
+                        (click)="editRegistro(reg)"></button>
                     <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"
-                        (click)="deleteCustomer(customer)"></button>
+                        (click)="deleteSelectedRegistro(reg)"></button>
                 </td>
             </tr>
         </ng-template>
@@ -98,10 +103,10 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="paginatorleft">
-            <p-button type="button" icon="pi pi-refresh" styleClass="p-button-text" label="Actualizar"></p-button>
+            <p-button (click)="registrosTabla()" type="button" icon="pi pi-refresh" styleClass="p-button-text"
+                label="Actualizar"></p-button>
         </ng-template>
         <ng-template pTemplate="paginatorright">
-            <!-- <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button> -->
         </ng-template>
     </p-table>
 
@@ -110,34 +115,23 @@
     <p-dialog [(visible)]="registroDialog" [style]="{width: '450px'}" header="Catálogo Detalles" [modal]="true"
         styleClass="p-fluid">
 
-
-        <!-- <h5>Vertical Grid</h5> -->
-        <!-- <div class="p-formgrid grid">
-            <div class="field col">
-                <label htmlFor="name2">Name</label>
-                <input pInputText id="name2" type="text" />
-            </div>
-            <div class="field col">
-                <label htmlFor="email2">Email</label>
-                <input pInputText id="email2" type="text" />
-            </div>
-        </div> -->
-
-
-
         <ng-template pTemplate="content">
 
-            <h6>id: {{registro.id}}</h6>
-            <h6>erradas: {{registro.erradas}}</h6>
-            <h6>corregidas: {{registro.corregidas}}</h6>
+            <!-- <h6>id_catalogo: {{registro.id_catalogo}}</h6>
+            <h6>id_catalogo: {{registro.codigo}}</h6>
+            <h6>id_catalogo: {{registro.descripcion}}</h6> -->
+            <!-- <h6>catalogo: {{registro.catalogo}}</h6>
+
+            <h6>estado: {{registro.estado}}</h6>
             <h6>usucre: {{registro.usucre}}</h6>
             <h6>feccre: {{registro.feccre}}</h6>
             <h6>usumod: {{registro.usumod}}</h6>
-            <h6>femod: {{registro.femod}}</h6>  
-            <h6>estado: {{registro.estado}}</h6>
+            <h6>fecmod: {{registro.fecmod}}</h6>
+            <h6>descripcion_unida: {{registro.descripcion_unida}}</h6>
+            <h6>unico: {{registro.unico}}</h6> -->
 
             <div class="field">
-                <label for="codigo">Errada</label>
+                <label for="codigo">Código</label>
                 <input type="text" pInputText id="codigo" [(ngModel)]="registro.codigo" required autofocus />
                 <small class="p-invalid" *ngIf="submitted && !registro.codigo" style="color: #d32f2f;">
                     <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
@@ -145,7 +139,7 @@
             </div>
 
             <div class="field">
-                <label for="descripcion">Corregida</label>
+                <label for="descripcion">Descripción</label>
                 <textarea id="descripcion" pInputTextarea [(ngModel)]="registro.descripcion" required rows="4"
                     cols="20"></textarea>
                 <small class="p-invalid" *ngIf="submitted && !registro.descripcion" style="color: #d32f2f;">
@@ -153,9 +147,7 @@
                     Este campo es requerido.
                 </small>
             </div>
-
         </ng-template>
-
         <!--  -->
         <ng-template pTemplate="footer">
             <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text "
@@ -163,8 +155,8 @@
             <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text mr-2"
                 (click)="saveRegistro()"></button>
         </ng-template>
-
     </p-dialog>
-    <p-messages></p-messages>
 
 </div>
+<!-- <p-messages [closable]="false"></p-messages> -->
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>

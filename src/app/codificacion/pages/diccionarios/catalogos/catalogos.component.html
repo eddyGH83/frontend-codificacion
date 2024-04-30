@@ -1,7 +1,7 @@
 <div class="card">
 
     <h4>Gestor de catálogos</h4>
-    <hr>
+    <p-divider></p-divider>
 
     <label for="username2">Catálogo seleccionado </label>
     <p-dropdown (onChange)="registrosTabla()" [options]="catalogos" [(ngModel)]="selectedCatalogo"
@@ -10,9 +10,9 @@
     <!-- {{ selectedCatalogo | json }} -->
     <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
 
-    <p-table #dt1 [value]="registros"  dataKey="id_catalogo"
-        styleClass="p-datatable-customers" [showCurrentPageReport]="true"
-        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
+    <p-table #dt_catalogo [value]="registros" dataKey="id_catalogo" styleClass="p-datatable-customers"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="10"
         [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" stateStorage="local" stateKey="statedemo-local">
         <ng-template pTemplate="header">
             <!--  -->
@@ -30,27 +30,33 @@
             <!--  -->
             <tr>
                 <th>
-                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'codigo', 'contains')"
-                        [value]="dt1.filters['codigo']?.value" placeholder="Buscar por codigo" class="p-column-filter">
-                </th>
-                <th>
-                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'descripcion', 'contains')"
-                        [value]="dt1.filters['descripcion']?.value" placeholder="Buscar por descripcion"
+                    <input pInputText type="text"
+                        (input)="dt_catalogo.filter($event.target.value, 'codigo', 'contains')"
+                        [value]="dt_catalogo.filters['codigo']?.value" placeholder="Buscar por codigo"
                         class="p-column-filter">
                 </th>
                 <th>
-                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'feccre', 'contains')"
-                        [value]="dt1.filters['feccre']?.value" placeholder="Buscar por fecha de creación"
+                    <input pInputText type="text"
+                        (input)="dt_catalogo.filter($event.target.value, 'descripcion', 'contains')"
+                        [value]="dt_catalogo.filters['descripcion']?.value" placeholder="Buscar por descripcion"
                         class="p-column-filter">
                 </th>
                 <th>
-                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'usucre', 'contains')"
-                        [value]="dt1.filters['usucre']?.value" placeholder="Buscar por usuario creador"
+                    <input pInputText type="text"
+                        (input)="dt_catalogo.filter($event.target.value, 'feccre', 'contains')"
+                        [value]="dt_catalogo.filters['feccre']?.value" placeholder="Buscar por fecha de creación"
                         class="p-column-filter">
                 </th>
                 <th>
-                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'usumod', 'contains')"
-                        [value]="dt1.filters['usumod']?.value" placeholder="Buscar por usuario modificador"
+                    <input pInputText type="text"
+                        (input)="dt_catalogo.filter($event.target.value, 'usucre', 'contains')"
+                        [value]="dt_catalogo.filters['usucre']?.value" placeholder="Buscar por usuario creador"
+                        class="p-column-filter">
+                </th>
+                <th>
+                    <input pInputText type="text"
+                        (input)="dt_catalogo.filter($event.target.value, 'usumod', 'contains')"
+                        [value]="dt_catalogo.filters['usumod']?.value" placeholder="Buscar por usuario modificador"
                         class="p-column-filter">
                 </th>
                 <th>Acciones</th>
@@ -59,15 +65,15 @@
         <ng-template pTemplate="body" let-reg>
             <tr [pSelectableRow]="reg">
                 <td>
-                    <span class="p-column-title">CODIGO</span>
+                    <span class="p-column-title">CÓDIGO</span>
                     <span class="image-text">{{reg.codigo}}</span>
                 </td>
                 <td>
-                    <span class="p-column-title">DESCRIPCION</span>
+                    <span class="p-column-title">DESCRIPCIóN</span>
                     <span class="image-text">{{reg.descripcion}}</span>
                 </td>
                 <td>
-                    <span class="p-column-title">FECHA CREACION</span>
+                    <span class="p-column-title">FECHA CREACIóN</span>
                     <span class="image-text">{{reg.feccre | date:'dd-MM-yyyy'}}</span>
                 </td>
                 <td>
@@ -83,7 +89,6 @@
                         (click)="editRegistro(reg)"></button>
                     <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"
                         (click)="deleteSelectedRegistro(reg)"></button>
-                    <!-- {{customer.id_catalogo | json}} -->
                 </td>
             </tr>
         </ng-template>
@@ -97,7 +102,6 @@
                 label="Actualizar"></p-button>
         </ng-template>
         <ng-template pTemplate="paginatorright">
-            <!-- <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button> -->
         </ng-template>
     </p-table>
 
@@ -108,9 +112,9 @@
 
         <ng-template pTemplate="content">
 
-            <h6>id_catalogo: {{registro.id_catalogo}}</h6>
+            <!-- <h6>id_catalogo: {{registro.id_catalogo}}</h6>
             <h6>id_catalogo: {{registro.codigo}}</h6>
-            <h6>id_catalogo: {{registro.descripcion}}</h6>
+            <h6>id_catalogo: {{registro.descripcion}}</h6> -->
             <!-- <h6>catalogo: {{registro.catalogo}}</h6>
 
             <h6>estado: {{registro.estado}}</h6>
@@ -138,9 +142,7 @@
                     Este campo es requerido.
                 </small>
             </div>
-
         </ng-template>
-
         <!--  -->
         <ng-template pTemplate="footer">
             <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text "
@@ -148,7 +150,6 @@
             <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text mr-2"
                 (click)="saveRegistro()"></button>
         </ng-template>
-
     </p-dialog>
 
 </div>

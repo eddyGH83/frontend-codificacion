@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+
+
 import { DiccionariosRoutingModule } from './diccionarios-routing.module';
 import { CatalogosComponent } from './catalogos/catalogos.component';
 import { CorrectorComponent } from './corrector/corrector.component';
@@ -17,6 +19,10 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { DropdownModule } from 'primeng/dropdown';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { DividerModule } from 'primeng/divider';
+import { ToastModule } from 'primeng/toast';
+import { ToolbarModule } from 'primeng/toolbar';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 @NgModule({
@@ -28,6 +34,10 @@ import { ProgressBarModule } from 'primeng/progressbar';
   imports: [
     CommonModule,
     DiccionariosRoutingModule,
+    DividerModule,
+    ToastModule,
+    ToolbarModule,
+    TooltipModule,
 
     //BrowserModule,
     //BrowserAnimationsModule,

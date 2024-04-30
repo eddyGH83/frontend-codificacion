@@ -37,9 +37,16 @@ export class CorrectorService {
             .then(data => { return data; });
     } */
 
+    /* 
+    devuelveCatalogo(body: object): Observable<any> {
+    //console.log(`${this._apiUrl}/diccionarios/devuelveCatalogo`);
+    return this.http.post(`${this._apiUrl}/diccionarios/devuelveCatalogo`, body)
+    }
+    */
+
     // 
     devuelveCorrector(): Observable<any> {
-        const url = `${this._apiUrl}devuelveCorrector`;
+        const url = `${this._apiUrl}/diccionarios/devuelveCorrector`;
         return this.http.get<any>(url);
     }
 
