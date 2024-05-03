@@ -63,9 +63,9 @@ export class CatalogosComponent implements OnInit {
       { value: 'cat_pais', txt: 'cat_pais' },
       { value: 'cat_municipio', txt: 'cat_municipio' },
     ];
-    this.selectedCatalogo = { value: 'cat_caeb', txt: 'cat_caeb' };
+    this.selectedCatalogo = { value: 'cat_pais', txt: 'cat_pais' };
 
-    
+
     this.registrosTabla();
 
   }
@@ -100,52 +100,14 @@ export class CatalogosComponent implements OnInit {
   saveRegistro() {
     this.submitted = true;
 
-    if (
-      this.registro.codigo.trim() && this.registro.descripcion.trim()) {
+    if (this.registro.codigo.trim() && this.registro.descripcion.trim()) {
 
       if (this.registro.id_catalogo) {
         // UPDATE
-
-        // this.diccionariosService.validarRegistros(body).subscribe( res => {
-        /* 
-        const body = {
-      codigo: this.miFormulario.value.codigo,
-      descripcion: this.miFormulario.value.descripcion,
-      catalogo: this.catalogo,
-    }
-        */
-
-        this.catalogosService.validarRegistros({ codigo: this.registro.codigo, descripcion: this.registro.descripcion, catalogo: this.selectedCatalogo.value }).subscribe(
-          (data2: any) => {
-
-            if (data2.datos.rows.length > 0) {
-              // Mensaje 
-              this.messageService.add({ severity: 'info', summary: 'Successful', detail: `El código: ${this.registro.codigo} y la descripción: ${this.registro.descripcion} ya existe!` });
-              setTimeout(() => {
-                this.messageService.clear();
-              }, 2000);
-            } else {
-
-              // Mensaje
-              this.messageService.add({ severity: 'info', summary: 'Successful', detail: 'Registro Modificado!'});
-              setTimeout(() => {
-                this.messageService.clear();
-              }, 2000);
-
-            }
-          })
-
-
-
+        this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: 'Registro Modificado!', life: 3000 });
       } else {
         // ADD
-
-
-        // Mensaje
-        this.messageService.add({ severity: 'info', summary: 'Successful', detail: 'Registro Adicionado!' });
-        setTimeout(() => {
-          this.messageService.clear();
-        }, 2000);
+        this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: 'Registro Adicionado!', life: 3000 });
       }
 
       // this.products = [...this.products];

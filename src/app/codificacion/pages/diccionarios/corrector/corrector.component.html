@@ -91,9 +91,9 @@
                 </td>
                 <td>
                     <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"
-                        (click)="editRegistro(reg)"></button>
+                        (click)="editRegistro(reg)" pTooltip="Editar registro" tooltipPosition="left" ></button>
                     <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"
-                        (click)="deleteSelectedRegistro(reg)"></button>
+                        (click)="deleteSelectedRegistro(reg)"  pTooltip="Eliminar registro" tooltipPosition="top" ></button>
                 </td>
             </tr>
         </ng-template>
@@ -112,9 +112,9 @@
 
 
     <!-- Dialog -->
-    <p-dialog [(visible)]="registroDialog" [style]="{width: '450px'}" header="Catálogo Detalles" [modal]="true"
+    <p-dialog [(visible)]="registroDialog" [style]="{width: '450px'}" header="Corrector Detalles" [modal]="true"
         styleClass="p-fluid">
-
+        
         <ng-template pTemplate="content">
 
             <!-- <h6>id_catalogo: {{registro.id_catalogo}}</h6>
@@ -131,17 +131,17 @@
             <h6>unico: {{registro.unico}}</h6> -->
 
             <div class="field">
-                <label for="codigo">Código</label>
-                <input type="text" pInputText id="codigo" [(ngModel)]="registro.codigo" required autofocus />
+                <label for="codigo">Errada</label>
+                <input type="text" pInputText id="codigo" [(ngModel)]="registro.codigo" required autofocus  pTooltip="Palabra errada" tooltipPosition="left" />
                 <small class="p-invalid" *ngIf="submitted && !registro.codigo" style="color: #d32f2f;">
                     <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
                     Este campo es requerido.</small>
             </div>
 
             <div class="field">
-                <label for="descripcion">Descripción</label>
+                <label for="descripcion">Corregida</label>
                 <textarea id="descripcion" pInputTextarea [(ngModel)]="registro.descripcion" required rows="4"
-                    cols="20"></textarea>
+                    cols="20"  pTooltip="Ingrese la corregida" tooltipPosition="left" ></textarea>
                 <small class="p-invalid" *ngIf="submitted && !registro.descripcion" style="color: #d32f2f;">
                     <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
                     Este campo es requerido.
