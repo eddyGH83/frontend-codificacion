@@ -18,7 +18,7 @@ export interface Registro {
     fecmod?: string;
     descripcion_unida?: string;
     unico?: number;
-  }
+}
 
 @Injectable({
     providedIn: 'root'
@@ -30,12 +30,12 @@ export class CorrectorService {
 
     constructor(private http: HttpClient) { }
 
-/*     getCustomersMedium() {
-        return this.http.get<any>('assets/customers-medium.json')
-            .toPromise()
-            .then(res => <Customer[]>res.data)
-            .then(data => { return data; });
-    } */
+    /*     getCustomersMedium() {
+            return this.http.get<any>('assets/customers-medium.json')
+                .toPromise()
+                .then(res => <Customer[]>res.data)
+                .then(data => { return data; });
+        } */
 
     /* 
     devuelveCatalogo(body: object): Observable<any> {
@@ -48,6 +48,11 @@ export class CorrectorService {
     devuelveCorrector(): Observable<any> {
         const url = `${this._apiUrl}/diccionarios/devuelveCorrector`;
         return this.http.get<any>(url);
+    }
+
+
+    updateEstadoDiccCorr(id: any, body: object): Observable<any> {
+        return this.http.put(`${this._apiUrl}/diccionarios/updateEstadoDiccCorr/${id}`, body)
     }
 
 

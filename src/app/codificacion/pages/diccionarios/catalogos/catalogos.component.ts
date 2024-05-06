@@ -6,6 +6,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 
+import * as FileSaver from 'file-saver';
+
 
 
 
@@ -26,10 +28,10 @@ export class CatalogosComponent implements OnInit {
 
 
 
-  selectedRegistros: any;
+  // selectedRegistros: any;
 
 
-  msgs: any = [];
+  // msgs: any = [];
 
 
   // registroDialog
@@ -48,8 +50,12 @@ export class CatalogosComponent implements OnInit {
   catalogos: any;
   selectedCatalogo: any;
 
+  //msgService
+  msgService: boolean = false;
+  titleMsgError: string = '';
 
-
+  //dialog eliminar
+  dialogEliminar: boolean = false;
 
   constructor(private messageService: MessageService, private catalogosService: CatalogosService, private confirmationService: ConfirmationService) { }
 
@@ -65,14 +71,11 @@ export class CatalogosComponent implements OnInit {
     ];
     this.selectedCatalogo = { value: 'cat_pais', txt: 'cat_pais' };
 
-
     this.registrosTabla();
 
   }
 
   openNew() {
-    // alert("openNew");
-    // this.product = {};
     this.submitted = false;
     // this.productDialog = true;
     this.registro = {};
@@ -97,67 +100,116 @@ export class CatalogosComponent implements OnInit {
   }
 
 
+  // Guaradar o editar registro
   saveRegistro() {
     this.submitted = true;
 
     if (this.registro.codigo.trim() && this.registro.descripcion.trim()) {
 
       if (this.registro.id_catalogo) {
+
         // UPDATE
-        this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: 'Registro Modificado!', life: 3000 });
+        this.catalogosService.updateCatalogo(this.registro.id_catalogo, {
+          user: localStorage.getItem('login'),
+          catalogo: this.selectedCatalogo.value,
+          codigo: this.registro.codigo,
+          descripcion: this.registro.descripcion
+        }).subscribe(
+          (data2: any) => {
+            if (data2.success == true) {
+              this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: data2.message, life: 2500 });
+              this.registroDialog = false;
+              this.registrosTabla();
+            } else {
+              this.msgService = true;
+              this.titleMsgError = data2.message;
+
+              setTimeout(() => {
+                this.msgService = false;
+                this.titleMsgError = '';
+              }, 2500);
+            }
+          })
+
+
       } else {
         // ADD
-        this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: 'Registro Adicionado!', life: 3000 });
+        this.catalogosService.insertarCatalogo({
+          user: localStorage.getItem('login'),
+          catalogo: this.selectedCatalogo.value,
+          codigo: this.registro.codigo,
+          descripcion: this.registro.descripcion
+        }).subscribe(
+          (data2: any) => {
+            if (data2.success == true) {
+              this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: data2.message, life: 2500 });
+              this.registroDialog = false;
+              this.registrosTabla();
+            } else {
+              this.msgService = true;
+              this.titleMsgError = data2.message;
+
+              setTimeout(() => {
+                this.msgService = false;
+                this.titleMsgError = '';
+              }, 2500);
+            }
+          })
+
       }
 
-      // this.products = [...this.products];
-      this.registroDialog = false;
-      // this.product = {};
     }
   };
 
 
 
-  show() {
-    this.msgs.push({ severity: 'info', summary: 'Info Message', detail: 'PrimeNG rocks', life: 3000 });
-  }
 
-  // editRegistro(product: Product) {  
+  // Editar registro  
   editRegistro(registro: any) {
     this.registro = { ...registro };
     this.registroDialog = true;
   }
 
-  hide() {
-    this.msgs = [];
+
+  // Eliminar registros
+  deletetRegistro(registro: any) {
+    this.registro = { ...registro };
+    this.dialogEliminar = true
   }
 
 
-  deleteSelectedRegistro(customer: any) {
-    // alert("customer" + customer.id_catalogo);
+  // Confirmar eliminar registros
+  confirmDeleteRegistro() {
+    this.catalogosService.updateEstadoCatalogo(this.registro.id_catalogo, { estado: 'INACTIVO', user: localStorage.getItem('login') }).subscribe(
+      (data2: any) => {
+        this.dialogEliminar = false;
+        this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: 'Registro eliminado.', life: 2500 });
+        this.registrosTabla();
+      })
 
-    this.confirmationService.confirm({
-      message: '¿Estás seguro de que deseas eliminar el registro seleccionado?',
-      header: 'Confirmación',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
+  }
 
-        this.catalogosService.updateEstadoCatalogo(customer.id_catalogo, { estado: 'INACTIVO', user: 1 }).subscribe(
-          (data2: any) => {
-            this.registrosTabla();
-          })
-
-        // Mensaje
-        this.messageService.add({ severity: 'info', summary: 'Successful', detail: 'Registro Eliminado' });
-        setTimeout(() => {
-          this.messageService.clear();
-        }, 2000);
-      },
-      //reject: () => {alert("REJECT");}
+  // exportar a excel 
+  exportExcel() {
+    let date = new Date();
+    let formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+    import("xlsx").then(xlsx => {
+      const worksheet = xlsx.utils.json_to_sheet(this.registros);
+      const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+      this.saveAsExcelFile(excelBuffer,this.selectedCatalogo.value+"_"+ formattedDate);
     });
   }
 
-
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    let EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], {
+      type: EXCEL_TYPE
+    });
+    FileSaver.saveAs(data, fileName + EXCEL_EXTENSION);
+    this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: 'Exportación completada.', life: 2000 });
+  }
 
 
 }

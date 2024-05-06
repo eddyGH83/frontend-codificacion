@@ -24,13 +24,10 @@ export class CorrectorComponent implements OnInit {
   tabla_pb: boolean = false;
 
 
-
   selectedRegistros: any;
 
 
-  msgs: any = [];
-
-
+  
   // registroDialog
   registroDialog: boolean;
 
@@ -42,10 +39,8 @@ export class CorrectorComponent implements OnInit {
   busqueda: any;
 
 
-
-  // catalogos  
-  catalogos: any;
-  selectedCatalogo: any;
+  //dialog eliminar
+  dialogEliminar: boolean = false;
 
   constructor(private correctorService: CorrectorService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
@@ -53,18 +48,7 @@ export class CorrectorComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.catalogos = [
-      { value: 'cat_caeb', txt: 'cat_caeb' },
-      { value: 'cat_cob', txt: 'cat_cob' },
-      { value: 'cat_idioma', txt: 'cat_idioma' },
-      { value: 'cat_npioc', txt: 'cat_npioc' },
-      { value: 'cat_pais', txt: 'cat_pais' },
-      { value: 'cat_municipio', txt: 'cat_municipio' },
-    ];
-    this.selectedCatalogo = { value: 'cat_caeb', txt: 'cat_caeb' };
-
     this.registrosTabla();
-
   }
 
   openNew() {
@@ -95,25 +79,30 @@ export class CorrectorComponent implements OnInit {
   }
 
 
-  show() {
-    this.msgs.push({ severity: 'info', summary: 'Info Message', detail: 'PrimeNG rocks', life: 3000 });
-  }
-
   // editRegistro(product: Product) {  
   editRegistro(registro: any) {
     this.registro = { ...registro };
     this.registroDialog = true;
   }
 
-  hide() {
-    this.msgs = [];
+
+  // Eliminar registros
+  deletetRegistro(registro: any) {
+    this.registro = { ...registro };
+    this.dialogEliminar = true
   }
 
 
-
-  exportarExcel_() {
-    
+  // Confirmar eliminar registros
+  confirmDeleteRegistro() {
+    this.correctorService.updateEstadoDiccCorr(this.registro.id, { estado: 'INACTIVO', user: localStorage.getItem('login') }).subscribe(
+      (data2: any) => {
+        this.dialogEliminar = false;
+        this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: 'Registro eliminado.', life: 2500 });
+        this.registrosTabla();
+      })
   }
+
 
   exportExcel() {
     let date = new Date();

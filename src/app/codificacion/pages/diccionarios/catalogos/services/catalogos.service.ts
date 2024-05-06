@@ -58,35 +58,19 @@ export class CatalogosService {
 
   }
 
-  
-  /**
-   * 
-   * @param id 
-   * @param body 
-   * @returns 
-   */
+
   updateEstadoCatalogo(id: any, body: object): Observable<any> {
     return this.http.put(`${this._apiUrl}/diccionarios/updateEstadoCatalogo/${id}`, body)
   }
 
-   /**
-   * 
-   * @param body 
-   * @returns 
-   */
-   validarRegistros(body: object): Observable<any> {
-    return this.http.post(`${this._apiUrl}/diccionarios/validarRegistros`, body)
-  }
-  
-  /**
-   * 
-   * @param body 
-   * @returns 
-   */
-  insertarCatalogo(body: object): Observable<any> {
-      return this.http.post(`${this._apiUrl}/diccionarios/insertarCatalogo`, body)
-    }
 
+  insertarCatalogo(body: object): Observable<any> {
+    return this.http.post(`${this._apiUrl}/diccionarios/insertarCatalogo`, body)
+  }
+
+  updateCatalogo(id: any, body: object): Observable<any> {
+    return this.http.put(`${this._apiUrl}/diccionarios/updateCatalogo/${id}`, body)
+  }
 
 
   /**
@@ -106,19 +90,12 @@ export class CatalogosService {
     return this.httpClient.post(`${base_url}/diccionarios/devuelveDescripcionPorCodigo`, body)
   } */
 
- 
 
 
 
-  /**
-   * 
-   * @param id 
-   * @param body 
-   * @returns 
-   */
-  /*   updateCatalogo(id: any, body: object): Observable<any> {
-      return this.httpClient.put(`${base_url}/diccionarios/updateCatalogo/${id}`, body)
-    } */
+
+
+
 
 
 }

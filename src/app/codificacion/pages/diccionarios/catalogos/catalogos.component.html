@@ -6,19 +6,22 @@
 
     <label for="username2">Catálogo seleccionado </label>
     <p-dropdown (onChange)="registrosTabla()" [options]="catalogos" [(ngModel)]="selectedCatalogo"
-        placeholder="Seleccione un Catalogo" optionLabel="value"></p-dropdown> <br> <br>
+        placeholder="Seleccione un Catalogo" optionLabel="value"></p-dropdown>
+    <button pButton pRipple type="button" icon="pi pi-refresh" label="Actualizar" class="p-button-warning ml-2"
+        (click)="registrosTabla()" pTooltip="Actualizar registros" tooltipPosition="bottom"></button>
+    <button pButton pRipple type="button" icon="pi pi-file-excel" class="ml-2" label="Exportar"
+        class="p-button-success ml-2" (click)="exportExcel()" pTooltip="Exportar registros a excel (.xlsx)"
+        tooltipPosition="right"></button>
+    <br> <br>
 
     <!-- {{ selectedCatalogo | json }} -->
     <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
 
     <p-table #dt_catalogo [value]="registros" dataKey="id_catalogo" styleClass="p-datatable-customers"
         [showCurrentPageReport]="true"
-        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="10"
-        [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" stateStorage="local" stateKey="statedemo-local">
+        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
+        [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" stateKey="statedemo-local">
         <ng-template pTemplate="header">
-
-
-
 
             <!--  -->
             <tr>
@@ -29,10 +32,8 @@
                 <th pSortableColumn="usumod"> MODIFICADOR <p-sortIcon field="usumod"></p-sortIcon></th>
                 <!-- Bton + Nuevo -->
                 <th><button pButton pRipple type="button" icon="pi pi-plus" label="Nuevo" class="p-button-info"
-                        (click)="openNew()"></button></th>
+                        (click)="openNew()"  pTooltip="Nuevo registro" tooltipPosition="top"></button></th>
             </tr>
-
-
 
 
 
@@ -71,12 +72,9 @@
                 <th>Acciones</th>
             </tr>
 
-
-
         </ng-template>
         <ng-template pTemplate="body" let-reg>
             <tr [pSelectableRow]="reg">
-
 
                 <!--  -->
                 <td>
@@ -101,12 +99,11 @@
                 </td>
                 <td>
 
-
                     <!--  -->
                     <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"
-                        (click)="editRegistro(reg)"></button>
+                        (click)="editRegistro(reg)" pTooltip="Editar registro" tooltipPosition="left"></button>
                     <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"
-                        (click)="deleteSelectedRegistro(reg)"></button>
+                        (click)="deletetRegistro(reg)" pTooltip="Eliminar registro" tooltipPosition="top"></button>
 
                 </td>
 
@@ -163,6 +160,9 @@
                     Este campo es requerido.
                 </small>
             </div>
+
+            <p-message *ngIf="msgService" severity="error" text="{{titleMsgError}}"></p-message>
+
         </ng-template>
         <!--  -->
         <ng-template pTemplate="footer">
@@ -173,6 +173,15 @@
         </ng-template>
     </p-dialog>
 
+
+    <!-- Dialog eliminar -->
+    <p-dialog header="Mensaje:" [(visible)]="dialogEliminar" [breakpoints]="{'960px': '75vw'}" [style]="{width: '30vw'}"
+        [draggable]="false" [resizable]="false">
+        <p>¿Está seguro de <strong style="color: #d32f2f;">eliminar</strong> este registro del catálogo?</p>
+        <ng-template pTemplate="footer">
+            <p-button (click)="dialogEliminar=false" label="No" styleClass="p-button-text"></p-button>
+            <p-button (click)="confirmDeleteRegistro()" label="Sí, eliminar" styleClass="p-button-text"></p-button>
+        </ng-template>
+    </p-dialog>
+
 </div>
-<!-- <p-messages [closable]="false"></p-messages> -->
-<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
