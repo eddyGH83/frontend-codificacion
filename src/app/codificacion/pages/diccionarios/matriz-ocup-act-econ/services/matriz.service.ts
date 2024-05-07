@@ -18,7 +18,7 @@ export interface Registro {
     fecmod?: string;
     descripcion_unida?: string;
     unico?: number;
-  }
+}
 
 @Injectable({
     providedIn: 'root'
@@ -30,18 +30,31 @@ export class MatrizService {
 
     constructor(private http: HttpClient) { }
 
-    /*  getCustomersMedium() {
-        return this.http.get<any>('assets/customers-medium.json')
-            .toPromise()
-            .then(res => <Customer[]>res.data)
-            .then(data => { return data; });
-    } */
 
-    // 
     devuelveMatriz(): Observable<any> {
-        const url = `${this._apiUrl}devuelveMatriz`;
+        const url = `${this._apiUrl}/diccionarios/devuelveMatriz`;
         return this.http.get<any>(url);
     }
 
+
+    /* validarMatriz(body: object): Observable<any> {
+        return this.http.post(`${this._apiUrl}/diccionarios/validarMatriz`, body)
+    } */
+
+
+    insertarMatriz(body: object): Observable<any> {
+        console.log(body)
+        return this.http.post(`${this._apiUrl}/diccionarios/insertarMatriz`, body)
+    }
+
+
+    updateMatriz(id: any, body: object): Observable<any> {
+        return this.http.put(`${this._apiUrl}/diccionarios/updateMatriz/${id}`, body)
+    }
+
+
+    updateEstadoMatriz(id: any, body: object): Observable<any> {
+        return this.http.put(`${this._apiUrl}/diccionarios/updateEstadoMatriz/${id}`, body)
+    }
 
 }

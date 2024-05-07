@@ -41,8 +41,6 @@ export class CatalogosComponent implements OnInit {
   // submitted
   submitted: boolean;
 
-  // Busqueda
-  busqueda: any;
 
 
 

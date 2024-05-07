@@ -56,4 +56,13 @@ export class CorrectorService {
     }
 
 
+    insertCorrector(body: object): Observable<any> {
+        return this.http.post(`${this._apiUrl}/diccionarios/insertCorrector`, body)
+    }
+
+    updateCorrector(id: any, body: object): Observable<any> {
+        return this.http.put(`${this._apiUrl}/diccionarios/updateCorrector/${id}`, body)
+    }
+
+
 }

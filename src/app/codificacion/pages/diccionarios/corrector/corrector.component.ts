@@ -35,15 +35,19 @@ export class CorrectorComponent implements OnInit {
   // submitted
   submitted: boolean;
 
-  // Busqueda
-  busqueda: any;
 
+
+
+  //msgService
+  msgService: boolean = false;
+  titleMsgError: string = '';
 
   //dialog eliminar
   dialogEliminar: boolean = false;
 
-  constructor(private correctorService: CorrectorService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
+ 
 
+  constructor(private correctorService: CorrectorService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
 
   ngOnInit(): void {
@@ -52,10 +56,7 @@ export class CorrectorComponent implements OnInit {
   }
 
   openNew() {
-    // alert("openNew");
-    // this.product = {};
     this.submitted = false;
-    // this.productDialog = true;
     this.registro = {};
     this.registroDialog = true;
   }
@@ -64,7 +65,6 @@ export class CorrectorComponent implements OnInit {
     this.registroDialog = false;
     this.submitted = false;
   }
-
 
   // Tabla detalle
   registrosTabla() {
@@ -78,6 +78,70 @@ export class CorrectorComponent implements OnInit {
       })
   }
 
+   // Guaradar o editar registro
+   saveRegistro() {
+    
+    this.submitted = true;
+
+    if (this.registro.erradas.trim() && this.registro.corregidas.trim()) {
+
+      if (this.registro.id) {
+
+        // UPDATE
+
+        //alert("update");
+        
+        this.correctorService.updateCorrector(this.registro.id, {
+          user: localStorage.getItem('login'),
+          erradas: this.registro.erradas,
+          corregidas: this.registro.corregidas
+        }).subscribe(
+          (data2: any) => {
+            if (data2.success == true) {
+              this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: data2.message, life: 2500 });
+              this.registroDialog = false;
+              this.registrosTabla();
+            } else {
+              this.msgService = true;
+              this.titleMsgError = data2.message;
+
+              setTimeout(() => {
+                this.msgService = false;
+                this.titleMsgError = '';
+              }, 2500);
+            }
+          })
+
+
+      } else {
+        // ADD
+        //alert("add");
+        
+        this.correctorService.insertCorrector({
+          erradas: this.registro.erradas,
+          corregidas: this.registro.corregidas,
+          user: localStorage.getItem('login')
+        }).subscribe(
+          (data2: any) => {
+            if (data2.success == true) {
+              this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: data2.message, life: 2500 });
+              this.registroDialog = false;
+              this.registrosTabla();
+            } else {
+              this.msgService = true;
+              this.titleMsgError = data2.message;
+
+              setTimeout(() => {
+                this.msgService = false;
+                this.titleMsgError = '';
+              }, 2500);
+            }
+          })
+
+      }
+
+    }
+  };
 
   // editRegistro(product: Product) {  
   editRegistro(registro: any) {
@@ -85,13 +149,11 @@ export class CorrectorComponent implements OnInit {
     this.registroDialog = true;
   }
 
-
   // Eliminar registros
   deletetRegistro(registro: any) {
     this.registro = { ...registro };
     this.dialogEliminar = true
   }
-
 
   // Confirmar eliminar registros
   confirmDeleteRegistro() {
@@ -102,7 +164,6 @@ export class CorrectorComponent implements OnInit {
         this.registrosTabla();
       })
   }
-
 
   exportExcel() {
     let date = new Date();
