@@ -20,6 +20,7 @@ export class UsuariosComponent implements OnInit {
     // Progress Bar
     tabla_pb: boolean = false;
 
+
     // registroDialog
     registroDialog: boolean;
     // reAsignacionDialog
@@ -34,25 +35,21 @@ export class UsuariosComponent implements OnInit {
     // submitted
     submitted: boolean;
 
-    // msg
-    nomUsuExistente: boolean = false;
 
     // roles
     roles: any;
     selectedRol: any;
-
+    // jefes de turno
+    jefesTurno: any;
+    selectedJefeTurno: any;
     // supervisores
     supervisores: any;
     selectedSupervisor: any;
-
     // turnos
     turnos: any;
     selectedTurno: any;
 
-    // 
-    catalogos: any;
-    selectedCatalogo: any;
-    selectedCustomer1: any;
+
 
     // botones acciones
     btnEditar: boolean = false;
@@ -62,12 +59,13 @@ export class UsuariosComponent implements OnInit {
 
     // dropdowns
     dropdownRoles: boolean = false;
+    dropdownJTurnos: boolean = false;
     dropdownSupervisores: boolean = false;
     dropdownTurnos: boolean = false;
 
+
     //
     msgUserExit: boolean = false;
-
 
 
     constructor(private productService: ProductoserviciosService, private messageService: MessageService, private confirmationService: ConfirmationService, private usuariosService: UsuariosService) { }
@@ -78,14 +76,46 @@ export class UsuariosComponent implements OnInit {
         this.supervisores = [];
         this.selectedSupervisor = {};
 
+
+
+        // BOTONES ACCIONES
+        // Admin del Sistema, rol_id = 1
+        if (localStorage.getItem("rol_id") == "1") {
+            this.btnEditar = false;
+            this.btnEliminar = false;
+            this.btnResetPass = false;
+        }
+        // Responsable especialista de codificación rol_id = 2
+        if (localStorage.getItem("rol_id") == "2") {
+            this.btnEditar = false;
+            this.btnEliminar = false;
+            this.btnResetPass = false;
+        }
+        // Jefe de Turno rol_id = 3
+        if (localStorage.getItem("rol_id") == "3") {
+            this.btnEditar = false;
+            this.btnEliminar = false;
+            this.btnResetPass = false;
+        }
+        // Supervisor de Codificación rol_id = 4
+        if (localStorage.getItem("rol_id") == "4") {
+            this.btnEditar = false;
+            this.btnEliminar = true;
+            this.btnResetPass = false;
+        }
+
+
+
+
+
+
         this.turnos = [
             { turno: 'MAÑANA', descripcion: 'MAÑANA' },
             { turno: 'TARDE', descripcion: 'TARDE' }
         ];
         this.selectedTurno = { turno: 'MAÑANA', descripcion: 'MAÑANA' };
-        
-        this.registrosTabla();
 
+        this.registrosTabla();
     }
 
 
@@ -114,35 +144,41 @@ export class UsuariosComponent implements OnInit {
             })
     }
 
-    // CUANDO SELECCIONA UN ROL
+
+    // CUANDO SE SELECCIONA UN ROL (ok)
     opcionesRol() {
 
         // Tecnico de Contingencia
         if (this.selectedRol.rol_id == 6) {
+            this.dropdownJTurnos = false;
             this.dropdownSupervisores = false;
-            this.dropdownTurnos = false;
+            this.dropdownTurnos = true;
         }
         // Técnico en Codificación
         if (this.selectedRol.rol_id == 5) {
+            this.dropdownJTurnos = false;
             this.dropdownSupervisores = true;
             this.dropdownTurnos = false;
         }
         // Supervisor de Codificación
         if (this.selectedRol.rol_id == 4) {
+            this.dropdownJTurnos = true;
             this.dropdownSupervisores = false;
-            this.dropdownTurnos = true;
+            this.dropdownTurnos = false;
         }
         // Jefe de Turno
         if (this.selectedRol.rol_id == 3) {
+            this.dropdownJTurnos = false;
             this.dropdownSupervisores = false;
             this.dropdownTurnos = true;
         }
     }
 
 
+
+    // [+ NUEVO]
     openNew() {
-        /* 1 */
-        // Admin del Sistema
+        // Admin del Sistema rol_id = 1
         if (localStorage.getItem("rol_id") == "1") {
             this.roles = [
                 { rol_id: 1, descripcion: 'ADMINISTRADOR DEL SISTEMA' },
@@ -155,7 +191,7 @@ export class UsuariosComponent implements OnInit {
             this.selectedRol = { rol_id: 1, descripcion: 'ADMINISTRADOR DEL SISTEMA' };
         }
 
-        // Esp/Resp de Codificación
+        // Esp/Resp de Codificación rol_id = 2
         if (localStorage.getItem("rol_id") == "2") {
             this.roles = [
                 { rol_id: 3, descripcion: 'JEFE DE TURNO' },
@@ -164,13 +200,9 @@ export class UsuariosComponent implements OnInit {
                 { rol_id: 6, descripcion: 'TÉCNICO DE CONTINGENCIA' }
             ];
             this.selectedRol = { rol_id: 3, descripcion: 'JEFE DE TURNO' };
-            //
-            this.btnEditar = false;
-            this.btnEliminar = false;
-            this.btnResetPass = false;
         }
 
-        // Jefe de Turno
+        // Jefe de Turno rol_id = 3
         if (localStorage.getItem("rol_id") == "3") {
             this.roles = [
                 { rol_id: 4, descripcion: 'SUPERVISOR DE CODIFICACIÓN' },
@@ -178,27 +210,24 @@ export class UsuariosComponent implements OnInit {
                 { rol_id: 6, descripcion: 'TÉCNICO DE CONTINGENCIA' }
             ];
             this.selectedRol = { rol_id: 4, descripcion: 'SUPERVISOR DE CODIFICACIÓN' };
-
-            //
-            this.btnEditar = false;
-            this.btnEliminar = false;
-            this.btnResetPass = false;
         }
 
-        // Supervisor de Codificación
+        // Supervisor de Codificación rol_id = 4
         if (localStorage.getItem("rol_id") == "4") {
             this.roles = [
                 { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' }
             ];
             this.selectedRol = { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' };
-
-            //
-            this.btnEditar = false;
-            this.btnEliminar = true;
-            this.btnResetPass = false;
         }
 
-        /* fin 1 */
+
+
+
+        
+
+
+
+
 
         this.registrosSupervisores();
 
@@ -219,6 +248,11 @@ export class UsuariosComponent implements OnInit {
         // dialog
         this.registroDialog = true;
     }
+
+
+
+
+
 
 
     editRegistro(registro: any) {
@@ -349,11 +383,10 @@ export class UsuariosComponent implements OnInit {
                 alert("UPDATE");
                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
 
-
-
             } else {
 
                 let body = {
+                    id_usuario: Number(localStorage.getItem('id_usuario')),
                     nombres: this.registro.nombres,
                     apellidos: this.registro.apellidos,
                     login: this.registro.login,
@@ -369,7 +402,7 @@ export class UsuariosComponent implements OnInit {
                     body.turno = this.selectedTurno.descripcion;
                 }
 
-                // cod_supvsr
+                // cod_supvsr (los que pueden crear usuarios: 4, 3, 2)
                 if (Number(localStorage.getItem('rol_id')) == 4) {
                     body.cod_supvsr = Number(localStorage.getItem('id_usuario'))
                 }
@@ -377,62 +410,22 @@ export class UsuariosComponent implements OnInit {
                     body.cod_supvsr = this.selectedSupervisor.id_usuario;
                 }
 
-
                 // Verificación y Registro
                 this.usuariosService.registraUsuario(body).subscribe(
                     (data2: any) => {
 
                         if (data2.success) {
-
                             this.registroDialog = false;
                             this.registro = {};
-
-                            // Mensaje
-                            this.messageService.add({ severity: 'success', summary: 'Mensaje: ', detail: data2.message });
-                            setTimeout(() => {
-                                this.messageService.clear();
-                            }, 2000);
-
+                            this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: data2.message, life: 2500 });
                         } else {
-
-                            // Mensaje
                             this.msgUserExit = true;
-                            setTimeout(() => {
-                                this.msgUserExit = false;
-                            }, 5000);
-
+                            setTimeout(() => { this.msgUserExit = false; }, 4000);
                         }
 
                         this.registrosTabla();
 
                     })
-
-
-                //alert("ADD");
-
-
-
-                /* 
-                  registraUsuario(body: any): Observable<any> {
-                    return this.httpClient.post(`${base_url}/usuarios/registraUsuario`, body)
-                  }
-                */
-
-                /* this.usuariosService.registraUsuario({
-                  nombres : this.registro.nombres,
-                  apellidos: this.registro.apellidos,
-                  login: this.registro.login,
-                  telefono: this.registro.telefono,
-                  rol_id: this.miFormulario.value.rol,
-                  usucre: localStorage.getItem('login'),
-                  turno: this.miFormulario.value.rol==5 ? this.miFormulario.value.turnos : null,
-                  cod_supvsr: supervisor,
-                }).subscribe(
-                  (data2: any) => {
-                    //console.log("data2", data2.datos);
-                    this.tabla_pb = false;
-                    this.registros = data2.datos.rows;
-                  }) */
 
                 this.registrosTabla();
             }
@@ -442,9 +435,6 @@ export class UsuariosComponent implements OnInit {
 
         }
 
-        // this.registroDialog = false;
-        //this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
-        //this.MessageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
     };
 
 

@@ -23,6 +23,10 @@ import { ButtonModule } from 'primeng/button';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { AdminSupComponent } from './admin-sup/admin-sup.component';
+import { AdminJturnoComponent } from './admin-jturno/admin-jturno.component';
+import { AdminRespComponent } from './admin-resp/admin-resp.component';
+import { AdminComponent } from './admin/admin.component';
 
 
 
@@ -30,7 +34,11 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 @NgModule({
   declarations: [
   
-    UsuariosComponent
+    UsuariosComponent,
+       AdminSupComponent,
+       AdminJturnoComponent,
+       AdminRespComponent,
+       AdminComponent
   ],
   imports: [
     CommonModule,

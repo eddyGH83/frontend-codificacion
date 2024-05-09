@@ -25,5 +25,11 @@ export class AsignacionService {
     return this.http.get(`${this._apiUrl}/codificacion/codificadores/${id}`)
   }
 
+  preguntasPorDepartamentoCod(): Observable<any> {
+    console.log("----------------");
+    
+    return this.http.get(`${this._apiUrl}/codificacion/preguntasPorDepartamentoCod`)
+  }
+
 
 }

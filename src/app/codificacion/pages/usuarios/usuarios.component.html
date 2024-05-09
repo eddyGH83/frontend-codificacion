@@ -1,5 +1,7 @@
 <div class="grid">
 
+  <p-toast></p-toast>
+
   <div class="col-12">
     <div class="card">
       <p-toolbar>
@@ -30,7 +32,7 @@
     <div class="card">
       <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{ height: '2px' }"></p-progressBar>
 
-      <p-table #dt1 [value]="registros" [(selection)]="selectedCustomer1" dataKey="id_catalogo"
+      <p-table #dt1 [value]="registros" dataKey="id_catalogo"
         styleClass="p-datatable-customers" [showCurrentPageReport]="true"
         currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
         [rowsPerPageOptions]="[5, 10, 25, 50]" [paginator]="true" stateStorage="local" stateKey="statedemo-local">
@@ -166,16 +168,25 @@
               <h6>unico: {{registro.unico}}</h6> -->
 
           <div class="field">
-            <label for="nombres">Nombre</label>
-            <input type="text" pInputText id="nombres" [(ngModel)]="registro.nombres" required autofocus />
+            <label for="nombres" style="color: rgb(2, 136, 209);">Nombre</label>
+            <span class="p-input-icon-left">
+              <i class="pi pi-user"></i>
+              <input type="text" pInputText id="nombres" [(ngModel)]="registro.nombres" required autofocus
+                autocomplete="off" />
+            </span>
             <small class="p-invalid" *ngIf="submitted && !registro.nombres" style="color: #d32f2f">
               <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
               Este campo es requerido.</small>
           </div>
 
+
           <div class="field">
-            <label for="apellidos">Apellidos</label>
-            <input type="text" pInputText id="apellidos" [(ngModel)]="registro.apellidos" required autofocus />
+            <label for="apellidos" style="color: rgb(2, 136, 209);">Apellidos</label>
+            <span class="p-input-icon-left">
+              <i class="pi pi-user"></i>
+              <input type="text" pInputText id="apellidos" [(ngModel)]="registro.apellidos" autocomplete="off" />
+            </span>
+            <!-- <input type="text" pInputText id="apellidos" [(ngModel)]="registro.apellidos" /> -->
             <small class="p-invalid" *ngIf="submitted && !registro.apellidos" style="color: #d32f2f">
               <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
               Este campo es requerido.</small>
@@ -184,36 +195,45 @@
 
 
           <div class="field" *ngIf="dropdownRoles">
-            <label>Rol</label>
+            <label style="color: rgb(2, 136, 209);">Rol</label>
             <!-- {{selectedRol | json}} -->
             <p-dropdown (onChange)="opcionesRol()" [options]="roles" [(ngModel)]="selectedRol"
               placeholder="Seleccione un Rol" optionLabel="descripcion"></p-dropdown>
           </div>
 
+          <div class="field" *ngIf="dropdownJTurnos">
+            <label style="color: rgb(2, 136, 209);">Jefe de Turno</label>
+            <!-- {{selectedTurno | json}} -->
+            <p-dropdown [options]="jefesTurno" [(ngModel)]="selectedJefeTurno" placeholder="Seleccione un Supervisor"
+              optionLabel="nombres"></p-dropdown>
+          </div>
+
+
+
           <div class="field" *ngIf="dropdownSupervisores">
-            <label>Supervisor</label>
+            <label style="color: rgb(2, 136, 209);">Supervisor</label>
             <!-- {{selectedTurno | json}} -->
             <p-dropdown [options]="supervisores" [(ngModel)]="selectedSupervisor" placeholder="Seleccione un Supervisor"
               optionLabel="nombres"></p-dropdown>
           </div>
 
           <div class="field" *ngIf="dropdownTurnos">
-            <label>Turno</label>
+            <label style="color: rgb(2, 136, 209);">Turno</label>
             <!-- {{selectedTurno | json}} -->
             <p-dropdown [options]="turnos" [(ngModel)]="selectedTurno" placeholder="Seleccione un Turno"
               optionLabel="descripcion"></p-dropdown>
           </div>
 
           <div class="field">
-            <label for="login">Nombre de usuario</label>
-            <input type="text" pInputText id="login" [(ngModel)]="registro.login" required autofocus />
+            <label for="login" style="color: rgb(2, 136, 209);">Nombre de usuario</label>
+            <span class="p-input-icon-left">
+              <i class="pi pi-star"></i>
+              <input type="text" pInputText id="login" [(ngModel)]="registro.login" autocomplete="off" />
+            </span>
+            <!-- <input type="text" pInputText id="login" [(ngModel)]="registro.login" required autofocus />   pi-star -->
             <small class="p-invalid" *ngIf="submitted && !registro.login" style="color: #d32f2f">
               <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
               Este campo es requerido.</small>
-
-            <small class="p-invalid ml-2" *ngIf="nomUsuExistente" style="color: #b38c00">
-              <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
-              Este nombre de usuario ya existe.</small>
 
           </div>
 
@@ -222,8 +242,14 @@
 
 
           <div class="field">
-            <label for="telefono">Celular</label>
-            <input type="number" pInputText id="telefono" [(ngModel)]="registro.telefono" required autofocus />
+            <label for="telefono" style="color: rgb(2, 136, 209);">Celular</label>
+            <span class="p-input-icon-left">
+              <i class="pi pi-mobile"></i>
+              <input type="number" pInputText id="telefono" [(ngModel)]="registro.telefono" autocomplete="off" />
+            </span>
+
+
+            <!-- <input type="number" pInputText id="telefono" [(ngModel)]="registro.telefono" required autofocus /> -->
             <!-- <small class="p-invalid" *ngIf="submitted && !registro.telefono" style="color: #d32f2f">
               <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
               Este campo es requerido.</small> -->
@@ -285,7 +311,7 @@
 
 
   <!-- Reset contraseña -->
-  <p-dialog header="Resetear Contraseña" [(visible)]="resetDialog" [style]="{width: '20vw'}">
+  <p-dialog header="Resetear Contraseña" [(visible)]="resetDialog" [style]="{width: '30vw'}">
     <ng-template pTemplate="content">
       <p> <i class="pi pi-key" style="font-size: 2rem; color: #f0be19;"></i> ¿Está seguro de <strong>RESETEAR</strong>
         la contraseña de: <strong>{{registro.nombres | uppercase }} {{registro.apellidos |
@@ -340,7 +366,7 @@
 
 </div>
 
-<p-messages [closable]="false"></p-messages>
+<!-- <p-messages [closable]="false"></p-messages> -->
 <!-- <p-messages [closable]="false"></p-messages> -->
 <!-- <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog> -->
 

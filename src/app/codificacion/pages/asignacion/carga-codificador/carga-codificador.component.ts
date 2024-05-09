@@ -37,6 +37,8 @@ export class CargaCodificadorComponent implements OnInit {
     ] */
 
 
+    this.registrosTabla();
+
     this.departamentos = [
       { label: 'Chuquisaca', value: 'CHUQUISACA' },
       { label: 'La Paz', value: 'LA PAZ' },
@@ -50,85 +52,19 @@ export class CargaCodificadorComponent implements OnInit {
     ];
     this.selectedDepartamento = { label: 'La Paz', value: 'LA PAZ' };
 
-    this.registros = [
-      {
-        depto: "LA PAZ",
-        nroPreg: "20",
-        variable: "Alguna persona que vivía con usted(es) en este hogar, ¿actualmente vive en otro país?",
-        totalCarga: 45
-
-      },
-      {
-        depto: "LA PAZ",
-        nroPreg: "32",
-        variable: "¿Se autoidentifica con alguna nación, pueblo indígena originario campesino o afroboliviano?",
-        totalCarga: 23
-      },
-      {
-        depto: "LA PAZ",
-        nroPreg: "33",
-        variable: "Idioma 1",
-        totalCarga: 0
-      },
-      {
-        depto: "LA PAZ",
-        nroPreg: "33",
-        variable: "Idioma 2",
-        totalCarga: 21
-      },
-      {
-        depto: "LA PAZ",
-        nroPreg: "33",
-        variable: "Idioma 3",
-        totalCarga: 92
-      },
-      {
-        depto: "LA PAZ",
-        nroPreg: "34",
-        variable: "¿Cuál es el primer idioma o lengua en el que aprendió a hablar en su niñez?",
-        totalCarga: 12
-      },
-      {
-        depto: "LA PAZ",
-        nroPreg: "35",
-        variable: "¿Dónde nació?",
-        totalCarga: 0
-      },
-      {
-        depto: "LA PAZ",
-        nroPreg: "36",
-        variable: "¿Dónde vive habitualmente?",
-        totalCarga: 27
-      },
-      {
-        depto: "LA PAZ",
-        nroPreg: "37",
-        variable: "¿Dónde vivía el año 2019?",
-        totalCarga: 12
-      },
-      {
-        depto: "LA PAZ",
-        nroPreg: "48",
-        variable: "Las últimas 4 semanas:",
-        totalCarga: 42
-      },
-      {
-        depto: "LA PAZ",
-        nroPreg: "49-51",
-        variable: "Ocupación - Actividad Económica",
-        totalCarga: 62
-      },
-      {
-        depto: "LA PAZ",
-        nroPreg: "52",
-        variable: "Principalmente, el lugar donde trabaja está ubicado:",
-        totalCarga: 82
-      },
-    ]
-
+    this.registros = []
   }
 
   registrosTabla() {
+    
+    this.asignacionService.preguntasPorDepartamentoCod().subscribe(res => {
+      //alert("sdfsdf");
+      //this.registros = res.datos.rows;
+       this.registros = res;
+      
+      //console.log(res.datos.rows)
+    });
+
   }
 
   seleccionarTodo() {

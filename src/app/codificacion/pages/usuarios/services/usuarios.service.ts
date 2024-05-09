@@ -28,12 +28,15 @@ export class UsuariosService {
   }
 
 
+  modificaUsuario(id: any, body: object): Observable<any> {
+    //console.log(`llega ${id}`)
+    return this.http.put(`${this._apiUrl}/usuarios/modificaUsuario/${id}`, body)
+  }
+
   
   devuelveSupervisores(): Observable<any> {
     return this.http.get(`${this._apiUrl}/usuarios/devuelveSupervisores`)
   }
-
-  
 
 
   resetPassUsuario(id: any): Observable<any> {
