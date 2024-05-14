@@ -54,7 +54,9 @@ export class AuthComponent implements OnInit {
           if (data2.success == true) {
 
             localStorage.setItem('nombres', data2.data.nombres)
-            localStorage.setItem('apellidos', data2.data.apellidos)
+            //localStorage.setItem('apellidos', data2.data.apellidos)
+            localStorage.setItem('pr_apellido', data2.data.pr_apellido)
+            localStorage.setItem('sg_apellido', data2.data.sg_apellido)
             localStorage.setItem('rol_id', data2.data.rol_id)
             localStorage.setItem('login', data2.data.login)
             localStorage.setItem('rol_descripcion', data2.data.rol_descripcion)

@@ -32,4 +32,9 @@ export class AsignacionService {
   }
 
 
+  updateAsignado(id: any, body: object[]): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/updateAsignado/${id}`, body)
+  }
+
+
 }

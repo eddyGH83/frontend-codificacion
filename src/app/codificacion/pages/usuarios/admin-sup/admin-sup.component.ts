@@ -29,7 +29,7 @@ export class AdminSupComponent implements OnInit {
   resetDialog: boolean;
   // eliminarDialog
   eliminarDialog: boolean;
-  //reasignarDialog
+  // reasignarDialog
   reasignarDialog: boolean;
 
   // submitted
@@ -125,9 +125,6 @@ export class AdminSupComponent implements OnInit {
   }
 
 
-
-
-
   // [+ NUEVO]
   openNew() {
     this.registrosSupervisores();
@@ -146,7 +143,6 @@ export class AdminSupComponent implements OnInit {
     ];
     this.selectedRol = { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' };
 
-
   }
 
 
@@ -158,7 +154,7 @@ export class AdminSupComponent implements OnInit {
 
     this.dropdownRoles = true;
     this.dropdownSupervisores = true;
-  
+
     this.selectedRol = { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' };
     this.selectedSupervisor = this.supervisores.find((x: any) => x.id_usuario == registro.cod_supvsr);
 
@@ -221,18 +217,17 @@ export class AdminSupComponent implements OnInit {
 
     this.submitted = true;
 
-    if (this.registro.nombres.trim() && this.registro.apellidos.trim() && this.registro.login.trim()) {
-
+    if (this.registro.nombres.trim() && this.registro.pr_apellido.trim() && this.registro.sg_apellido.trim()) {
 
       if (this.registro.id_usuario) {
-       // alert("UPDATE");
+        // alert("UPDATE");
 
         let body = {
           id_usuario: Number(localStorage.getItem('id_usuario')),
           nombres: this.registro.nombres,
           apellidos: this.registro.apellidos,
           login: this.registro.login,
-          telefono: this.registro.telefono !== '' ? this.registro.telefono : '',
+          telefono: this.registro.telefono !== '' ? this.registro.telefono : '00',
           rol_id: this.selectedRol.rol_id,
           usucre: localStorage.getItem('login'),
           turno: null,// this.selectedRol.rol_id == 3 || this.selectedRol.rol_id == 4 ||this.selectedRol.rol_id == 6 ? this.selectedTurno.descripcion : null,
@@ -240,7 +235,7 @@ export class AdminSupComponent implements OnInit {
         }
 
         // Verificación y Registro
-        this.usuariosService.modificaUsuario( this.registro.id_usuario,body).subscribe(
+        this.usuariosService.modificaUsuario(this.registro.id_usuario, body).subscribe(
           (data2: any) => {
 
             if (data2.success) {
@@ -256,22 +251,22 @@ export class AdminSupComponent implements OnInit {
 
           })
 
-
-
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
 
       } else {
-        // alert("INSERT");
+        alert("INSERT");
 
         let body = {
           id_usuario: Number(localStorage.getItem('id_usuario')),
           nombres: this.registro.nombres,
-          apellidos: this.registro.apellidos,
-          login: this.registro.login,
-          telefono: this.registro.telefono !== '' ? this.registro.telefono : '',
+          pr_apellido: this.registro.pr_apellido,
+          sg_apellido: this.registro.sg_apellido,
+          //apellidos: this.registro.apellidos,
+          //login: this.registro.login,
+          telefono: this.registro.telefono !== undefined ? this.registro.telefono : '',
           rol_id: this.selectedRol.rol_id,
           usucre: localStorage.getItem('login'),
-          turno: null,// this.selectedRol.rol_id == 3 || this.selectedRol.rol_id == 4 ||this.selectedRol.rol_id == 6 ? this.selectedTurno.descripcion : null,
+          //turno: null,// this.selectedRol.rol_id == 3 || this.selectedRol.rol_id == 4 ||this.selectedRol.rol_id == 6 ? this.selectedTurno.descripcion : null,
           cod_supvsr: Number(localStorage.getItem('id_usuario'))
         }
 

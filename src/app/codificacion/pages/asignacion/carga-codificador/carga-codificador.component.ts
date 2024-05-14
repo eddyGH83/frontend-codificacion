@@ -27,6 +27,9 @@ export class CargaCodificadorComponent implements OnInit {
   checkedTodo: boolean = false;
   checked: boolean = false;
 
+  //
+  array_asg: Array<any> = [];
+
   constructor(private asignacionService: AsignacionService) { }
 
   ngOnInit(): void {
@@ -35,7 +38,6 @@ export class CargaCodificadorComponent implements OnInit {
       {check:false, nombre: "Juan Perez", cantidad: 2},
       {check:false, nombre: "Carla Ponce", cantidad: 2},
     ] */
-
 
     this.registrosTabla();
 
@@ -50,18 +52,19 @@ export class CargaCodificadorComponent implements OnInit {
       { label: 'Beni', value: 'BENI' },
       { label: 'Pando', value: 'PANDO' },
     ];
+
     this.selectedDepartamento = { label: 'La Paz', value: 'LA PAZ' };
 
     this.registros = []
   }
 
   registrosTabla() {
-    
+
     this.asignacionService.preguntasPorDepartamentoCod().subscribe(res => {
       //alert("sdfsdf");
-      //this.registros = res.datos.rows;
-       this.registros = res;
-      
+      this.registros = res.datos.rows;
+      //this.registros = res;
+
       //console.log(res.datos.rows)
     });
 
@@ -83,7 +86,7 @@ export class CargaCodificadorComponent implements OnInit {
 
   asignarCarga(registro: any) {
 
-    this.listarCodificadores();
+    this.codificadores();
 
     this.registro = { ...registro };
 
@@ -91,7 +94,7 @@ export class CargaCodificadorComponent implements OnInit {
 
   }
 
-  listarCodificadores() {
+  codificadores() {
     //console.log("sdfsfsdfs");
 
     this.asignacionService.codificadores(localStorage.getItem('id_usuario')).subscribe(res => {
@@ -120,6 +123,46 @@ export class CargaCodificadorComponent implements OnInit {
        console.log(this.codificacionService.id)
    }) */
     });
-
   }
+
+
+  guardar() {
+    
+    for (let j in this.usuarios) {
+      if (this.usuarios[j].total > 0) {
+        const body = {
+          departamento: 'DEPTO AQUI', //this.codificacionService.depto,
+          count: this.usuarios[j].total,
+          estado: 'ASIGNADO',
+          usucre: this.usuarios[j].login,
+          area: 'AREA AQUI' // this.codificacionService.area1
+        }
+        this.array_asg.push(body)
+      }
+    }
+    console.table(this.usuarios);
+
+
+    this.asignacionService.updateAsignado('49-51',this.array_asg).subscribe(res => {
+      alert("Asignado correctamente");
+      this.asignacionDialog = false;
+      this.registrosTabla();
+    });
+  }
+
+
+
+   /*  this.asignacionService.updateAsignado('49-51', this.array_asg).subscribe( res => {
+       this.asignacionDialog = false;
+       this.registrosTabla();       
+     }, error=> console.error(error)) */
+
+ 
+
+
+
+
+
+
+
 }

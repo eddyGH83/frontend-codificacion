@@ -12,8 +12,20 @@
                 </div>
 
                 <div class="p-toolbar-group-left flex flex-wrap">
+                    <!-- buscar -->
+                    <span class="p-input-icon-left p-input-icon-right mr-2">
+                        <i class="pi pi-user"></i>
+                        <input type="text" pInputText placeholder="Buscar" pTooltip="Buscar Usuario"
+                            tooltipPosition="left" />
+                        <i class="pi pi-search"></i>
+                    </span>
 
 
+                    <!-- actualizar -->
+                    <button pButton type="button" label="Actualizar" icon="pi pi-refresh" class="p-button-warning mr-2"
+                        (click)="registrosTabla()" pTooltip="Actualizar registros" tooltipPosition="bottom"></button>
+
+                    <!-- nuevo -->
                     <button pButton type="button" label="Nuevo" icon="pi pi-plus" class="mr-2" (click)="openNew()"
                         pTooltip="Adicionar Usuario" tooltipPosition="bottom"></button>
                     <!--  <button pButton type="button" label="Open" icon="pi pi-folder-open" class="p-button-secondary mr-2"></button>
@@ -114,7 +126,7 @@
                         </td>
                         <td>
                             <span class="p-column-title">USUARIO</span>
-                            <span class="image-text">{{ reg.login }}</span>
+                            <span class="image-text"><p-chip label="{{ reg.login }}" styleClass="mr-2"></p-chip> </span>
                         </td>
                         <td>
                             <span class="p-column-title">TURNO</span>
@@ -127,11 +139,11 @@
                         <td>
                             <button [disabled]="btnEditar" pButton type="button" icon="pi pi-pencil"
                                 class="p-button-rounded p-button-info mr-2" (click)="editRegistro(reg)"
-                                pTooltip="Editar Usuario" tooltipPosition="left"></button>
+                                pTooltip="Editar registro" tooltipPosition="left"></button>
 
                             <button [disabled]="btnEliminar" pButton type="button" icon="pi pi-trash"
                                 class="p-button-rounded p-button-danger  mr-2" (click)="deleteSelectedRegistro(reg)"
-                                pTooltip="Eliminar Usuario" tooltipPosition="top"></button>
+                                pTooltip="Eliminar registro" tooltipPosition="top"></button>
 
                             <button [disabled]="btnResetPass" pButton type="button" icon="pi pi-key"
                                 class="p-button-rounded p-button-warning mr-2" pTooltip="Resetear Contraseña"
@@ -150,16 +162,13 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="paginatorleft">
-                    <p-button (click)="registrosTabla()" type="button" icon="pi pi-refresh" styleClass="p-button-text"
-                        label="Actualizar" pTooltip="Actualizar Tabla" tooltipPosition="right"></p-button>
+                    <!-- <p-button (click)="registrosTabla()" type="button" icon="pi pi-refresh" styleClass="p-button-text"
+                        label="Actualizar" pTooltip="Actualizar Tabla" tooltipPosition="right"></p-button> -->
                 </ng-template>
                 <ng-template pTemplate="paginatorright">
                     <!-- <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button> -->
                 </ng-template>
             </p-table>
-
-
-
 
 
 

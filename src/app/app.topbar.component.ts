@@ -10,15 +10,15 @@ import { Router } from '@angular/router';
 })
 export class AppTopBarComponent {
 
-    usuario: string = localStorage.getItem('login');
-    nombres: string = localStorage.getItem('nombres') + ' ' + localStorage.getItem('apellidos');
-    rol: string = localStorage.getItem('rol_descripcion');
+  usuario: string = localStorage.getItem('login');
+  nombres: string = localStorage.getItem('nombres') + ' ' + localStorage.getItem('pr_apellido') + ' ' + localStorage.getItem('sg_apellido');
+  rol: string = localStorage.getItem('rol_descripcion');
 
-    constructor(public app: AppComponent, public appMain: AppMainComponent, private router: Router) {}
+  constructor(public app: AppComponent, public appMain: AppMainComponent, private router: Router) { }
 
-    cerrarSesion() {
-      localStorage.removeItem('token_cod');
-      this.router.navigate(['/']);
-    }
+  cerrarSesion() {
+    localStorage.removeItem('token_cod');
+    this.router.navigate(['/']);
+  }
 
 }

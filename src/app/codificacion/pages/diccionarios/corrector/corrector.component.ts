@@ -14,7 +14,6 @@ import * as FileSaver from 'file-saver';
 export class CorrectorComponent implements OnInit {
 
 
-
   // registros
   registros: any;
   registro: any;
@@ -25,7 +24,6 @@ export class CorrectorComponent implements OnInit {
 
 
   selectedRegistros: any;
-
 
   
   // registroDialog

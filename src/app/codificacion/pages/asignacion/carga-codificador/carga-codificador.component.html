@@ -15,7 +15,6 @@
     <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
 
 
-
     <p-table #dt1 [value]="registros" dataKey="id_catalogo" styleClass="p-datatable-customers"
         [showCurrentPageReport]="true"
         currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" stateStorage="local"
@@ -38,28 +37,28 @@
                 <td>
                     <span class="p-column-title">VARIABLE</span>
                     <span class="image-text"><strong>Pregunta </strong>
-                        <p-chip label="{{reg.nroPreg}}" styleClass="mr-2"></p-chip>
+                        <p-chip label="{{reg.nro_preg}}" styleClass="mr-2"></p-chip>
                         {{reg.variable}}</span>
                 </td>
                 <td>
                     <span class="p-column-title">TOTAL</span>
-                    <span class="image-text"> {{reg.totalCarga}}</span>
+                    <span class="image-text"> {{reg.total_carga}}</span>
                 </td>
                 <td>
                     <button (click)="asignarCarga(reg)" pButton pRipple label="Asignar" icon="pi pi-user-plus"
-                        class="p-button-info mr-3" *ngIf="reg.totalCarga>0 || reg.totalAut>0" pTooltip="Asignar carga"
+                        class="p-button-info mr-3" *ngIf="reg.total_carga>0 || reg.totalAut>0" pTooltip="Asignar carga"
                         tooltipPosition="left"></button>
 
                     <button pButton pRipple label="Asignar" icon="pi pi-user-plus"
-                        class="p-button-outlined p-button-secondary mr-3" disabled *ngIf="reg.totalCarga==0 "></button>
+                        class="p-button-outlined p-button-secondary mr-3" disabled *ngIf="reg.total_carga==0 "></button>
 
 
                     <button pButton pRipple label="Reasignar" icon="pi pi-user-minus" class="p-button-danger mr-2"
-                        *ngIf="reg.totalCarga>0 || reg.totalAut>0" pTooltip="Reasignar carga"
+                        *ngIf="reg.total_carga>0 || reg.totalAut>0" pTooltip="Reasignar carga"
                         placeholder="Right"></button>
 
                     <button pButton pRipple label="Reasignar" icon="pi pi-user-minus"
-                        class="p-button-outlined p-button-secondary mr-2" disabled *ngIf="reg.totalCarga==0 "></button>
+                        class="p-button-outlined p-button-secondary mr-2" disabled *ngIf="reg.total_carga==0 "></button>
                 </td>
             </tr>
         </ng-template>
@@ -78,17 +77,14 @@
     <p-dialog [(visible)]="asignacionDialog" [style]="{width: '550px'}" header="Asignación de carga" [modal]="true"
         styleClass="p-fluid">
 
-
-
         <span class="image-text"><strong>Pregunta </strong>
-            <p-chip label="{{registro?.nroPreg}}" styleClass="mr-2"></p-chip>
+            <p-chip label="{{registro?.nro_preg}}" styleClass="mr-2"></p-chip>
             {{registro?.variable}}</span>
         <br> <br>
         <!-- {{registro | json}}  -->
 
-        <p-message *ngIf="registro?.nroPreg == '49-51'" severity="info"
+        <p-message *ngIf="registro?.nro_preg == '49-51'" severity="info"
             text="Asignación simultanea, cada asignación cuenta el doble" styleClass="mr-2"></p-message> <br>
-
 
         <ng-template pTemplate="content">
 
@@ -117,7 +113,7 @@
             <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text "
                 (click)="asignacionDialog=false"></button>
             <button pButton pRipple label="Asignar" icon="pi pi-check" class="p-button-text mr-2"
-                (click)="saveRegistro()"></button>
+                (click)="guardar()"></button>
         </ng-template>
 
     </p-dialog>

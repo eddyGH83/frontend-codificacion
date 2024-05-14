@@ -27,6 +27,7 @@ import { AdminSupComponent } from './admin-sup/admin-sup.component';
 import { AdminJturnoComponent } from './admin-jturno/admin-jturno.component';
 import { AdminRespComponent } from './admin-resp/admin-resp.component';
 import { AdminComponent } from './admin/admin.component';
+import { ChipModule } from 'primeng/chip';
 
 
 
@@ -52,6 +53,7 @@ import { AdminComponent } from './admin/admin.component';
     ProgressBarModule,
     TooltipModule,
     ButtonModule,
+    ChipModule,
 
     MessagesModule,
     MessageModule,

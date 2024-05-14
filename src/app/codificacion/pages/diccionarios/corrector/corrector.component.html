@@ -20,7 +20,7 @@
         <ng-template pTemplate="header">
             <!--  -->
             <tr>
-                <th pSortableColumn="id">CÓDIGO<p-sortIcon field="id"></p-sortIcon></th>
+                <!-- <th pSortableColumn="id">CÓDIGO<p-sortIcon field="id"></p-sortIcon></th> -->
                 <th pSortableColumn="erradas">ERRADAS <p-sortIcon field="erradas"></p-sortIcon></th>
                 <th pSortableColumn="corregidas"> CORREGIDAS <p-sortIcon field="corregidas"></p-sortIcon></th>
                 <th pSortableColumn="usucre"> CREADOR <p-sortIcon field="usucre"></p-sortIcon></th>
@@ -31,11 +31,11 @@
             </tr>
             <!--  -->
             <tr>
-                <th>
+                <!-- <th>
                     <input pInputText type="text" (input)="dt_corrector.filter($event.target.value, 'id', 'contains')"
                         [value]="dt_corrector.filters['id']?.value" placeholder="Buscar por código"
                         class="p-column-filter">
-                </th>
+                </th> -->
                 <th>
                     <input pInputText type="text"
                         (input)="dt_corrector.filter($event.target.value, 'erradas', 'contains')"
@@ -66,12 +66,11 @@
         <ng-template pTemplate="body" let-reg>
             <tr [pSelectableRow]="reg">
 
-
                 <!--  -->
-                <td>
+               <!--  <td>
                     <span class="p-column-title">CÓDIGO</span>
                     <span class="image-text">{{reg.id}}</span>
-                </td>
+                </td> -->
                 <td>
                     <span class="p-column-title">ERRADAS</span>
                     <span class="image-text">{{reg.erradas}}</span>

@@ -9,7 +9,9 @@ export class PerfilComponent implements OnInit {
 
     // Datos Usuario
     nombres: any;
-    apellidos: any;
+    //apellidos: any;
+    pr_apellido: any;
+    sg_apellido: any;
     rol_id: any;
     login: any;
     rol_codigo: any;
@@ -48,7 +50,9 @@ export class PerfilComponent implements OnInit {
             (data2: any) => {
                 console.log("dsfsdfsdfsf");
                 this.nombres = data2.datos.rows[0].nombres;
-                this.apellidos = data2.datos.rows[0].apellidos;
+                //this.apellidos = data2.datos.rows[0].apellidos;
+                this.pr_apellido = data2.datos.rows[0].pr_apellido;
+                this.sg_apellido = data2.datos.rows[0].sg_apellido;
                 this.rol_id = data2.datos.rows[0].rol_id;
                 this.login = data2.datos.rows[0].login;
                 this.rol_codigo = data2.datos.rows[0].rol_codigo;
