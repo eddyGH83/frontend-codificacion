@@ -29,10 +29,11 @@
                 <th pSortableColumn="descripcion">DESCRIPCIÓN <p-sortIcon field="descripcion"></p-sortIcon></th>
                 <th pSortableColumn="feccre"> FECHA CREACIÓN <p-sortIcon field="feccre"></p-sortIcon></th>
                 <th pSortableColumn="usucre"> CREADOR <p-sortIcon field="usucre"></p-sortIcon></th>
+                <th pSortableColumn="fecmod"> FECHA MODIFICACIÓN <p-sortIcon field="fecmod"></p-sortIcon></th>
                 <th pSortableColumn="usumod"> MODIFICADOR <p-sortIcon field="usumod"></p-sortIcon></th>
                 <!-- Bton + Nuevo -->
                 <th><button pButton pRipple type="button" icon="pi pi-plus" label="Nuevo" class="p-button-info"
-                        (click)="openNew()"  pTooltip="Nuevo registro" tooltipPosition="top"></button></th>
+                        (click)="openNew()" pTooltip="Nuevo registro" tooltipPosition="top"></button></th>
             </tr>
 
 
@@ -54,22 +55,28 @@
                 <th>
                     <input pInputText type="text"
                         (input)="dt_catalogo.filter($event.target.value, 'feccre', 'contains')"
-                        [value]="dt_catalogo.filters['feccre']?.value" placeholder="Buscar por fecha de creación"
+                        [value]="dt_catalogo.filters['feccre']?.value" placeholder="Buscar por fecha"
                         class="p-column-filter">
                 </th>
                 <th>
                     <input pInputText type="text"
                         (input)="dt_catalogo.filter($event.target.value, 'usucre', 'contains')"
-                        [value]="dt_catalogo.filters['usucre']?.value" placeholder="Buscar por usuario creador"
+                        [value]="dt_catalogo.filters['usucre']?.value" placeholder="Buscar por usu. creador"
+                        class="p-column-filter">
+                </th>
+                <th>
+                    <input pInputText type="text"
+                        (input)="dt_catalogo.filter($event.target.value, 'fecmod', 'contains')"
+                        [value]="dt_catalogo.filters['fecmod']?.value" placeholder="Buscar por fecha"
                         class="p-column-filter">
                 </th>
                 <th>
                     <input pInputText type="text"
                         (input)="dt_catalogo.filter($event.target.value, 'usumod', 'contains')"
-                        [value]="dt_catalogo.filters['usumod']?.value" placeholder="Buscar por usuario modificador"
+                        [value]="dt_catalogo.filters['usumod']?.value" placeholder="Buscar por usu. modificador"
                         class="p-column-filter">
                 </th>
-                <th>Acciones</th>
+                <th>ACCIONES</th>
             </tr>
 
         </ng-template>
@@ -87,11 +94,15 @@
                 </td>
                 <td>
                     <span class="p-column-title">FECHA CREACIÓN</span>
-                    <span class="image-text">{{reg.feccre | date:'dd-MM-yyyy'}}</span>
+                    <span class="image-text">{{reg.feccre }}</span>
                 </td>
                 <td>
                     <span class="p-column-title">CREADOR</span>
                     <span class="image-text">{{reg.usucre }}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">FECHA MODIFICACIÓN </span>
+                    <span class="image-text">{{reg.fecmod}}</span>
                 </td>
                 <td>
                     <span class="p-column-title">MODIFICADOR</span>
@@ -104,7 +115,6 @@
                         (click)="editRegistro(reg)" pTooltip="Editar registro" tooltipPosition="left"></button>
                     <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"
                         (click)="deletetRegistro(reg)" pTooltip="Eliminar registro" tooltipPosition="top"></button>
-
                 </td>
 
             </tr>
@@ -116,8 +126,8 @@
         </ng-template>
         <ng-template pTemplate="paginatorleft">
 
-            <p-button (click)="registrosTabla()" type="button" icon="pi pi-refresh" styleClass="p-button-text"
-                label="Actualizar"></p-button>
+            <!-- <p-button (click)="registrosTabla()" type="button" icon="pi pi-refresh" styleClass="p-button-text"
+                label="Actualizar"></p-button> -->
         </ng-template>
         <ng-template pTemplate="paginatorright">
         </ng-template>

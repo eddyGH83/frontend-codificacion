@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { UsuariosService } from '../services/usuarios.service';
-
+import {Message} from 'primeng/api';
 
 
 @Component({
@@ -11,7 +11,8 @@ import { UsuariosService } from '../services/usuarios.service';
 })
 export class AdminSupComponent implements OnInit {
 
-
+  msgs: Message[] = [];
+  position: string;
 
   // registros
   registros: any;
@@ -23,15 +24,13 @@ export class AdminSupComponent implements OnInit {
 
   // registroDialog
   registroDialog: boolean;
-  // reAsignacionDialog
-  reAsignacionDialog: boolean;
+
   // resetDialog
   resetDialog: boolean;
   // eliminarDialog
   eliminarDialog: boolean;
   // reasignarDialog
   reasignarDialog: boolean;
-
   // submitted
   submitted: boolean;
 
@@ -39,22 +38,9 @@ export class AdminSupComponent implements OnInit {
   // roles
   roles: any;
   selectedRol: any;
-  // jefes de turno
-  jefesTurno: any;
-  selectedJefeTurno: any;
-  // supervisores
-  supervisores: any;
-  selectedSupervisor: any;
-  // turnos
-  turnos: any;
-  selectedTurno: any;
 
 
 
-  // botones acciones
-  btnEditar: boolean = false;
-  btnEliminar: boolean = false;
-  btnResetPass: boolean = false;
 
 
   // dropdowns
@@ -73,18 +59,6 @@ export class AdminSupComponent implements OnInit {
   ngOnInit(): void {
 
 
-    // BOTONES ACCIONES  (ok)
-    this.btnEditar = false;
-    this.btnEliminar = true;
-    this.btnResetPass = false;
-
-
-    // TURNOS (ok)
-    this.turnos = [
-      { turno: 'MAÑANA', descripcion: 'MAÑANA' },
-      { turno: 'TARDE', descripcion: 'TARDE' }
-    ];
-    this.selectedTurno = { turno: 'MAÑANA', descripcion: 'MAÑANA' };
 
 
     //  ROLES (ok)
@@ -109,33 +83,16 @@ export class AdminSupComponent implements OnInit {
       })
   }
 
-  registrosSupervisores() {
-    this.tabla_pb = true;
-    this.usuariosService.devuelveSupervisores().subscribe(
-      (data2: any) => {
-        console.log(data2.datos.rows);
-        this.tabla_pb = false;
-        this.supervisores = data2.datos.rows;
-
-        this.selectedSupervisor = {
-          id_usuario: this.supervisores[0].id_usuario,
-          nombres: this.supervisores[0].nombres
-        };
-      })
-  }
-
 
   // [+ NUEVO]
   openNew() {
-    this.registrosSupervisores();
+    //this.registrosSupervisores();
     this.submitted = false;
     this.registro = {};
     this.registroDialog = true;
 
-
     this.dropdownRoles = true;
     this.dropdownSupervisores = false;
-
 
     // 
     this.roles = [
@@ -147,16 +104,16 @@ export class AdminSupComponent implements OnInit {
 
 
   editRegistro(registro: any) {
-    this.registrosSupervisores();
+    //this.registrosSupervisores();
 
     this.registro = { ...registro };
     this.registroDialog = true;
 
     this.dropdownRoles = true;
-    this.dropdownSupervisores = true;
+    //this.dropdownSupervisores = true;
 
     this.selectedRol = { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' };
-    this.selectedSupervisor = this.supervisores.find((x: any) => x.id_usuario == registro.cod_supvsr);
+    //this.selectedSupervisor = this.supervisores.find((x: any) => x.id_usuario == registro.cod_supvsr);
 
 
   }
@@ -207,60 +164,52 @@ export class AdminSupComponent implements OnInit {
   }
 
 
-  reasignarRegistro(registro: any) {
-    this.registro = { ...registro };
-    this.reasignarDialog = true;
-  }
-
-
   saveRegistro() {
 
     this.submitted = true;
 
-    if (this.registro.nombres.trim() && this.registro.pr_apellido.trim() && this.registro.sg_apellido.trim()) {
+    if (this.registro.nombres.trim() && this.registro.pr_apellido.trim()) {
 
       if (this.registro.id_usuario) {
-        // alert("UPDATE");
 
+        // alert("UPDATE");        
         let body = {
-          id_usuario: Number(localStorage.getItem('id_usuario')),
+          id_usuario: Number(localStorage.getItem('id_usuario')),  // Por este id se va a modificar al usuario
+
           nombres: this.registro.nombres,
-          apellidos: this.registro.apellidos,
-          login: this.registro.login,
+          pr_apellido: this.registro.pr_apellido,
+          sg_apellido: this.registro.sg_apellido !== undefined ? this.registro.sg_apellido : '',    //this.registro.sg_apellido,
+          //apellidos: this.registro.apellidos,
+          //login: this.registro.login,
           telefono: this.registro.telefono !== '' ? this.registro.telefono : '00',
           rol_id: this.selectedRol.rol_id,
-          usucre: localStorage.getItem('login'),
-          turno: null,// this.selectedRol.rol_id == 3 || this.selectedRol.rol_id == 4 ||this.selectedRol.rol_id == 6 ? this.selectedTurno.descripcion : null,
-          cod_supvsr: Number(localStorage.getItem('id_usuario'))
+          usumod: localStorage.getItem('login'),
+          //turno: null,// this.selectedRol.rol_id == 3 || this.selectedRol.rol_id == 4 ||this.selectedRol.rol_id == 6 ? this.selectedTurno.descripcion : null,
+          //cod_supvsr: Number(localStorage.getItem('id_usuario'))
         }
 
         // Verificación y Registro
         this.usuariosService.modificaUsuario(this.registro.id_usuario, body).subscribe(
           (data2: any) => {
 
-            if (data2.success) {
-              this.registroDialog = false;
-              this.registro = {};
-              this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: data2.message, life: 2500 });
-            } else {
-              this.msgUserExit = true;
-              setTimeout(() => { this.msgUserExit = false; }, 4000);
-            }
+            this.registroDialog = false;
+            this.registro = {};
+            this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: data2.message, life: 2500 });
 
             this.registrosTabla();
 
           })
 
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
+        //this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
 
       } else {
-        alert("INSERT");
+        // alert("INSERT");
 
         let body = {
           id_usuario: Number(localStorage.getItem('id_usuario')),
           nombres: this.registro.nombres,
           pr_apellido: this.registro.pr_apellido,
-          sg_apellido: this.registro.sg_apellido,
+          sg_apellido: this.registro.sg_apellido !== undefined ? this.registro.sg_apellido : '',    //this.registro.sg_apellido,
           //apellidos: this.registro.apellidos,
           //login: this.registro.login,
           telefono: this.registro.telefono !== undefined ? this.registro.telefono : '',
@@ -296,6 +245,25 @@ export class AdminSupComponent implements OnInit {
     }
 
   };
+
+
+
+  confirmPosition(position: string) {
+    this.position = position;
+
+    this.confirmationService.confirm({
+        message: 'Do you want to delete this record?',
+        header: 'Delete Confirmation',
+        icon: 'pi pi-info-circle',
+        accept: () => {
+            //this.msgs = [{severity:'info', summary:'Confirmed', detail:'Record deleted'}];
+        },
+        reject: () => {
+            //this.msgs = [{severity:'info', summary:'Rejected', detail:'You have rejected'}];
+        },
+        key: "positionDialog"
+    });
+}
 
 
 

@@ -27,7 +27,6 @@ export class CatalogosComponent implements OnInit {
   tabla_pb: boolean = false;
 
 
-
   // selectedRegistros: any;
 
 

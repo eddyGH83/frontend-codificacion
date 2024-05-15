@@ -116,7 +116,7 @@ export class MatrizOcupActEconComponent implements OnInit {
 
         // UPDATE
 
-        alert("update");
+        //alert("update");
 
         this.matrizService.updateMatriz(this.registro.id_cod_matriz, {
           codigo_ocupacion: this.registro.codigo_ocupacion,
@@ -143,7 +143,7 @@ export class MatrizOcupActEconComponent implements OnInit {
 
       } else {
         // ADD
-        alert("add");
+        //alert("add");
 
 
 

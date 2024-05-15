@@ -49,7 +49,6 @@ export class CorrectorComponent implements OnInit {
 
 
   ngOnInit(): void {
-
     this.registrosTabla();
   }
 

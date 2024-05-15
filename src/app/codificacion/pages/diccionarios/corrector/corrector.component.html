@@ -23,7 +23,9 @@
                 <!-- <th pSortableColumn="id">CÓDIGO<p-sortIcon field="id"></p-sortIcon></th> -->
                 <th pSortableColumn="erradas">ERRADAS <p-sortIcon field="erradas"></p-sortIcon></th>
                 <th pSortableColumn="corregidas"> CORREGIDAS <p-sortIcon field="corregidas"></p-sortIcon></th>
+                <th pSortableColumn="feccre"> FECHA DE CREACIÓN <p-sortIcon field="feccre"></p-sortIcon></th>
                 <th pSortableColumn="usucre"> CREADOR <p-sortIcon field="usucre"></p-sortIcon></th>
+                <th pSortableColumn="femod"> FECHA DE MODIFICACIÓN<p-sortIcon field="femod"></p-sortIcon></th>
                 <th pSortableColumn="usumod"> MODIFICADOR <p-sortIcon field="usumod"></p-sortIcon></th>
                 <!-- Bton + Nuevo -->
                 <th><button pButton pRipple type="button" icon="pi pi-plus" label="Nuevo" class="p-button-info"
@@ -31,11 +33,6 @@
             </tr>
             <!--  -->
             <tr>
-                <!-- <th>
-                    <input pInputText type="text" (input)="dt_corrector.filter($event.target.value, 'id', 'contains')"
-                        [value]="dt_corrector.filters['id']?.value" placeholder="Buscar por código"
-                        class="p-column-filter">
-                </th> -->
                 <th>
                     <input pInputText type="text"
                         (input)="dt_corrector.filter($event.target.value, 'erradas', 'contains')"
@@ -50,8 +47,20 @@
                 </th>
                 <th>
                     <input pInputText type="text"
+                        (input)="dt_corrector.filter($event.target.value, 'feccre', 'contains')"
+                        [value]="dt_corrector.filters['feccre']?.value" placeholder="Buscar el fecha"
+                        class="p-column-filter">
+                </th>
+                <th>
+                    <input pInputText type="text"
                         (input)="dt_corrector.filter($event.target.value, 'usucre', 'contains')"
                         [value]="dt_corrector.filters['usucre']?.value" placeholder="Buscar el creador"
+                        class="p-column-filter">
+                </th>
+                <th>
+                    <input pInputText type="text"
+                        (input)="dt_corrector.filter($event.target.value, 'femod', 'contains')"
+                        [value]="dt_corrector.filters['femod']?.value" placeholder="Buscar el fecha"
                         class="p-column-filter">
                 </th>
                 <th>
@@ -60,17 +69,12 @@
                         [value]="dt_corrector.filters['usumod']?.value" placeholder="Buscar por el modificador"
                         class="p-column-filter">
                 </th>
-                <th>Acciones</th>
+                <th>ACCIONES</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-reg>
             <tr [pSelectableRow]="reg">
 
-                <!--  -->
-               <!--  <td>
-                    <span class="p-column-title">CÓDIGO</span>
-                    <span class="image-text">{{reg.id}}</span>
-                </td> -->
                 <td>
                     <span class="p-column-title">ERRADAS</span>
                     <span class="image-text">{{reg.erradas}}</span>
@@ -80,15 +84,21 @@
                     <span class="image-text">{{reg.corregidas}}</span>
                 </td>
                 <td>
+                    <span class="p-column-title">FECHA DE CREACIÓN</span>
+                    <span class="image-text">{{reg.feccre }}</span>
+                </td>
+                <td>
                     <span class="p-column-title">CREADOR</span>
                     <span class="image-text">{{reg.usucre }}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">FECHA DE MODIFICACIÓN</span>
+                    <span class="image-text">{{reg.femod }}</span>
                 </td>
                 <td>
                     <span class="p-column-title">MODIFICADOR</span>
                     <span class="image-text">{{reg.usumod }}</span>
                 </td>
-
-
                 <!--  -->
                 <td>
                     <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"
@@ -96,7 +106,6 @@
                     <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"
                         (click)="deletetRegistro(reg)" pTooltip="Eliminar registro" tooltipPosition="top"></button>
                 </td>
-
 
             </tr>
         </ng-template>

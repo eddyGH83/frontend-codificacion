@@ -20,7 +20,6 @@
                         <i class="pi pi-search"></i>
                     </span>
 
-
                     <!-- actualizar -->
                     <button pButton type="button" label="Actualizar" icon="pi pi-refresh" class="p-button-warning mr-2"
                         (click)="registrosTabla()" pTooltip="Actualizar registros" tooltipPosition="bottom"></button>
@@ -28,13 +27,7 @@
                     <!-- nuevo -->
                     <button pButton type="button" label="Nuevo" icon="pi pi-plus" class="mr-2" (click)="openNew()"
                         pTooltip="Adicionar Usuario" tooltipPosition="bottom"></button>
-                    <!--  <button pButton type="button" label="Open" icon="pi pi-folder-open" class="p-button-secondary mr-2"></button>
-    
-                            <i class="pi pi-bars p-toolbar-separator"></i>
-    
-                            <button pButton type="button" icon="pi pi-check" class="p-button-success mr-2"></button>
-                            <button pButton type="button" icon="pi pi-trash" class="p-button-warning mr-2"></button>
-                            <button pButton type="button" icon="pi pi-print" class="p-button-danger"></button> -->
+
                 </div>
             </p-toolbar>
         </div>
@@ -52,7 +45,7 @@
                 <ng-template pTemplate="header">
                     <!--  -->
                     <tr>
-                        <!-- <th pSortableColumn="catalogo">CATALOGO <p-sortIcon field="catalogo"></p-sortIcon></th> -->
+
                         <th pSortableColumn="rol_codigo">
                             ROL<p-sortIcon field="rol_codigo"></p-sortIcon>
                         </th>
@@ -72,38 +65,9 @@
                             TURNO<p-sortIcon field="turno"></p-sortIcon>
                         </th>
                         <th>ACCIONES</th>
-                        <!-- Bton + Nuevo -->
-                        <!-- <th><button pButton pRipple type="button" icon="pi pi-plus" label="Nuevo" class="p-button-info"
-                            (click)="openNew()"></button></th> -->
+
                     </tr>
-                    <!--  -->
-                    <!-- <tr>
-                    <th>
-                        <input pInputText type="text" (input)="dt1.filter($event.target.value, 'codigo', 'contains')"
-                            [value]="dt1.filters['codigo']?.value" placeholder="Buscar por codigo" class="p-column-filter">
-                    </th>
-                    <th>
-                        <input pInputText type="text" (input)="dt1.filter($event.target.value, 'descripcion', 'contains')"
-                            [value]="dt1.filters['descripcion']?.value" placeholder="Buscar por descripcion"
-                            class="p-column-filter">
-                    </th>
-                    <th>
-                        <input pInputText type="text" (input)="dt1.filter($event.target.value, 'feccre', 'contains')"
-                            [value]="dt1.filters['feccre']?.value" placeholder="Buscar por fecha de creación"
-                            class="p-column-filter">
-                    </th>
-                    <th>
-                        <input pInputText type="text" (input)="dt1.filter($event.target.value, 'usucre', 'contains')"
-                            [value]="dt1.filters['usucre']?.value" placeholder="Buscar por usuario creador"
-                            class="p-column-filter">
-                    </th>
-                    <th>
-                        <input pInputText type="text" (input)="dt1.filter($event.target.value, 'usumod', 'contains')"
-                            [value]="dt1.filters['usumod']?.value" placeholder="Buscar por usuario modificador"
-                            class="p-column-filter">
-                    </th>
-                    <th>Acciones</th>
-                </tr> -->
+
                 </ng-template>
                 <ng-template pTemplate="body" let-reg>
                     <tr [pSelectableRow]="reg">
@@ -132,26 +96,28 @@
                             <span class="p-column-title">TURNO</span>
                             <span class="image-text">{{ reg.turno }}</span>
                         </td>
-                        <!-- <td>
-                        <span class="p-column-title">MODIFICADOR</span>
-                        <span class="image-text">{{reg.usumod }}</span>
-                    </td> -->
+
                         <td>
-                            <button [disabled]="btnEditar" pButton type="button" icon="pi pi-pencil"
+                            <button pButton type="button" icon="pi pi-pencil"
                                 class="p-button-rounded p-button-info mr-2" (click)="editRegistro(reg)"
-                                pTooltip="Editar registro" tooltipPosition="left"></button>
+                                pTooltip="Editar registro" tooltipPosition="left">
+                            </button>
 
-                            <button [disabled]="btnEliminar" pButton type="button" icon="pi pi-trash"
+                            <!-- <button  *ngIf="!btnEliminar" pButton type="button" icon="pi pi-trash"
                                 class="p-button-rounded p-button-danger  mr-2" (click)="deleteSelectedRegistro(reg)"
-                                pTooltip="Eliminar registro" tooltipPosition="top"></button>
+                                pTooltip="Eliminar registro" tooltipPosition="top"></button> -->
 
-                            <button [disabled]="btnResetPass" pButton type="button" icon="pi pi-key"
+                            <button pButton type="button" icon="pi pi-key"
                                 class="p-button-rounded p-button-warning mr-2" pTooltip="Resetear Contraseña"
-                                (click)="resetPassRegistro(reg)" tooltipPosition="top"></button>
+                                (click)="confirm()" tooltipPosition="top">
+                            </button>
 
-                            <!-- <button [disabled]="btnResetPass" pButton type="button" icon="pi pi-arrow-right"
-                  class="p-button-rounded p-button-secondary" (click)="reasignarRegistro(reg)"
-                  pTooltip="Reasignar Usuario" tooltipPosition="right"></button> -->
+                            <p-button (click)="confirmPosition('top')" icon="pi pi-arrow-down" label="Top" styleClass="p-button-warning"></p-button>
+
+                            <p-button (click)="confirmPosition('topright')" icon="pi pi-arrow-down" label="TopRight" styleClass="p-button-warning"></p-button>
+                            
+                            <p-button (click)="confirmPosition('bottomleft')" icon="pi pi-arrow-up" label="BottomLeft" styleClass="p-button-warning"></p-button>
+
                             <!-- {{customer.id_catalogo | json}} -->
                         </td>
                     </tr>
@@ -176,18 +142,6 @@
             <p-dialog [(visible)]="registroDialog" [style]="{ width: '350px' }" header="Datos del Usuario"
                 [modal]="true" styleClass="p-fluid">
                 <ng-template pTemplate="content">
-                    <!-- <h6>id_catalogo: {{ registro.nombres }}</h6>
-              <h6>id_catalogo: {{ registro.apellidos }}</h6> -->
-                    <!-- <h6>id_catalogo: {{ registro.descripcion }}</h6> -->
-                    <!-- <h6>catalogo: {{registro.catalogo}}</h6>
-    
-                <h6>estado: {{registro.estado}}</h6>
-                <h6>usucre: {{registro.usucre}}</h6>
-                <h6>feccre: {{registro.feccre}}</h6>
-                <h6>usumod: {{registro.usumod}}</h6>
-                <h6>fecmod: {{registro.fecmod}}</h6>
-                <h6>descripcion_unida: {{registro.descripcion_unida}}</h6>
-                <h6>unico: {{registro.unico}}</h6> -->
 
                     <div class="field">
                         <label for="nombres" style="color: rgb(2, 136, 209);">Nombre</label>
@@ -222,9 +176,6 @@
                             <input type="text" pInputText id="sg_apellido" [(ngModel)]="registro.sg_apellido"
                                 autocomplete="off" />
                         </span>
-                        <small class="p-invalid" *ngIf="submitted && !registro.sg_apellido" style="color: #d32f2f">
-                            <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
-                            Este campo es requerido.</small>
                     </div>
 
 
@@ -243,18 +194,6 @@
                             placeholder="Seleccione un Supervisor" optionLabel="nombres"></p-dropdown>
                     </div>
 
-
-                    <!-- <div class="field">
-              <label for="login" style="color: rgb(2, 136, 209);">Nombre de usuario</label>
-              <span class="p-input-icon-left">
-                <i class="pi pi-star"></i>
-                <input type="text" pInputText id="login" [(ngModel)]="registro.login" autocomplete="off" />
-              </span>
-              <small class="p-invalid" *ngIf="submitted && !registro.login" style="color: #d32f2f">
-                <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
-                Este campo es requerido.</small>  
-            </div> -->
-
                     <p-message *ngIf="msgUserExit" severity="error"
                         text="El nombre de usuario ingresado ya existe."></p-message>
                     <br *ngIf="msgUserExit">
@@ -268,11 +207,6 @@
                                 autocomplete="off" />
                         </span>
 
-
-                        <!-- <input type="number" pInputText id="telefono" [(ngModel)]="registro.telefono" required autofocus /> -->
-                        <!-- <small class="p-invalid" *ngIf="submitted && !registro.telefono" style="color: #d32f2f">
-                <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
-                Este campo es requerido.</small> -->
                     </div>
 
 
@@ -286,45 +220,6 @@
                         (click)="saveRegistro()"></button>
                 </ng-template>
             </p-dialog>
-
-
-            <!-- Dialog REASIGNACION -->
-            <p-dialog [(visible)]="reAsignacionDialog" [style]="{ width: '350px' }" header="Reasignar Usuario"
-                [modal]="true" styleClass="p-fluid">
-                <ng-template pTemplate="content">
-
-                    Nombre: <br>
-                    Rol: <br>
-                    Usuario: <br>
-
-                    <div class="field">
-                        <label>Supervisor:</label>
-                        <p-dropdown [options]="supervisores" [(ngModel)]="selectedSupervisores"
-                            placeholder="Seleccione un Rol" optionLabel="nombre"></p-dropdown>
-                    </div> <br><br><br>
-
-
-                    <div class="field" *ngIf="selectedRol.value=='5'">
-                        <label>Turno</label>
-                        <!-- {{selectedTurno | json}} -->
-                        <p-dropdown [options]="turnos" [(ngModel)]="selectedTurno" placeholder="Seleccione un Turno"
-                            optionLabel="value"></p-dropdown>
-                    </div>
-
-
-                </ng-template>
-
-                <!--  -->
-                <ng-template pTemplate="footer">
-                    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
-                        (click)="hideDialog()"></button>
-                    <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text mr-2"
-                        (click)="saveRegistro()"></button>
-                </ng-template>
-            </p-dialog>
-
-
-
 
         </div>
     </div>
@@ -367,11 +262,6 @@
     <p-dialog header="Reasignar Usuario" [(visible)]="reasignarDialog" [style]="{width: '30vw'}" [modal]="true">
         <ng-template pTemplate="content">
 
-            <!-- <p> <i class="pi pi-trash" style="font-size: 2rem; color: #d32f2f;"></i> ¿Está seguro que quiere <strong
-            style="color: #d32f2f;">Reasignar</strong> a:
-          <strong>{{registro.nombres | uppercase }} {{registro.apellidos | uppercase }}</strong>?
-        </p> -->
-
             <div class="field">
                 <label class="mr-2">Seleccionar Supervisor: </label>
                 <p-dropdown [options]="supervisores" [(ngModel)]="selectedSupervisores" placeholder="Seleccione un Rol"
@@ -390,14 +280,16 @@
 
 </div>
 
-<!-- <p-messages [closable]="false"></p-messages> -->
-<!-- <p-messages [closable]="false"></p-messages> -->
-<!-- <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog> -->
+
+<!-- <p-confirmDialog #cd [style]="{width: '50vw'}">
+    <ng-template pTemplate="header">
+        <h3>Header Content</h3>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()"></button>
+        <button type="button" pButton icon="pi pi-check" label="Yes" (click)="cd.accept()"></button>
+    </ng-template>
+</p-confirmDialog> -->
 
 
-<!-- 
-  
-          <p-dialog [(visible)]="registroDialog" [style]="{ width: '350px' }" header="Datos del Usuario" [modal]="true"
-          styleClass="p-fluid">
-          <ng-template pTemplate="content">
-   -->
+<p-confirmDialog [style]="{width: '50vw'}" key="positionDialog" [position]="position" [baseZIndex]="10000"></p-confirmDialog>

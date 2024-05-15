@@ -72,31 +72,39 @@
 
             <div>
 
-                <label for="email1" class="block text-900 font-medium mb-2">Usuario</label>
-                <input type="text" pInputText class="w-full mb-3" [(ngModel)]="usuario.usu">
-                <small class="p-invalid" *ngIf="!validUsu" style="color: #d32f2f;">
-                    <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
-                    Ingrese su nombre de <strong>USUARIO</strong></small>
+                <form autocomplete="off" [formGroup]="miFormulario">
+
+                    <label for="email1" class="block text-900 font-medium mb-2">Usuario</label>
+                    <input formControlName="usu" type="text" pInputText class="w-full mb-3" (keyup.enter)="verificarUsuario()">
+                    <small class="p-invalid" *ngIf="campoNoValido('usu')" style="color: #d32f2f;">
+                        <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
+                        Ingrese su nombre de <strong>USUARIO</strong></small>
 
 
 
-                <label for="password1" class="block text-900 font-medium mb-2">Contraseña</label>
-                <input type="password" pInputText class="w-full mb-3" [(ngModel)]="usuario.pass">
-                <small class="p-invalid" *ngIf="!validPass" style="color: #d32f2f;">
-                    <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
-                    Ingrese su <strong>CONTRASEÑA</strong></small>
+                    <label for="password1" class="block text-900 font-medium mb-2">Contraseña</label>
+                    <input formControlName="pass" type="password" pInputText class="w-full mb-3" (keyup.enter)="verificarUsuario()">
+                    <small class="p-invalid" *ngIf="campoNoValido('pass')" style="color: #d32f2f;">
+                        <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
+                        Ingrese su <strong>CONTRASEÑA</strong></small>
 
-                <div class="flex align-items-center justify-content-between mb-6">
 
-                    <br><br>
 
-                    <a pTooltip="Comuniquese con el Admin. de Sistemas"
-                        class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">¿Has olvidado tu
-                        contraseña?</a>
-                </div>
+                    <div class="flex align-items-center justify-content-between mb-6">
+                        <br><br>
+                        <a pTooltip="Comuniquese con el Admin. de Sistemas"
+                            class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">¿Has olvidado
+                            tu
+                            contraseña?</a>
+                    </div>
 
-                <button (click)="verificarUsuario()" pButton pRipple label="Ingresar" icon="pi pi-user"
-                    class="w-full p-button-info p-3"></button>
+
+
+                    <button [disabled]="miFormulario.invalid" (click)="verificarUsuario()" pButton pRipple label="Ingresar" icon="pi pi-user"
+                        class="w-full p-button-info p-3">
+                    </button>
+                </form>
+
             </div>
         </div>
 
@@ -110,4 +118,3 @@
 
 
 <!-- REACTIVO -->
-
