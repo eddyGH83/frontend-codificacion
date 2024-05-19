@@ -27,6 +27,7 @@ export class CatalogosComponent implements OnInit {
   tabla_pb: boolean = false;
 
 
+
   // selectedRegistros: any;
 
 
@@ -159,8 +160,6 @@ export class CatalogosComponent implements OnInit {
   };
 
 
-
-
   // Editar registro  
   editRegistro(registro: any) {
     this.registro = { ...registro };
@@ -171,20 +170,24 @@ export class CatalogosComponent implements OnInit {
   // Eliminar registros
   deletetRegistro(registro: any) {
     this.registro = { ...registro };
-    this.dialogEliminar = true
+
+    this.confirmationService.confirm({
+      message: '¿Está seguro de <strong>eliminar</strong> este registro del catálogo?',
+      header: 'Confirmación',
+      icon: 'pi pi-trash',
+      accept: () => {
+
+        this.catalogosService.updateEstadoCatalogo(this.registro.id_catalogo, { estado: 'INACTIVO', user: localStorage.getItem('login') }).subscribe(
+          (data2: any) => {
+            this.dialogEliminar = false;
+            this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: 'Registro eliminado.', life: 2500 });
+            this.registrosTabla();
+          })
+      },
+    });
+
   }
 
-
-  // Confirmar eliminar registros
-  confirmDeleteRegistro() {
-    this.catalogosService.updateEstadoCatalogo(this.registro.id_catalogo, { estado: 'INACTIVO', user: localStorage.getItem('login') }).subscribe(
-      (data2: any) => {
-        this.dialogEliminar = false;
-        this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: 'Registro eliminado.', life: 2500 });
-        this.registrosTabla();
-      })
-
-  }
 
   // exportar a excel 
   exportExcel() {
@@ -194,7 +197,7 @@ export class CatalogosComponent implements OnInit {
       const worksheet = xlsx.utils.json_to_sheet(this.registros);
       const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
       const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-      this.saveAsExcelFile(excelBuffer,this.selectedCatalogo.value+"_"+ formattedDate);
+      this.saveAsExcelFile(excelBuffer, this.selectedCatalogo.value + "_" + formattedDate);
     });
   }
 

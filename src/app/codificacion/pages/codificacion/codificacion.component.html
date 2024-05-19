@@ -1,11 +1,9 @@
 <div class="card">
 
-    <h4>Variables para codificación</h4> <!-- Variables para supervisión -->
+    <h4>Variables para codificación</h4>
     <hr>
     <button pButton pRipple label="Actualizar" icon="pi pi-refresh" class="p-button-warning ml-2"
-        pTooltip="Actualizar registros" placeholder="Right"></button> <br> <br>
-
-
+        pTooltip="Actualizar carga" placeholder="Right" (click)="registrosTabla()"></button> <br> <br>
 
     <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
 
@@ -20,29 +18,37 @@
         </ng-template>
         <ng-template pTemplate="body" let-reg>
             <tr [pSelectableRow]="reg">
+
                 <td>
                     <span class="p-column-title">VARIABLE</span>
                     <span class="image-text"><strong>Pregunta </strong>
-                        <p-chip label="{{reg.nroPreg}}" styleClass="mr-2"></p-chip>
+                        <p-chip label="{{reg.nro_preg}}" styleClass="mr-2 ml-2 custom-chip"></p-chip>
                         {{reg.variable}}</span>
                 </td>
+
                 <td>
                     <span class="p-column-title">TOTAL</span>
-                    <span class="image-text">{{reg.total}}</span>
+                    <span class="image-text">{{reg.total_carga}}</span>
                 </td>
 
                 <td>
-                    <button routerLink="/codificacion/codificacion-simple" pButton pRipple label="Codificar"
-                        icon="pi pi-check" class="p-button-info mr-2" *ngIf="reg.total>0 && reg.nroPreg!=='49-51'"
-                        pTooltip="Codificar" tooltipPosition="right"></button>
+                    <span class="p-column-title">ACCIONES</span>
+                    
+                    <button pButton pRipple label="Codificar"
+                        icon="pi pi-check" class="p-button-info mr-2" *ngIf="reg.total_carga>0 && reg.nro_preg!=='49-51'"
+                        pTooltip="Codificar" tooltipPosition="left" (click)="codificacionSimple(reg)">
+                    </button>
 
-                    <button routerLink="/codificacion/codificacion-doble" pButton pRipple label="Codificar"
-                        icon="pi pi-check" class="p-button-primary mr-2" *ngIf="reg.total>0 && reg.nroPreg=='49-51'"
-                        pTooltip="Codificar" tooltipPosition="right"></button>
+                    <button pButton pRipple label="Codificar"
+                        icon="pi pi-check" class="p-button-primary mr-2" *ngIf="reg.total_carga>0 && reg.nro_preg=='49-51'"
+                        pTooltip="Codificar" tooltipPosition="left" (click)="codificacionDoble(reg)">
+                    </button>
 
                     <button pButton pRipple label="Codificar" icon="pi pi-check"
-                        class="p-button-outlined p-button-secondary mr-2" disabled *ngIf="reg.total==0"></button>
+                        class="p-button-outlined p-button-secondary mr-2" disabled *ngIf="reg.total_carga==0">
+                    </button>
                 </td>
+                
             </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
@@ -51,8 +57,8 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="paginatorleft">
-            <p-button type="button" icon="pi pi-refresh" styleClass="p-button-text" label="Actualizar"
-                pTooltip="Click para actualizar la tabla"></p-button>
+            <!-- <p-button type="button" icon="pi pi-refresh" styleClass="p-button-text" label="Actualizar"
+                pTooltip="Click para actualizar la tabla"></p-button> -->
         </ng-template>
         <ng-template pTemplate="paginatorright">
         </ng-template>

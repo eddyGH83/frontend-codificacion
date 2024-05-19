@@ -25,7 +25,7 @@ export class CorrectorComponent implements OnInit {
 
   selectedRegistros: any;
 
-  
+
   // registroDialog
   registroDialog: boolean;
 
@@ -43,7 +43,7 @@ export class CorrectorComponent implements OnInit {
   //dialog eliminar
   dialogEliminar: boolean = false;
 
- 
+
 
   constructor(private correctorService: CorrectorService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
@@ -75,9 +75,9 @@ export class CorrectorComponent implements OnInit {
       })
   }
 
-   // Guaradar o editar registro
-   saveRegistro() {
-    
+  // Guaradar o editar registro
+  saveRegistro() {
+
     this.submitted = true;
 
     if (this.registro.erradas.trim() && this.registro.corregidas.trim()) {
@@ -87,7 +87,7 @@ export class CorrectorComponent implements OnInit {
         // UPDATE
 
         //alert("update");
-        
+
         this.correctorService.updateCorrector(this.registro.id, {
           user: localStorage.getItem('login'),
           erradas: this.registro.erradas,
@@ -113,7 +113,7 @@ export class CorrectorComponent implements OnInit {
       } else {
         // ADD
         //alert("add");
-        
+
         this.correctorService.insertCorrector({
           erradas: this.registro.erradas,
           corregidas: this.registro.corregidas,
@@ -146,21 +146,28 @@ export class CorrectorComponent implements OnInit {
     this.registroDialog = true;
   }
 
+
   // Eliminar registros
   deletetRegistro(registro: any) {
     this.registro = { ...registro };
-    this.dialogEliminar = true
+
+    this.confirmationService.confirm({
+      message: '¿Está seguro de <strong>eliminar</strong> este registro del Diccionario Corrector?',
+      header: 'Confirmación',
+      icon: 'pi pi-trash',
+      accept: () => {
+
+        this.correctorService.updateEstadoDiccCorr(this.registro.id, { estado: 'INACTIVO', user: localStorage.getItem('login') }).subscribe(
+          (data2: any) => {
+            this.dialogEliminar = false;
+            this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: 'Registro eliminado.', life: 2500 });
+            this.registrosTabla();
+          })
+      },
+    });
+
   }
 
-  // Confirmar eliminar registros
-  confirmDeleteRegistro() {
-    this.correctorService.updateEstadoDiccCorr(this.registro.id, { estado: 'INACTIVO', user: localStorage.getItem('login') }).subscribe(
-      (data2: any) => {
-        this.dialogEliminar = false;
-        this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: 'Registro eliminado.', life: 2500 });
-        this.registrosTabla();
-      })
-  }
 
   exportExcel() {
     let date = new Date();

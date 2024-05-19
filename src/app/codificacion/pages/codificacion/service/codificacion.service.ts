@@ -15,7 +15,7 @@ export class CodificacionService {
 
 
 
-  
+
 
   ////CATALOGOS
   /**
@@ -39,22 +39,28 @@ export class CodificacionService {
     return this.http.put(`${this._apiUrl}/diccionarios/updateEstadoCatalogo/${id}`, body)
   }
 
-   /**
-   * 
-   * @param body 
-   * @returns 
-   */
-   validarRegistros(body: object): Observable<any> {
+  /**
+  * 
+  * @param body 
+  * @returns 
+  */
+  validarRegistros(body: object): Observable<any> {
     return this.http.post(`${this._apiUrl}/diccionarios/validarRegistros`, body)
   }
-  
+
   /**
    * 
    * @param body 
    * @returns 
    */
   insertarCatalogo(body: object): Observable<any> {
-      return this.http.post(`${this._apiUrl}/diccionarios/insertarCatalogo`, body)
-    }
+    return this.http.post(`${this._apiUrl}/diccionarios/insertarCatalogo`, body)
+  }
+
+
+  // CODIFICACION
+  devuelvePreguntasCodificado(body: any): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/devuelvePreguntasCodificado`, body)
+  }
 
 }

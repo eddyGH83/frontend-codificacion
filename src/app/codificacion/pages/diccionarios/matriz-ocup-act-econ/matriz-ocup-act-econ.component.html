@@ -15,7 +15,7 @@
 
     <p-table #dt_matriz [value]="registros" dataKey="id" [showCurrentPageReport]="true"
         currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
-        [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" [tableStyle]="{'min-width': '50rem'}" >
+        [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" [tableStyle]="{'min-width': '50rem'}">
         <ng-template pTemplate="header">
             <!--  -->
             <tr>
@@ -23,19 +23,24 @@
                         field="codigo_ocupacion"></p-sortIcon></th>
                 <th style="width:10%" pSortableColumn="descripcion_ocupacion">DESCRIPCIÓN <br> OCUP.<p-sortIcon
                         field="descripcion_ocupacion"></p-sortIcon></th>
-                <th style="width:10%" pSortableColumn="codigo_acteco">CÓDIGO <br> ACT. <p-sortIcon field="codigo_acteco"></p-sortIcon>
+                <th style="width:10%" pSortableColumn="codigo_acteco">CÓDIGO <br> ACT. <p-sortIcon
+                        field="codigo_acteco"></p-sortIcon>
                 </th>
                 <th style="width:10%" pSortableColumn="descripcion_acteco"> DESCRIPCIÓN <br> ACT. <p-sortIcon
                         field="descripcion_acteco"></p-sortIcon></th>
-                <th style="width:10%" pSortableColumn="feccre"> FECHA DE <br> CREACIÓN <p-sortIcon field="feccre"></p-sortIcon>
+                <th style="width:10%" pSortableColumn="feccre"> FECHA DE <br> CREACIÓN <p-sortIcon
+                        field="feccre"></p-sortIcon>
                 </th>
                 <th style="width:10%" pSortableColumn="usucre"> CREADOR <p-sortIcon field="usucre"></p-sortIcon></th>
-                <th style="width:10%" pSortableColumn="feccre"> FECHA DE <br> MODIFICACIÓN<p-sortIcon field="feccre"></p-sortIcon>
+                <th style="width:10%" pSortableColumn="feccre"> FECHA DE <br> MODIFICACIÓN<p-sortIcon
+                        field="feccre"></p-sortIcon>
                 </th>
-                <th style="width:10%" pSortableColumn="usumod"> MODIFICADOR <p-sortIcon field="usumod"></p-sortIcon></th>
+                <th style="width:10%" pSortableColumn="usumod"> MODIFICADOR <p-sortIcon field="usumod"></p-sortIcon>
+                </th>
                 <!-- Bton + Nuevo -->
-                <th style="width:10%"><button pButton pRipple type="button" icon="pi pi-plus" label="Nuevo" class="p-button-info"
-                        (click)="openNew()" pTooltip="Nuevo registro" tooltipPosition="top"></button></th>
+                <th style="width:10%"><button pButton pRipple type="button" icon="pi pi-plus" label="Nuevo"
+                        class="p-button-info" (click)="openNew()" pTooltip="Nuevo registro"
+                        tooltipPosition="top"></button></th>
             </tr>
             <!--  -->
             <tr>
@@ -64,22 +69,26 @@
                         class="p-column-filter">
                 </th>
                 <th style="width:10%">
-                    <input style="width:100%" pInputText type="text" (input)="dt_matriz.filter($event.target.value, 'feccre', 'contains')"
+                    <input style="width:100%" pInputText type="text"
+                        (input)="dt_matriz.filter($event.target.value, 'feccre', 'contains')"
                         [value]="dt_matriz.filters['feccre']?.value" placeholder="Buscar por fecha"
                         class="p-column-filter">
                 </th>
                 <th style="width:10%">
-                    <input style="width:100%" pInputText type="text" (input)="dt_matriz.filter($event.target.value, 'usucre', 'contains')"
+                    <input style="width:100%" pInputText type="text"
+                        (input)="dt_matriz.filter($event.target.value, 'usucre', 'contains')"
                         [value]="dt_matriz.filters['usucre']?.value" placeholder="Buscar el creador"
                         class="p-column-filter">
                 </th>
                 <th style="width:10%">
-                    <input style="width:100%" pInputText type="text" (input)="dt_matriz.filter($event.target.value, 'femod', 'contains')"
+                    <input style="width:100%" pInputText type="text"
+                        (input)="dt_matriz.filter($event.target.value, 'femod', 'contains')"
                         [value]="dt_matriz.filters['femod']?.value" placeholder="Buscar por fecha"
                         class="p-column-filter">
                 </th>
                 <th style="width:10%">
-                    <input style="width:100%" pInputText type="text" (input)="dt_matriz.filter($event.target.value, 'usumod', 'contains')"
+                    <input style="width:100%" pInputText type="text"
+                        (input)="dt_matriz.filter($event.target.value, 'usumod', 'contains')"
                         [value]="dt_matriz.filters['usumod']?.value" placeholder="Buscar por el modificador"
                         class="p-column-filter">
                 </th>
@@ -150,8 +159,6 @@
     </p-table>
 
 
-
-
 </div>
 
 
@@ -187,7 +194,7 @@
             <div class="field col-12 md:col-6">
                 <label for="basic">Descripción ocupación</label>
                 <textarea id="descripcion_ocupacion" pInputTextarea [(ngModel)]="registro.descripcion_ocupacion"
-                    required rows="4" cols="20"></textarea>
+                     rows="4" cols="20"></textarea>
                 <small class="p-invalid" *ngIf="submitted && !registro.descripcion_ocupacion" style="color: #d32f2f;">
                     <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
                     Este campo es requerido.
@@ -196,7 +203,7 @@
 
             <div class="field col-12 md:col-6">
                 <label for="basic">Descripción actividad económica</label>
-                <textarea id="descripcion_acteco" pInputTextarea [(ngModel)]="registro.descripcion_acteco" required
+                <textarea id="descripcion_acteco" pInputTextarea [(ngModel)]="registro.descripcion_acteco" 
                     rows="4" cols="20"></textarea>
                 <small class="p-invalid" *ngIf="submitted && !registro.descripcion_acteco" style="color: #d32f2f;">
                     <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
@@ -207,9 +214,7 @@
         </div>
 
 
-
         <p-message *ngIf="msgService" severity="error" text="{{titleMsgError}}"></p-message>
-
 
     </ng-template>
     <!--  -->
@@ -219,16 +224,7 @@
         <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text mr-2"
             (click)="saveRegistro()"></button>
     </ng-template>
+
 </p-dialog>
 
-
-<!-- Dialog eliminar -->
-<p-dialog header="Mensaje:" [(visible)]="dialogEliminar" [breakpoints]="{'960px': '75vw'}" [style]="{width: '30vw'}"
-    [draggable]="false" [resizable]="false">
-    <p>¿Está seguro de <strong style="color: #d32f2f;">eliminar</strong> este registro del Catálogo?
-    </p>
-    <ng-template pTemplate="footer">
-        <p-button (click)="dialogEliminar=false" label="No" styleClass="p-button-text"></p-button>
-        <p-button (click)="confirmDeleteRegistro()" label="Sí, eliminar" styleClass="p-button-text"></p-button>
-    </ng-template>
-</p-dialog>
+<p-confirmDialog [style]="{width: '30vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

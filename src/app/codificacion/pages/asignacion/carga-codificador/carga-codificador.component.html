@@ -15,10 +15,7 @@
     <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
 
 
-    <p-table #dt1 [value]="registros" dataKey="id_catalogo" styleClass="p-datatable-customers"
-        [showCurrentPageReport]="true"
-        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" stateStorage="local"
-        stateKey="statedemo-local">
+    <p-table #dt1 [value]="registros" dataKey="id_catalogo">
         <ng-template pTemplate="header">
             <!--  -->
             <tr>
@@ -37,7 +34,7 @@
                 <td>
                     <span class="p-column-title">VARIABLE</span>
                     <span class="image-text"><strong>Pregunta </strong>
-                        <p-chip label="{{reg.nro_preg}}" styleClass="mr-2"></p-chip>
+                        <p-chip label="{{reg.nro_preg}}" styleClass="mr-2 ml-2 custom-chip"></p-chip>
                         {{reg.variable}}</span>
                 </td>
                 <td>
@@ -77,14 +74,16 @@
     <p-dialog [(visible)]="asignacionDialog" [style]="{width: '550px'}" header="Asignación de carga" [modal]="true"
         styleClass="p-fluid">
 
-        <span class="image-text"><strong>Pregunta </strong>
-            <p-chip label="{{registro?.nro_preg}}" styleClass="mr-2"></p-chip>
-            {{registro?.variable}}</span>
-        <br> <br>
-        <!-- {{registro | json}}  -->
+        <div id="p-pregunta">
+            
 
-        <p-message *ngIf="registro?.nro_preg == '49-51'" severity="info"
-            text="Asignación simultanea, cada asignación cuenta el doble" styleClass="mr-2"></p-message> <br>
+            <span class="image-text"><strong>Pregunta </strong>
+                <p-chip label="{{registro?.nro_preg}}" styleClass="mr-2 ml-2 custom-chip"></p-chip>                
+                {{registro?.variable}}</span>
+        </div>
+
+        <br> 
+        <!-- {{registro | json}}  -->
 
         <ng-template pTemplate="content">
 
@@ -102,7 +101,7 @@
                         <td>
                             <p-checkbox class="ml-8" [(ngModel)]="asig.activo" [binary]="true"></p-checkbox>
                         </td>
-                        <td>{{asig.nombres}} {{asig.apellidos}}</td>
+                        <td>{{asig.nombre_completo}}</td>
                         <td><input min="0" type="number" pInputText [(ngModel)]="asig.total"> </td>
                     </tr>
                 </ng-template>

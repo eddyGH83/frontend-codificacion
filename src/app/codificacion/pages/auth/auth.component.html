@@ -56,6 +56,8 @@
 
 
 <div class="grid">
+    <p-toast></p-toast>
+    
     <div class="col-12 md:col-4 ">
 
     </div>
@@ -80,15 +82,11 @@
                         <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
                         Ingrese su nombre de <strong>USUARIO</strong></small>
 
-
-
                     <label for="password1" class="block text-900 font-medium mb-2">Contraseña</label>
                     <input formControlName="pass" type="password" pInputText class="w-full mb-3" (keyup.enter)="verificarUsuario()">
                     <small class="p-invalid" *ngIf="campoNoValido('pass')" style="color: #d32f2f;">
                         <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
                         Ingrese su <strong>CONTRASEÑA</strong></small>
-
-
 
                     <div class="flex align-items-center justify-content-between mb-6">
                         <br><br>
@@ -97,8 +95,6 @@
                             tu
                             contraseña?</a>
                     </div>
-
-
 
                     <button [disabled]="miFormulario.invalid" (click)="verificarUsuario()" pButton pRipple label="Ingresar" icon="pi pi-user"
                         class="w-full p-button-info p-3">

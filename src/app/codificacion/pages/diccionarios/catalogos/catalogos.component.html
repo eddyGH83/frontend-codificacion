@@ -115,6 +115,7 @@
                         (click)="editRegistro(reg)" pTooltip="Editar registro" tooltipPosition="left"></button>
                     <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"
                         (click)="deletetRegistro(reg)" pTooltip="Eliminar registro" tooltipPosition="top"></button>
+
                 </td>
 
             </tr>
@@ -183,15 +184,5 @@
         </ng-template>
     </p-dialog>
 
-
-    <!-- Dialog eliminar -->
-    <p-dialog header="Mensaje:" [(visible)]="dialogEliminar" [breakpoints]="{'960px': '75vw'}" [style]="{width: '30vw'}"
-        [draggable]="false" [resizable]="false">
-        <p>¿Está seguro de <strong style="color: #d32f2f;">eliminar</strong> este registro del catálogo?</p>
-        <ng-template pTemplate="footer">
-            <p-button (click)="dialogEliminar=false" label="No" styleClass="p-button-text"></p-button>
-            <p-button (click)="confirmDeleteRegistro()" label="Sí, eliminar" styleClass="p-button-text"></p-button>
-        </ng-template>
-    </p-dialog>
-
 </div>
+<p-confirmDialog [style]="{width: '30vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

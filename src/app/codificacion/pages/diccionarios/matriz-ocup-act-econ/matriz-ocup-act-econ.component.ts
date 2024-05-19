@@ -62,6 +62,11 @@ export class MatrizOcupActEconComponent implements OnInit {
     this.submitted = false;
     this.registro = {};
     this.registroDialog = true;
+    //
+    this.registro.descripcion_ocupacion=''
+    this.registro.descripcion_acteco=''
+    this.registro.codigo_ocupacion=''
+    this.registro.codigo_acteco=''
   }
 
   hideDialog() {
@@ -88,29 +93,39 @@ export class MatrizOcupActEconComponent implements OnInit {
       })
   }
 
+
+
   // Eliminar registros
   deletetRegistro(registro: any) {
     this.registro = { ...registro };
-    this.dialogEliminar = true
+    this.confirmationService.confirm({
+      message: '¿Está seguro de <strong>eliminar</strong> este registro del Catálogo?',
+      header: 'Confirmación',
+      icon: 'pi pi-trash',
+      accept: () => {
+        this.matrizService.updateEstadoMatriz(this.registro.id_cod_matriz, { estado: 'INACTIVO', user: localStorage.getItem('login') }).subscribe(
+          (data2: any) => {
+            this.dialogEliminar = false;
+            this.registrosTabla();
+            this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: 'Registro eliminado.', life: 2500 });
+          })
+      },
+    });
   }
 
-  // Confirmar eliminar registros
-  confirmDeleteRegistro() {
-    this.matrizService.updateEstadoMatriz(this.registro.id_cod_matriz, { estado: 'INACTIVO', user: localStorage.getItem('login') }).subscribe(
-      (data2: any) => {
-        this.dialogEliminar = false;
-        this.registrosTabla();
-        this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: 'Registro eliminado.', life: 2500 });
-      })
-  }
+
+
+
+
 
 
   // Guaradar o editar registro
   saveRegistro() {
 
     this.submitted = true;
+    // veirificar que codigo_ocupacion, codigo_acteco y tambien descripcion_acteco o descripcion_ocupacion no esten vacios
 
-    if (this.registro.codigo_ocupacion.trim() && this.registro.codigo_acteco.trim() && (this.registro.descripcion_ocupacion.trim() || this.registro.descripcion_acteco.trim())) {
+    if ((this.registro.descripcion_acteco.trim() || this.registro.descripcion_ocupacion.trim()) && this.registro.codigo_ocupacion.trim() && this.registro.codigo_acteco.trim()) {
 
       if (this.registro.id_cod_matriz) {
 
@@ -121,13 +136,13 @@ export class MatrizOcupActEconComponent implements OnInit {
         this.matrizService.updateMatriz(this.registro.id_cod_matriz, {
           codigo_ocupacion: this.registro.codigo_ocupacion,
           codigo_acteco: this.registro.codigo_acteco,
-          descripcion_ocupacion: this.registro.descripcion_ocupacion,
-          descripcion_acteco: this.registro.descripcion_acteco,
+          descripcion_ocupacion: this.registro.descripcion_ocupacion !== undefined ? this.registro.descripcion_ocupacion : '',
+          descripcion_acteco: this.registro.descripcion_acteco !== undefined ? this.registro.descripcion_acteco : '',
           user: localStorage.getItem('login')
         }).subscribe(
           (data2: any) => {
             if (data2.success == true) {
-              this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: data2.message, life: 2500 });
+              this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: data2.message, life: 3000 });
               this.registroDialog = false;
               this.registrosTabla();
             } else {
@@ -145,14 +160,12 @@ export class MatrizOcupActEconComponent implements OnInit {
         // ADD
         //alert("add");
 
-
-
         this.matrizService.insertarMatriz({
           //erradas: this.registro.erradas,
           codigo_ocupacion: this.registro.codigo_ocupacion,
           codigo_acteco: this.registro.codigo_acteco,
-          descripcion_ocupacion: this.registro.descripcion_ocupacion,
-          descripcion_acteco: this.registro.descripcion_acteco,
+          descripcion_ocupacion: this.registro.descripcion_ocupacion !== undefined ? this.registro.descripcion_ocupacion : '',
+          descripcion_acteco: this.registro.descripcion_acteco !== undefined ? this.registro.descripcion_acteco : '',
           //corregidas: this.registro.corregidas,
           user: localStorage.getItem('login')
         }).subscribe(

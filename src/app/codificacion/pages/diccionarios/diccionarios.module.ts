@@ -23,6 +23,7 @@ import { DividerModule } from 'primeng/divider';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
+//import { ConfirmPopupModule } from 'primeng/confirmpopup';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { TooltipModule } from 'primeng/tooltip';
     ToastModule,
     ToolbarModule,
     TooltipModule,
+    //ConfirmPopupModule,
 
     //BrowserModule,
     //BrowserAnimationsModule,

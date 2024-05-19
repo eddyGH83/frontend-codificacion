@@ -102,10 +102,10 @@ export class CargaCodificadorComponent implements OnInit {
       this.checkedTodo = false;
 
       // llenamos de ceros
-      for (let i in this.usuarios) {
+      /* for (let i in this.usuarios) {
         this.usuarios[i].total = 0;
         this.usuarios[i].activo = false;
-      }
+      } */
 
       //console.table(this.usuarios);
 
@@ -127,7 +127,9 @@ export class CargaCodificadorComponent implements OnInit {
 
 
   guardar() {
-    
+    //alert(this.registro.nro_preg);
+    this.array_asg = [];
+
     for (let j in this.usuarios) {
       if (this.usuarios[j].total > 0) {
         const body = {
@@ -140,28 +142,26 @@ export class CargaCodificadorComponent implements OnInit {
         this.array_asg.push(body)
       }
     }
-    console.table(this.usuarios);
+    // imprimir los registros de array_asg
+    console.table(this.array_asg);
+    
+    
 
+    //alert("Asignado correctamente");
 
-    this.asignacionService.updateAsignado('49-51',this.array_asg).subscribe(res => {
-      alert("Asignado correctamente");
+    this.asignacionService.updateAsignado(this.registro.tabla_id, this.array_asg).subscribe(res => {
       this.asignacionDialog = false;
       this.registrosTabla();
     });
+
   }
 
 
 
-   /*  this.asignacionService.updateAsignado('49-51', this.array_asg).subscribe( res => {
-       this.asignacionDialog = false;
-       this.registrosTabla();       
-     }, error=> console.error(error)) */
-
- 
-
-
-
-
+  /*  this.asignacionService.updateAsignado('49-51', this.array_asg).subscribe( res => {
+      this.asignacionDialog = false;
+      this.registrosTabla();       
+    }, error=> console.error(error)) */
 
 
 

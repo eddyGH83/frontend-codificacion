@@ -2,6 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from './service/auth.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
+import { MessageService } from 'primeng/api';
+
+// Para los mensajes  
+// import { ConfirmationService, MessageService } from 'primeng/api';
+// import { MessagesModule } from 'primeng/messages';
+// import { MessageModule } from 'primeng/message';
+
+
 
 @Component({
   selector: 'app-auth',
@@ -23,10 +31,10 @@ export class AuthComponent implements OnInit {
   })
 
 
- /*  usuario: any = {
-    usu: this.miFormulario.get('usu')?.value,
-    pass: this.miFormulario.get('pass')?.value
-  } */
+  /*  usuario: any = {
+     usu: this.miFormulario.get('usu')?.value,
+     pass: this.miFormulario.get('pass')?.value
+   } */
 
   // progress bar
   login_pb: boolean = false;
@@ -36,7 +44,13 @@ export class AuthComponent implements OnInit {
 
   registros: any;
 
-  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) { }
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private authService: AuthService,
+    private messageService: MessageService
+    //private confirmationService: ConfirmationService
+  ) { }
 
   ngOnInit(): void {
 
@@ -72,7 +86,9 @@ export class AuthComponent implements OnInit {
 
         if (data2.success == false) {
           //localStorage.setItem('token_cod', data2.token_cod);
-          alert('Usuario no encontrado')
+          /* this.messageService.add({severity:'success', summary: 'Success', detail: 'Message Content'}); */
+          this.messageService.add({severity:'error', summary: 'Error', detail: 'Usuario no encontrado'});
+          // alert('Usuario no encontrado')
           /* this.usuario.usu = '';
           this.usuario.pass = ''; */
         }

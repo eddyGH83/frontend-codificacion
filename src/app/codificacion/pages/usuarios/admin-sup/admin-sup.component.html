@@ -15,8 +15,7 @@
                     <!-- buscar -->
                     <span class="p-input-icon-left p-input-icon-right mr-2">
                         <i class="pi pi-user"></i>
-                        <input type="text" pInputText placeholder="Buscar" pTooltip="Buscar Usuario"
-                            tooltipPosition="left" />
+                        <input type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')" pInputText placeholder="Buscar por Usuario" pTooltip="Buscar Usuario" tooltipPosition="left" />
                         <i class="pi pi-search"></i>
                     </span>
 
@@ -35,9 +34,9 @@
 
     <div class="col-12">
         <div class="card">
-            <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{ height: '2px' }"></p-progressBar>
+            <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{ height: '2px' }"></p-progressBar>           
 
-            <p-table #dt1 [value]="registros" dataKey="id_catalogo" styleClass="p-datatable-customers"
+            <p-table #dt1 [value]="registros" dataKey="id_catalogo" styleClass="p-datatable-customers" [globalFilterFields]="['nombre_completo']"
                 [showCurrentPageReport]="true"
                 currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
                 [rowsPerPageOptions]="[5, 10, 25, 50]" [paginator]="true" stateStorage="local"
@@ -45,21 +44,21 @@
                 <ng-template pTemplate="header">
                     <!--  -->
                     <tr>
-
+                      
+                        <th pSortableColumn="nombres">
+                            USUARIO <p-sortIcon field="nombres"></p-sortIcon>
+                        </th>
+                        <!-- <th pSortableColumn="pr_apellido">
+                            1ER APELLIDO <p-sortIcon field="pr_apellido"></p-sortIcon>
+                        </th> -->
+                        <!--  <th pSortableColumn="sg_apellido">
+                            2DO APELLIDO <p-sortIcon field="sg_apellido"></p-sortIcon>
+                        </th> -->
+                        <th pSortableColumn="login">
+                            NOMBRE DE USUARIO <p-sortIcon field="login"></p-sortIcon>
+                        </th>
                         <th pSortableColumn="rol_codigo">
                             ROL<p-sortIcon field="rol_codigo"></p-sortIcon>
-                        </th>
-                        <th pSortableColumn="nombres">
-                            NOMBRES <p-sortIcon field="nombres"></p-sortIcon>
-                        </th>
-                        <th pSortableColumn="pr_apellido">
-                            1ER APELLIDO <p-sortIcon field="pr_apellido"></p-sortIcon>
-                        </th>
-                        <th pSortableColumn="sg_apellido">
-                            2DO APELLIDO <p-sortIcon field="sg_apellido"></p-sortIcon>
-                        </th>
-                        <th pSortableColumn="login">
-                            USUARIO <p-sortIcon field="login"></p-sortIcon>
                         </th>
                         <th pSortableColumn="turno">
                             TURNO<p-sortIcon field="turno"></p-sortIcon>
@@ -71,26 +70,27 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-reg>
                     <tr [pSelectableRow]="reg">
+                        
                         <td>
-                            <span class="p-column-title">ROL</span>
-                            <span class="image-text"><strong>{{ reg.rol_codigo }}</strong> <br />
-                                {{ reg.rol_descripcion }}</span>
+                            <span class="p-column-title">USUARIO</span>
+                            <span class="image-text"> <strong><i class="pi pi-user" style="font-size: 1.3rem; color: rgb(2, 136, 209);"></i></strong> {{ reg.nombre_completo }}</span>
                         </td>
-                        <td>
-                            <span class="p-column-title">NOMBRES</span>
-                            <span class="image-text">{{ reg.nombres }}</span>
-                        </td>
-                        <td>
+                        <!--  <td>
                             <span class="p-column-title">1er APELLIDO</span>
                             <span class="image-text">{{ reg.pr_apellido }}</span>
                         </td>
                         <td>
                             <span class="p-column-title">2do APELLIDO</span>
                             <span class="image-text">{{ reg.sg_apellido }}</span>
-                        </td>
+                        </td> -->
                         <td>
                             <span class="p-column-title">USUARIO</span>
                             <span class="image-text"><p-chip label="{{ reg.login }}" styleClass="mr-2"></p-chip> </span>
+                        </td>
+                        <td>
+                            <span class="p-column-title">ROL</span>
+                            <span class="image-text"><strong>{{ reg.rol_codigo }}</strong> <br />
+                                {{ reg.rol_descripcion }}</span>
                         </td>
                         <td>
                             <span class="p-column-title">TURNO</span>
@@ -109,14 +109,10 @@
 
                             <button pButton type="button" icon="pi pi-key"
                                 class="p-button-rounded p-button-warning mr-2" pTooltip="Resetear Contraseña"
-                                (click)="confirm()" tooltipPosition="top">
+                                (click)="resetContrasenia(reg)" tooltipPosition="top">
                             </button>
 
-                            <p-button (click)="confirmPosition('top')" icon="pi pi-arrow-down" label="Top" styleClass="p-button-warning"></p-button>
-
-                            <p-button (click)="confirmPosition('topright')" icon="pi pi-arrow-down" label="TopRight" styleClass="p-button-warning"></p-button>
-                            
-                            <p-button (click)="confirmPosition('bottomleft')" icon="pi pi-arrow-up" label="BottomLeft" styleClass="p-button-warning"></p-button>
+                            <!-- <p-button (click)="resetContrasenia()" icon="pi pi-arrow-down" label="Top" styleClass="p-button-warning"></p-button> -->
 
                             <!-- {{customer.id_catalogo | json}} -->
                         </td>
@@ -143,7 +139,7 @@
                 [modal]="true" styleClass="p-fluid">
                 <ng-template pTemplate="content">
 
-                    <div class="field">
+                    <div class="field" > 
                         <label for="nombres" style="color: rgb(2, 136, 209);">Nombre</label>
                         <span class="p-input-icon-left">
                             <i class="pi pi-user"></i>
@@ -179,7 +175,7 @@
                     </div>
 
 
-                    <div class="field" *ngIf="dropdownRoles">
+                    <div class="field">
                         <label style="color: rgb(2, 136, 209);">Rol</label>
                         <!-- {{selectedRol | json}} -->
                         <p-dropdown (onChange)="opcionesRol()" [options]="roles" [(ngModel)]="selectedRol"
@@ -187,16 +183,6 @@
                     </div>
 
 
-                    <div class="field" *ngIf="dropdownSupervisores">
-                        <label style="color: rgb(2, 136, 209);">Supervisor</label>
-                        <!-- {{selectedTurno | json}} -->
-                        <p-dropdown [options]="supervisores" [(ngModel)]="selectedSupervisor"
-                            placeholder="Seleccione un Supervisor" optionLabel="nombres"></p-dropdown>
-                    </div>
-
-                    <p-message *ngIf="msgUserExit" severity="error"
-                        text="El nombre de usuario ingresado ya existe."></p-message>
-                    <br *ngIf="msgUserExit">
 
 
                     <div class="field">
@@ -225,71 +211,8 @@
     </div>
 
 
-    <!-- Reset contraseña -->
-    <p-dialog header="Resetear Contraseña" [(visible)]="resetDialog" [style]="{width: '30vw'}">
-        <ng-template pTemplate="content">
-            <p> <i class="pi pi-key" style="font-size: 2rem; color: #f0be19;"></i> ¿Está seguro de
-                <strong>RESETEAR</strong>
-                la contraseña de: <strong>{{registro.nombres | uppercase }} {{registro.apellidos |
-                    uppercase }}</strong>?
-            </p>
-        </ng-template>
-        <ng-template pTemplate="footer">
-            <p-button icon="pi pi-check" (click)="resetDialog=false" label="No" styleClass="p-button-text"></p-button>
-            <p-button icon="pi pi-check" (click)="confirmResetPassRegistro()" label="Sí"
-                styleClass="p-button-text"></p-button>
-        </ng-template>
-    </p-dialog>
-
-
-    <!-- Eliminar registro -->
-    <p-dialog header="Eliminar Usuario" [(visible)]="eliminarDialog" [style]="{width: '30vw'}" [modal]="true">
-        <ng-template pTemplate="content">
-            <p> <i class="pi pi-trash" style="font-size: 2rem; color: #d32f2f;"></i> ¿Está seguro que quiere <strong
-                    style="color: #d32f2f;">ELIMINAR</strong> a:
-                <strong>{{registro.nombres | uppercase }} {{registro.apellidos | uppercase }}</strong>?
-            </p>
-        </ng-template>
-        <ng-template pTemplate="footer">
-            <p-button icon="pi pi-check" (click)="eliminarDialog=false" label="No"
-                styleClass="p-button-text"></p-button>
-            <p-button icon="pi pi-check" (click)="confirmDeleteSelectedRegistro()" label="Sí"
-                styleClass="p-button-text"></p-button>
-        </ng-template>
-    </p-dialog>
-
-    <!-- Reasignacion registro -->
-    <p-dialog header="Reasignar Usuario" [(visible)]="reasignarDialog" [style]="{width: '30vw'}" [modal]="true">
-        <ng-template pTemplate="content">
-
-            <div class="field">
-                <label class="mr-2">Seleccionar Supervisor: </label>
-                <p-dropdown [options]="supervisores" [(ngModel)]="selectedSupervisores" placeholder="Seleccione un Rol"
-                    optionLabel="nombre"></p-dropdown>
-            </div>
-
-        </ng-template>
-        <ng-template pTemplate="footer">
-            <p-button icon="pi pi-check" (click)="reasignarDialog=false" label="No"
-                styleClass="p-button-text"></p-button>
-            <p-button icon="pi pi-check" (click)="displayBasic=false" label="Sí" styleClass="p-button-text"></p-button>
-        </ng-template>
-    </p-dialog>
-
-
-
 </div>
 
-
-<!-- <p-confirmDialog #cd [style]="{width: '50vw'}">
-    <ng-template pTemplate="header">
-        <h3>Header Content</h3>
-    </ng-template>
-    <ng-template pTemplate="footer">
-        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()"></button>
-        <button type="button" pButton icon="pi pi-check" label="Yes" (click)="cd.accept()"></button>
-    </ng-template>
-</p-confirmDialog> -->
+<p-confirmDialog [style]="{width: '30vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
 
 
-<p-confirmDialog [style]="{width: '50vw'}" key="positionDialog" [position]="position" [baseZIndex]="10000"></p-confirmDialog>
