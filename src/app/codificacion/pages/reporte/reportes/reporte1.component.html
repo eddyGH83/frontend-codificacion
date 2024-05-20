@@ -1,13 +1,15 @@
 <div class="card">
 
-    <h5>1. Reporte de codificación por frecuencia de descripción de campo</h5>
+    <h5><a [routerLink]="['/reportes']"> <i class="pi pi-chevron-left" style="font-size: 1.4rem"></i> Reportes | </a> 1. Reporte de codificación por frecuencia de descripción de campo</h5>
     <hr>
 
     <label for="username2">Catálogo seleccionado: </label>
-    <p-dropdown [options]="catalogos" [(ngModel)]="selectedCatalogo" placeholder="Seleccione un Catalogo" class="mr-2"
+    <p-dropdown (onChange)="reporte()"  [options]="catalogos" [(ngModel)]="selectedCatalogo" placeholder="Seleccione un Catalogo" class="mr-2"
         optionLabel="value"></p-dropdown> 
-        <button pButton type="button" label="EXCEL (.xslx)" icon="pi pi-download"
-                        class="p-button-success mr-2"></button>
+        <button pButton pRipple type="button" icon="pi pi-refresh" label="Actualizar" class="p-button-warning ml-2 mr-2"
+        (click)="reporte()" pTooltip="Actualizar registros" tooltipPosition="bottom"></button>
+        <button pButton type="button" label="Exportar" icon="pi pi-file-excel" (click)="exportExcel()"
+                        class="p-button-success mr-2" pTooltip="Exportar registros a excel (.xlsx)" tooltipPosition="bottom"></button>
         <br> <br>
 
 
@@ -16,7 +18,7 @@
          *ngIf="progressBar.reporte_pb"></p-progressBar>
 
      <!-- <h5>Implicit Pagination</h5> -->
-     <p-table [value]="registros" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+     <p-table [value]="registrosConFiltro" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
          currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros"
          [rowsPerPageOptions]="[5,10,25,50]">
          <ng-template pTemplate="header">
@@ -38,8 +40,8 @@
              </tr>
          </ng-template>
          <ng-template pTemplate="paginatorleft">
-             <p-button type="button" (click)="reporte()" icon="pi pi-refresh" styleClass="p-button-text"
-                 label="Actualizar"></p-button>
+            <!--  <p-button type="button" (click)="reporte()" icon="pi pi-refresh" styleClass="p-button-text"
+                 label="Actualizar"></p-button> -->
          </ng-template>
          <ng-template pTemplate="paginatorright">
          </ng-template>

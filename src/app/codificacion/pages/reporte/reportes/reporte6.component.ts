@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReporteService } from '../service/reporte.service';
 
+import * as FileSaver from 'file-saver';
+
 @Component({
   selector: 'app-reporte6',
   templateUrl: './reporte6.component.html'
@@ -10,43 +12,53 @@ import { ReporteService } from '../service/reporte.service';
 export class Reporte6Component implements OnInit {
 
 
-  items: any;
 
-  // Datos de la tabla
+
   registros: any;
 
-  // Busqueda
-  busqueda: any;
+  reporte_pb: any
 
-  // ProgresBar
-  progressBar: any = {
-    reporte_pb: false
-  };
 
   constructor(private router: Router, private reporteService: ReporteService) { }
 
-  ngOnInit(): void {
 
-    this.items = [
-      { label: 'cat_caeb', icon: 'pi pi-map', routerLink: ['/reportes/reporte1'] },
-      { label: 'cat_cob', icon: 'pi pi-map', routerLink: ['/reportes/reporte1'] },
-      { label: 'cat_idioma', icon: 'pi pi-map', routerLink: ['/reportes/reporte1'] },
-      { label: 'cat_npioc', icon: 'pi pi-map', routerLink: ['/reportes/reporte1'] },
-      { label: 'cat_pais', icon: 'pi pi-map', routerLink: ['/reportes/reporte1'] },
-      { label: 'cat_municipio', icon: 'pi pi-map', routerLink: ['/reportes/reporte1'] }
-    ];
-    this.reporteDatos();
+  ngOnInit(): void {
+    this.reporte();
   }
-  
+
   // Reporte
-  reporteDatos() {
-    this.progressBar.reporte_pb = true;
-    this.reporteService.reporte6(this.busqueda).subscribe(
+  reporte() {
+    this.reporte_pb = true;
+    this.reporteService.reporte6().subscribe(
       (data2: any) => {
-        //console.log("data2", data2);        
-        this.progressBar.reporte_pb = false;
-        this.registros = data2;
+        this.reporte_pb = false;
+        this.registros = data2.datos.rows;
+        console.log("registros", this.registros);
+
       })
   }
+
+
+  // exportar a excel 
+  exportExcel() {
+    let date = new Date();
+    let formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+    import("xlsx").then(xlsx => {
+      const worksheet = xlsx.utils.json_to_sheet(this.registros);
+      const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+      this.saveAsExcelFile(excelBuffer, "Reporte06-" + formattedDate);
+    });
+  }
+
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    let EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], {
+      type: EXCEL_TYPE
+    });
+    FileSaver.saveAs(data, fileName + EXCEL_EXTENSION);
+  }
+
 
 }

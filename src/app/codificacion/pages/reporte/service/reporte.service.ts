@@ -15,70 +15,63 @@ export class ReporteService {
 
 
   //  Reporte 1
-  reporte1(busqueda: any): any {
-    const url = `${this._apiUrl}reporte1`;
-    return this.http.post<any>(url, busqueda);
+  reporte1(): Observable<any> {
+    return this.http.get(`${this._apiUrl}/reportes/reporte1`)
   }
 
   //  Reporte 2
-  reporte2(busqueda: any): any {
-    const url = `${this._apiUrl}reporte2`;
-    return this.http.post<any>(url, busqueda);
+  reporte2(): Observable<any> {
+    return this.http.get(`${this._apiUrl}/reportes/reporte2`)
   }
 
   //  Reporte 3
-  reporte3(busqueda: any): any {
-    const url = `${this._apiUrl}reporte3`;
-    return this.http.post<any>(url, busqueda);
+  reporte3(): Observable<any> {
+    return this.http.get(`${this._apiUrl}/reportes/reporte3`)
   }
 
   //  Reporte 4
-  reporte4(busqueda: any): any {
-    const url = `${this._apiUrl}reporte4`;
-    return this.http.post<any>(url, busqueda);
+  reporte4(): Observable<any> {
+    return this.http.get(`${this._apiUrl}/reportes/reporte4`)
   }
 
   //  Reporte 5
-  reporte5(busqueda: any): any {
-    const url = `${this._apiUrl}reporte5`;
-    return this.http.post<any>(url, busqueda);
+  reporte5(): Observable<any> {
+    return this.http.get(`${this._apiUrl}/reportes/reporte5`)
   }
 
   //  Reporte 6
-  reporte6(busqueda: any): any {
-    const url = `${this._apiUrl}reporte6`;
-    return this.http.post<any>(url, busqueda);
+  reporte6(): Observable<any> {
+    return this.http.get(`${this._apiUrl}/reportes/reporte6`)
   }
 
   //  Reporte 7
-  reporte7(busqueda: any): any {
-    const url = `${this._apiUrl}reporte7`;
-    return this.http.post<any>(url, busqueda);
+  reporte7(): Observable<any> {
+    return this.http.get(`${this._apiUrl}/reportes/reporte7`)
   }
 
   //  Reporte 8
-  reporte8(busqueda: any): any {
-    const url = `${this._apiUrl}reporte8`;
-    return this.http.post<any>(url, busqueda);
+  reporte8(): Observable<any> {
+    return this.http.get(`${this._apiUrl}/reportes/reporte8`)
   }
 
   //  Reporte 9
-  reporte9(busqueda: any): any {
-    const url = `${this._apiUrl}reporte9`;
-    return this.http.post<any>(url, busqueda);
+  reporte9(): Observable<any> {
+    return this.http.get(`${this._apiUrl}/reportes/reporte9`)
   }
 
   //  Reporte 10
-  reporte10(busqueda: any): any {
-    const url = `${this._apiUrl}reporte10`;
-    return this.http.post<any>(url, busqueda);
+  reporte10(): Observable<any> {
+    return this.http.get(`${this._apiUrl}/reportes/reporte10`)
   }
 
   //  Reporte 11
-  reporte11(busqueda: any): any {
-    const url = `${this._apiUrl}reporte11`;
-    return this.http.post<any>(url, busqueda);
+  reporte11(): Observable<any> {
+    return this.http.get(`${this._apiUrl}/reportes/reporte11`)
   }
 
+  //  Reporte 12
+  reporte12(): Observable<any> {
+    return this.http.get(`${this._apiUrl}/reportes/reporte12`)
+  }
 
 }

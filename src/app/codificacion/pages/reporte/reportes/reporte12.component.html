@@ -1,87 +1,44 @@
-<div class="grid">
-    <div class="col-12">
+<div class="card">
 
-        <div class="card">
-            <div class="grid grid-nogutter flex-column md:flex-row justify-content-between">
-                <p-dropdown [options]="cities" [(ngModel)]="selectedCity" placeholder="Seleccionar Catálogo" optionLabel="name" [showClear]="true"></p-dropdown>
+    <h5><a [routerLink]="['/reportes']"> <i class="pi pi-chevron-left" style="font-size: 1.4rem"></i> Reportes | </a>12. Reporte: ----------</h5>
+    <hr>
 
-                <button pButton type="button" icon="pi pi-file" class="p-button-danger" label=".pdf"></button>
-                <button pButton type="button" icon="pi pi-file" class="p-button-danger" label=".pdf"></button>
-                <button pButton type="button" icon="pi pi-file" class="p-button-danger" label=".pdf"></button>
+    <button pButton pRipple type="button" icon="pi pi-refresh" label="Actualizar" class="p-button-warning ml-2 mr-2"
+        (click)="reporte()" pTooltip="Actualizar registros" tooltipPosition="bottom"></button>
+    <button pButton type="button" label="Exportar" icon="pi pi-file-excel" (click)="exportExcel()"
+        class="p-button-success mr-2" pTooltip="Exportar registros a excel (.xlsx)" tooltipPosition="bottom"></button>
+    <br> <br>
 
-                <!-- <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By Price" (onChange)="onSortChange($event)"></p-dropdown>
-                <span class="p-input-icon-left mb-2 md:mb-0">
-                    <i class="pi pi-search"></i>
-                    <input type="search" pInputText placeholder="Search by Name" (input)="dv.filter($event.target.value)">
-                </span>	 -->
-                <!-- <p-dataViewLayoutOptions></p-dataViewLayoutOptions> -->
-                
-            </div>
-        </div>
+    <!-- ProgressBar -->
+    <p-progressBar mode="indeterminate" [style]="{'height': '2px'}" *ngIf="reporte_pb"></p-progressBar>
 
-
-        <div class="card">
-            <h5>11. Reporte: avance de codificación por fechas</h5>
-            <p-toolbar>
-                <div class="p-toolbar-group-left flex flex-wrap">
-                    <button pButton type="button" label="EXCEL" icon="pi pi-plus"
-                        class="p-button-success mr-2"></button>
-                    <!-- <button pButton type="button" label="Open" icon="pi pi-folder-open"
-                        class="p-button-secondary mr-2"></button>
-
-                    <i class="pi pi-bars p-toolbar-separator"></i>
-
-                    <button pButton type="button" icon="pi pi-check" class="p-button-success mr-2"></button>
-                    <button pButton type="button" icon="pi pi-trash" class="p-button-warning mr-2"></button> -->
-                    <button pButton type="button" icon="pi pi-file" class="p-button-danger" label=".pdf"></button>
-                </div>
-
-                <div class="p-toolbar-group-right">
-                    <!-- <p-splitButton label="Catálogo" icon="pi pi-check" [model]="items"></p-splitButton> -->
-                </div>
-            </p-toolbar>
-        </div>
-    </div>
-
-    
-    <div class="col-12">
-        <div class="card">
-            <!-- ProgressBar -->
-            <p-progressBar mode="indeterminate" [style]="{'height': '2px'}"
-                *ngIf="progressBar.reporte_pb"></p-progressBar>
-
-            <!-- <h5>Implicit Pagination</h5> -->
-            <p-table [value]="registros" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-                currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros"
-                [rowsPerPageOptions]="[5,10,25,50]">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th style="width:20%">CATALOGO</th>
-                        <th style="width:20%">CODIGO</th>
-                        <th style="width:20%">ACEPCIONES</th>
-                        <th style="width:20%">RESPUESTA</th>
-                        <th style="width:20%">FRECUENCIA</th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-reg>
-                    <tr>
-                        <td>{{reg.catalogo}}</td>
-                        <td>{{reg.codigo}}</td>
-                        <td>{{reg.acep_desc}}</td>
-                        <td>{{reg.campo_desc}}</td>
-                        <td>{{reg.sum}}</td>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="paginatorleft">
-                    <p-button type="button" (click)="reporte()" icon="pi pi-refresh" styleClass="p-button-text" label="Actualizar"></p-button>
-                </ng-template>
-                <ng-template pTemplate="paginatorright">                    
-                </ng-template>
-            </p-table>
-
-        </div>
-    </div>
-
+    <p-table [value]="registros" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+    currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros"
+    [rowsPerPageOptions]="[5,10,25,50]">
+    <ng-template pTemplate="header">
+        <tr> <!-- Departamento	Pregunta	Automatica	Asistida	Pendiente	Total -->
+           <!--  <th style="width:20%">FECHA</th>
+            <th style="width:20%">CODIFICADOR</th>
+            <th style="width:20%">CODIFICADOS</th> -->
+            <th style="width:20%">CAMPO1</th>
+            <th style="width:20%">CAMPO2</th>
+            <th style="width:20%">CAMPO3</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-reg>
+        <tr>
+            <td>{{reg.feccodificador}}</td>
+            <td>{{reg.usucodificador}}</td>
+            <td>{{reg.codificado}}</td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="paginatorleft">
+       <!--  <p-button type="button" (click)="reporteDatos()" icon="pi pi-refresh" styleClass="p-button-text"
+            label="Actualizar"></p-button> -->
+    </ng-template>
+    <ng-template pTemplate="paginatorright">
+    </ng-template>
+</p-table>
 </div>
 
 
