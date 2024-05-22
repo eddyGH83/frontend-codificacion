@@ -34,6 +34,8 @@ export class MatrizOcupActEconComponent implements OnInit {
   // submitted
   submitted: boolean;
 
+  // dt_matriz
+  registrosAux: any;
 
 
 
@@ -54,6 +56,10 @@ export class MatrizOcupActEconComponent implements OnInit {
 
     this.registrosTabla();
 
+
+
+
+
   }
 
 
@@ -63,10 +69,10 @@ export class MatrizOcupActEconComponent implements OnInit {
     this.registro = {};
     this.registroDialog = true;
     //
-    this.registro.descripcion_ocupacion=''
-    this.registro.descripcion_acteco=''
-    this.registro.codigo_ocupacion=''
-    this.registro.codigo_acteco=''
+    this.registro.descripcion_ocupacion = ''
+    this.registro.descripcion_acteco = ''
+    this.registro.codigo_ocupacion = ''
+    this.registro.codigo_acteco = ''
   }
 
   hideDialog() {
@@ -89,7 +95,8 @@ export class MatrizOcupActEconComponent implements OnInit {
       (data2: any) => {
         console.log("data2", data2.datos.rows);
         this.tabla_pb = false;
-        this.registros = data2.datos.rows;;
+        this.registros = data2.datos.rows;
+        this.registrosAux = data2.datos.rows;
       })
   }
 
@@ -114,8 +121,36 @@ export class MatrizOcupActEconComponent implements OnInit {
   }
 
 
+  // FILTRO PERSONANALIZADO: de izquierda a derecha codigo_ocupacion
+  filtrarIzquierdaADerechaCodOcup(evento: any) {
+    // si el valor del input es vacío, entonces mostrar todos los registros
+    if (!evento.target.value) { this.registros = this.registrosAux; return; }
+
+    // el input para el codigo_acteco de busqueda debe estar vacío una vez que se haya ingresado un valor en el input de busqueda de codigo_ocupacion
+    const codigoActecoInput = document.getElementById('codigo_acteco') as HTMLInputElement;
+    codigoActecoInput.value = '';
+
+    // Obtener el valor del input
+    const valorBusqueda = evento.target.value;
+    // Filtra la matriz usando el método 'startsWith'
+    this.registros = this.registrosAux.filter((item: any) => item.codigo_ocupacion.startsWith(valorBusqueda));
+  }
 
 
+  // FILTRO PERSONANALIZADO: de izquierda a derecha codigo_acteco
+  filtrarIzquierdaADerechaCodActeco(evento: any) {
+    // si el valor del input es vacío, entonces mostrar todos los registros
+    if (!evento.target.value) { this.registros = this.registrosAux; return; }
+
+    // el input para el codigo_ocupacion de busqueda debe estar vacío una vez que se haya ingresado un valor en el input de busqueda de codigo_acteco
+    const codigoOcupacionInput = document.getElementById('codigo_ocupacion') as HTMLInputElement;
+    codigoOcupacionInput.value = '';
+
+    // Obtener el valor del input
+    const valorBusqueda = evento.target.value;
+    // Filtra la matriz usando el método 'startsWith'
+    this.registros = this.registrosAux.filter((item: any) => item.codigo_acteco.startsWith(valorBusqueda));
+  }
 
 
 
@@ -128,11 +163,7 @@ export class MatrizOcupActEconComponent implements OnInit {
     if ((this.registro.descripcion_acteco.trim() || this.registro.descripcion_ocupacion.trim()) && this.registro.codigo_ocupacion.trim() && this.registro.codigo_acteco.trim()) {
 
       if (this.registro.id_cod_matriz) {
-
         // UPDATE
-
-        //alert("update");
-
         this.matrizService.updateMatriz(this.registro.id_cod_matriz, {
           codigo_ocupacion: this.registro.codigo_ocupacion,
           codigo_acteco: this.registro.codigo_acteco,
@@ -157,9 +188,7 @@ export class MatrizOcupActEconComponent implements OnInit {
           })
 
       } else {
-        // ADD
-        //alert("add");
-
+        // ADDITION
         this.matrizService.insertarMatriz({
           //erradas: this.registro.erradas,
           codigo_ocupacion: this.registro.codigo_ocupacion,

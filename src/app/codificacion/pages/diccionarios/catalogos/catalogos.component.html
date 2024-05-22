@@ -36,8 +36,6 @@
                         (click)="openNew()" pTooltip="Nuevo registro" tooltipPosition="top"></button></th>
             </tr>
 
-
-
             <!--  -->
             <tr>
                 <th>
@@ -109,7 +107,6 @@
                     <span class="image-text">{{reg.usumod }}</span>
                 </td>
                 <td>
-
                     <!--  -->
                     <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"
                         (click)="editRegistro(reg)" pTooltip="Editar registro" tooltipPosition="left"></button>
@@ -133,7 +130,6 @@
         <ng-template pTemplate="paginatorright">
         </ng-template>
     </p-table>
-
 
     <!-- Dialog -->
     <p-dialog [(visible)]="registroDialog" [style]="{width: '450px'}" header="Catálogo Detalles" [modal]="true"
@@ -185,4 +181,5 @@
     </p-dialog>
 
 </div>
-<p-confirmDialog [style]="{width: '30vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+<p-confirmDialog [style]="{width: '30vw'}" [baseZIndex]="10000"
+    rejectButtonStyleClass="p-button-text"></p-confirmDialog>

@@ -46,7 +46,7 @@
             <tr>
                 <th style="width:10%">
                     <input style="width:100%" pInputText type="text"
-                        (input)="dt_matriz.filter($event.target.value, 'codigo_ocupacion', 'contains')"
+                        (input)="filtrarIzquierdaADerechaCodOcup($event)" id="codigo_ocupacion"
                         [value]="dt_matriz.filters['codigo_ocupacion']?.value" placeholder="Buscar por código"
                         class="p-column-filter">
                 </th>
@@ -58,7 +58,7 @@
                 </th>
                 <th style="width:10%">
                     <input style="width:100%" pInputText type="text"
-                        (input)="dt_matriz.filter($event.target.value, 'codigo_acteco', 'contains')"
+                    (input)="filtrarIzquierdaADerechaCodActeco($event)" id="codigo_acteco"
                         [value]="dt_matriz.filters['codigo_acteco']?.value" placeholder="Buscar por código"
                         class="p-column-filter">
                 </th>
@@ -142,7 +142,6 @@
                         (click)="deletetRegistro(reg)" pTooltip="Eliminar registro" tooltipPosition="top"></button>
                 </td>
 
-
             </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
@@ -158,7 +157,6 @@
         </ng-template>
     </p-table>
 
-
 </div>
 
 
@@ -168,12 +166,11 @@
 
     <ng-template pTemplate="content">
 
-
         <div class="p-fluid grid formgrid">
             <div class="field col-12 md:col-6">
                 <p style="color: rgb(2, 136, 209); font-size: 12pt">Ocupación</p>
                 <label for="basic">Código de ocupación</label>
-                <input type="text" pInputText id="codigo_ocupacion" [(ngModel)]="registro.codigo_ocupacion" required
+                <input autocomplete="off" type="text" pInputText id="codigo_ocupacion" [(ngModel)]="registro.codigo_ocupacion" required
                     autofocus />
                 <small class="p-invalid" *ngIf="submitted && !registro.codigo_ocupacion" style="color: #d32f2f;">
                     <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
@@ -183,13 +180,12 @@
             <div class="field col-12 md:col-6">
                 <p style="color: rgb(2, 136, 209); font-size: 12pt">Actividad económica</p>
                 <label for="basic">Código actividad económica</label>
-                <input type="text" pInputText id="codigo_acteco" [(ngModel)]="registro.codigo_acteco" required
+                <input autocomplete="off"  type="text" pInputText id="codigo_acteco" [(ngModel)]="registro.codigo_acteco" required
                     autofocus />
                 <small class="p-invalid" *ngIf="submitted && !registro.codigo_acteco" style="color: #d32f2f;">
                     <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
                     Este campo es requerido.</small>
             </div>
-
 
             <div class="field col-12 md:col-6">
                 <label for="basic">Descripción ocupación</label>
@@ -212,7 +208,6 @@
             </div>
 
         </div>
-
 
         <p-message *ngIf="msgService" severity="error" text="{{titleMsgError}}"></p-message>
 

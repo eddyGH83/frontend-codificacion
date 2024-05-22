@@ -21,20 +21,24 @@ export class AsignacionService {
   }
 
   // Listar codificadores 
-  codificadores(id: any): Observable<any> {      
+  codificadores(id: any): Observable<any> {
     return this.http.get(`${this._apiUrl}/codificacion/codificadores/${id}`)
   }
 
-  preguntasPorDepartamentoCod(): Observable<any> {
-    console.log("----------------");
-    
-    return this.http.get(`${this._apiUrl}/codificacion/preguntasPorDepartamentoCod`)
+
+  // Listar codificadores con carga para reasignar
+  codificadoresConCarga(body: object): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/codificadoresConCarga`,body)
   }
 
+
+  //
+  preguntasPorDepartamentoCod(body: object): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/preguntasPorDepartamentoCod`, body)
+  }
 
   updateAsignado(id: any, body: object[]): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/updateAsignado/${id}`, body)
   }
-
 
 }

@@ -15,13 +15,16 @@ export class CargaCodificadorComponent implements OnInit {
   // registros: any;
 
   tabla_pb: boolean = false;
-  asignacionDialog: boolean = false;
 
+  // Dialogs
+  asignacionDialog: boolean = false;
+  reAsignacionDialog: boolean = false;
 
   registros: any;
   registro: any;
 
-  usuarios: any;
+  usuarios: any; // codificadores
+  usuarios2: any; // codificadores con carga
 
   // check
   checkedTodo: boolean = false;
@@ -38,8 +41,7 @@ export class CargaCodificadorComponent implements OnInit {
       {check:false, nombre: "Juan Perez", cantidad: 2},
       {check:false, nombre: "Carla Ponce", cantidad: 2},
     ] */
-
-    this.registrosTabla();
+    this.registros = []
 
     this.departamentos = [
       { label: 'Chuquisaca', value: 'CHUQUISACA' },
@@ -51,80 +53,140 @@ export class CargaCodificadorComponent implements OnInit {
       { label: 'Santa Cruz', value: 'SANTA CRUZ' },
       { label: 'Beni', value: 'BENI' },
       { label: 'Pando', value: 'PANDO' },
+      { label: 'Otros', value: 'OTROS' }
     ];
 
-    this.selectedDepartamento = { label: 'La Paz', value: 'LA PAZ' };
+    this.selectedDepartamento = { label: 'Oruro', value: 'ORURO' };
+    this.registrosTabla();
 
-    this.registros = []
+    this.dividirTotal();
   }
 
+
+
+
+  // ACTUALIZA REGISTROS DE LA TABLA
   registrosTabla() {
-
-    this.asignacionService.preguntasPorDepartamentoCod().subscribe(res => {
-      //alert("sdfsdf");
+    this.tabla_pb = true;
+    this.asignacionService.preguntasPorDepartamentoCod({ depto: this.selectedDepartamento?.value }).subscribe(res => {      
       this.registros = res.datos.rows;
+      this.tabla_pb = false;
       //this.registros = res;
-
       //console.log(res.datos.rows)
     });
-
   }
 
+
+
+
+  // SELECCIONA TODOS LOS CHECK
   seleccionarTodo() {
     if (this.checkedTodo !== false) {
+      // todos check seleccionados
       this.checkedTodo = true;
       for (let i = 0; i < this.usuarios.length; i++) {
         this.usuarios[i].activo = true;
       }
+      this.dividirTotal();
     } else {
+      // todos check deseleccionados
       this.checkedTodo = false;
       for (let i = 0; i < this.usuarios.length; i++) {
         this.usuarios[i].activo = false;
       }
+
+      // el valo de this.registros.total tiene que ser  0;
+      for (let i = 0; i < this.usuarios.length; i++) {
+        this.usuarios[i].total = 0;
+      }
+      this.dividirTotal();
     }
   }
 
-  asignarCarga(registro: any) {
 
-    this.codificadores();
 
-    this.registro = { ...registro };
+  // DIVIDE EL TOTAL ENTRE LOS CODIFICADORES SELECCIONADOS
+  dividirTotal() {
 
-    this.asignacionDialog = true;
+    for (let i = 0; i < this.usuarios.length; i++) {
+      this.usuarios[i].total = 0;
+    }
+
+    let total = this.registro.total_carga;
+
+    // cantidad es el total de los  this.usuarios[i].activo = true;
+    let cantidad = 0;
+    for (let i = 0; i < this.usuarios.length; i++) {
+      if (this.usuarios[i].activo === true) {
+        cantidad = cantidad + 1;
+      }
+    }
+
+    let entero = Math.floor(total / cantidad);
+    let resto = total % cantidad;
+
+    // cuando this.usuarios[i].activo = true; se asigna el valor de entero en this.registros.total
+    for (let i = 0; i < this.usuarios.length; i++) {
+      if (this.usuarios[i].activo === true) {
+        this.usuarios[i].total = entero;
+      }
+    }
+    // tambien se debe dividir el valor de resto en this.registros.total seleccionados
+    let j = 0;
+    for (let i = 0; i < this.usuarios.length; i++) {
+      if (this.usuarios[i].activo === true) {
+        if (j < resto) {
+          this.usuarios[i].total = this.usuarios[i].total + 1;
+          j = j + 1;
+        }
+      }
+    }
 
   }
 
-  codificadores() {
-    //console.log("sdfsfsdfs");
 
+
+  // 
+  asignarCarga(registro: any) {
+    this.codificadores();
+    this.registro = { ...registro };
+    this.asignacionDialog = true;
+  }
+
+
+
+  //
+  reAsignarCarga(registro: any) {
+    this.registro = { ...registro };
+    this.codificadoresConCarga();
+    this.reAsignacionDialog = true;
+  }
+
+
+  codificadores() {
     this.asignacionService.codificadores(localStorage.getItem('id_usuario')).subscribe(res => {
       this.usuarios = res.datos.rows;
       this.checkedTodo = false;
-
-      // llenamos de ceros
-      /* for (let i in this.usuarios) {
-        this.usuarios[i].total = 0;
-        this.usuarios[i].activo = false;
-      } */
-
-      //console.table(this.usuarios);
-
-      /*  console.log(this.usuarios)
-       this.total=this.codificacionService.count;
-       const total = this.usuarios.length;
-       this.marcatodo = false
-       this.msg = "Seleccionar todo"
-       this.msg125 = this.codificacionService.id == 125 ? "Asignación simultanea, cada asignación cuenta el doble" : ""
-       for (let i in this.usuarios) {
-           this.usuarios[i].total = 0;
-           this.usuarios[i].activo = false;
-       }
-       console.log(this.usuarios)
-       console.log(this.codificacionService.id)
-   }) */
     });
   }
 
+  codificadoresConCarga() {
+    this.asignacionService.codificadoresConCarga({ id: localStorage.getItem('id_usuario'), pregunta: this.registro.tabla_id }).subscribe(res => {
+      this.usuarios2 = res.datos;
+      console.log("usuarios2");
+      console.log(this.usuarios2);
+    });
+  }
+
+  resetCantAsignado(reg: any) {
+    // buscar en this.usuarios2 el usuario con id_usuario = reg.id_usuario
+    // asignar 0 al total de ese usuario
+    for (let i = 0; i < this.usuarios2.length; i++) {
+      if (this.usuarios2[i].id_usuario === reg.id_usuario) {
+        this.usuarios2[i].total_asignado = 0;
+      }
+    }
+  }
 
   guardar() {
     //alert(this.registro.nro_preg);
@@ -133,7 +195,7 @@ export class CargaCodificadorComponent implements OnInit {
     for (let j in this.usuarios) {
       if (this.usuarios[j].total > 0) {
         const body = {
-          departamento: 'DEPTO AQUI', //this.codificacionService.depto,
+          departamento: this.selectedDepartamento.value, //this.codificacionService.depto,
           count: this.usuarios[j].total,
           estado: 'ASIGNADO',
           usucre: this.usuarios[j].login,
@@ -143,18 +205,47 @@ export class CargaCodificadorComponent implements OnInit {
       }
     }
     // imprimir los registros de array_asg
-    console.table(this.array_asg);
-    
-    
+    //console.table(this.array_asg);
 
     //alert("Asignado correctamente");
 
-    this.asignacionService.updateAsignado(this.registro.tabla_id, this.array_asg).subscribe(res => {
+    this.asignacionService.updateAsignado(this.registro.tabla_id, this.array_asg,).subscribe(res => {
       this.asignacionDialog = false;
       this.registrosTabla();
     });
-
   }
+
+
+
+
+
+
+
+  // guardar reasignacion (REVISAR ESTA PARTE GENERADA POR CPLT)
+  guardarReAsignacion() {
+    this.array_asg = [];
+
+    for (let j in this.usuarios2) {
+      if (this.usuarios2[j].total_asignado > 0) {
+        const body = {
+          departamento: 'DEPTO AQUI', //this.codificacionService.depto,
+          count: this.usuarios2[j].total_asignado,
+          estado: 'ASIGNADO',
+          usucre: this.usuarios2[j].login,
+          area: 'AREA AQUI' // this.codificacionService.area1
+        }
+        this.array_asg.push(body)
+      }
+    }
+
+    //alert("Reasignado correctamente");
+    this.asignacionService.updateAsignado(this.registro.tabla_id, this.array_asg).subscribe(res => {
+      this.reAsignacionDialog = false;
+      this.registrosTabla();
+    });
+  }
+
+
 
 
 
