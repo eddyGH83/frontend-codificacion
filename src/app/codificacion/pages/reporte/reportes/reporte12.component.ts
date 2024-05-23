@@ -31,10 +31,10 @@ export class Reporte12Component implements OnInit {
   // Reporte
   reporte() {
     this.reporte_pb = true;
-    this.reporteService.reporte11().subscribe(
+    this.reporteService.reporte12().subscribe(
       (data2: any) => {
         this.reporte_pb = false;
-        this.registros =[]; //data2.datos.rows;
+        this.registros =data2.datos.rows;
         console.log("registros", this.registros);
 
       })
@@ -49,7 +49,7 @@ export class Reporte12Component implements OnInit {
       const worksheet = xlsx.utils.json_to_sheet(this.registros);
       const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
       const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-      this.saveAsExcelFile(excelBuffer, "Reporte11-" + formattedDate);
+      this.saveAsExcelFile(excelBuffer, "Reporte12-" + formattedDate);
     });
   }
 

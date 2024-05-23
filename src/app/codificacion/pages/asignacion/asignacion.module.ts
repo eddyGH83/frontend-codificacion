@@ -19,6 +19,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { FormsModule } from '@angular/forms';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ToastModule } from 'primeng/toast';
+
 
 
 @NgModule({
@@ -39,6 +41,7 @@ import { CheckboxModule } from 'primeng/checkbox';
     ConfirmDialogModule,
     InputTextareaModule,
     CheckboxModule,
+    ToastModule,
     //CalendarModule,
     MessagesModule,
     MessageModule,

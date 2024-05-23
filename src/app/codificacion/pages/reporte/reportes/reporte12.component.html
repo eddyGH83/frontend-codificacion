@@ -1,6 +1,6 @@
 <div class="card">
 
-    <h5><a [routerLink]="['/reportes']"> <i class="pi pi-chevron-left" style="font-size: 1.4rem"></i> Reportes | </a>12. Reporte: ----------</h5>
+    <h5><a [routerLink]="['/reportes']"> <i class="pi pi-chevron-left" style="font-size: 1.4rem"></i> Reportes | </a>12. Reporte: Registros pendientes a codificar por frecuencia de aparición ocupación-actividad</h5>
     <hr>
 
     <button pButton pRipple type="button" icon="pi pi-refresh" label="Actualizar" class="p-button-warning ml-2 mr-2"
@@ -17,19 +17,16 @@
     [rowsPerPageOptions]="[5,10,25,50]">
     <ng-template pTemplate="header">
         <tr> <!-- Departamento	Pregunta	Automatica	Asistida	Pendiente	Total -->
-           <!--  <th style="width:20%">FECHA</th>
-            <th style="width:20%">CODIFICADOR</th>
-            <th style="width:20%">CODIFICADOS</th> -->
-            <th style="width:20%">CAMPO1</th>
-            <th style="width:20%">CAMPO2</th>
-            <th style="width:20%">CAMPO3</th>
+            <th style="width:20%">DESCRIPCION OCUPACION</th>
+            <th style="width:20%">DESCRIPCION ACTIVIDAD</th>
+            <th style="width:20%">FRECUENCIA</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-reg>
         <tr>
-            <td>{{reg.feccodificador}}</td>
-            <td>{{reg.usucodificador}}</td>
-            <td>{{reg.codificado}}</td>
+            <td>{{reg.respuesta_ocu}}</td>
+            <td>{{reg.respuesta_act}}</td>
+            <td>{{reg.frecuencia}}</td>
         </tr>
     </ng-template>
     <ng-template pTemplate="paginatorleft">

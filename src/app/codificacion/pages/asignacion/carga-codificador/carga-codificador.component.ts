@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AsignacionService } from '../service/asignacion.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
+
+import { Message } from 'primeng/api';
+
 
 @Component({
   selector: 'app-asignacion',
@@ -30,10 +34,17 @@ export class CargaCodificadorComponent implements OnInit {
   checkedTodo: boolean = false;
   checked: boolean = false;
 
+
+  // msgService
+  msgService: boolean = false;
+  titleMsgError: string = '';
+  msgServiceAsig: boolean = true;
+  titleMsgErrorAsig: string = 'Ocurrio un error al reasignar la carga';
+
   //
   array_asg: Array<any> = [];
 
-  constructor(private asignacionService: AsignacionService) { }
+  constructor(private messageService: MessageService, private asignacionService: AsignacionService) { }
 
   ngOnInit(): void {
 
@@ -63,12 +74,10 @@ export class CargaCodificadorComponent implements OnInit {
   }
 
 
-
-
   // ACTUALIZA REGISTROS DE LA TABLA
   registrosTabla() {
     this.tabla_pb = true;
-    this.asignacionService.preguntasPorDepartamentoCod({ depto: this.selectedDepartamento?.value }).subscribe(res => {      
+    this.asignacionService.preguntasPorDepartamentoCod({ depto: this.selectedDepartamento?.value }).subscribe(res => {
       this.registros = res.datos.rows;
       this.tabla_pb = false;
       //this.registros = res;
@@ -189,7 +198,6 @@ export class CargaCodificadorComponent implements OnInit {
   }
 
   guardar() {
-    //alert(this.registro.nro_preg);
     this.array_asg = [];
 
     for (let j in this.usuarios) {
@@ -204,15 +212,43 @@ export class CargaCodificadorComponent implements OnInit {
         this.array_asg.push(body)
       }
     }
+
+
+
     // imprimir los registros de array_asg
     //console.table(this.array_asg);
 
     //alert("Asignado correctamente");
 
+
     this.asignacionService.updateAsignado(this.registro.tabla_id, this.array_asg,).subscribe(res => {
-      this.asignacionDialog = false;
-      this.registrosTabla();
+      // this.asignacionDialog = false;
+
+
+
+      if (res.success === true) {
+        //alert(res.message);        
+
+        this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: res.message, life: 2500 });
+        this.asignacionDialog = false;
+        this.registrosTabla();
+      }
+
+
+      if (res.success === false) {
+        // Mensaje de error
+        this.msgService = true;
+        this.titleMsgError = res.message;
+        setTimeout(() => {
+          this.msgService = false;
+          this.titleMsgError = '';
+        }, 2500);
+      }
+
+
+
     });
+
   }
 
 
