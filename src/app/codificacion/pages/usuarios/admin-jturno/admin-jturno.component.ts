@@ -23,7 +23,6 @@ export class AdminJturnoComponent implements OnInit {
   registroDialog: boolean;
 
 
-
   // submitted
   submitted: boolean;
 
@@ -31,6 +30,9 @@ export class AdminJturnoComponent implements OnInit {
   // roles
   roles: any;
   selectedRol: any;
+
+  //
+  id_usuario: any;
 
   // supervisores
   supervisores: any;
@@ -46,27 +48,24 @@ export class AdminJturnoComponent implements OnInit {
       { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' }
     ];
     this.selectedRol = { rol_id: 4, descripcion: 'SUPERVISOR DE CODIFICACIÓN' };
-
-    // SUPERVISORES
-    this.supervisores = [
-      { id_usuario: 1, nombre_completo: 'SUPERVISOR 1' },
-      { id_usuario: 2, nombre_completo: 'SUPERVISOR 2' }
-    ];
-    this.selectedSupervisor = { id_usuario: 1, nombre_completo: 'SUPERVISOR 1' };
-    
+    this.id_usuario = localStorage.getItem("id_usuario");
 
     this.registrosTabla();
   }
 
 
   // Opciones de Rol
-  opcionesRol() {
-    if (this.selectedRol.rol_id == 4) {
+  opcionesRol() {    
+    if (this.selectedRol.rol_id == 4) {      
       this.dropdownSupervisores = false;
+      this.id_usuario = localStorage.getItem("id_usuario");
     }
 
-    if (this.selectedRol.rol_id == 5) {
+    if (this.selectedRol.rol_id == 5) {    
       this.dropdownSupervisores = true;
+      this.registroSupervisores();
+      this.selectedSupervisor = this.supervisores[0];
+      this.id_usuario = this.selectedSupervisor.id_usuario;
     }
   }
 
@@ -75,9 +74,18 @@ export class AdminJturnoComponent implements OnInit {
     this.tabla_pb = true;
     this.usuariosService.devuelveUsuarios({ rol_id: localStorage.getItem("rol_id"), id_usuario: localStorage.getItem("id_usuario"), login: localStorage.getItem("login") }).subscribe(
       (data2: any) => {
-        //console.log("data2", data2.datos);
         this.tabla_pb = false;
         this.registros = data2.datos.rows;
+      })
+  }
+
+
+  // Registro de Supervisores
+  registroSupervisores() {
+    this.usuariosService.devuelveSupervisores().subscribe(
+      (data2: any) => {
+        this.supervisores = data2.datos.rows;
+        //this.selectedSupervisor = this.supervisores[0];        
       })
   }
 
@@ -118,8 +126,6 @@ export class AdminJturnoComponent implements OnInit {
 
 
 
-
-
   saveRegistro() {
 
     this.submitted = true;
@@ -156,22 +162,15 @@ export class AdminJturnoComponent implements OnInit {
 
           })
 
-
       } else {
-        // alert("INSERT");
-
+        // ADDED
         let body = {
-          id_usuario: Number(localStorage.getItem('id_usuario')),
-          nombres: this.registro.nombres,
-          pr_apellido: this.registro.pr_apellido,
-          sg_apellido: this.registro.sg_apellido !== undefined ? this.registro.sg_apellido : '',    //this.registro.sg_apellido,
-          //apellidos: this.registro.apellidos,
-          //login: this.registro.login,
-          telefono: this.registro.telefono !== undefined ? this.registro.telefono : '',
-          rol_id: this.selectedRol.rol_id,
-          usucre: localStorage.getItem('login'),
-          //turno: null,// this.selectedRol.rol_id == 3 || this.selectedRol.rol_id == 4 ||this.selectedRol.rol_id == 6 ? this.selectedTurno.descripcion : null,
-          cod_supvsr: Number(localStorage.getItem('id_usuario'))
+          nombres: this.registro.nombres,                                                           // nombre
+          pr_apellido: this.registro.pr_apellido,                                                   // pr_apellido
+          sg_apellido: this.registro.sg_apellido !== undefined ? this.registro.sg_apellido : '',    // sg_apellido
+          telefono: this.registro.telefono !== undefined ? this.registro.telefono : '',             // telefono
+          rol_id: this.selectedRol.rol_id,                                                          // rol_id
+          id_usuario: this.id_usuario                                                               // id_usuario
         }
 
         // Verificación y Registro
@@ -180,11 +179,7 @@ export class AdminJturnoComponent implements OnInit {
             this.registroDialog = false;
             this.registro = {};
             this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: data2.message, life: 2500 });
-
-            //this.registrosTabla();
-
           })
-
         this.registrosTabla();
       }
 

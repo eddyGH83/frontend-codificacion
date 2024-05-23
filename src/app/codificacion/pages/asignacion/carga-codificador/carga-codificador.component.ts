@@ -34,7 +34,6 @@ export class CargaCodificadorComponent implements OnInit {
   checkedTodo: boolean = false;
   checked: boolean = false;
 
-
   // msgService
   msgService: boolean = false;
   titleMsgError: string = '';
@@ -85,9 +84,7 @@ export class CargaCodificadorComponent implements OnInit {
     });
   }
 
-
-
-
+  
   // SELECCIONA TODOS LOS CHECK
   seleccionarTodo() {
     if (this.checkedTodo !== false) {

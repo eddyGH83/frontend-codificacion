@@ -15,7 +15,8 @@
                     <!-- buscar -->
                     <span class="p-input-icon-left p-input-icon-right mr-2">
                         <i class="pi pi-user"></i>
-                        <input type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')" pInputText placeholder="Buscar por Usuario" pTooltip="Buscar Usuario" tooltipPosition="left" />
+                        <input type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')" pInputText
+                            placeholder="Buscar por Usuario" pTooltip="Buscar Usuario" tooltipPosition="left" />
                         <i class="pi pi-search"></i>
                     </span>
 
@@ -34,17 +35,17 @@
 
     <div class="col-12">
         <div class="card">
-            <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{ height: '2px' }"></p-progressBar>           
+            <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{ height: '2px' }"></p-progressBar>
 
-            <p-table #dt1 [value]="registros" dataKey="id_catalogo" styleClass="p-datatable-customers" [globalFilterFields]="['nombre_completo']"
-                [showCurrentPageReport]="true"
+            <p-table #dt1 [value]="registros" dataKey="id_catalogo" styleClass="p-datatable-customers"
+                [globalFilterFields]="['nombre_completo']" [showCurrentPageReport]="true"
                 currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
                 [rowsPerPageOptions]="[5, 10, 25, 50]" [paginator]="true" stateStorage="local"
                 stateKey="statedemo-local">
                 <ng-template pTemplate="header">
                     <!--  -->
                     <tr>
-                      
+
                         <th pSortableColumn="nombres">
                             USUARIO <p-sortIcon field="nombres"></p-sortIcon>
                         </th>
@@ -70,10 +71,12 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-reg>
                     <tr [pSelectableRow]="reg">
-                        
+
                         <td>
                             <span class="p-column-title">USUARIO</span>
-                            <span class="image-text"> <strong><i class="pi pi-user" style="font-size: 1.3rem; color: rgb(2, 136, 209);"></i></strong> {{ reg.nombre_completo }}</span>
+                            <span class="image-text"> <strong><i class="pi pi-user"
+                                        style="font-size: 1.3rem; color: rgb(2, 136, 209);"></i></strong> {{
+                                reg.nombre_completo }}</span>
                         </td>
                         <!--  <td>
                             <span class="p-column-title">1er APELLIDO</span>
@@ -132,14 +135,13 @@
                 </ng-template>
             </p-table>
 
-
-
             <!-- Dialog EDIT ADD -->
-            <p-dialog [(visible)]="registroDialog" [style]="{ width: '350px' }" header="Datos del Usuario"
-                [modal]="true" styleClass="p-fluid">
+            <p-dialog header="Datos del Usuario" [(visible)]="registroDialog" [style]="{width: '25vw'}" [modal]="true"
+                class="p-fluid">
+
                 <ng-template pTemplate="content">
 
-                    <div class="field" > 
+                    <div class="field">
                         <label for="nombres" style="color: rgb(2, 136, 209);">Nombre</label>
                         <span class="p-input-icon-left">
                             <i class="pi pi-user"></i>
@@ -150,7 +152,6 @@
                             <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
                             Este campo es requerido.</small>
                     </div>
-
 
                     <div class="field">
                         <label for="pr_apellido" style="color: rgb(2, 136, 209);">1er Apellido</label>
@@ -164,7 +165,6 @@
                             Este campo es requerido.</small>
                     </div>
 
-
                     <div class="field">
                         <label for="sg_apellido" style="color: rgb(2, 136, 209);">2do Apellido</label>
                         <span class="p-input-icon-left">
@@ -174,23 +174,19 @@
                         </span>
                     </div>
 
-
                     <div class="field">
                         <label style="color: rgb(2, 136, 209);">Rol</label>
-                        <!-- {{selectedRol | json}} -->
+                        {{selectedRol | json}}
                         <p-dropdown (onChange)="opcionesRol()" [options]="roles" [(ngModel)]="selectedRol"
                             placeholder="Seleccione un Rol" optionLabel="descripcion"></p-dropdown>
                     </div>
 
-                    <div class="field">
+                    <div class="field" *ngIf="dropdownSupervisores">
                         <label style="color: rgb(2, 136, 209);">Supervisores</label>
-                        <!-- {{selectedRol | json}} -->
-                        <p-dropdown *ngIf="dropdownSupervisores" [options]="supervisores" [(ngModel)]="selectedSupervisor"
-                            placeholder="Seleccione un Rol" optionLabel="nombre_completo"></p-dropdown>
+                        {{selectedSupervisor | json}}
+                        <p-dropdown  [options]="supervisores" [(ngModel)]="selectedSupervisor"
+                            placeholder="Seleccione un Supervisor" optionLabel="nombre_completo"></p-dropdown>
                     </div>
-
-
-
 
                     <div class="field">
                         <label for="telefono" style="color: rgb(2, 136, 209);">Celular</label>
@@ -201,11 +197,9 @@
                         </span>
 
                     </div>
-
-
+              
                 </ng-template>
 
-                <!--  -->
                 <ng-template pTemplate="footer">
                     <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
                         (click)="hideDialog()"></button>
@@ -217,9 +211,7 @@
         </div>
     </div>
 
-
 </div>
 
-<p-confirmDialog [style]="{width: '30vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
-
-
+<p-confirmDialog [style]="{width: '30vw'}" [baseZIndex]="10000"
+    rejectButtonStyleClass="p-button-text"></p-confirmDialog>

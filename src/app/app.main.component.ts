@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
 import { MenuService } from './app.menu.service';
-import {AppComponent} from './app.component';
+import { AppComponent } from './app.component';
 
 @Component({
     selector: 'app-main',
