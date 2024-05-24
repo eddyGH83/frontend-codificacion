@@ -158,9 +158,9 @@
 
 
                     <div class="field" *ngIf="dropdownJefesTurno">
+                        {{selectedJefeTurno | json}}
                         <label style="color: rgb(2, 136, 209);">Jefes de Turno</label>
-                        <!-- {{selectedJefeTurno | json}} -->
-                        <p-dropdown  [options]="jefesTurno" [(ngModel)]="selectedSupervisor"
+                        <p-dropdown  [options]="jefesTurno" [(ngModel)]="selectedJefeTurno"
                             placeholder="Seleccione un Jefe de Turno" optionLabel="nombre_completo"></p-dropdown>
                     </div>
 

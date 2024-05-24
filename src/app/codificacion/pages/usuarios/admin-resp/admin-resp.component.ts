@@ -37,6 +37,7 @@ export class AdminRespComponent implements OnInit {
   turnos: any;
   selectedTurno: any;
   dropdownTurnos: boolean = false;
+  turnoAux: any;
 
   //
   id_usuario: any;
@@ -157,6 +158,7 @@ export class AdminRespComponent implements OnInit {
     this.dropdownJefesTurno = false;
     this.dropdownSupervisores = false;
     this.dropdownTurnos = true;
+    this.selectedRol = { rol_id: 3, descripcion: 'JEFE DE TURNO' };
   }
 
 
@@ -168,7 +170,6 @@ export class AdminRespComponent implements OnInit {
 
     this.selectedRol = { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' };
     //this.selectedSupervisor = this.supervisores.find((x: any) => x.id_usuario == registro.cod_supvsr);
-
   }
 
 
@@ -219,8 +220,10 @@ export class AdminRespComponent implements OnInit {
         // INSERT
 
         // Verificar que rol esta seleccionado
-        if (this.selectedRol.rol_id == 5) { this.id_usuario = this.selectedSupervisor.id_usuario; }
-        if (this.selectedRol.rol_id == 4) { this.id_usuario = localStorage.getItem("id_usuario"); }
+        if (this.selectedRol.rol_id == 6) { this.id_usuario = Number(localStorage.getItem('id_usuario')); this.turnoAux = this.selectedTurno.descripcion; }
+        if (this.selectedRol.rol_id == 5) { this.id_usuario = this.selectedSupervisor.id_usuario; this.turnoAux = ''; }
+        if (this.selectedRol.rol_id == 4) { this.id_usuario = this.selectedJefeTurno.id_usuario; this.turnoAux = ''; }
+        if (this.selectedRol.rol_id == 3) { this.id_usuario = Number(localStorage.getItem('id_usuario')); this.turnoAux = this.selectedTurno.descripcion; }
 
         // Llenar el body
         let body = {
@@ -231,6 +234,8 @@ export class AdminRespComponent implements OnInit {
           rol_id: this.selectedRol.rol_id,                                                          // rol_id
           id_usuario: this.id_usuario,                                                              // id_usuario
           id_creador: Number(localStorage.getItem('id_usuario')),                                   // id_creador (siempre es el usuario logueado)
+          turnoAux: this.turnoAux,                                                                  // turnoAux es para los roles de "Técnico de Contingencia" y "Jefe de Turno"
+          // para los demás roles se averigua hereda de su inmediato superior (BackEnd)
         }
 
         // Verificación y Registro

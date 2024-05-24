@@ -64,13 +64,13 @@ export class AdminSupComponent implements OnInit {
 
   // [+ NUEVO]
   openNew() {
-    
+
     //this.registrosSupervisores();
     this.submitted = false;
     this.registro = {};
     this.registroDialog = true;
 
-   // 
+    // 
     /* this.roles = [
       { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' }
     ];
@@ -80,14 +80,9 @@ export class AdminSupComponent implements OnInit {
 
 
   editRegistro(registro: any) {
-    //this.registrosSupervisores();
-
     this.registro = { ...registro };
     this.registroDialog = true;
-
     this.selectedRol = { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' };
-    //this.selectedSupervisor = this.supervisores.find((x: any) => x.id_usuario == registro.cod_supvsr);
-
   }
 
 
@@ -107,38 +102,29 @@ export class AdminSupComponent implements OnInit {
     if (this.registro.nombres.trim() && this.registro.pr_apellido.trim()) {
 
       if (this.registro.id_usuario) {
-
-        // alert("UPDATE");        
+        // UPDATE         
         let body = {
-          id_usuario: Number(localStorage.getItem('id_usuario')),  // Por este id se va a modificar al usuario
-
-          nombres: this.registro.nombres,
-          pr_apellido: this.registro.pr_apellido,
-          sg_apellido: this.registro.sg_apellido !== undefined ? this.registro.sg_apellido : '',    //this.registro.sg_apellido,
-          //apellidos: this.registro.apellidos,
-          //login: this.registro.login,
-          telefono: this.registro.telefono !== '' ? this.registro.telefono : '00',
-          rol_id: this.selectedRol.rol_id,
-          usumod: localStorage.getItem('login'),
-          //turno: null,// this.selectedRol.rol_id == 3 || this.selectedRol.rol_id == 4 ||this.selectedRol.rol_id == 6 ? this.selectedTurno.descripcion : null,
-          //cod_supvsr: Number(localStorage.getItem('id_usuario'))
+          nombres: this.registro.nombres,                                                           // nombres
+          pr_apellido: this.registro.pr_apellido,                                                   // pr_apellido
+          sg_apellido: this.registro.sg_apellido !== undefined ? this.registro.sg_apellido : '',    // sg_apellido
+          telefono: this.registro.telefono !== undefined ? this.registro.telefono : '',             // telefono
+          rol_id: this.selectedRol.rol_id,                                                          // rol_id
+          id_superior: Number(localStorage.getItem('id_usuario')),                                  // id del inmediato superior
+          id_modificador: Number(localStorage.getItem('id_usuario')),                               // id del modificador (siempre es el usuario logueado)
         }
 
-        // Verificación y Registro
+        // Verificación y modificación
         this.usuariosService.modificaUsuario(this.registro.id_usuario, body).subscribe(
           (data2: any) => {
-
             this.registroDialog = false;
             this.registro = {};
             this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: data2.message, life: 2500 });
-
             this.registrosTabla();
-
           })
 
-
       } else {
- 
+
+        // INSERT
         let body = {
           nombres: this.registro.nombres,
           pr_apellido: this.registro.pr_apellido,
@@ -146,16 +132,16 @@ export class AdminSupComponent implements OnInit {
           telefono: this.registro.telefono !== undefined ? this.registro.telefono : '',
           rol_id: this.selectedRol.rol_id,
           id_usuario: Number(localStorage.getItem('id_usuario')),
-          id_creador: Number(localStorage.getItem('id_usuario')),                                   // id_creador (siempre es el usuario logueado)
+          id_creador: Number(localStorage.getItem('id_usuario')),                                   // id_modifi (siempre es el usuario logueado)
         }
 
         // Verificación y Registro
         this.usuariosService.registraUsuario(body).subscribe(
           (data2: any) => {
-              this.registroDialog = false;
-              this.registro = {};
-              this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: data2.message, life: 2500 });
-              this.registrosTabla();
+            this.registroDialog = false;
+            this.registro = {};
+            this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: data2.message, life: 2500 });
+            this.registrosTabla();
           })
 
       }
