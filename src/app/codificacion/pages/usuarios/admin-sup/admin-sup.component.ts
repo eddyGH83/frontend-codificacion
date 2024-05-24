@@ -33,7 +33,8 @@ export class AdminSupComponent implements OnInit {
   roles: any;
   selectedRol: any;
 
-
+  // id_usuario
+  id_usuario: any;
 
 
   constructor(private messageService: MessageService, private confirmationService: ConfirmationService, private usuariosService: UsuariosService) { }
@@ -137,20 +138,15 @@ export class AdminSupComponent implements OnInit {
 
 
       } else {
-        // alert("INSERT");
-
+ 
         let body = {
-          id_usuario: Number(localStorage.getItem('id_usuario')),
           nombres: this.registro.nombres,
           pr_apellido: this.registro.pr_apellido,
           sg_apellido: this.registro.sg_apellido !== undefined ? this.registro.sg_apellido : '',    //this.registro.sg_apellido,
-          //apellidos: this.registro.apellidos,
-          //login: this.registro.login,
           telefono: this.registro.telefono !== undefined ? this.registro.telefono : '',
           rol_id: this.selectedRol.rol_id,
-          usucre: localStorage.getItem('login'),
-          //turno: null,// this.selectedRol.rol_id == 3 || this.selectedRol.rol_id == 4 ||this.selectedRol.rol_id == 6 ? this.selectedTurno.descripcion : null,
-          cod_supvsr: Number(localStorage.getItem('id_usuario'))
+          id_usuario: Number(localStorage.getItem('id_usuario')),
+          id_creador: Number(localStorage.getItem('id_usuario')),                                   // id_creador (siempre es el usuario logueado)
         }
 
         // Verificación y Registro
@@ -159,16 +155,10 @@ export class AdminSupComponent implements OnInit {
               this.registroDialog = false;
               this.registro = {};
               this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: data2.message, life: 2500 });
-            
-            //this.registrosTabla();
-
+              this.registrosTabla();
           })
 
-        this.registrosTabla();
       }
-
-      // this.registros = [...this.registros];
-      //this.registroDialog = false;
 
     }
 

@@ -12,12 +12,13 @@ import { FormsModule } from '@angular/forms';
 import { PasswordModule } from 'primeng/password';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
+import { SeguridadComponent } from './seguridad/seguridad.component';
 
 
 
 @NgModule({
   declarations: [  
-    PerfilComponent
+    PerfilComponent, SeguridadComponent
   ],
   imports: [
     CommonModule,

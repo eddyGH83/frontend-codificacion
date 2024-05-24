@@ -55,17 +55,17 @@ export class AdminJturnoComponent implements OnInit {
 
 
   // Opciones de Rol
-  opcionesRol() {    
-    if (this.selectedRol.rol_id == 4) {      
+  opcionesRol() {
+    if (this.selectedRol.rol_id == 4) {
       this.dropdownSupervisores = false;
       this.id_usuario = localStorage.getItem("id_usuario");
     }
 
-    if (this.selectedRol.rol_id == 5) {    
+    if (this.selectedRol.rol_id == 5) {
       this.dropdownSupervisores = true;
       this.registroSupervisores();
-      this.selectedSupervisor = this.supervisores[0];
-      this.id_usuario = this.selectedSupervisor.id_usuario;
+      //this.selectedSupervisor = this.supervisores[0];
+      //this.id_usuario = this.selectedSupervisor.id_usuario;
     }
   }
 
@@ -92,17 +92,12 @@ export class AdminJturnoComponent implements OnInit {
 
   // [+ NUEVO]
   openNew() {
-
     //this.registrosSupervisores();
     this.submitted = false;
     this.registro = {};
     this.registroDialog = true;
-
-    // 
-    /* this.roles = [
-      { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' }
-    ];
-    this.selectedRol = { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' }; */
+    this.dropdownSupervisores = false;
+    this.selectedRol = { rol_id: 4, descripcion: 'SUPERVISOR DE CODIFICACIÓN' };
 
   }
 
@@ -163,14 +158,21 @@ export class AdminJturnoComponent implements OnInit {
           })
 
       } else {
-        // ADDED
+        // INSERT
+
+        // Verificar que rol esta seleccionado
+        if (this.selectedRol.rol_id == 5) { this.id_usuario = this.selectedSupervisor.id_usuario; }
+        if (this.selectedRol.rol_id == 4) { this.id_usuario = localStorage.getItem("id_usuario"); }
+
+        // Llenar el body
         let body = {
           nombres: this.registro.nombres,                                                           // nombre
           pr_apellido: this.registro.pr_apellido,                                                   // pr_apellido
           sg_apellido: this.registro.sg_apellido !== undefined ? this.registro.sg_apellido : '',    // sg_apellido
           telefono: this.registro.telefono !== undefined ? this.registro.telefono : '',             // telefono
           rol_id: this.selectedRol.rol_id,                                                          // rol_id
-          id_usuario: this.id_usuario                                                               // id_usuario
+          id_usuario: this.id_usuario,                                                              // id_usuario
+          id_creador: Number(localStorage.getItem('id_usuario')),                                   // id_creador (siempre es el usuario logueado)
         }
 
         // Verificación y Registro
@@ -179,8 +181,8 @@ export class AdminJturnoComponent implements OnInit {
             this.registroDialog = false;
             this.registro = {};
             this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: data2.message, life: 2500 });
+            this.registrosTabla();
           })
-        this.registrosTabla();
       }
 
       // this.registros = [...this.registros];
@@ -189,6 +191,31 @@ export class AdminJturnoComponent implements OnInit {
     }
 
   };
+
+
+  deleteSelectedRegistro(registro: any) {
+    this.registro = { ...registro };
+
+    this.confirmationService.confirm({
+      message: '¿Está seguro de <strong>ELIMINAR</strong> a: <strong>' + this.registro.nombre_completo + '</strong>?',
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+
+        this.usuariosService.deleteUsuario({id:this.registro.id_usuario, user: localStorage.getItem("login") }).subscribe(result => {
+
+          this.registrosTabla();
+
+          // Mensaje
+          this.messageService.add({ severity: 'success', summary: 'Mensaje: ', detail: '¡Registro Eliminado!' });
+          setTimeout(() => {
+            this.messageService.clear();
+          }, 2000);
+
+        });
+      },
+    });
+  }
 
 
   resetContrasenia(registro: any) {

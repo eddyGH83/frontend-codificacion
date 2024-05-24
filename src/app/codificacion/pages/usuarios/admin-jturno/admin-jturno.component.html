@@ -106,9 +106,9 @@
                                 pTooltip="Editar registro" tooltipPosition="left">
                             </button>
 
-                            <!-- <button  *ngIf="!btnEliminar" pButton type="button" icon="pi pi-trash"
+                            <button  pButton type="button" icon="pi pi-trash"
                                 class="p-button-rounded p-button-danger  mr-2" (click)="deleteSelectedRegistro(reg)"
-                                pTooltip="Eliminar registro" tooltipPosition="top"></button> -->
+                                pTooltip="Eliminar registro" tooltipPosition="top"></button>
 
                             <button pButton type="button" icon="pi pi-key"
                                 class="p-button-rounded p-button-warning mr-2" pTooltip="Resetear Contraseña"
@@ -142,6 +142,21 @@
                 <ng-template pTemplate="content">
 
                     <div class="field">
+                        <label style="color: rgb(2, 136, 209);">Rol</label>
+                        <!-- {{selectedRol | json}} -->
+                        <p-dropdown (onChange)="opcionesRol()" [options]="roles" [(ngModel)]="selectedRol"
+                            placeholder="Seleccione un Rol" optionLabel="descripcion"></p-dropdown>
+                    </div>
+
+                    <div class="field" *ngIf="dropdownSupervisores">
+                        <label style="color: rgb(2, 136, 209);">Supervisores</label>
+                        <!-- {{selectedSupervisor | json}} -->
+                        <p-dropdown  [options]="supervisores" [(ngModel)]="selectedSupervisor"
+                            placeholder="Seleccione un Supervisor" optionLabel="nombre_completo"></p-dropdown>
+                    </div>
+
+
+                    <div class="field">
                         <label for="nombres" style="color: rgb(2, 136, 209);">Nombre</label>
                         <span class="p-input-icon-left">
                             <i class="pi pi-user"></i>
@@ -173,20 +188,7 @@
                                 autocomplete="off" />
                         </span>
                     </div>
-
-                    <div class="field">
-                        <label style="color: rgb(2, 136, 209);">Rol</label>
-                        {{selectedRol | json}}
-                        <p-dropdown (onChange)="opcionesRol()" [options]="roles" [(ngModel)]="selectedRol"
-                            placeholder="Seleccione un Rol" optionLabel="descripcion"></p-dropdown>
-                    </div>
-
-                    <div class="field" *ngIf="dropdownSupervisores">
-                        <label style="color: rgb(2, 136, 209);">Supervisores</label>
-                        {{selectedSupervisor | json}}
-                        <p-dropdown  [options]="supervisores" [(ngModel)]="selectedSupervisor"
-                            placeholder="Seleccione un Supervisor" optionLabel="nombre_completo"></p-dropdown>
-                    </div>
+                   
 
                     <div class="field">
                         <label for="telefono" style="color: rgb(2, 136, 209);">Celular</label>

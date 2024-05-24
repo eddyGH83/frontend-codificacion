@@ -33,19 +33,26 @@ export class UsuariosService {
     return this.http.put(`${this._apiUrl}/usuarios/modificaUsuario/${id}`, body)
   }
 
-  
+
   devuelveSupervisores(): Observable<any> {
     return this.http.get(`${this._apiUrl}/usuarios/devuelveSupervisores`)
+  }
+
+
+  devuelveJefesTurno(): Observable<any> {
+    return this.http.get(`${this._apiUrl}/usuarios/devuelveJefesTurno`)
   }
 
 
   resetPassUsuario(id: any): Observable<any> {
     return this.http.get(`${this._apiUrl}/usuarios/resetPassUsuario/${id}`)
   }
+
+
   deleteUsuario(body: any): Observable<any> {
     return this.http.post(`${this._apiUrl}/usuarios/deleteUsuario`, body)
   }
-  
+
 
 
 

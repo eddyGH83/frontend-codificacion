@@ -1,6 +1,6 @@
 <div class="layout-topbar">
 
-   <!--  <a class="layout-right-panel-button layout-topbar-icon" (click)="appMain.onRightMenuClick($event)" href="#">
+    <!--  <a class="layout-right-panel-button layout-topbar-icon" (click)="appMain.onRightMenuClick($event)" href="#">
         <i class="pi pi-ellipsis-v"></i>
     </a> -->
 
@@ -41,7 +41,13 @@
                     </a>
                 </li>
                 <li>
-                    <a routerLink="/" (click)="cerrarSesion();">
+                    <a routerLink="/perfil/cambiar-contrasenia">
+                        <i class="pi pi-fw pi-key"></i>
+                        <span>Seguridad</span>
+                    </a>
+                </li>
+                <li (click)="cerrarSesion()">
+                    <a style="cursor: pointer;" >
                         <i class="pi pi-fw pi-power-off"></i>
                         <span>Cerrar sesion</span>
                     </a>
@@ -61,7 +67,7 @@
                         </div>
                     </a>
                 </li>
-               <!--  <li role="menuitem">
+                <!--  <li role="menuitem">
                     <a href="#"><img src="assets/layout/images/avatar-2.png" alt="">
                         <div class="topbar-menu-info">
                             <span class="topbar-menu-name">Dai Jiang</span>
@@ -97,3 +103,5 @@
         </li>
     </ul>
 </div>
+
+<p-confirmDialog [style]="{width: '30vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

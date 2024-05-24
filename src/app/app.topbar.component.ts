@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppMainComponent } from './app.main.component';
 import { Router } from '@angular/router';
+import { ConfirmationService, ConfirmEventType, MessageService } from 'primeng/api';
 
 
 @Component({
@@ -14,11 +15,22 @@ export class AppTopBarComponent {
   nombres: string = localStorage.getItem('nombres') + ' ' + localStorage.getItem('pr_apellido') + ' ' + localStorage.getItem('sg_apellido');
   rol: string = localStorage.getItem('rol_descripcion');
 
-  constructor(public app: AppComponent, public appMain: AppMainComponent, private router: Router) { }
+  constructor(private confirmationService: ConfirmationService, private messageService: MessageService, public app: AppComponent, public appMain: AppMainComponent, private router: Router) { }
+
 
   cerrarSesion() {
-    localStorage.removeItem('token_cod');
-    this.router.navigate(['/']);
+    this.confirmationService.confirm({
+      message: '¿Estás seguro/a que deseas salir?',
+      header: 'Confirmación',
+      icon: 'pi pi-fw pi-power-off',
+      accept: () => {
+        localStorage.removeItem('token_cod');
+        // eliminar todas las variables de sesión en el localStorage
+        localStorage.clear();
+
+        this.router.navigate(['/']);        
+      }
+    });
   }
 
 }

@@ -1,1 +1,239 @@
-<p>admin-resp works!</p>
+<div class="grid">
+
+    <p-toast></p-toast>
+
+    <div class="col-12">
+        <div class="card">
+            <p-toolbar>
+                <div class="p-toolbar-group-right">
+                    <i class="pi pi-user-edit p-toolbar-separator" style="font-size: 2rem"></i>
+                    <h5>Administración de Usuarios</h5>
+                    <!-- {{registro | json}} -->
+                </div>
+
+                <div class="p-toolbar-group-left flex flex-wrap">
+                    <!-- buscar -->
+                    <span class="p-input-icon-left p-input-icon-right mr-2">
+                        <i class="pi pi-user"></i>
+                        <input type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')" pInputText
+                            placeholder="Buscar por Usuario" pTooltip="Buscar Usuario" tooltipPosition="left" />
+                        <i class="pi pi-search"></i>
+                    </span>
+
+                    <!-- actualizar -->
+                    <button pButton type="button" label="Actualizar" icon="pi pi-refresh" class="p-button-warning mr-2"
+                        (click)="registrosTabla()" pTooltip="Actualizar registros" tooltipPosition="bottom"></button>
+
+                    <!-- nuevo -->
+                    <button pButton type="button" label="Nuevo" icon="pi pi-plus" class="mr-2" (click)="openNew()"
+                        pTooltip="Adicionar Usuario" tooltipPosition="bottom"></button>
+
+                </div>
+            </p-toolbar>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{ height: '2px' }"></p-progressBar>
+
+            <p-table #dt1 [value]="registros" dataKey="id_catalogo" styleClass="p-datatable-customers"
+                [globalFilterFields]="['nombre_completo']" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
+                [rowsPerPageOptions]="[5, 10, 25, 50]" [paginator]="true" stateStorage="local"
+                stateKey="statedemo-local">
+                <ng-template pTemplate="header">
+                    <!--  -->
+                    <tr>
+
+                        <th pSortableColumn="nombres">
+                            USUARIO <p-sortIcon field="nombres"></p-sortIcon>
+                        </th>
+                        <!-- <th pSortableColumn="pr_apellido">
+                            1ER APELLIDO <p-sortIcon field="pr_apellido"></p-sortIcon>
+                        </th> -->
+                        <!--  <th pSortableColumn="sg_apellido">
+                            2DO APELLIDO <p-sortIcon field="sg_apellido"></p-sortIcon>
+                        </th> -->
+                        <th pSortableColumn="login">
+                            NOMBRE DE USUARIO <p-sortIcon field="login"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="rol_codigo">
+                            ROL<p-sortIcon field="rol_codigo"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="turno">
+                            TURNO<p-sortIcon field="turno"></p-sortIcon>
+                        </th>
+                        <th>ACCIONES</th>
+
+                    </tr>
+
+                </ng-template>
+                <ng-template pTemplate="body" let-reg>
+                    <tr [pSelectableRow]="reg">
+
+                        <td>
+                            <span class="p-column-title">USUARIO</span>
+                            <span class="image-text"> <strong><i class="pi pi-user"
+                                        style="font-size: 1.3rem; color: rgb(2, 136, 209);"></i></strong> {{
+                                reg.nombre_completo }}</span>
+                        </td>
+                        <!--  <td>
+                            <span class="p-column-title">1er APELLIDO</span>
+                            <span class="image-text">{{ reg.pr_apellido }}</span>
+                        </td>
+                        <td>
+                            <span class="p-column-title">2do APELLIDO</span>
+                            <span class="image-text">{{ reg.sg_apellido }}</span>
+                        </td> -->
+                        <td>
+                            <span class="p-column-title">USUARIO</span>
+                            <span class="image-text"><p-chip label="{{ reg.login }}" styleClass="mr-2"></p-chip> </span>
+                        </td>
+                        <td>
+                            <span class="p-column-title">ROL</span>
+                            <span class="image-text"><strong>{{ reg.rol_codigo }}</strong> <br />
+                                {{ reg.rol_descripcion }}</span>
+                        </td>
+                        <td>
+                            <span class="p-column-title">TURNO</span>
+                            <span class="image-text">{{ reg.turno }}</span>
+                        </td>
+
+                        <td>
+                            <button pButton type="button" icon="pi pi-pencil"
+                                class="p-button-rounded p-button-info mr-2" (click)="editRegistro(reg)"
+                                pTooltip="Editar registro" tooltipPosition="left">
+                            </button>
+
+                            <button  pButton type="button" icon="pi pi-trash"
+                                class="p-button-rounded p-button-danger  mr-2" (click)="deleteSelectedRegistro(reg)"
+                                pTooltip="Eliminar registro" tooltipPosition="top"></button>
+
+                            <button pButton type="button" icon="pi pi-key"
+                                class="p-button-rounded p-button-warning mr-2" pTooltip="Resetear Contraseña"
+                                (click)="resetContrasenia(reg)" tooltipPosition="top">
+                            </button>
+
+                            <!-- <p-button (click)="resetContrasenia()" icon="pi pi-arrow-down" label="Top" styleClass="p-button-warning"></p-button> -->
+
+                            <!-- {{customer.id_catalogo | json}} -->
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="4">No hay registros para mostrar</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="paginatorleft">
+                    <!-- <p-button (click)="registrosTabla()" type="button" icon="pi pi-refresh" styleClass="p-button-text"
+                        label="Actualizar" pTooltip="Actualizar Tabla" tooltipPosition="right"></p-button> -->
+                </ng-template>
+                <ng-template pTemplate="paginatorright">
+                    <!-- <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button> -->
+                </ng-template>
+            </p-table>
+
+            <!-- Dialog EDIT ADD -->
+            <p-dialog header="Datos del Usuario" [(visible)]="registroDialog" [style]="{width: '25vw'}" [modal]="true"
+                class="p-fluid">
+
+                <ng-template pTemplate="content">
+
+                    <div class="field">
+                        <label style="color: rgb(2, 136, 209);">Rol</label>
+                        <!-- {{selectedRol | json}} -->
+                        <p-dropdown (onChange)="opcionesRol()" [options]="roles" [(ngModel)]="selectedRol"
+                            placeholder="Seleccione un Rol" optionLabel="descripcion"></p-dropdown>
+                    </div>
+
+
+                    <div class="field" *ngIf="dropdownSupervisores">
+                        <label style="color: rgb(2, 136, 209);">Supervisores</label>
+                        <!-- {{selectedSupervisor | json}} -->
+                        <p-dropdown  [options]="supervisores" [(ngModel)]="selectedSupervisor"
+                            placeholder="Seleccione un Supervisor" optionLabel="nombre_completo"></p-dropdown>
+                    </div>
+
+
+                    <div class="field" *ngIf="dropdownJefesTurno">
+                        <label style="color: rgb(2, 136, 209);">Jefes de Turno</label>
+                        <!-- {{selectedJefeTurno | json}} -->
+                        <p-dropdown  [options]="jefesTurno" [(ngModel)]="selectedSupervisor"
+                            placeholder="Seleccione un Jefe de Turno" optionLabel="nombre_completo"></p-dropdown>
+                    </div>
+
+
+
+                    <div class="field" *ngIf="dropdownTurnos">
+                        <label style="color: rgb(2, 136, 209);">Turno</label>
+                        <!-- {{selectedJefeTurno | json}} -->
+                        <p-dropdown  [options]="turnos" [(ngModel)]="selectedTurno"
+                            placeholder="Seleccione un Turno" optionLabel="descripcion"></p-dropdown>
+                    </div>
+
+
+                    <div class="field">
+                        <label for="nombres" style="color: rgb(2, 136, 209);">Nombre</label>
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-user"></i>
+                            <input type="text" pInputText id="nombres" [(ngModel)]="registro.nombres" required autofocus
+                                autocomplete="off" />
+                        </span>
+                        <small class="p-invalid" *ngIf="submitted && !registro.nombres" style="color: #d32f2f">
+                            <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
+                            Este campo es requerido.</small>
+                    </div>
+
+                    
+
+                    <div class="field">
+                        <label for="pr_apellido" style="color: rgb(2, 136, 209);">1er Apellido</label>
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-user"></i>
+                            <input type="text" pInputText id="pr_apellido" [(ngModel)]="registro.pr_apellido"
+                                autocomplete="off" />
+                        </span>
+                        <small class="p-invalid" *ngIf="submitted && !registro.pr_apellido" style="color: #d32f2f">
+                            <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
+                            Este campo es requerido.</small>
+                    </div>
+
+                    <div class="field">
+                        <label for="sg_apellido" style="color: rgb(2, 136, 209);">2do Apellido</label>
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-user"></i>
+                            <input type="text" pInputText id="sg_apellido" [(ngModel)]="registro.sg_apellido"
+                                autocomplete="off" />
+                        </span>
+                    </div>
+                   
+
+                    <div class="field">
+                        <label for="telefono" style="color: rgb(2, 136, 209);">Celular</label>
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-mobile"></i>
+                            <input type="number" pInputText id="telefono" [(ngModel)]="registro.telefono"
+                                autocomplete="off" />
+                        </span>
+
+                    </div>
+              
+                </ng-template>
+
+                <ng-template pTemplate="footer">
+                    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+                        (click)="hideDialog()"></button>
+                    <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text mr-2"
+                        (click)="saveRegistro()"></button>
+                </ng-template>
+            </p-dialog>
+
+        </div>
+    </div>
+
+</div>
+
+<p-confirmDialog [style]="{width: '30vw'}" [baseZIndex]="10000"
+    rejectButtonStyleClass="p-button-text"></p-confirmDialog>
