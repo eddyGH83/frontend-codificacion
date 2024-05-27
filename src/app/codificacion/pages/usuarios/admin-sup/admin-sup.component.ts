@@ -57,7 +57,8 @@ export class AdminSupComponent implements OnInit {
       (data2: any) => {
         //console.log("data2", data2.datos);
         this.tabla_pb = false;
-        this.registros = data2.datos.rows;
+        // this.registros = data2.datos.rows;
+        this.registros = data2;
       })
   }
 

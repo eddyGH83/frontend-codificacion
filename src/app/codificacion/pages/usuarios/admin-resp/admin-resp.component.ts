@@ -122,7 +122,8 @@ export class AdminRespComponent implements OnInit {
     this.usuariosService.devuelveUsuarios({ rol_id: localStorage.getItem("rol_id"), id_usuario: localStorage.getItem("id_usuario"), login: localStorage.getItem("login") }).subscribe(
       (data2: any) => {
         this.tabla_pb = false;
-        this.registros = data2.datos.rows;
+        //this.registros = data2.datos.rows;
+        this.registros = data2;
       })
   }
 

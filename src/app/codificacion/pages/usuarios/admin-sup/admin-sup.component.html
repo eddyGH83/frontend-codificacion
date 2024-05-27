@@ -102,9 +102,12 @@
                             <span class="image-text">{{ reg.turno }}</span>
                         </td>
                         <td>
-                            <span class="p-column-title">NRO CELULAR</span>
-                            <i class="pi pi-mobile" style="font-size: 2rem;" *ngIf="reg.telefono !== ''"></i> <span class="image-text"> {{ reg.telefono }}</span>
-                        </td>                        
+                            <span class="p-column-title" >NRO CELULAR</span>
+                            <i class="pi pi-mobile" style="font-size: 2rem;" *ngIf="reg.telefono !== ''"></i> 
+                            <span class="image-text"> {{ reg.telefono }}</span>
+                        </td>   
+                        
+                        
                         <td>
                             <button pButton type="button" icon="pi pi-pencil"
                                 class="p-button-rounded p-button-info mr-2" (click)="editRegistro(reg)"
