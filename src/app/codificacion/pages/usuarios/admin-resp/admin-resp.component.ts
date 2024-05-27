@@ -149,6 +149,24 @@ export class AdminRespComponent implements OnInit {
 
   // [+ NUEVO]
   openNew() {
+    //  ROLES
+    this.roles = [
+      { rol_id: 3, descripcion: 'JEFE DE TURNO' },
+      { rol_id: 4, descripcion: 'SUPERVISOR DE CODIFICACIÓN' },
+      { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' },
+      { rol_id: 6, descripcion: 'TÉCNICO DE CONTINGENCIA' }
+    ];
+    this.selectedRol = { rol_id: 3, descripcion: 'JEFE DE TURNO' };
+    this.id_usuario = localStorage.getItem("id_usuario");
+
+    // TURNOS
+    this.turnos = [
+      { turno: 'Mañana', descripcion: 'MAÑANA' },
+      { turno: 'Tarde', descripcion: 'TARDE' }
+    ];
+    this.selectedTurno = { turno: 'Mañana', descripcion: 'MAÑANA' };
+
+    
     //this.registrosSupervisores();
     this.submitted = false;
     this.registro = {};
@@ -164,13 +182,74 @@ export class AdminRespComponent implements OnInit {
 
 
   editRegistro(registro: any) {
-    //this.registrosSupervisores();
+   
+    
+    // Si el registro seleccionado es tecnico en codificación
+    if (registro.rol_id == 5) {      
+      this.dropdownSupervisores = true;
+      this.dropdownJefesTurno = false;
+      this.dropdownTurnos = false;      
+      this.roles = [{ rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' }];
+      this.selectedRol = this.roles[0];      
+
+      // Llena el supervisor
+      this.usuariosService.devuelveSupervisores().subscribe(
+        (data2: any) => {
+          this.supervisores = data2.datos.rows;
+          this.selectedSupervisor = this.supervisores.find((x: any) => x.id_usuario == registro.cod_supvsr);
+        })
+    }
+
+
+
+
+    // Si el registro seleccionado es supervisor de codificación
+    if (registro.rol_id == 4) {
+      this.dropdownSupervisores = false;      
+      this.dropdownJefesTurno = true;
+      this.dropdownTurnos = false;
+      this.roles = [{ rol_id: 4, descripcion: 'SUPERVISOR DE CODIFICACIÓN' }],
+      this.selectedRol = this.roles[0];
+
+      // Llena el jefe de turno
+      this.usuariosService.devuelveJefesTurno().subscribe(
+        (data2: any) => {
+          this.jefesTurno = data2.datos.rows;
+          this.selectedJefeTurno = this.jefesTurno.find((x: any) => x.id_usuario == registro.cod_supvsr);
+        })
+    }
+
+
+
+
+    // Si el registro seleccionado es jefe de turno
+    if (registro.rol_id == 3) {
+      this.dropdownJefesTurno = false;
+      this.dropdownSupervisores = false;
+      this.dropdownTurnos = true;
+      this.roles = [{ rol_id: 3, descripcion: 'JEFE DE TURNO' }];
+      this.selectedRol = this.roles[0];
+      this.selectedTurno = this.turnos.find((x: any) => x.descripcion == registro.turno);
+    }
+
+
+
+
+
+    // Si el registro seleccionado es tecnico de contingencia
+    if (registro.rol_id == 6) {
+      this.dropdownJefesTurno = false;
+      this.dropdownSupervisores = false;
+      this.dropdownTurnos = true;
+      this.roles = [{ rol_id: 6, descripcion: 'TÉCNICO DE CONTINGENCIA' }];
+      this.selectedRol = this.roles[0];
+      this.selectedTurno = this.turnos.find((x: any) => x.descripcion == registro.turno);
+    }
+     
 
     this.registro = { ...registro };
     this.registroDialog = true;
 
-    this.selectedRol = { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' };
-    //this.selectedSupervisor = this.supervisores.find((x: any) => x.id_usuario == registro.cod_supvsr);
   }
 
 
@@ -188,34 +267,35 @@ export class AdminRespComponent implements OnInit {
     if (this.registro.nombres.trim() && this.registro.pr_apellido.trim()) {
 
       if (this.registro.id_usuario) {
+        // UPDATE
+        // Verificar que rol esta seleccionado
+        if (this.selectedRol.rol_id == 6) { this.id_usuario = Number(localStorage.getItem('id_usuario')); this.turnoAux = this.selectedTurno.descripcion; }
+        if (this.selectedRol.rol_id == 5) { this.id_usuario = this.selectedSupervisor.id_usuario; this.turnoAux = ''; }
+        if (this.selectedRol.rol_id == 4) { this.id_usuario = this.selectedJefeTurno.id_usuario; this.turnoAux = ''; }
+        if (this.selectedRol.rol_id == 3) { this.id_usuario = Number(localStorage.getItem('id_usuario')); this.turnoAux = this.selectedTurno.descripcion; }    
+        
 
-        // alert("UPDATE");        
+        // Llenar el body
         let body = {
-          id_usuario: Number(localStorage.getItem('id_usuario')),  // Por este id se va a modificar al usuario
-
-          nombres: this.registro.nombres,
-          pr_apellido: this.registro.pr_apellido,
-          sg_apellido: this.registro.sg_apellido !== undefined ? this.registro.sg_apellido : '',    //this.registro.sg_apellido,
-          //apellidos: this.registro.apellidos,
-          //login: this.registro.login,
-          telefono: this.registro.telefono !== '' ? this.registro.telefono : '00',
-          rol_id: this.selectedRol.rol_id,
-          usumod: localStorage.getItem('login'),
-          //turno: null,// this.selectedRol.rol_id == 3 || this.selectedRol.rol_id == 4 ||this.selectedRol.rol_id == 6 ? this.selectedTurno.descripcion : null,
-          //cod_supvsr: Number(localStorage.getItem('id_usuario'))
+          nombres: this.registro.nombres,                                                           // nombre
+          pr_apellido: this.registro.pr_apellido,                                                   // pr_apellido
+          sg_apellido: this.registro.sg_apellido !== undefined ? this.registro.sg_apellido : '',    // sg_apellido
+          telefono: this.registro.telefono !== undefined ? this.registro.telefono : '',             // telefono
+          rol_id: this.selectedRol.rol_id,                                                          // rol_id
+          id_superior: this.id_usuario,                                                             // id del inmediato superior
+          id_modificador: Number(localStorage.getItem('id_usuario')),                               // id del modificador (siempre es el usuario logueado)
+          turnoAux: this.turnoAux,                                                                  // turnoAux es para los roles de "Técnico de Contingencia" y "Jefe de Turno"
+          // para los demás roles se averigua hereda de su inmediato superior (BackEnd)
         }
 
-        // Verificación y Registro
+        // Verificación y Actualización
         this.usuariosService.modificaUsuario(this.registro.id_usuario, body).subscribe(
           (data2: any) => {
-
             this.registroDialog = false;
             this.registro = {};
             this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: data2.message, life: 2500 });
-
             this.registrosTabla();
-
-          })
+        })
 
       } else {
         // INSERT

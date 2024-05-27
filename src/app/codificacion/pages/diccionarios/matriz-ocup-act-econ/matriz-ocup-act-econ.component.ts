@@ -132,10 +132,17 @@ export class MatrizOcupActEconComponent implements OnInit {
 
     // Obtener el valor del input
     const valorBusqueda = evento.target.value;
-    // Filtra la matriz usando el método 'startsWith'
-    this.registros = this.registrosAux.filter((item: any) => item.codigo_ocupacion.startsWith(valorBusqueda));
-  }
 
+    // tamaño de la cadena ingresada
+    const tamanoCadena = valorBusqueda.length;
+
+    console.log("tamanoCadena", tamanoCadena);
+
+    // Buscar todos los registros con el tamaño de la cadena ingresada en el input de busqueda de codigo_ocupacion, y que coincidan con el valor ingresado en el input de busqueda de codigo_ocupacion
+    this.registros = this.registrosAux.filter((item: any) => item.codigo_ocupacion.length === tamanoCadena && item.codigo_ocupacion.startsWith(valorBusqueda));
+       
+    
+  }
 
   // FILTRO PERSONANALIZADO: de izquierda a derecha codigo_acteco
   filtrarIzquierdaADerechaCodActeco(evento: any) {
@@ -148,11 +155,15 @@ export class MatrizOcupActEconComponent implements OnInit {
 
     // Obtener el valor del input
     const valorBusqueda = evento.target.value;
-    // Filtra la matriz usando el método 'startsWith'
-    this.registros = this.registrosAux.filter((item: any) => item.codigo_acteco.startsWith(valorBusqueda));
+
+    // tamaño de la cadena ingresada
+    const tamanoCadena = valorBusqueda.length;
+    
+    // Buscar todos los registros con el tamaño de la cadena ingresada en el input de busqueda de codigo_acteco, y que coincidan con el valor ingresado en el input de busqueda de codigo_acteco
+    this.registros = this.registrosAux.filter((item: any) => item.codigo_acteco.length === tamanoCadena && item.codigo_acteco.startsWith(valorBusqueda));
   }
 
-
+  
 
   // Guaradar o editar registro
   saveRegistro() {

@@ -40,8 +40,7 @@
             <p-table #dt1 [value]="registros" dataKey="id_catalogo" styleClass="p-datatable-customers"
                 [globalFilterFields]="['nombre_completo']" [showCurrentPageReport]="true"
                 currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
-                [rowsPerPageOptions]="[5, 10, 25, 50]" [paginator]="true" stateStorage="local"
-                stateKey="statedemo-local">
+                [rowsPerPageOptions]="[5, 10, 25, 50]" [paginator]="true" stateStorage="local">
                 <ng-template pTemplate="header">
                     <!--  -->
                     <tr>
@@ -158,7 +157,7 @@
 
 
                     <div class="field" *ngIf="dropdownJefesTurno">
-                        {{selectedJefeTurno | json}}
+                        <!-- {{selectedJefeTurno | json}} -->
                         <label style="color: rgb(2, 136, 209);">Jefes de Turno</label>
                         <p-dropdown  [options]="jefesTurno" [(ngModel)]="selectedJefeTurno"
                             placeholder="Seleccione un Jefe de Turno" optionLabel="nombre_completo"></p-dropdown>

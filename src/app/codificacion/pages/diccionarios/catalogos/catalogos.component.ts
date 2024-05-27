@@ -9,8 +9,6 @@ import { MessageModule } from 'primeng/message';
 import * as FileSaver from 'file-saver';
 
 
-
-
 @Component({
   selector: 'app-catalogos',
   templateUrl: './catalogos.component.html',
@@ -22,11 +20,8 @@ export class CatalogosComponent implements OnInit {
   registros: any;
   registro: any;
 
-
   // Progress Bar
   tabla_pb: boolean = false;
-
-
 
   // selectedRegistros: any;
 

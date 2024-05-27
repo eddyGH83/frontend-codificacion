@@ -92,10 +92,7 @@ export class AdminSupComponent implements OnInit {
     this.submitted = false;
   }
 
-
-
-
-
+  
   saveRegistro() {
 
     this.submitted = true;

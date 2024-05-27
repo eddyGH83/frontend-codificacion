@@ -92,25 +92,49 @@ export class AdminJturnoComponent implements OnInit {
 
   // [+ NUEVO]
   openNew() {
+    // Roles por defecto
+    this.roles = [
+      { rol_id: 4, descripcion: 'SUPERVISOR DE CODIFICACIÓN' },
+      { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' }
+    ];
+    this.selectedRol = { rol_id: 4, descripcion: 'SUPERVISOR DE CODIFICACIÓN' };
+
+
     //this.registrosSupervisores();
     this.submitted = false;
     this.registro = {};
     this.registroDialog = true;
     this.dropdownSupervisores = false;
     this.selectedRol = { rol_id: 4, descripcion: 'SUPERVISOR DE CODIFICACIÓN' };
-
   }
 
 
   editRegistro(registro: any) {
-    //this.registrosSupervisores();
+
+    // Si el registro seleccionado es tecnico en codificación
+    if (registro.rol_id == 5) {
+      this.dropdownSupervisores = true;
+      this.roles = [{ rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' }];
+      this.selectedRol = this.roles[0];
+
+      // Llenar el supervisor
+      this.usuariosService.devuelveSupervisores().subscribe(
+        (data2: any) => {
+          this.supervisores = data2.datos.rows;
+          this.selectedSupervisor = this.supervisores.find((x: any) => x.id_usuario == registro.cod_supvsr);
+        })
+    }
+
+
+    // Si el registro seleccionado es supervisor de codificación
+    if (registro.rol_id == 4) {
+      this.dropdownSupervisores = false;
+      this.roles = [{ rol_id: 4, descripcion: 'SUPERVISOR DE CODIFICACIÓN' }];
+      this.selectedRol = this.roles[0];
+    }
 
     this.registro = { ...registro };
     this.registroDialog = true;
-
-    this.selectedRol = { rol_id: 5, descripcion: 'TÉCNICO EN CODIFICACIÓN' };
-    //this.selectedSupervisor = this.supervisores.find((x: any) => x.id_usuario == registro.cod_supvsr);
-
   }
 
 
@@ -128,34 +152,34 @@ export class AdminJturnoComponent implements OnInit {
     if (this.registro.nombres.trim() && this.registro.pr_apellido.trim()) {
 
       if (this.registro.id_usuario) {
+        // UPDATE         
+        // Verificar que rol esta seleccionado
+        if (this.selectedRol.rol_id == 5) { this.id_usuario = this.selectedSupervisor.id_usuario; }
+        if (this.selectedRol.rol_id == 4) { this.id_usuario = localStorage.getItem("id_usuario"); }  
 
-        // alert("UPDATE");        
+        // Llenar el body
         let body = {
-          id_usuario: Number(localStorage.getItem('id_usuario')),  // Por este id se va a modificar al usuario
-
-          nombres: this.registro.nombres,
-          pr_apellido: this.registro.pr_apellido,
-          sg_apellido: this.registro.sg_apellido !== undefined ? this.registro.sg_apellido : '',    //this.registro.sg_apellido,
-          //apellidos: this.registro.apellidos,
-          //login: this.registro.login,
-          telefono: this.registro.telefono !== '' ? this.registro.telefono : '00',
-          rol_id: this.selectedRol.rol_id,
-          usumod: localStorage.getItem('login'),
-          //turno: null,// this.selectedRol.rol_id == 3 || this.selectedRol.rol_id == 4 ||this.selectedRol.rol_id == 6 ? this.selectedTurno.descripcion : null,
-          //cod_supvsr: Number(localStorage.getItem('id_usuario'))
+          nombres: this.registro.nombres,                                                           // nombre
+          pr_apellido: this.registro.pr_apellido,                                                   // pr_apellido
+          sg_apellido: this.registro.sg_apellido !== undefined ? this.registro.sg_apellido : '',    // sg_apellido
+          telefono: this.registro.telefono !== undefined ? this.registro.telefono : '',             // telefono
+          rol_id: this.selectedRol.rol_id,                                                          // rol_id
+          id_superior: this.id_usuario,                                                             // id del inmediato superior
+          id_modificador: Number(localStorage.getItem('id_usuario')),                               // id del modificador (siempre es el usuario logueado)
+          
+          //id_usuario: this.id_usuario,                                                            // id_usuario
+          //id_creador: Number(localStorage.getItem('id_usuario')),                                 // id_creador (siempre es el usuario logueado)
         }
 
-        // Verificación y Registro
+        // Verificación y modificación
         this.usuariosService.modificaUsuario(this.registro.id_usuario, body).subscribe(
           (data2: any) => {
-
             this.registroDialog = false;
             this.registro = {};
             this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: data2.message, life: 2500 });
-
             this.registrosTabla();
+        })
 
-          })
 
       } else {
         // INSERT
@@ -202,7 +226,7 @@ export class AdminJturnoComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
 
-        this.usuariosService.deleteUsuario({id:this.registro.id_usuario, user: localStorage.getItem("login") }).subscribe(result => {
+        this.usuariosService.deleteUsuario({ id: this.registro.id_usuario, user: localStorage.getItem("login") }).subscribe(result => {
 
           this.registrosTabla();
 
