@@ -4,6 +4,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { CodificacionService } from '../service/codificacion.service';
+import { Router } from '@angular/router';
 
 
 
@@ -53,10 +54,38 @@ export class CodificacionSimpleComponent implements OnInit {
   //
   products: any;
 
-  constructor(private messageService: MessageService, private codificacionService: CodificacionService, private confirmationService: ConfirmationService) { }
+
+  // Datos Carga
+  carga: any;
+  clasificacion: any;
+  totalCarga: any;
+  nroPreg: any;
+  descPreg: any;
+
+  // Un registro de la carga
+  contexto: any;
+  departamentoItem: any;
+  idPregunta: any;
+  secuencial: any;
+  respuestaItem: any;
+  estadoItem: any;
+  nAux: number = 0;
+
+
+  //vasfdf: string = localStorage.getItem('tabla_id');
+
+  constructor(private router: Router, private messageService: MessageService, private codificacionService: CodificacionService, private confirmationService: ConfirmationService) { }
 
 
   ngOnInit(): void {
+
+    // Verificamos que la variable tabla_id exista en localStorage
+    if (localStorage.getItem('tabla_id') == null) {
+      //Redireccionar a la página de codificación
+      this.router.navigate(['/codificacion']);
+    }
+
+
 
     this.products = [
       { depto: 'depto', identificador: '0-0', porCodificar: 0 }
@@ -119,30 +148,74 @@ export class CodificacionSimpleComponent implements OnInit {
       },
     ];
 
-
-
     //this.catalogosService.getCustomersMedium().then(data => this.customers1 = data);
     //this.catalogosService.getCustomersMedium().then(data => this.customers2 = data);
 
     //this.registrosTabla();
+
+
+    this.cargarParaCodificar();
   }
 
+  /*   openNew() {
+      // alert("openNew");
+      // this.product = {};
+      this.submitted = false;
+      // this.productDialog = true;
+      this.registro = {};
+      this.registroDialog = true;
+    }
+  */
 
+  // carga para codificar
+  cargarParaCodificar() {
+    const body = {
+      tabla_id: localStorage.getItem('tabla_id'),
+      id_usuario: localStorage.getItem('id_usuario'),
+      login: localStorage.getItem('login'),
+    }
 
-  openNew() {
-    // alert("openNew");
-    // this.product = {};
-    this.submitted = false;
-    // this.productDialog = true;
-    this.registro = {};
-    this.registroDialog = true;
+    this.codificacionService.cargarParaCodificar(body).subscribe(
+      (data2: any) => {
+        this.carga = data2.datos;
+        this.clasificacion = data2.clasificacion;
+        this.totalCarga = data2.totalCarga;
+        this.nroPreg = data2.nroPreg;
+        this.descPreg = data2.descPreg;
+        this.primero();
+      })
+
   }
+
+  // recorre la carga
+  siguiente() {
+    if (this.nAux < this.totalCarga) {
+      this.contexto = this.carga[this.nAux].contexto;
+      this.departamentoItem = this.carga[this.nAux].departamento;
+      this.idPregunta = this.carga[this.nAux].id_pregunta;
+      this.secuencial = this.carga[this.nAux].secuencial;
+      this.respuestaItem = this.carga[this.nAux].respuesta;
+      this.estadoItem = this.carga[this.nAux].estado;
+      this.nAux++;
+    }
+  }
+
+  // primero de la carga
+  primero() {
+    this.contexto = this.carga[0].contexto;
+    this.departamentoItem = this.carga[0].departamento;
+    this.idPregunta = this.carga[0].id_pregunta;
+    this.secuencial = this.carga[0].secuencial;
+    this.respuestaItem = this.carga[0].respuesta;
+    this.estadoItem = this.carga[0].estado;
+    this.nAux = 1;
+  }
+
 
   hideDialog() {
     this.registroDialog = false;
     this.submitted = false;
   }
-
 
   // Tabla detalle
   registrosTabla() {
@@ -154,7 +227,6 @@ export class CodificacionSimpleComponent implements OnInit {
         this.registros = [] // data2.datos.rows;
       })
   }
-
 
   saveRegistro() {
     this.submitted = true;
