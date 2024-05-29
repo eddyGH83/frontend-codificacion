@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CodificacionService } from '../service/codificacion.service';
 
+
 @Component({
   selector: 'app-codificacion-doble',
   templateUrl: './codificacion-doble.component.html',
@@ -9,49 +10,77 @@ import { CodificacionService } from '../service/codificacion.service';
 })
 export class CodificacionDobleComponent implements OnInit {
 
-   // registros
- registros: any;
- registro: any;
+  // registros
+  registros: any;
+  registro: any;
 
- // Progress Bar
- tabla_pb: boolean = false;
-
-
-
- selectedRegistros: any;
+  // Progress Bar
+  tabla_pb: boolean = false;
 
 
- msgs: any = [];
+
+  selectedRegistros: any;
 
 
- // registroDialog
- registroDialog: boolean;
+  msgs: any = [];
 
 
- // submitted
- submitted: boolean;
-
- // Busqueda
- busqueda: any;
- customers1: any;
- //customers2: Customer[];
-
- selectedCustomer1: any;
- selectedCustomer2: any;
+  // registroDialog
+  registroDialog: boolean;
 
 
- // catalogos  
- catalogos: any;
- selectedCatalogo: any;
+  // submitted
+  submitted: boolean;
+
+  // Busqueda
+  busqueda: any;
+  customers1: any;
+  //customers2: Customer[];
+
+  selectedCustomer1: any;
+  selectedCustomer2: any;
 
 
- //
- products: any;
+  // catalogos  
+  catalogos: any;
+  selectedCatalogo: any;
+
+
+  //
+  products: any;
+
+
+
+
+  // Datos Carga
+  totalCarga: any;
+  totalCarga_ocu: any;
+  totalCarga_act: any;
+  nroPreg_ocu: any;
+  nroPreg_act: any;
+  descPreg_ocu: any;
+  descPreg_act: any;
+  carga: any;
+  clasificacion_ocu: any;
+  clasificacion_act: any;
+
+
+
+  // Un registro de la carga
+  contexto: any;
+  departamentoItem: any;
+  idPregunta: any; // x-y
+  secuencial: any;  // x-y
+  respuestaItem_ocu: any;
+  respuestaItem_act: any;
+  estadoItem_ocu: any;
+  estadoItem_act: any;
+  nAux: number = 0;
 
 
   constructor(private messageService: MessageService, private codificacionService: CodificacionService, private confirmationService: ConfirmationService) { }
 
- 
+
   ngOnInit(): void {
 
     this.products = [
@@ -117,11 +146,98 @@ export class CodificacionDobleComponent implements OnInit {
 
 
 
-    //this.catalogosService.getCustomersMedium().then(data => this.customers1 = data);
-    //this.catalogosService.getCustomersMedium().then(data => this.customers2 = data);
-
-    //this.registrosTabla();
+    this.cargarParaCodificar();
   }
+
+
+
+  // carga para codificar
+  cargarParaCodificar() {
+    const body = {
+      tabla_id: localStorage.getItem('tabla_id'),
+      id_usuario: localStorage.getItem('id_usuario'),
+      login: localStorage.getItem('login'),
+    }
+
+    this.codificacionService.cargarParaCodificarDoble(body).subscribe(
+      (data2: any) => {
+        this.totalCarga = data2.totalCarga,
+          this.totalCarga_ocu = data2.totalCarga_ocu,
+          this.totalCarga_act = data2.totalCarga_act,
+          this.nroPreg_ocu = data2.nroPreg_ocu,
+          this.nroPreg_act = data2.nroPreg_act,
+          this.descPreg_ocu = data2.descPreg_ocu,
+          this.descPreg_act = data2.descPreg_act,
+          this.carga = data2.datos,
+          this.clasificacion_ocu = data2.clasificacion_ocu,
+          this.clasificacion_act = data2.clasificacion_act
+
+        this.primero();
+      })
+
+  }
+
+  // recorre la carga
+  siguiente() {
+    //alert("siguiente" + this.nAux);
+    if (this.nAux < this.totalCarga) {
+      this.contexto = this.carga[this.nAux].contexto;
+      this.departamentoItem = this.carga[this.nAux].departamento;
+      this.idPregunta = this.carga[this.nAux].id_p49_p51;
+      this.secuencial = this.carga[this.nAux].secuencial;
+      this.respuestaItem_ocu = this.carga[this.nAux].respuesta_ocu;
+      this.respuestaItem_act = this.carga[this.nAux].respuesta_act;
+      this.estadoItem_ocu = this.carga[this.nAux].estado_ocu;
+      this.estadoItem_act = this.carga[this.nAux].estado_act;
+
+      this.nAux++;
+    }
+  }
+
+  // primero de la carga
+  primero() {
+    this.contexto = this.carga[0].contexto;
+    this.departamentoItem = this.carga[0].departamento;
+    this.idPregunta = this.carga[0].id_p49_p51;
+    this.secuencial = this.carga[0].secuencial;
+    this.respuestaItem_ocu = this.carga[0].respuesta_ocu;
+    this.respuestaItem_act = this.carga[0].respuesta_act;
+    this.estadoItem_ocu = this.carga[0].estado_ocu;
+    this.estadoItem_act = this.carga[0].estado_act;
+
+    this.nAux = 1;
+  }
+
+
+  // Confirmar codificación de Ocupación
+  confirmarCodificacionOcu() {
+    this.confirmationService.confirm({
+      message: '¿Está seguro ---------------------------- Ocupación?',
+      header: 'Confirmación',
+      icon: 'pi pi-check',
+      accept: () => {
+        //Actual logic to perform a confirmation
+      }
+    });
+  }
+
+  // Confirmar codificación de Actividad
+  confirmarCodificacionAct() {
+    this.confirmationService.confirm({
+      message: '¿Está seguro ---------------------------- Actividad?',
+      header: 'Confirmación',
+      icon: 'pi pi-check',
+      accept: () => {
+        //Actual logic to perform a confirmation
+      }
+    });   
+  }
+
+  
+
+
+
+
 
 
 

@@ -175,7 +175,7 @@ export class CodificacionSimpleComponent implements OnInit {
       login: localStorage.getItem('login'),
     }
 
-    this.codificacionService.cargarParaCodificar(body).subscribe(
+    this.codificacionService.cargarParaCodificarSimple(body).subscribe(
       (data2: any) => {
         this.carga = data2.datos;
         this.clasificacion = data2.clasificacion;

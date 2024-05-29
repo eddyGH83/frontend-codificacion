@@ -14,12 +14,13 @@ export class CodificacionService {
 
 
 
-  // CODIFICACION SIMPLE
-  
-  cargarParaCodificar(body: object): Observable<any> {        
-    return this.http.post(`${this._apiUrl}/codificacion/cargarParaCodificar`, body)
+  // CODIFICACION SIMPLE - DOBLE  
+  cargarParaCodificarSimple(body: object): Observable<any> {        
+    return this.http.post(`${this._apiUrl}/codificacion/cargarParaCodificarSimple`, body)
   }
-
+  cargarParaCodificarDoble(body: object): Observable<any> {        
+    return this.http.post(`${this._apiUrl}/codificacion/cargarParaCodificarDoble`, body)
+  }
 
 
 
