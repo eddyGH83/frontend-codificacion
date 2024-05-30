@@ -22,6 +22,10 @@ import { BadgeModule } from 'primeng/badge';
 import { TooltipModule } from 'primeng/tooltip';
 import { CodificacionSimpleComponent } from './codificacion-simple/codificacion-simple.component';
 import { CodificacionDobleComponent } from './codificacion-doble/codificacion-doble.component';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { FileUploadModule } from 'primeng/fileupload';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -43,6 +47,10 @@ import { CodificacionDobleComponent } from './codificacion-doble/codificacion-do
     DialogModule,
     ConfirmDialogModule,
     InputTextareaModule,
+    ConfirmPopupModule,
+    ToastModule,
+    FileUploadModule,
+    HttpClientModule,
     //CalendarModule,
     MessagesModule,
     MessageModule,

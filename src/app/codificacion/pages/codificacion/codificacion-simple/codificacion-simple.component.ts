@@ -86,7 +86,6 @@ export class CodificacionSimpleComponent implements OnInit {
     }
 
 
-
     this.products = [
       { depto: 'depto', identificador: '0-0', porCodificar: 0 }
     ];

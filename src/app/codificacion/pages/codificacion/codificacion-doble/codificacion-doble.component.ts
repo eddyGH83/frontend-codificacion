@@ -3,6 +3,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { CodificacionService } from '../service/codificacion.service';
 
 
+
 @Component({
   selector: 'app-codificacion-doble',
   templateUrl: './codificacion-doble.component.html',
@@ -63,6 +64,8 @@ export class CodificacionDobleComponent implements OnInit {
   carga: any;
   clasificacion_ocu: any;
   clasificacion_act: any;
+  clasificacion_ocu_aux: [] = [];
+  clasificacion_act_aux: [] = [];
 
 
 
@@ -77,11 +80,20 @@ export class CodificacionDobleComponent implements OnInit {
   estadoItem_act: any;
   nAux: number = 0;
 
+  // Para las buquedas
+  cod_ocu: string = '';
+  desc_ocu: string = '';
+  cod_act: string = '';
+  desc_act: string = '';
+
+
 
   constructor(private messageService: MessageService, private codificacionService: CodificacionService, private confirmationService: ConfirmationService) { }
 
 
   ngOnInit(): void {
+
+
 
     this.products = [
       { depto: 'depto', identificador: '0-0', porCodificar: 0 }
@@ -144,15 +156,13 @@ export class CodificacionDobleComponent implements OnInit {
       },
     ];
 
+    this.cargaParaCodificar();
 
-
-    this.cargarParaCodificar();
   }
 
 
-
   // carga para codificar
-  cargarParaCodificar() {
+  cargaParaCodificar() {
     const body = {
       tabla_id: localStorage.getItem('tabla_id'),
       id_usuario: localStorage.getItem('id_usuario'),
@@ -177,9 +187,8 @@ export class CodificacionDobleComponent implements OnInit {
 
   }
 
-  // recorre la carga
+  // recorre la carga adelante
   siguiente() {
-    //alert("siguiente" + this.nAux);
     if (this.nAux < this.totalCarga) {
       this.contexto = this.carga[this.nAux].contexto;
       this.departamentoItem = this.carga[this.nAux].departamento;
@@ -190,9 +199,40 @@ export class CodificacionDobleComponent implements OnInit {
       this.estadoItem_ocu = this.carga[this.nAux].estado_ocu;
       this.estadoItem_act = this.carga[this.nAux].estado_act;
 
+      // inputs de busqueda      
+      this.desc_ocu = this.respuestaItem_ocu;
+      this.desc_act = this.respuestaItem_act;
+
+      this.buscarSimilares(this.desc_ocu, this.desc_act);
+
+
       this.nAux++;
     }
   }
+
+
+  // recorre la carga atras
+  anterior() {
+    if (this.nAux > 1) {
+      this.nAux--;
+      this.contexto = this.carga[this.nAux - 1].contexto;
+      this.departamentoItem = this.carga[this.nAux - 1].departamento;
+      this.idPregunta = this.carga[this.nAux - 1].id_p49_p51;
+      this.secuencial = this.carga[this.nAux - 1].secuencial;
+      this.respuestaItem_ocu = this.carga[this.nAux - 1].respuesta_ocu;
+      this.respuestaItem_act = this.carga[this.nAux - 1].respuesta_act;
+      this.estadoItem_ocu = this.carga[this.nAux - 1].estado_ocu;
+      this.estadoItem_act = this.carga[this.nAux - 1].estado_act;
+
+      // inputs de busqueda      
+      this.desc_ocu = this.respuestaItem_ocu;
+      this.desc_act = this.respuestaItem_act;
+
+      this.buscarSimilares(this.desc_ocu, this.desc_act);
+
+    }
+  }
+
 
   // primero de la carga
   primero() {
@@ -205,35 +245,174 @@ export class CodificacionDobleComponent implements OnInit {
     this.estadoItem_ocu = this.carga[0].estado_ocu;
     this.estadoItem_act = this.carga[0].estado_act;
 
+    // inputs de busqueda
+    this.desc_ocu = this.respuestaItem_ocu;
+    this.desc_act = this.respuestaItem_act;
+
+    this.buscarSimilares(this.desc_ocu, this.desc_act);
+
     this.nAux = 1;
   }
 
 
+  // Funcion que buscar palabras similares   
+  buscarSimilares(ocu: any, act: any) {
+    console.log("buscarSimilares", ocu, act);
+    
+    // Buscar palabras similares con el metodo includes en clasificacion_ocu y clasificacion_act y guardarlas en clasificacion_ocu_aux y clasificacion_act_aux
+    this.clasificacion_ocu_aux = this.clasificacion_ocu;  // .clasificacion_ocu.filter((element: any) => element.descripcion.includes(ocu));
+    this.clasificacion_act_aux = this.clasificacion_act;  // .clasificacion_act.filter((element: any) => element.descripcion.includes(act));
+
+
+
+    //this.clasificacion_ocu_aux = this.clasificacion_ocu;
+    //this.clasificacion_act_aux = this.clasificacion_act;
+
+  }
+
+
   // Confirmar codificación de Ocupación
-  confirmarCodificacionOcu() {
+  confirmarCodificacionOcu(registro: any) {
+
+    // Datos que se enviaran al backend
+    var body = {
+      login: localStorage.getItem('login'),
+      id_p49_p51: this.idPregunta, // Por este campo se hace la actualización
+      codigo: registro.codigo,
+      descripcion: registro.descripcion,
+      variable: 'ocu' // Se hara la actualización en las columnas de ocupación
+    }
+
     this.confirmationService.confirm({
-      message: '¿Está seguro ---------------------------- Ocupación?',
+      message: '<strong>CODIGO:</strong> ' + registro.codigo + '<br><strong> DESCRIPCIÓN: </strong>' + registro.descripcion,
       header: 'Confirmación',
       icon: 'pi pi-check',
       accept: () => {
-        //Actual logic to perform a confirmation
+        // Actualizar (codificar)                         
+        this.codificacionService.updateOcuAct(body).subscribe(
+          (data2: any) => {
+            // Mensaje  
+            this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: 'Codificación exitosa (ocupación).', life: 2500 });
+            //this.primero();
+          })
+
+        // Modificar: this.totalCarga_ocu siempre y cuando estado_ocu = 'ASIGNADO'
+        if (this.estadoItem_ocu == 'ASIGNADO') {
+          this.totalCarga_ocu = this.totalCarga_ocu - 1;
+        }
+
+        // Modificar: this.estadoItem_ocu
+        this.estadoItem_ocu = 'CODIFICADO';
+
+
+
+        // Modificar: carga su propiedad estado_ocu = 'CODIFICADO'
+        this.carga.forEach(element => {
+          if (element.id_p49_p51 == this.idPregunta) {
+            element.estado_ocu = 'CODIFICADO';
+          }
+        });
       }
     });
   }
 
+
+
   // Confirmar codificación de Actividad
-  confirmarCodificacionAct() {
+  confirmarCodificacionAct(registro: any) {
+
+    // Datos que se enviaran al backend
+    var body = {
+      login: localStorage.getItem('login'),
+      id_p49_p51: this.idPregunta, // Por este campo se hace la actualización
+      codigo: registro.codigo,
+      descripcion: registro.descripcion,
+      variable: 'act' // Se hara la actualización en las columnas de actividad
+    }
+
     this.confirmationService.confirm({
-      message: '¿Está seguro ---------------------------- Actividad?',
+      message: '<strong>CODIGO:</strong> ' + registro.codigo + '<br><strong> DESCRIPCIÓN: </strong>' + registro.descripcion,
       header: 'Confirmación',
       icon: 'pi pi-check',
       accept: () => {
-        //Actual logic to perform a confirmation
+        // Actualizar (codificar)
+        this.codificacionService.updateOcuAct(body).subscribe(
+          (data2: any) => {
+            // Mensaje  
+            this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: 'Codificación exitosa (actividad).', life: 2500 });
+            //this.primero();
+          })
+
+
+        // Modificar: this.totalCarga_act siempre y cuando estado_act = 'ASIGNADO'
+        if (this.estadoItem_act == 'ASIGNADO') {
+          this.totalCarga_act = this.totalCarga_act - 1;
+        }
+
+        // Modificar: this.estadoItem_act
+        this.estadoItem_act = 'CODIFICADO';
+
+
+        // Modificar: carga su propiedad estado_act = 'CODIFICADO'
+        this.carga.forEach(element => {
+          if (element.id_p49_p51 == this.idPregunta) {
+            element.estado_act = 'CODIFICADO';
+          }
+        });
       }
-    });   
+    });
   }
 
-  
+
+  // Anular codificación anterior
+  anularCodificacionAnterior() {
+    // 
+    // this.anterior();
+
+    this.confirmationService.confirm({
+      message: '¿Estás seguro de anular la anterior codificación?',
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        // Recorrer la carga atras
+        this.anterior();
+        // Datos que se enviaran al backend
+
+        var body = {
+          // login: localStorage.getItem('login'),
+          id_p49_p51: this.idPregunta, // Por este campo se hace la actualización      
+        }
+        console.info(this.idPregunta);
+
+
+        // Modificar: this.totalCarga_ocu siempre y cuando estado_ocu = 'ASIGNADO'
+        if (this.estadoItem_ocu == 'CODIFICADO') {
+          this.totalCarga_ocu = this.totalCarga_ocu + 1;
+          this.estadoItem_ocu = 'ASIGNADO';
+          // Modificar: carga su propiedad estado_ocu = 'ASIGNADO'
+          this.carga.forEach(element => {
+            if (element.id_p49_p51 == this.idPregunta) {
+              element.estado_ocu = 'ASIGNADO';
+            }
+          });
+        }
+
+
+        // Modificar: this.totalCarga_act siempre y cuando estado_act = 'ASIGNADO'
+        if (this.estadoItem_act == 'CODIFICADO') {
+          this.totalCarga_act = this.totalCarga_act + 1;
+          this.estadoItem_act = 'ASIGNADO';
+          // Modificar: carga su propiedad estado_act = 'CODIFICADO'
+          this.carga.forEach(element => {
+            if (element.id_p49_p51 == this.idPregunta) {
+              element.estado_act = 'ASIGNADO';
+            }
+          });
+        }
+
+      }
+    });
+  }
 
 
 

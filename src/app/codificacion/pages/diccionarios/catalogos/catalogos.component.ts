@@ -175,7 +175,7 @@ export class CatalogosComponent implements OnInit {
         this.catalogosService.updateEstadoCatalogo(this.registro.id_catalogo, { estado: 'INACTIVO', user: localStorage.getItem('login') }).subscribe(
           (data2: any) => {
             this.dialogEliminar = false;
-            this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: 'Registro eliminado.', life: 2500 });
+            this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: 'Codificación exitosa.', life: 2500 });
             this.registrosTabla();
           })
       },

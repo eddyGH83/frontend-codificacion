@@ -6,6 +6,7 @@ import { OdbcComponent } from './odbc.component';
 import { CalendarModule } from 'primeng/calendar';
 import { FormsModule } from '@angular/forms';
 import { FileUploadModule } from 'primeng/fileupload';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -17,7 +18,9 @@ import { FileUploadModule } from 'primeng/fileupload';
     OdbcRoutingModule,
     CalendarModule,
     FormsModule,
-    FileUploadModule
+    FileUploadModule,
+    HttpClientModule
+
   ]
 })
 export class OdbcModule { }

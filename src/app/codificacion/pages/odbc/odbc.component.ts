@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
+
 
 @Component({
   selector: 'app-odbc',
@@ -19,12 +21,14 @@ export class OdbcComponent implements OnInit {
 
   invalidDates: Array<Date>
 
-  constructor() { }
+  uploadedFiles: any[] = [];
+
+
+  constructor(private messageService: MessageService) { }
 
   ngOnInit(): void {
 
-
-    this.es = {
+   /*  this.es = {
       firstDayOfWeek: 1,
       dayNames: ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
       dayNamesShort: ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"],
@@ -33,8 +37,8 @@ export class OdbcComponent implements OnInit {
       monthNamesShort: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
       today: 'Hoy',
       clear: 'Borrar'
-    }
-
+    } */
+/* 
     let today = new Date();
     let month = today.getMonth();
     let year = today.getFullYear();
@@ -47,18 +51,25 @@ export class OdbcComponent implements OnInit {
     this.minDate.setFullYear(prevYear);
     this.maxDate = new Date();
     this.maxDate.setMonth(nextMonth);
-    this.maxDate.setFullYear(nextYear);
+    this.maxDate.setFullYear(nextYear); */
 
-    let invalidDate = new Date();
+  /*   let invalidDate = new Date();
     invalidDate.setDate(today.getDate() - 1);
     this.invalidDates = [today, invalidDate];
-
+ */
 
   }
 
+  onUpload(event) {
+    for(let file of event.files) {
+        this.uploadedFiles.push(file);
+    }
+
+    this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: ''});
+}
+
   fechaSeleccionada(){
-    console.log("sdsdfsdf");
-    
+    console.log("sdsdfsdf");    
   }
 
 }

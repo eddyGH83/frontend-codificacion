@@ -21,7 +21,9 @@ export class CodificacionService {
   cargarParaCodificarDoble(body: object): Observable<any> {        
     return this.http.post(`${this._apiUrl}/codificacion/cargarParaCodificarDoble`, body)
   }
-
+  updateOcuAct(body: object): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/updateOcuAct`, body)
+  }
 
 
 
