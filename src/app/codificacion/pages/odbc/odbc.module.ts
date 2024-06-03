@@ -7,6 +7,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { FormsModule } from '@angular/forms';
 import { FileUploadModule } from 'primeng/fileupload';
 import { HttpClientModule } from '@angular/common/http';
+import { DividerModule } from 'primeng/divider';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { HttpClientModule } from '@angular/common/http';
     CalendarModule,
     FormsModule,
     FileUploadModule,
-    HttpClientModule
+    HttpClientModule,
+    DividerModule
 
   ]
 })
