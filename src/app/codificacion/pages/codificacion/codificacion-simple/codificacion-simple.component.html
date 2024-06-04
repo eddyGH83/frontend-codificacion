@@ -44,7 +44,6 @@
         <!-- VARIABLES DE CONTEXTO -->
         <div class="col-6 md:col-6 lg:6">
             <div class="card  border-1 surface-border">
-
                 <p-table>
                     <ng-template pTemplate="header">
                         <tr>
@@ -52,16 +51,11 @@
                                 CONTEXTO</th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-product>
-                        <tr>
-                            <td [innerHTML]="contexto"></td>
-                        </tr>
-                    </ng-template>
                 </p-table>
-
+                <br>
+                <p [innerHTML]="contexto"></p>
             </div>
         </div>
-
 
 
 
@@ -82,10 +76,10 @@
     </div>
 
     <!-- TABLA DE CODIFICACIÓN Y CATALOGOS -->
-    <p-table #dt1 [value]="clasificacion" dataKey="id_catalogo" [scrollable]="true" scrollHeight="400px"
+    <p-table #dt1 [value]="clasificacionAux" dataKey="id_catalogo" [scrollable]="true" scrollHeight="400px"
         styleClass="p-datatable-customers" [showCurrentPageReport]="true"
-        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="10"
-        [rowsPerPageOptions]="[10]" [paginator]="true" stateStorage="local">
+        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
+        [rowsPerPageOptions]="[5]" [paginator]="true" stateStorage="local">
         <ng-template pTemplate="header">
             <!--  -->
             <tr>
@@ -95,12 +89,12 @@
             </tr>
             <tr>
                 <th>
-                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'codigo', 'contains')"
-                        [value]="dt1.filters['codigo']?.value" placeholder="Buscar por código" class="w-full">
+                    <input pInputText type="text" (keyup)="buscarPorCodigo()" [(ngModel)]="codigo"
+                        placeholder="Buscar por código" class="w-full">
                 </th>
                 <th>
-                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'descripcion', 'contains')"
-                        [value]="dt1.filters['descripcion']?.value" placeholder="Buscar por respuesta" class="w-full">
+                    <input pInputText type="text" (keyup)="buscarSimilaresPorDescripcion()" [(ngModel)]="descripcion"
+                        placeholder="Buscar por respuesta" class="w-full">
                 </th>
                 <th>
                 </th>

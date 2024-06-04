@@ -26,6 +26,7 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { FileUploadModule } from 'primeng/fileupload';
 import { HttpClientModule } from '@angular/common/http';
+import { KnobModule } from 'primeng/knob';
 
 
 @NgModule({
@@ -40,7 +41,7 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     CommonModule,
     CodificacionRoutingModule,
-
+    KnobModule,
     //BrowserModule,
     //BrowserAnimationsModule,
     TableModule,

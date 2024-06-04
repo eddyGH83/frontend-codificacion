@@ -24,7 +24,13 @@ export class CodificacionService {
   updateOcuAct(body: object): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/updateOcuAct`, body)
   }
-
+  
+  updatePreguntaSimple(body: object): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/updatePreguntaSimple`, body)
+  }
+  updatePreguntaSimpleAnular(body: object): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/updatePreguntaSimpleAnular`, body)
+  }
 
 
 

@@ -28,6 +28,7 @@ export class CodificacionSimpleComponent implements OnInit {
   // Datos Carga
   carga: any;
   clasificacion: any;
+  clasificacionAux: any;
   totalCarga: any;
   nroPreg: any;
   descPreg: any;
@@ -42,21 +43,30 @@ export class CodificacionSimpleComponent implements OnInit {
   nAux: number = 0;
   porCodificar: number = 0;
 
+  // Valores por defecto de los inputs de busqueda
+  codigo: string = '';
+  descripcion: string = '';
+
 
 
   constructor(private router: Router, private messageService: MessageService, private codificacionService: CodificacionService, private confirmationService: ConfirmationService) { }
 
+  
 
   ngOnInit(): void {
-
     // Verificamos que la variable tabla_id exista en localStorage
     if (localStorage.getItem('tabla_id') == null) {
       //Redireccionar a la página de codificación
       this.router.navigate(['/codificacion']);
     }
 
+    // Cargar los registros para codificar (carga)
     this.cargarParaCodificar();
   }
+
+
+
+
 
 
   // carga para codificar
@@ -66,21 +76,103 @@ export class CodificacionSimpleComponent implements OnInit {
       id_usuario: localStorage.getItem('id_usuario'),
       login: localStorage.getItem('login'),
     }
-
     this.codificacionService.cargarParaCodificarSimple(body).subscribe(
       (data2: any) => {
         this.carga = data2.datos;
+        console.table( this.carga);
+        
         this.clasificacion = data2.clasificacion;
         this.totalCarga = data2.totalCarga;
         this.nroPreg = data2.nroPreg;
         this.descPreg = data2.descPreg;
         this.porCodificar = data2.totalCarga;
-        console.table(this.carga);
-
         this.primero();
+        this.buscarSimilares();
       })
+  }
+
+
+
+
+
+  // Buscar palabras similares en 
+  buscarSimilares() {
+    // limpiar clasificacionAux
+    this.clasificacionAux = [];
+    // recorrer clasificacion
+    this.clasificacion.forEach(element => {
+      // calcular la similitud           
+      let sim = similarity(this.respuestaItem, element.descripcion);
+      // si la similitud es mayor a 0.5
+      if (sim > 0.5) {
+        // agregar a clasificacionAux, tambien la similitud
+        element.similitud = sim;
+        this.clasificacionAux.push(element);
+      }
+    });
+    // ordenar por similitud
+    this.clasificacionAux.sort((a, b) => (a.similitud > b.similitud) ? -1 : 1);
+  }
+
+
+
+
+
+
+
+  // Buscar palabras similares con el input descripcion
+  buscarSimilaresPorDescripcion() {
+    // limpiar clasificacionAux    
+    this.clasificacionAux = [];
+    // Limpiar input codigo
+    this.codigo = '';
+    // recorrer clasificacion
+    this.clasificacion.forEach(element => {
+      // calcular la similitud           
+      let sim = similarity(this.descripcion, element.descripcion);
+      // si la similitud es mayor a 0.5
+      if (sim > 0.5) {
+        // agregar a clasificacionAux, tambien la similitud
+        element.similitud = sim;
+        this.clasificacionAux.push(element);
+      }
+    });
+    // ordenar por similitud
+    this.clasificacionAux.sort((a, b) => (a.similitud > b.similitud) ? -1 : 1);
+  }
+
+
+
+
+
+
+
+
+  // Buscar registros por el input codigo
+  buscarPorCodigo() {
+    // Limpiar clasificacionAux
+    this.clasificacionAux = [];
+
+    // Limpiar input descripcion
+    this.descripcion = '';
+
+    // recoorer clasificacion
+    this.clasificacion.forEach(element => {
+      // si el codigo es igual al input codigo
+      if (element.codigo === this.codigo) {
+        // agregar a clasificacionAux
+        this.clasificacionAux.push(element);
+      }
+    });
 
   }
+
+
+
+
+
+
+
 
   // recorre la carga
   siguiente() {
@@ -93,7 +185,17 @@ export class CodificacionSimpleComponent implements OnInit {
       this.estadoItem = this.carga[this.nAux].estado;
       this.nAux++;
     }
+    //  Reeplazar el input descripcion por el valor de la respuesta
+    this.descripcion = this.respuestaItem;
+    // Limpia el input codigo
+    this.codigo = '';
+    this.buscarSimilares();
   }
+
+
+
+
+
 
   // primero de la carga
   primero() {
@@ -104,9 +206,21 @@ export class CodificacionSimpleComponent implements OnInit {
     this.respuestaItem = this.carga[0].respuesta;
     this.estadoItem = this.carga[0].estado;
     this.nAux = 1;
+    //  Reeplazar el input descripcion por el valor de la respuesta
+    this.descripcion = this.respuestaItem;
+
+    // Limpia el input codigo
+    this.codigo = '';
+    this.buscarSimilares();
   }
 
-  // recorre la carga hacia atras
+
+
+
+
+
+
+  // Recorre la carga hacia atras
   atras() {
     if (this.nAux > 1) {
       this.nAux = this.nAux - 2;
@@ -118,12 +232,51 @@ export class CodificacionSimpleComponent implements OnInit {
       this.estadoItem = this.carga[this.nAux].estado;
       this.nAux++;
     }
+    //  Reeplazar el input descripcion por el valor de la respuesta
+    this.descripcion = this.respuestaItem;
+
+    // Limpia el input codigo
+    this.codigo = '';
+    this.buscarSimilares();
   }
 
-  // recorre la carga hacia adelante
-  anularAnterior(){
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Anulación realizada' });
+
+
+
+
+
+
+  // Recorre la carga hacia adelante
+  anularAnterior() {
+    // Volver atras un registro
     this.atras();
+
+    // sim y cuando sea mayor a 0 y que estado sea diferente de CODIFICADO
+    if (this.porCodificar < this.totalCarga && this.estadoItem === 'CODIFICADO') {
+      this.porCodificar++;
+    }
+
+    // Modificar el estado y
+    this.estadoItem = 'ASIGNADO';
+
+    // Modificar: carga (foreach) su propiedad estado_ocu = 'ASIGNADO'
+    this.carga.forEach(element => {
+      if (element.id_pregunta == this.idPregunta) {
+        element.estado = 'ASIGNADO';
+      }
+    });
+
+    // Recuperar informacion del registro
+    const body = {
+      id_registro: this.idPregunta,
+      tabla_id: localStorage.getItem('tabla_id'),
+    }
+
+    this.codificacionService.updatePreguntaSimpleAnular(body).subscribe(
+      (data2: any) => {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Anulación realizada' });
+      })
+
   }
 
 
@@ -135,7 +288,7 @@ export class CodificacionSimpleComponent implements OnInit {
       icon: 'pi pi-check-square',
       accept: () => {
 
-        // siem y cuando sea mayor a 0 y que estado sea diferente de CODIFICADO
+        // sim y cuando sea mayor a 0 y que estado sea diferente de CODIFICADO
         if (this.porCodificar > 0 && this.estadoItem === 'ASIGNADO') {
           this.porCodificar--;
         }
@@ -150,11 +303,25 @@ export class CodificacionSimpleComponent implements OnInit {
           }
         });
 
-        this.siguiente();
+        // Codificación
+        const body = {
+          id_registro: this.idPregunta,
+          tabla_id: localStorage.getItem('tabla_id'),
+          codigocodif: registro.codigo,
+          usucodificador: localStorage.getItem('login'),
+        }
 
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Codificación realizada' });
+        this.codificacionService.updatePreguntaSimple(body).subscribe(
+          (data2: any) => {
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Codificación realizada' });
+            this.siguiente();
+          })
       }
     });
   }
+
+
+
+
 
 }

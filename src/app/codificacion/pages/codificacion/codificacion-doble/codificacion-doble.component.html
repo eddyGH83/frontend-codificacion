@@ -5,14 +5,15 @@
     <!-- Variables para supervisión -->
 
 
-    <!-- dos columas -->
+    <!-- INFORMACION DE LA PREGUNTA -->
     <div class="grid">
 
 
         <!-- OCUPACION -->
         <div class="col-4 md:col-4 lg:6">
+            <p-progressBar *ngIf="ocuActCont_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
             <div class="card  border-1 surface-border">
-                <p-table [value]="products">
+                <p-table>
                     <ng-template pTemplate="header">
                         <tr>
                             <th style="background-color: rgb(2, 136, 209); color: rgb(42, 42, 42); text-align: center;">
@@ -30,13 +31,17 @@
                         </tr>
                     </ng-template>
                 </p-table>
-                <p class="ml-2 mt-2"><strong style="color:rgb(2, 136, 209)">PREGUNTA: </strong> <span
-                        class="image-text"> <p-chip label="49" styleClass="mr-2"></p-chip>
-                        {{descPreg_ocu}}</span></p>
-                <p class="ml-2 mt-2"><strong style="color:rgb(2, 136, 209)">RESPUESTA: </strong> {{respuestaItem_ocu}}
+                <p class="ml-2 mt-2"><strong style="color:rgb(58, 58, 58)">PREGUNTA: </strong> <span
+                        class="image-text"></span>
+                    <p-chip label="49" styleClass="mr-2"></p-chip>
+                    {{descPreg_ocu}}
+                </p> <br>
+                <p class="ml-2 "><strong style="font-weight: normal; color:rgb(2, 136, 209)">RESPUESTA: </strong> {{respuestaItem_ocu}}
                 </p>
-                <p class="ml-2 "><strong style="color:rgb(2, 136, 209)">ESTADO: </strong> {{estadoItem_ocu}}</p>
-                <!--  <p class="ml-2 "><strong style="color:rgb(2, 136, 209)">CÓDIGO: </strong> cod </p> -->
+                <p class="ml-2 ">
+                    <strong style="font-weight: normal; color:rgb(2, 136, 209)">ESTADO: </strong> {{estadoItem_ocu}}
+                    <strong class="ml-6" style="font-weight: normal; color:rgb(2, 136, 209)">CODIGO: </strong> 01010101
+                </p>
             </div>
         </div>
 
@@ -44,8 +49,9 @@
 
         <!-- ACTIVIDAD -->
         <div class="col-4 md:col-4 lg:6">
+            <p-progressBar *ngIf="ocuActCont_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
             <div class="card  border-1 surface-border">
-                <p-table [value]="products">
+                <p-table>
                     <ng-template pTemplate="header">
                         <tr>
                             <th
@@ -66,33 +72,33 @@
                         </tr>
                     </ng-template>
                 </p-table>
-                <p class="ml-2 mt-2"><strong style="color:rgb(17, 173, 228)">PREGUNTA: </strong> <span
-                        class="image-text"> <p-chip label="51" styleClass="mr-2"></p-chip>
+                <p class="ml-2 mt-2"><strong style="color:rgb(58, 58, 58)">PREGUNTA: </strong> <span class="image-text">
+                        <p-chip label="51" styleClass="mr-2"></p-chip>
                         {{descPreg_act}}</span></p>
-                <p class="ml-2 mt-2"><strong style="color:rgb(17, 173, 228)">RESPUESTA: </strong> {{respuestaItem_act}}
+                <p class="ml-2">
+                    <strong style="font-weight: normal; color:rgb(17, 173, 228)">RESPUESTA: </strong> {{respuestaItem_act}}
                 </p>
-                <p class="ml-2 "><strong style="color:rgb(17, 173, 228)">ESTADO: </strong>{{estadoItem_act}} </p>
-                <!-- <p class="ml-2 "><strong style="color:rgb(17, 173, 228)">CÓDIGO: </strong> cod </p> -->
+                <p class="ml-2 ">
+                    <strong style="font-weight: normal; color:rgb(17, 173, 228)">ESTADO: </strong>{{estadoItem_act}}
+                    <strong class="ml-6" style="font-weight: normal; color:rgb(17, 173, 228)">CODIGO: </strong> 02020202
+                </p>
             </div>
         </div>
 
         <!-- CONTEXTO -->
         <div class="col-4 md:col-4 lg:6">
+            <p-progressBar *ngIf="ocuActCont_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
             <div class="card  border-1 surface-border">
 
-                <p-table [value]="products">
+                <p-table>
                     <ng-template pTemplate="header">
                         <tr>
                             <th style="background-color: rgb(16, 177, 99); color: rgb(42, 42, 42);">VARIABLES DE
                                 CONTEXTO</th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-product>
-                        <tr>
-                            <td [innerHTML]="contexto"></td>
-                        </tr>
-                    </ng-template>
                 </p-table>
+                <p [innerHTML]="contexto" class="mt-1 ml-2" ></p>
 
             </div>
         </div>
@@ -101,58 +107,50 @@
 
 
 
-    <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
-
+    <!-- CONTROLES -->
     <div class="text-700 text-center">
-
-        <button (click)="anularCodificacionAnterior()" pButton pRipple label="Anular anterior" icon="pi pi-trash"
-            class="p-button-danger mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
+        <button (click)="anularAnterior()" pButton pRipple label="Anular anterior" icon="pi pi-trash"
+            class="p-button-danger mb-3  px-5 py-3 mr-2 white-space-nowrap"></button>
         <button (click)="primero()" pButton pRipple label="Primero" icon="pi pi-fast-backward"
-            class="p-button-info mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
+            class="p-button-info mb-3  px-5 py-3 mr-2 white-space-nowrap"></button>
         <button (click)="siguiente()" pButton pRipple label="Siguiente" icon="pi pi-forward"
-            class="p-button-info mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
-        <!-- <button pButton pRipple label="Guardar" icon="pi pi-save"
-            class="p-button-secondary mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button> -->
+            class="p-button-info mb-3  px-5 py-3 mr-2 white-space-nowrap"></button>
+            <button pButton pRipple type="button" label="{{nAux}} / {{totalCarga}}" disabled
+            class="p-button-outlined p-button-rounded p-button-secondary mb-3 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
     </div>
 
 
-
-
-
-
+    <!-- TABLA DE CATALOGOS -->
     <div class="grid">
-
-
         <div class="col-6 md:col-6 lg:6">
-
+            <p-progressBar *ngIf="ocuActCont_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
             <div class="card  border-1 surface-border">
-                <!-- Tabla 1 -->
-                <p-table #dt1 [value]="clasificacion_ocu_aux" [(selection)]="selectedCustomer1" dataKey="id_catalogo"
-                    [scrollable]="true" scrollHeight="400px" styleClass="p-datatable-customers"
-                    [showCurrentPageReport]="true"
-                    currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="10"
-                    [rowsPerPageOptions]="[10]" [paginator]="true" stateStorage="local">
+                <!-- Tabla Ocupacion -->
+                <p-table #dt1 [value]="clasificacion_ocu_aux" dataKey="id_catalogo" [scrollable]="true"
+                    scrollHeight="400px" styleClass="p-datatable-customers p-datatable-sm" [showCurrentPageReport]="true"
+                    currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
+                    [rowsPerPageOptions]="[5]" [paginator]="true" stateStorage="local">
                     <ng-template pTemplate="header">
                         <!--  -->
                         <tr>
-                            <th pSortableColumn="codigo">CÓDIGO CODIFICACIÓN OCUPACIÓN<p-sortIcon
+                            <th pSortableColumn="codigo">CÓDIGO OCUPACIÓN<p-sortIcon
                                     field="codigo"></p-sortIcon>
                             </th>
-                            <th pSortableColumn="descripcion">RESPUESTA <p-sortIcon field="descripcion"></p-sortIcon></th>
+                            <th pSortableColumn="descripcion">RESPUESTA <p-sortIcon field="descripcion"></p-sortIcon>
+                            </th>
                             <th>ACCIONES</th>
                         </tr>
                         <tr>
                             <th>
-                                <input pInputText type="text" 
-                                    (input)="dt1.filter($event.target.value, 'codigo', 'contains')"                                    
+                                <input pInputText type="text"
+                                    (input)="dt1.filter($event.target.value, 'codigo', 'contains')"
                                     [value]="dt1.filters['codigo']?.value" placeholder="Buscar por código"
                                     class="w-full">
                             </th>
                             <th>
                                 <input pInputText type="text"
                                     (input)="dt1.filter($event.target.value, 'descripcion', 'contains')"
-                                    [value]="desc_ocu" placeholder="Buscar por respuesta"
-                                    class="w-full">
+                                    [value]="desc_ocu" placeholder="Buscar por respuesta" class="w-full">
                             </th>
                             <th>
 
@@ -162,7 +160,7 @@
                     <ng-template pTemplate="body" let-reg>
                         <tr [pSelectableRow]="reg">
                             <td>
-                                <span class="p-column-title">CÓDIGO CODIFICACIÓN OCUPACIÓN</span>
+                                <span class="p-column-title">CÓDIGO OCUPACIÓN</span>
                                 <span class="image-text"> <strong> {{reg.codigo}}</strong></span>
                             </td>
                             <td>
@@ -171,8 +169,9 @@
                             </td>
 
                             <td>
-                                <button (click)="confirmarCodificacionOcu(reg)" styleClass="p-button-lg" pButton pRipple icon="pi pi-check" pTooltip="Codificar"
-                                    tooltipPosition="right" class="p-button-info mr-2"></button>
+                                <button (click)="confirmarCodificacionOcu(reg)" styleClass="p-button-lg" pButton pRipple
+                                    icon="pi pi-check" pTooltip="Codificar" tooltipPosition="right"
+                                    class="p-button-info mr-2"></button>
                             </td>
                         </tr>
                     </ng-template>
@@ -188,30 +187,26 @@
                     <ng-template pTemplate="paginatorright">
                     </ng-template>
                 </p-table>
-
-
             </div>
-
         </div>
 
 
         <div class="col-6 md:col-6 lg:6">
-
+            <p-progressBar *ngIf="ocuActCont_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
             <div class="card  border-1 surface-border">
-                <!-- Tabla 2 -->
-
-                <p-table #dt2 [value]="clasificacion_act_aux" [(selection)]="selectedCustomer1" dataKey="id_catalogo"
-                    [scrollable]="true" scrollHeight="400px" styleClass="p-datatable-customers"
-                    [showCurrentPageReport]="true"
-                    currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="10"
-                    [rowsPerPageOptions]="[10]" [paginator]="true" stateStorage="local">
+                <!-- Tabla Actividad -->
+                <p-table #dt2 [value]="clasificacion_act_aux" dataKey="id_catalogo" [scrollable]="true"
+                    scrollHeight="400px" styleClass="p-datatable-customers p-datatable-sm" [showCurrentPageReport]="true"
+                    currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
+                    [rowsPerPageOptions]="[5]" [paginator]="true" stateStorage="local">
                     <ng-template pTemplate="header">
                         <!--  -->
                         <tr>
-                            <th pSortableColumn="codigo">CÓDIGO CODIFICACIÓN ACTIVIDAD <p-sortIcon
-                                    field="codigo"></p-sortIcon> 
+                            <th pSortableColumn="codigo">CÓDIGO ACTIVIDAD <p-sortIcon
+                                    field="codigo"></p-sortIcon>
                             </th>
-                            <th pSortableColumn="descripcion">RESPUESTA <p-sortIcon field="descripcion"></p-sortIcon></th>
+                            <th pSortableColumn="descripcion">RESPUESTA <p-sortIcon field="descripcion"></p-sortIcon>
+                            </th>
                             <th>ACCIONES</th>
                         </tr>
                         <tr>
@@ -224,8 +219,7 @@
                             <th>
                                 <input pInputText type="text"
                                     (input)="dt2.filter($event.target.value, 'descripcion', 'contains')"
-                                    [value]="desc_act" placeholder="Buscar por respuesta"
-                                    class="w-full">
+                                    [value]="desc_act" placeholder="Buscar por respuesta" class="w-full">
                             </th>
                             <th>
                                 <!-- <button pButton pRipple icon="pi pi-eye"
@@ -237,7 +231,7 @@
                     <ng-template pTemplate="body" let-reg>
                         <tr [pSelectableRow]="reg">
                             <td>
-                                <span class="p-column-title">CÓDIGO CODIFICACIÓN ACTIVIDAD </span>
+                                <span class="p-column-title">CÓDIGO ACTIVIDAD </span>
                                 <span class="image-text"> <strong> {{reg.codigo}}</strong></span>
                             </td>
                             <td>
@@ -246,8 +240,9 @@
                             </td>
 
                             <td>
-                                <button (click)="confirmarCodificacionAct(reg)" styleClass="p-button-lg" pButton pRipple icon="pi pi-check" pTooltip="Codificar"
-                                    tooltipPosition="right" class="p-button-primary mr-2"></button>
+                                <button (click)="confirmarCodificacionAct(reg)" styleClass="p-button-lg" pButton pRipple
+                                    icon="pi pi-check" pTooltip="Codificar" tooltipPosition="right"
+                                    class="p-button-primary mr-2"></button>
                             </td>
                         </tr>
                     </ng-template>
@@ -263,18 +258,16 @@
                     <ng-template pTemplate="paginatorright">
                     </ng-template>
                 </p-table>
-
-
-
             </div>
-
         </div>
-
-
-
     </div>
 
 
 
-</div>
 
+
+
+
+
+
+</div>

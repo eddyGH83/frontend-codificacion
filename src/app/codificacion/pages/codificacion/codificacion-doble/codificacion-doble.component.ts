@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CodificacionService } from '../service/codificacion.service';
 
+// Para el uso de HTML en el contexto
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+
+import * as similarity from 'similarity';
 
 
 @Component({
@@ -10,47 +14,6 @@ import { CodificacionService } from '../service/codificacion.service';
   styleUrls: ['./codificacion-doble.component.scss']
 })
 export class CodificacionDobleComponent implements OnInit {
-
-  // registros
-  registros: any;
-  registro: any;
-
-  // Progress Bar
-  tabla_pb: boolean = false;
-
-
-
-  selectedRegistros: any;
-
-
-  msgs: any = [];
-
-
-  // registroDialog
-  registroDialog: boolean;
-
-
-  // submitted
-  submitted: boolean;
-
-  // Busqueda
-  busqueda: any;
-  customers1: any;
-  //customers2: Customer[];
-
-  selectedCustomer1: any;
-  selectedCustomer2: any;
-
-
-  // catalogos  
-  catalogos: any;
-  selectedCatalogo: any;
-
-
-  //
-  products: any;
-
-
 
 
   // Datos Carga
@@ -64,8 +27,8 @@ export class CodificacionDobleComponent implements OnInit {
   carga: any;
   clasificacion_ocu: any;
   clasificacion_act: any;
-  clasificacion_ocu_aux: [] = [];
-  clasificacion_act_aux: [] = [];
+  clasificacion_ocu_aux: any;
+  clasificacion_act_aux: any;
 
 
 
@@ -80,6 +43,8 @@ export class CodificacionDobleComponent implements OnInit {
   estadoItem_act: any;
   nAux: number = 0;
 
+
+
   // Para las buquedas
   cod_ocu: string = '';
   desc_ocu: string = '';
@@ -87,82 +52,25 @@ export class CodificacionDobleComponent implements OnInit {
   desc_act: string = '';
 
 
+  // Progress Bar
+  ocuActCont_pb: boolean = true;
 
-  constructor(private messageService: MessageService, private codificacionService: CodificacionService, private confirmationService: ConfirmationService) { }
+  // El servicio "private sanitizer: DomSanitizer" es para poder usar HTML en el contexto
+  constructor(private sanitizer: DomSanitizer, private messageService: MessageService, private codificacionService: CodificacionService, private confirmationService: ConfirmationService) { }
 
 
   ngOnInit(): void {
 
-
-
-    this.products = [
-      { depto: 'depto', identificador: '0-0', porCodificar: 0 }
-    ];
-
-    this.selectedCatalogo = { label: 'La Paz', value: 'LA PAZ' };
-
-    // this.show();  
-    this.registros = [
-      {
-        nroPreg: "20",
-        variable: "520520",
-        total: "Tomina"
-
-      },
-      {
-        nroPreg: "32",
-        variable: "145020",
-        total: "Tomina"
-      },
-      {
-        nroPreg: "33",
-        variable: "050204",
-        total: "Tomave"
-      },
-      {
-        nroPreg: "34",
-        variable: "400157",
-        total: "Toco"
-      },
-      {
-        nroPreg: "35",
-        variable: "600250",
-        total: "Toro Toro"
-      },
-      {
-        nroPreg: "36",
-        variable: "652305",
-        total: "Santo Tomé"
-      },
-      {
-        nroPreg: "37",
-        variable: "152004",
-        total: "Togo"
-      },
-      {
-        nroPreg: "48",
-        variable: "605077",
-        total: "Tomino"
-      },
-      {
-        nroPreg: "49-51",
-        variable: "909050",
-        total: "Tomeave"
-      },
-      {
-        nroPreg: "52",
-        variable: "101210",
-        total: "Tomena"
-      },
-    ];
-
-    this.cargaParaCodificar();
-
+    this.cargarParaCodificar();
   }
 
 
-  // carga para codificar
-  cargaParaCodificar() {
+  // CARGA PARA CODIFICAR
+  cargarParaCodificar() {
+
+    // Progres bar
+    this.ocuActCont_pb = true;
+
     const body = {
       tabla_id: localStorage.getItem('tabla_id'),
       id_usuario: localStorage.getItem('id_usuario'),
@@ -171,48 +79,107 @@ export class CodificacionDobleComponent implements OnInit {
 
     this.codificacionService.cargarParaCodificarDoble(body).subscribe(
       (data2: any) => {
-        this.totalCarga = data2.totalCarga,
-          this.totalCarga_ocu = data2.totalCarga_ocu,
-          this.totalCarga_act = data2.totalCarga_act,
-          this.nroPreg_ocu = data2.nroPreg_ocu,
-          this.nroPreg_act = data2.nroPreg_act,
-          this.descPreg_ocu = data2.descPreg_ocu,
-          this.descPreg_act = data2.descPreg_act,
-          this.carga = data2.datos,
-          this.clasificacion_ocu = data2.clasificacion_ocu,
-          this.clasificacion_act = data2.clasificacion_act
+        // this.carga = data2.datos;
+        // 
+        // this.clasificacion = data2.clasificacion;
+        // this.totalCarga = data2.totalCarga;
+        // this.nroPreg = data2.nroPreg;
+        // this.descPreg = data2.descPreg;
+        // this.porCodificar = data2.totalCarga;
+
+        this.totalCarga = data2.totalCarga,           // Total carga ocupacion y actividad
+          this.totalCarga_ocu = data2.totalCarga_ocu,   // Total carga ocupacion
+          this.totalCarga_act = data2.totalCarga_act,   // Total carga actividad
+          this.nroPreg_ocu = data2.nroPreg_ocu,   // nro de la pregunta acupacion
+          this.nroPreg_act = data2.nroPreg_act,   // nro de la pregunta actividad
+          this.descPreg_ocu = data2.descPreg_ocu, // descripcion de la pregunta ocupacion 
+          this.descPreg_act = data2.descPreg_act, // descripcion de la pregunta actividad
+          this.carga = data2.datos,               // datos de la carga
+          this.clasificacion_ocu = data2.clasificacion_ocu,   // clasificacion ocupacion (catalogo ocupacion)
+          this.clasificacion_act = data2.clasificacion_act    // clasificacion actividad (catalogo actividad)
+
+        // this.clasificacion_ocu_aux = this.clasificacion_ocu;
+        // this.clasificacion_act_aux = this.clasificacion_act;
+
+       // console.table(this.carga);
 
         this.primero();
+        this.buscarSimilares();
+
+        // Progres bar
+        this.ocuActCont_pb = false;
       })
-
-  }
-
-  // recorre la carga adelante
-  siguiente() {
-    if (this.nAux < this.totalCarga) {
-      this.contexto = this.carga[this.nAux].contexto;
-      this.departamentoItem = this.carga[this.nAux].departamento;
-      this.idPregunta = this.carga[this.nAux].id_p49_p51;
-      this.secuencial = this.carga[this.nAux].secuencial;
-      this.respuestaItem_ocu = this.carga[this.nAux].respuesta_ocu;
-      this.respuestaItem_act = this.carga[this.nAux].respuesta_act;
-      this.estadoItem_ocu = this.carga[this.nAux].estado_ocu;
-      this.estadoItem_act = this.carga[this.nAux].estado_act;
-
-      // inputs de busqueda      
-      this.desc_ocu = this.respuestaItem_ocu;
-      this.desc_act = this.respuestaItem_act;
-
-      this.buscarSimilares(this.desc_ocu, this.desc_act);
-
-
-      this.nAux++;
-    }
   }
 
 
-  // recorre la carga atras
-  anterior() {
+  // Buscar palabras similares en 
+  buscarSimilares() {
+    // limpiar clasificacion_ocu_aux
+    this.clasificacion_ocu_aux = [];
+    // limpiar clasificacion_act_aux
+    this.clasificacion_act_aux = [];
+    
+
+    // recorrer clasificacion ocupacion
+    this.clasificacion_ocu.forEach(element => {
+      // calcular la similitud           
+      let sim = similarity(this.respuestaItem_act, element.descripcion);
+      // si la similitud es mayor a 0.5
+      if (sim > 0.5) {
+        // agregar a clasificacion_ocu_aux, tambien la similitud
+        element.similitud = sim;
+        this.clasificacion_ocu_aux.push(element);
+      }      
+    });
+
+    // recorrer clasificacion actividad
+    this.clasificacion_act.forEach(element => {
+      // calcular la similitud           
+      let sim = similarity(this.respuestaItem_ocu, element.descripcion);
+      // si la similitud es mayor a 0.5
+      if (sim > 0.5) {
+        // agregar a clasificacion_act_aux, tambien la similitud
+        element.similitud = sim;
+        this.clasificacion_act_aux.push(element);
+      }      
+    });
+   
+
+
+    // ordenar por similitud
+    this.clasificacion_ocu_aux.sort((a, b) => (a.similitud > b.similitud) ? -1 : 1);
+    this.clasificacion_act_aux.sort((a, b) => (a.similitud > b.similitud) ? -1 : 1);
+
+
+  }
+
+
+
+
+  // 
+  primero() {
+
+    this.contexto = this.sanitizer.bypassSecurityTrustHtml(this.carga[0].contexto);
+    this.departamentoItem = this.carga[0].departamento;     // el mismo para ocupacion y actividad
+    this.idPregunta = this.carga[0].id_p49_p51;             // x-y (identificador de la pregunta)
+    this.secuencial = this.carga[0].secuencial;             // x-y (identificador de la pregunta)
+    this.respuestaItem_ocu = this.carga[0].respuesta_ocu;   // respuesta ocupacion
+    this.respuestaItem_act = this.carga[0].respuesta_act;   // respuesta actividad
+    this.estadoItem_ocu = this.carga[0].estado_ocu;         // estado ocupacion
+    this.estadoItem_act = this.carga[0].estado_act;         // estado actividad
+
+    // inputs de busqueda
+    //this.desc_ocu = this.respuestaItem_ocu;
+    //this.desc_act = this.respuestaItem_act;
+
+    //this.buscarSimilares(this.desc_ocu, this.desc_act);
+
+    //this.nAux = 1;
+  }
+
+
+  // 
+  atras() {
     if (this.nAux > 1) {
       this.nAux--;
       this.contexto = this.carga[this.nAux - 1].contexto;
@@ -225,325 +192,46 @@ export class CodificacionDobleComponent implements OnInit {
       this.estadoItem_act = this.carga[this.nAux - 1].estado_act;
 
       // inputs de busqueda      
-      this.desc_ocu = this.respuestaItem_ocu;
-      this.desc_act = this.respuestaItem_act;
+      // this.desc_ocu = this.respuestaItem_ocu;
+      // this.desc_act = this.respuestaItem_act;
 
-      this.buscarSimilares(this.desc_ocu, this.desc_act);
+      //this.buscarSimilares(this.desc_ocu, this.desc_act);
 
     }
   }
 
 
-  // primero de la carga
-  primero() {
-    this.contexto = this.carga[0].contexto;
-    this.departamentoItem = this.carga[0].departamento;
-    this.idPregunta = this.carga[0].id_p49_p51;
-    this.secuencial = this.carga[0].secuencial;
-    this.respuestaItem_ocu = this.carga[0].respuesta_ocu;
-    this.respuestaItem_act = this.carga[0].respuesta_act;
-    this.estadoItem_ocu = this.carga[0].estado_ocu;
-    this.estadoItem_act = this.carga[0].estado_act;
 
-    // inputs de busqueda
-    this.desc_ocu = this.respuestaItem_ocu;
-    this.desc_act = this.respuestaItem_act;
+  // 
+  siguiente() {
+    if (this.nAux < this.totalCarga) {
+      this.contexto = this.sanitizer.bypassSecurityTrustHtml(this.carga[this.nAux].contexto);
+      this.departamentoItem = this.carga[this.nAux].departamento;
+      this.idPregunta = this.carga[this.nAux].id_p49_p51;
+      this.secuencial = this.carga[this.nAux].secuencial;
+      this.respuestaItem_ocu = this.carga[this.nAux].respuesta_ocu;
+      this.respuestaItem_act = this.carga[this.nAux].respuesta_act;
+      this.estadoItem_ocu = this.carga[this.nAux].estado_ocu;
+      this.estadoItem_act = this.carga[this.nAux].estado_act;
 
-    this.buscarSimilares(this.desc_ocu, this.desc_act);
+      // inputs de busqueda      
+      // this.desc_ocu = this.respuestaItem_ocu;
+      // this.desc_act = this.respuestaItem_act;
 
-    this.nAux = 1;
-  }
-
-
-  // Funcion que buscar palabras similares   
-  buscarSimilares(ocu: any, act: any) {
-    console.log("buscarSimilares", ocu, act);
-    
-    // Buscar palabras similares con el metodo includes en clasificacion_ocu y clasificacion_act y guardarlas en clasificacion_ocu_aux y clasificacion_act_aux
-    this.clasificacion_ocu_aux = this.clasificacion_ocu;  // .clasificacion_ocu.filter((element: any) => element.descripcion.includes(ocu));
-    this.clasificacion_act_aux = this.clasificacion_act;  // .clasificacion_act.filter((element: any) => element.descripcion.includes(act));
+      this.buscarSimilares();
 
 
-
-    //this.clasificacion_ocu_aux = this.clasificacion_ocu;
-    //this.clasificacion_act_aux = this.clasificacion_act;
-
-  }
-
-
-  // Confirmar codificación de Ocupación
-  confirmarCodificacionOcu(registro: any) {
-
-    // Datos que se enviaran al backend
-    var body = {
-      login: localStorage.getItem('login'),
-      id_p49_p51: this.idPregunta, // Por este campo se hace la actualización
-      codigo: registro.codigo,
-      descripcion: registro.descripcion,
-      variable: 'ocu' // Se hara la actualización en las columnas de ocupación
+      this.nAux++;
     }
-
-    this.confirmationService.confirm({
-      message: '<strong>CODIGO:</strong> ' + registro.codigo + '<br><strong> DESCRIPCIÓN: </strong>' + registro.descripcion,
-      header: 'Confirmación',
-      icon: 'pi pi-check',
-      accept: () => {
-        // Actualizar (codificar)                         
-        this.codificacionService.updateOcuAct(body).subscribe(
-          (data2: any) => {
-            // Mensaje  
-            this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: 'Codificación exitosa (ocupación).', life: 2500 });
-            //this.primero();
-          })
-
-        // Modificar: this.totalCarga_ocu siempre y cuando estado_ocu = 'ASIGNADO'
-        if (this.estadoItem_ocu == 'ASIGNADO') {
-          this.totalCarga_ocu = this.totalCarga_ocu - 1;
-        }
-
-        // Modificar: this.estadoItem_ocu
-        this.estadoItem_ocu = 'CODIFICADO';
-
-
-
-        // Modificar: carga su propiedad estado_ocu = 'CODIFICADO'
-        this.carga.forEach(element => {
-          if (element.id_p49_p51 == this.idPregunta) {
-            element.estado_ocu = 'CODIFICADO';
-          }
-        });
-      }
-    });
   }
 
-
-
-  // Confirmar codificación de Actividad
-  confirmarCodificacionAct(registro: any) {
-
-    // Datos que se enviaran al backend
-    var body = {
-      login: localStorage.getItem('login'),
-      id_p49_p51: this.idPregunta, // Por este campo se hace la actualización
-      codigo: registro.codigo,
-      descripcion: registro.descripcion,
-      variable: 'act' // Se hara la actualización en las columnas de actividad
-    }
-
-    this.confirmationService.confirm({
-      message: '<strong>CODIGO:</strong> ' + registro.codigo + '<br><strong> DESCRIPCIÓN: </strong>' + registro.descripcion,
-      header: 'Confirmación',
-      icon: 'pi pi-check',
-      accept: () => {
-        // Actualizar (codificar)
-        this.codificacionService.updateOcuAct(body).subscribe(
-          (data2: any) => {
-            // Mensaje  
-            this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: 'Codificación exitosa (actividad).', life: 2500 });
-            //this.primero();
-          })
-
-
-        // Modificar: this.totalCarga_act siempre y cuando estado_act = 'ASIGNADO'
-        if (this.estadoItem_act == 'ASIGNADO') {
-          this.totalCarga_act = this.totalCarga_act - 1;
-        }
-
-        // Modificar: this.estadoItem_act
-        this.estadoItem_act = 'CODIFICADO';
-
-
-        // Modificar: carga su propiedad estado_act = 'CODIFICADO'
-        this.carga.forEach(element => {
-          if (element.id_p49_p51 == this.idPregunta) {
-            element.estado_act = 'CODIFICADO';
-          }
-        });
-      }
-    });
+  //
+  // Recorre la carga hacia adelante
+  anularAnterior() {
+    // Volver atras un registro
+    this.atras();
   }
 
-
-  // Anular codificación anterior
-  anularCodificacionAnterior() {
-    // 
-    // this.anterior();
-
-    this.confirmationService.confirm({
-      message: '¿Estás seguro de anular la anterior codificación?',
-      header: 'Confirmación',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        // Recorrer la carga atras
-        this.anterior();
-        // Datos que se enviaran al backend
-
-        var body = {
-          // login: localStorage.getItem('login'),
-          id_p49_p51: this.idPregunta, // Por este campo se hace la actualización      
-        }
-        console.info(this.idPregunta);
-
-
-        // Modificar: this.totalCarga_ocu siempre y cuando estado_ocu = 'ASIGNADO'
-        if (this.estadoItem_ocu == 'CODIFICADO') {
-          this.totalCarga_ocu = this.totalCarga_ocu + 1;
-          this.estadoItem_ocu = 'ASIGNADO';
-          // Modificar: carga su propiedad estado_ocu = 'ASIGNADO'
-          this.carga.forEach(element => {
-            if (element.id_p49_p51 == this.idPregunta) {
-              element.estado_ocu = 'ASIGNADO';
-            }
-          });
-        }
-
-
-        // Modificar: this.totalCarga_act siempre y cuando estado_act = 'ASIGNADO'
-        if (this.estadoItem_act == 'CODIFICADO') {
-          this.totalCarga_act = this.totalCarga_act + 1;
-          this.estadoItem_act = 'ASIGNADO';
-          // Modificar: carga su propiedad estado_act = 'CODIFICADO'
-          this.carga.forEach(element => {
-            if (element.id_p49_p51 == this.idPregunta) {
-              element.estado_act = 'ASIGNADO';
-            }
-          });
-        }
-
-      }
-    });
-  }
-
-
-
-
-
-
-
-  openNew() {
-    // alert("openNew");
-    // this.product = {};
-    this.submitted = false;
-    // this.productDialog = true;
-    this.registro = {};
-    this.registroDialog = true;
-  }
-
-  hideDialog() {
-    this.registroDialog = false;
-    this.submitted = false;
-  }
-
-
-  // Tabla detalle
-  registrosTabla() {
-    this.tabla_pb = true;
-    this.codificacionService.devuelveCatalogo({ catalogo: this.selectedCatalogo.value }).subscribe(
-      (data2: any) => {
-        //console.log("data2", data2.datos);
-        this.tabla_pb = false;
-        this.registros = [] // data2.datos.rows;
-      })
-  }
-
-
-  saveRegistro() {
-    this.submitted = true;
-
-    if (
-      this.registro.codigo.trim() && this.registro.descripcion.trim()) {
-
-      if (this.registro.id_catalogo) {
-        // UPDATE
-
-        // this.diccionariosService.validarRegistros(body).subscribe( res => {
-        /* 
-        const body = {
-      codigo: this.miFormulario.value.codigo,
-      descripcion: this.miFormulario.value.descripcion,
-      catalogo: this.catalogo,
-    }
-        */
-
-        this.codificacionService.validarRegistros({ codigo: this.registro.codigo, descripcion: this.registro.descripcion, catalogo: this.selectedCatalogo.value }).subscribe(
-          (data2: any) => {
-
-            if (data2.datos.rows.length > 0) {
-              // Mensaje 
-              this.messageService.add({ severity: 'info', summary: 'Successful', detail: `El código: ${this.registro.codigo} y la descripción: ${this.registro.descripcion} ya existe!` });
-              setTimeout(() => {
-                this.messageService.clear();
-              }, 2000);
-            } else {
-
-              // Mensaje
-              this.messageService.add({ severity: 'info', summary: 'Successful', detail: 'Registro Modificado!' });
-              setTimeout(() => {
-                this.messageService.clear();
-              }, 2000);
-
-            }
-          })
-
-
-
-      } else {
-        // ADD
-
-
-        // Mensaje
-        this.messageService.add({ severity: 'info', summary: 'Successful', detail: 'Registro Adicionado!' });
-        setTimeout(() => {
-          this.messageService.clear();
-        }, 2000);
-      }
-
-      // this.products = [...this.products];
-      this.registroDialog = false;
-      // this.product = {};
-    }
-  };
-
-
-
-  show() {
-    this.msgs.push({ severity: 'info', summary: 'Info Message', detail: 'PrimeNG rocks', life: 3000 });
-  }
-
-  // editRegistro(product: Product) {  
-  editRegistro(registro: any) {
-    this.registro = { ...registro };
-    this.registroDialog = true;
-  }
-
-  hide() {
-    this.msgs = [];
-  }
-
-
-  deleteSelectedRegistro(customer: any) {
-    // alert("customer" + customer.id_catalogo);
-
-    this.confirmationService.confirm({
-      message: '¿Estás seguro de que deseas eliminar el registro seleccionado?',
-      header: 'Confirmación',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-
-        this.codificacionService.updateEstadoCatalogo(customer.id_catalogo, { estado: 'INACTIVO', user: 1 }).subscribe(
-          (data2: any) => {
-            this.registrosTabla();
-          })
-
-        // Mensaje
-        this.messageService.add({ severity: 'info', summary: 'Successful', detail: 'Registro Eliminado' });
-        setTimeout(() => {
-          this.messageService.clear();
-        }, 2000);
-      },
-      //reject: () => {alert("REJECT");}
-    });
-  }
 
 
 }

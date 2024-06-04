@@ -5,6 +5,7 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
+import { KnobModule } from 'primeng/knob';
 
 
 
@@ -17,7 +18,8 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     DashboardRoutingModule,
     ButtonModule,
-    FormsModule
+    FormsModule,
+    KnobModule
   ]
 })
 export class DashboardModule { }

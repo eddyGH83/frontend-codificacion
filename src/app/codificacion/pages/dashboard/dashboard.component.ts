@@ -9,6 +9,8 @@ export class DashboardComponent implements OnInit {
 
   infoRapida: boolean= false;
 
+  value8: number = 60;
+
   constructor() { }
 
   ngOnInit(): void {
