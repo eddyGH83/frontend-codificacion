@@ -1,6 +1,6 @@
 <div class="card">
 
-    <h4>Gestión de datos ODBC</h4> 
+    <h4>Gestión de datos ODBC</h4>
     <hr>
 
     <h5> <strong class="text-blue-600">TABLA 1:</strong> Base de ODBC Idiomas y pueblos</h5>
@@ -11,23 +11,27 @@
 
                 <div class="grid p-fluid">
                     <div class="col-6">
-                        <div class="grid p-fluid">
-                            <div class="field col-12 md:col-5">
-                                <label for="range">Seleccione el periodo de descarga</label>
-                                <p-calendar [showIcon]="true" inputId="icon" [(ngModel)]="rangeDates_npioc"
-                                    selectionMode="range" [readonlyInput]="true" inputId="range" [showTime]="false">
-                                </p-calendar>
-                            </div>
-                            <div class="field col-12 md:col-7">
-                                <label for="range">Descarga</label>
-                                <button type="button" styleClass="p-button-lg" pButton
-                                    label="Descargar Archivo ODBC Idiomas/Lenguas" class="p-button-primary mr-2"
-                                    (click)="decargaOdbc_npioc()"></button>
+                        <div class="border-round text-left p-2"
+                            style="border: 1px solid var(--surface-d); border-color: rgb(233, 233, 233);">
+                            <div class="grid p-fluid">
+                                <div class="field col-12 md:col-5">
+                                    <label for="range">Seleccione el periodo de descarga</label>
+                                    <p-calendar [showIcon]="true" inputId="icon" [(ngModel)]="rangeDates_npioc"
+                                        selectionMode="range" [readonlyInput]="true" inputId="range" [showTime]="false">
+                                    </p-calendar>
+                                </div>
+                                <div class="field col-12 md:col-7">
+                                    <label for="range"></label>
+                                    <button type="button" styleClass="p-button-lg" pButton
+                                        label="Descargar Archivo ODBC Idiomas/Lenguas" class="p-button-info mr-2  mt-2"
+                                        (click)="decargaOdbc_npioc()"></button>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-6">
-                        <p-fileUpload name="demo[]" url="./upload.php" (onUpload)="onUpload($event)"
+                        <p-fileUpload name="demo[]" url="http://localhost:3014/api/reportes/subirOdbc_npioc/epacoadmin"
+                            (onUpload)="onUpload($event)"
                             accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                             maxFileSize="50000000">
                             <ng-template pTemplate="content">
@@ -36,7 +40,6 @@
                                 </ul>
                             </ng-template>
                         </p-fileUpload>
-
                     </div>
                 </div>
             </div>
@@ -53,7 +56,7 @@
                 <div class="grid p-fluid">
                     <div class="col-6">
                         <div class="border-round text-left p-2"
-                            style="border: 1px solid var(--surface-d); border-color: rgb(25, 150, 222);">
+                            style="border: 1px solid var(--surface-d); border-color: rgb(233, 233, 233);">
                             <div class="grid p-fluid">
                                 <div class="field col-12 md:col-5">
                                     <label for="range">Seleccione el periodo de descarga</label>
@@ -62,27 +65,25 @@
                                     </p-calendar>
                                 </div>
                                 <div class="field col-12 md:col-7">
-                                    <label for="range">Descarga</label>
+                                    <label for="range"></label>
                                     <button type="button" styleClass="p-button-lg" pButton
-                                        label="Descargar Archivo ODBC U. Geográfica" class="p-button-primary mr-2"
+                                        label="Descargar Archivo ODBC U. Geográfica" class="p-button-info mr-2  mt-2"
                                         (click)="decargaOdbc_migracion()"></button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="border-round text-left p-2" style="border: 1px solid var(--surface-d)">
-                            <!-- <h5>Subir archivo</h5> -->
-                            <p-fileUpload name="demo[]" url="./upload.php" (onUpload)="onUpload($event)" 
-                                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                                maxFileSize="50000000">
-                                <ng-template pTemplate="content">
-                                    <ul *ngIf="uploadedFiles.length">
-                                        <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
-                                    </ul>
-                                </ng-template>
-                            </p-fileUpload>
-                        </div>
+                        <p-fileUpload name="demo[]" url="./upload.php" (onUpload)="onUpload($event)"
+                            accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                            maxFileSize="50000000">
+                            <ng-template pTemplate="content">
+                                <ul *ngIf="uploadedFiles.length">
+                                    <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                                </ul>
+                            </ng-template>
+                        </p-fileUpload>
+                        <!-- </div> -->
                     </div>
                 </div>
             </div>
@@ -98,7 +99,7 @@
                 <div class="grid p-fluid">
                     <div class="col-6">
                         <div class="border-round text-left p-2"
-                            style="border: 1px solid var(--surface-d); border-color: rgb(25, 150, 222);">
+                            style="border: 1px solid var(--surface-d); border-color: rgb(233, 233, 233);">
                             <div class="grid p-fluid">
                                 <div class="field col-12 md:col-5">
                                     <label for="range">Seleccione el periodo de descarga</label>
@@ -107,25 +108,25 @@
                                     </p-calendar>
                                 </div>
                                 <div class="field col-12 md:col-7">
-                                    <label for="range">Descarga</label>
+                                    <label for="range"></label>
                                     <button (click)="decargaOdbc()" type="button" styleClass="p-button-lg" pButton
-                                        label="Descargar Archivo ODBC Activ.-Ocup." class="p-button-info mr-2"></button>
+                                        label="Descargar Archivo ODBC Activ.-Ocup."
+                                        class="p-button-info mr-2 mt-2"></button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="border-round text-left p-2" style="border: 1px solid var(--surface-d)">
-                            <p-fileUpload name="demo[]" url="./upload.php" (onUpload)="onUpload($event)"
-                                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                                maxFileSize="50000000">
-                                <ng-template pTemplate="content">
-                                    <ul *ngIf="uploadedFiles.length">
-                                        <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
-                                    </ul>
-                                </ng-template>
-                            </p-fileUpload>
-                        </div>
+                        <p-fileUpload name="demo[]" url="./upload.php" (onUpload)="onUpload($event)"
+                            accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                            maxFileSize="50000000">
+                            <ng-template pTemplate="content">
+                                <ul *ngIf="uploadedFiles.length">
+                                    <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                                </ul>
+                            </ng-template>
+                        </p-fileUpload>
+                        <!-- </div> -->
                     </div>
                 </div>
 

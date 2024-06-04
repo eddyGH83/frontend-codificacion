@@ -3,8 +3,15 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { OdbcService } from './service/odbc.service';
 
+import { environment } from 'src/environments/environment';
+
+// fileUploadEvent
+//import { FileUploadEvent } from 'primeng/fileupload';
+
 import * as moment from 'moment';
 import * as FileSaver from 'file-saver';
+
+
 
 
 @Component({
@@ -12,6 +19,9 @@ import * as FileSaver from 'file-saver';
   templateUrl: './odbc.component.html'
 })
 export class OdbcComponent implements OnInit {
+
+
+  private _apiUrl_npioc: string = environment.base_url + "/reportes/subirOdbc_npioc/" + localStorage.getItem('login');
 
 
   rangeDates: Date[];
@@ -25,7 +35,6 @@ export class OdbcComponent implements OnInit {
   invalidDates: Array<Date>
 
 
-
   // ----------- Para la subida de archivos 
   @ViewChild('fileInput') fileInput: ElementRef;
   rangeDates_oa: Date[];
@@ -37,7 +46,6 @@ export class OdbcComponent implements OnInit {
   uploadedFiles: Array<File> = [];
   loading: boolean;
   ntabla: String;
-
 
 
   constructor(private messageService: MessageService, private odbcService: OdbcService) { }
@@ -86,39 +94,47 @@ export class OdbcComponent implements OnInit {
 
   cargaOdbc_npioc() {
 
-    //let user = localStorage.getItem('login')
-
-    this.loading = true
-    console.log('Upload')
-    let formData = new FormData();
-    for (let i = 0; i < this.uploadedFiles.length; i++) {
-      formData.append("uploads[]", this.uploadedFiles[i], this.uploadedFiles[i].name);
-    }
-    console.log(formData)
-    let login = localStorage.getItem('login')
-    this.odbcService.subirOdbc_npioc(formData, login).subscribe((res) => {
-      console.log('Response: ', res);
-      /* Swal.fire({
-        icon: 'success',
-        title: 'Registros Cargados Correctamente!!. ',
-      }) */
-      this.loading = false
-
-    })
-    this.clearFileInput();
+    alert('Archivo Subido');
 
   }
 
 
 
 
+  /*   onUpload(event: any) {
+      alert('File Uploaded');
+      for (let file of event.files) {
+        this.uploadedFiles.push(file);
+      }
+  
+      console.table(this.uploadedFiles);    
+  
+      //this.messageService.add({ severity: 'info', summary: 'File Uploaded', detail: '' });
+    } */
+
+
   onUpload(event) {
+    console.log("xdsfsdfsfds");
+
+
     for (let file of event.files) {
       this.uploadedFiles.push(file);
     }
 
-    this.messageService.add({ severity: 'info', summary: 'File Uploaded', detail: '' });
+
+    // this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: ''});
   }
+
+  /* 
+    onFileChange(e: any) {
+    this.uploadedFiles = e.target.files;
+    console.log('Archivo de Cambio: ', this.uploadedFiles)
+  }
+  */
+
+
+
+
 
   fechaSeleccionada() {
     console.log("sdsdfsdf");

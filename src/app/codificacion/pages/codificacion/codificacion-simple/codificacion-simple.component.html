@@ -1,13 +1,15 @@
 <div class="card">
+    <p-toast></p-toast>
 
     <h4> <a [routerLink]="['/codificacion']"> <i class="pi pi-chevron-left" style="font-size: 1.4rem"></i> Variables
             para codificación | </a> Codificación simple</h4>
 
     <div class="grid">
-        <div class="col-6 md:col-6 lg:6">
 
+        <!-- VARIABLES A CODIFICAR -->
+        <div class="col-6 md:col-6 lg:6">
             <div class="card  border-1 surface-border">
-                <p-table [value]="products">
+                <p-table>
                     <ng-template pTemplate="header">
                         <tr>
                             <th style="background-color: rgb(2, 136, 209); color: rgb(42, 42, 42); text-align: center;">
@@ -20,24 +22,30 @@
                                     {{secuencial}}</strong></th>
                             <th style="background-color: rgb(2, 136, 209); color: rgb(42, 42, 42); text-align: center;">
                                 POR CODIFICAR <br> <strong
-                                    style="font-family:Arial, Helvetica, sans-serif; color: white;">{{totalCarga}}</strong>
+                                    style="font-family:Arial, Helvetica, sans-serif; color: white;">{{porCodificar}}</strong>
                             </th>
                         </tr>
                     </ng-template>
                 </p-table>
-                <p class="ml-2 mt-2"><strong style="color:rgb(2, 136, 209)">PREGUNTA: </strong> <span
-                        class="image-text"> <p-chip label="{{nroPreg}}" styleClass="mr-2"></p-chip>
-                        {{descPreg}}</span></p>
+                <p class="ml-2 mt-2"><strong style="color:rgb(46, 46, 46)">PREGUNTA: </strong> <span
+                        class="image-text"></span>
+                    <p-chip label="{{nroPreg}}" styleClass="mr-2"></p-chip>
+                    {{descPreg}}
+                </p>
                 <p class="ml-2 mt-2"><strong style="color:rgb(2, 136, 209)">RESPUESTA: </strong> {{respuestaItem}}
-                    <strong class="ml-8" style="color:rgb(2, 136, 209)">ESTADO: </strong> {{estadoItem}}</p>
+                    <strong class="ml-8" style="color:rgb(2, 136, 209)">ESTADO: </strong> {{estadoItem}}
+                </p>
             </div>
 
-
         </div>
+
+
+
+        <!-- VARIABLES DE CONTEXTO -->
         <div class="col-6 md:col-6 lg:6">
             <div class="card  border-1 surface-border">
 
-                <p-table [value]="products">
+                <p-table>
                     <ng-template pTemplate="header">
                         <tr>
                             <th style="background-color: rgb(16, 177, 99); color: rgb(42, 42, 42);">VARIABLES DE
@@ -53,22 +61,29 @@
 
             </div>
         </div>
+
+
+
+
     </div>
 
     <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
 
+    <!-- BOTONES -->
     <div class="text-700 text-center">
-
-        <button pButton pRipple label="Anular anterior" icon="pi pi-trash"
+        <button pButton pRipple label="Anular anterior" icon="pi pi-trash" (click)="anularAnterior()"
             class="p-button-danger mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
         <button (click)="primero()" pButton pRipple label="Primero" icon="pi pi-fast-backward"
             class="p-button-info mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
         <button (click)="siguiente()" pButton pRipple label="Siguiente" icon="pi pi-forward"
             class="p-button-info mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
+        <button pButton pRipple type="button" label="{{nAux}} / {{totalCarga}}" disabled
+            class="p-button-outlined p-button-rounded p-button-secondary mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
     </div>
 
-    <p-table #dt1 [value]="clasificacion" [(selection)]="selectedCustomer1" dataKey="id_catalogo" [scrollable]="true"
-        scrollHeight="400px" styleClass="p-datatable-customers" [showCurrentPageReport]="true"
+    <!-- TABLA DE CODIFICACIÓN Y CATALOGOS -->
+    <p-table #dt1 [value]="clasificacion" dataKey="id_catalogo" [scrollable]="true" scrollHeight="400px"
+        styleClass="p-datatable-customers" [showCurrentPageReport]="true"
         currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="10"
         [rowsPerPageOptions]="[10]" [paginator]="true" stateStorage="local">
         <ng-template pTemplate="header">
@@ -103,8 +118,8 @@
                 </td>
 
                 <td>
-                    <button styleClass="p-button-lg" pTooltip="Codificar" tooltipPosition="right" pButton pRipple
-                        icon="pi pi-check" class="p-button-info mr-2"></button>
+                    <button (click)="confirmarCodifiacion(reg)" styleClass="p-button-lg" pTooltip="Codificar"
+                        tooltipPosition="right" pButton pRipple icon="pi pi-check" class="p-button-info mr-2"></button>
                 </td>
             </tr>
         </ng-template>
