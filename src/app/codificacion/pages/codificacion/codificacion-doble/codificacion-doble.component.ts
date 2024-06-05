@@ -53,7 +53,9 @@ export class CodificacionDobleComponent implements OnInit {
 
 
   // Progress Bar
-  ocuActCont_pb: boolean = true;
+  ocuActCont_pb: boolean = false; // Progress Bar de los controles de ocupacion y actividad y contexto
+  catOcu_pb: boolean = false; // Progress Bar de los catalogos de ocupacion
+  catAct_pb: boolean = false; // Progress Bar de los catalogos de actividad
 
   // El servicio "private sanitizer: DomSanitizer" es para poder usar HTML en el contexto
   constructor(private sanitizer: DomSanitizer, private messageService: MessageService, private codificacionService: CodificacionService, private confirmationService: ConfirmationService) { }
@@ -79,15 +81,8 @@ export class CodificacionDobleComponent implements OnInit {
 
     this.codificacionService.cargarParaCodificarDoble(body).subscribe(
       (data2: any) => {
-        // this.carga = data2.datos;
-        // 
-        // this.clasificacion = data2.clasificacion;
-        // this.totalCarga = data2.totalCarga;
-        // this.nroPreg = data2.nroPreg;
-        // this.descPreg = data2.descPreg;
-        // this.porCodificar = data2.totalCarga;
 
-        this.totalCarga = data2.totalCarga,           // Total carga ocupacion y actividad
+        this.totalCarga = data2.totalCarga,             // Total carga ocupacion y actividad
           this.totalCarga_ocu = data2.totalCarga_ocu,   // Total carga ocupacion
           this.totalCarga_act = data2.totalCarga_act,   // Total carga actividad
           this.nroPreg_ocu = data2.nroPreg_ocu,   // nro de la pregunta acupacion
@@ -98,11 +93,6 @@ export class CodificacionDobleComponent implements OnInit {
           this.clasificacion_ocu = data2.clasificacion_ocu,   // clasificacion ocupacion (catalogo ocupacion)
           this.clasificacion_act = data2.clasificacion_act    // clasificacion actividad (catalogo actividad)
 
-        // this.clasificacion_ocu_aux = this.clasificacion_ocu;
-        // this.clasificacion_act_aux = this.clasificacion_act;
-
-       // console.table(this.carga);
-
         this.primero();
         this.buscarSimilares();
 
@@ -111,47 +101,232 @@ export class CodificacionDobleComponent implements OnInit {
       })
   }
 
+  /* 
+  // Confirmar codificación
+  confirmarCodifiacion(registro: any) {
+    this.confirmationService.confirm({
+      message: '<strong>Codigo: </strong>' + registro.codigo + '<br><strong>Descripción: </strong>' + registro.descripcion,
+      header: 'Confirmación',
+      icon: 'pi pi-check-square',
+      accept: () => {
 
-  // Buscar palabras similares en 
-  buscarSimilares() {
-    // limpiar clasificacion_ocu_aux
-    this.clasificacion_ocu_aux = [];
-    // limpiar clasificacion_act_aux
-    this.clasificacion_act_aux = [];
+        // sim y cuando sea mayor a 0 y que estado sea diferente de CODIFICADO
+        if (this.porCodificar > 0 && this.estadoItem === 'ASIGNADO') {
+          this.porCodificar--;
+        }
+
+        // Modificar el estado y
+        this.estadoItem = 'CODIFICADO';
+
+        // Modificar: carga (foreach) su propiedad estado_ocu = 'CODIFICADO'
+        this.carga.forEach(element => {
+          if (element.id_pregunta == this.idPregunta) {
+            element.estado = 'CODIFICADO';
+          }
+        });
+
+        // Codificación
+        const body = {
+          id_registro: this.idPregunta,
+          tabla_id: localStorage.getItem('tabla_id'),
+          codigocodif: registro.codigo,
+          usucodificador: localStorage.getItem('login'),
+        }
+
+        this.codificacionService.updatePreguntaSimple(body).subscribe(
+          (data2: any) => {
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Codificación realizada' });
+            this.siguiente();
+          })
+      }
+    });
+  }
+  */
+
+
+
+  confirmarCodificacionAct(registro: any){
+    console.log('confirmarCodificacionAct');
+
+    this.confirmationService.confirm({
+      message: '<strong>Codigo: </strong>' + registro.codigo + '<br><strong>Descripción: </strong>' + registro.descripcion, 
+      header: 'Confirmación',
+      icon: 'pi pi-check-square',
+      accept: () => {
+        // 
+      }
+    });
     
+  }
 
-    // recorrer clasificacion ocupacion
+
+  confirmarCodificacionOcu( registro: any){
+    console.log('confirmarCodificacionOcu');
+
+    this.confirmationService.confirm({
+      message: '<strong>Codigo: </strong>' + registro.codigo + '<br><strong>Descripción: </strong>' + registro.descripcion, 
+      header: 'Confirmación',
+      icon: 'pi pi-check-square',
+      accept: () => {
+        // 
+      }
+    });
+    
+  }
+
+
+  // Buscar registros por el input codigo en clasificacion_ocu
+  buscarPorCodigoOcu() {
+    // Limpiar clasificacion_ocu_aux
+    this.clasificacion_ocu_aux = [];
+
+    // Limpiar input desc_ocu
+    this.desc_ocu = '';
+
+    // recoorer clasificacion_ocu
     this.clasificacion_ocu.forEach(element => {
-      // calcular la similitud           
-      let sim = similarity(this.respuestaItem_act, element.descripcion);
+      // si el codigo es igual al input cod_ocu
+      if (element.codigo === this.cod_ocu) {
+        // agregar a clasificacion_ocu_aux
+        this.clasificacion_ocu_aux.push(element);
+      }
+    });
+  }
+
+
+
+
+
+
+
+  // Buscar registros por el input descripcion en clasificacion_ocu
+  buscarPorDescripcionOcu() {
+    // Limpiar clasificacion_ocu_aux
+    this.clasificacion_ocu_aux = [];
+
+    // Limpiar input cod_ocu
+    this.cod_ocu = '';
+
+    // recoorer clasificacion_ocu
+    this.clasificacion_ocu.forEach(element => {
+      // calcular la similitud
+      let sim = similarity(this.desc_ocu, element.descripcion);
       // si la similitud es mayor a 0.5
       if (sim > 0.5) {
         // agregar a clasificacion_ocu_aux, tambien la similitud
         element.similitud = sim;
         this.clasificacion_ocu_aux.push(element);
-      }      
-    });
+      }
 
-    // recorrer clasificacion actividad
+      // ordenar por similitud
+      this.clasificacion_ocu_aux.sort((a, b) => (a.similitud > b.similitud) ? -1 : 1);
+    });
+  }
+
+
+
+
+
+
+  // Buscar registros por el input codigo en clasificacion_act
+  buscarPorCodigoAct() {
+    // Limpiar clasificacion_act_aux
+    this.clasificacion_act_aux = [];
+
+    // Limpiar input desc_act
+    this.desc_act = '';
+
+    // recoorer clasificacion_act
     this.clasificacion_act.forEach(element => {
-      // calcular la similitud           
-      let sim = similarity(this.respuestaItem_ocu, element.descripcion);
+      // si el codigo es igual al input cod_act
+      if (element.codigo === this.cod_act) {
+        // agregar a clasificacion_act_aux
+        this.clasificacion_act_aux.push(element);
+      }
+    });
+  }
+
+
+
+
+
+
+  // Buscar registros por el input descripcion en clasificacion_act
+  buscarPorDescripcionAct() {
+    // Limpiar clasificacion_act_aux
+    this.clasificacion_act_aux = [];
+
+    // Limpiar input cod_act
+    this.cod_act = '';
+
+    // recoorer clasificacion_act
+    this.clasificacion_act.forEach(element => {
+      // calcular la similitud
+      let sim = similarity(this.desc_act, element.descripcion);
       // si la similitud es mayor a 0.5
       if (sim > 0.5) {
         // agregar a clasificacion_act_aux, tambien la similitud
         element.similitud = sim;
         this.clasificacion_act_aux.push(element);
-      }      
-    });
-   
+      }
 
+      // ordenar por similitud
+      this.clasificacion_act_aux.sort((a, b) => (a.similitud > b.similitud) ? -1 : 1);
+    });
+  }
+
+
+
+
+
+
+  // Buscar palabras similares en 
+  buscarSimilares() {
+    // Progres bar
+    this.catOcu_pb = true;
+    this.catAct_pb = true;
+
+    // limpiar clasificacion_ocu_aux
+    this.clasificacion_ocu_aux = [];
+    // limpiar clasificacion_act_aux
+    this.clasificacion_act_aux = [];
+
+
+    // recorrer clasificacion ocupacion
+    this.clasificacion_ocu.forEach(element => {
+      // calcular la similitud           
+      let sim = similarity(this.respuestaItem_ocu, element.descripcion);
+      // si la similitud es mayor a 0.5
+      if (sim > 0.5) {
+        // agregar a clasificacion_ocu_aux, tambien la similitud
+        element.similitud = sim;
+        this.clasificacion_ocu_aux.push(element);
+      }
+    });
+
+    // recorrer clasificacion actividad
+    this.clasificacion_act.forEach(element => {
+      // calcular la similitud           
+      let sim = similarity(this.respuestaItem_act, element.descripcion);
+      // si la similitud es mayor a 0.5
+      if (sim > 0.5) {
+        // agregar a clasificacion_act_aux, tambien la similitud
+        element.similitud = sim;
+        this.clasificacion_act_aux.push(element);
+      }
+    });
 
     // ordenar por similitud
     this.clasificacion_ocu_aux.sort((a, b) => (a.similitud > b.similitud) ? -1 : 1);
     this.clasificacion_act_aux.sort((a, b) => (a.similitud > b.similitud) ? -1 : 1);
 
-
+    // Progres bar
+    this.catOcu_pb = false;
+    this.catAct_pb = false;
   }
+
+
+
 
 
 
@@ -168,14 +343,20 @@ export class CodificacionDobleComponent implements OnInit {
     this.estadoItem_ocu = this.carga[0].estado_ocu;         // estado ocupacion
     this.estadoItem_act = this.carga[0].estado_act;         // estado actividad
 
-    // inputs de busqueda
-    //this.desc_ocu = this.respuestaItem_ocu;
-    //this.desc_act = this.respuestaItem_act;
 
-    //this.buscarSimilares(this.desc_ocu, this.desc_act);
+    //  Reeplazar el input desc_ocu y desc_act por el valor de la respuesta
+    this.desc_ocu = this.respuestaItem_ocu;
+    this.desc_act = this.respuestaItem_act;
 
-    //this.nAux = 1;
+    // Limpia el input cod_ocu y cod_act
+    this.cod_ocu = '';
+    this.cod_act = '';
+
+    this.buscarSimilares();
   }
+
+
+
 
 
   // 
@@ -190,15 +371,20 @@ export class CodificacionDobleComponent implements OnInit {
       this.respuestaItem_act = this.carga[this.nAux - 1].respuesta_act;
       this.estadoItem_ocu = this.carga[this.nAux - 1].estado_ocu;
       this.estadoItem_act = this.carga[this.nAux - 1].estado_act;
-
-      // inputs de busqueda      
-      // this.desc_ocu = this.respuestaItem_ocu;
-      // this.desc_act = this.respuestaItem_act;
-
-      //this.buscarSimilares(this.desc_ocu, this.desc_act);
-
     }
+
+    //  Reeplazar el input desc_ocu y desc_act por el valor de la respuesta
+    this.desc_ocu = this.respuestaItem_ocu;
+    this.desc_act = this.respuestaItem_act;
+
+    // Limpia el input cod_ocu y cod_act
+    this.cod_ocu = '';
+    this.cod_act = '';
+
+    this.buscarSimilares();
   }
+
+
 
 
 
@@ -213,16 +399,18 @@ export class CodificacionDobleComponent implements OnInit {
       this.respuestaItem_act = this.carga[this.nAux].respuesta_act;
       this.estadoItem_ocu = this.carga[this.nAux].estado_ocu;
       this.estadoItem_act = this.carga[this.nAux].estado_act;
-
-      // inputs de busqueda      
-      // this.desc_ocu = this.respuestaItem_ocu;
-      // this.desc_act = this.respuestaItem_act;
-
-      this.buscarSimilares();
-
-
       this.nAux++;
     }
+
+    //  Reeplazar el input desc_ocu y desc_act por el valor de la respuesta
+    this.desc_ocu = this.respuestaItem_ocu;
+    this.desc_act = this.respuestaItem_act;
+
+    // Limpia el input cod_ocu y cod_act
+    this.cod_ocu = '';
+    this.cod_act = '';
+
+    this.buscarSimilares();
   }
 
   //

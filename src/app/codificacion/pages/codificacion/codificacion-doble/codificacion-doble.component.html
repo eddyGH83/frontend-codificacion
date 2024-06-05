@@ -36,7 +36,8 @@
                     <p-chip label="49" styleClass="mr-2"></p-chip>
                     {{descPreg_ocu}}
                 </p> <br>
-                <p class="ml-2 "><strong style="font-weight: normal; color:rgb(2, 136, 209)">RESPUESTA: </strong> {{respuestaItem_ocu}}
+                <p class="ml-2 "><strong style="font-weight: normal; color:rgb(2, 136, 209)">RESPUESTA: </strong>
+                    {{respuestaItem_ocu}}
                 </p>
                 <p class="ml-2 ">
                     <strong style="font-weight: normal; color:rgb(2, 136, 209)">ESTADO: </strong> {{estadoItem_ocu}}
@@ -44,7 +45,6 @@
                 </p>
             </div>
         </div>
-
 
 
         <!-- ACTIVIDAD -->
@@ -76,7 +76,8 @@
                         <p-chip label="51" styleClass="mr-2"></p-chip>
                         {{descPreg_act}}</span></p>
                 <p class="ml-2">
-                    <strong style="font-weight: normal; color:rgb(17, 173, 228)">RESPUESTA: </strong> {{respuestaItem_act}}
+                    <strong style="font-weight: normal; color:rgb(17, 173, 228)">RESPUESTA: </strong>
+                    {{respuestaItem_act}}
                 </p>
                 <p class="ml-2 ">
                     <strong style="font-weight: normal; color:rgb(17, 173, 228)">ESTADO: </strong>{{estadoItem_act}}
@@ -98,7 +99,7 @@
                         </tr>
                     </ng-template>
                 </p-table>
-                <p [innerHTML]="contexto" class="mt-1 ml-2" ></p>
+                <p [innerHTML]="contexto" class="mt-1 ml-2"></p>
 
             </div>
         </div>
@@ -115,7 +116,7 @@
             class="p-button-info mb-3  px-5 py-3 mr-2 white-space-nowrap"></button>
         <button (click)="siguiente()" pButton pRipple label="Siguiente" icon="pi pi-forward"
             class="p-button-info mb-3  px-5 py-3 mr-2 white-space-nowrap"></button>
-            <button pButton pRipple type="button" label="{{nAux}} / {{totalCarga}}" disabled
+        <button pButton pRipple type="button" label="{{nAux}} / {{totalCarga}}" disabled
             class="p-button-outlined p-button-rounded p-button-secondary mb-3 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
     </div>
 
@@ -123,18 +124,18 @@
     <!-- TABLA DE CATALOGOS -->
     <div class="grid">
         <div class="col-6 md:col-6 lg:6">
-            <p-progressBar *ngIf="ocuActCont_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
+            <p-progressBar *ngIf="catOcu_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
             <div class="card  border-1 surface-border">
                 <!-- Tabla Ocupacion -->
                 <p-table #dt1 [value]="clasificacion_ocu_aux" dataKey="id_catalogo" [scrollable]="true"
-                    scrollHeight="400px" styleClass="p-datatable-customers p-datatable-sm" [showCurrentPageReport]="true"
+                    scrollHeight="400px" styleClass="p-datatable-customers p-datatable-sm"
+                    [showCurrentPageReport]="true"
                     currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
                     [rowsPerPageOptions]="[5]" [paginator]="true" stateStorage="local">
                     <ng-template pTemplate="header">
                         <!--  -->
                         <tr>
-                            <th pSortableColumn="codigo">CÓDIGO OCUPACIÓN<p-sortIcon
-                                    field="codigo"></p-sortIcon>
+                            <th pSortableColumn="codigo">CÓDIGO OCUPACIÓN<p-sortIcon field="codigo"></p-sortIcon>
                             </th>
                             <th pSortableColumn="descripcion">RESPUESTA <p-sortIcon field="descripcion"></p-sortIcon>
                             </th>
@@ -142,18 +143,14 @@
                         </tr>
                         <tr>
                             <th>
-                                <input pInputText type="text"
-                                    (input)="dt1.filter($event.target.value, 'codigo', 'contains')"
-                                    [value]="dt1.filters['codigo']?.value" placeholder="Buscar por código"
-                                    class="w-full">
+                                <input pInputText type="text" (keyup)="buscarPorCodigoOcu()" [(ngModel)]="cod_ocu"
+                                    placeholder="Buscar por código" class="w-full">
                             </th>
                             <th>
-                                <input pInputText type="text"
-                                    (input)="dt1.filter($event.target.value, 'descripcion', 'contains')"
-                                    [value]="desc_ocu" placeholder="Buscar por respuesta" class="w-full">
+                                <input pInputText type="text" (keyup)="buscarPorDescripcionOcu()" [(ngModel)]="desc_ocu"
+                                    placeholder="Buscar por respuesta" class="w-full">
                             </th>
                             <th>
-
                             </th>
                         </tr>
                     </ng-template>
@@ -167,7 +164,6 @@
                                 <span class="p-column-title">RESPUESTA</span>
                                 <span class="image-text">{{reg.descripcion}}</span>
                             </td>
-
                             <td>
                                 <button (click)="confirmarCodificacionOcu(reg)" styleClass="p-button-lg" pButton pRipple
                                     icon="pi pi-check" pTooltip="Codificar" tooltipPosition="right"
@@ -181,8 +177,6 @@
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="paginatorleft">
-                        <!-- <p-button type="button" icon="pi pi-refresh" styleClass="p-button-text" label="Actualizar"
-                    pTooltip="Click para actualizar la tabla"></p-button> -->
                     </ng-template>
                     <ng-template pTemplate="paginatorright">
                     </ng-template>
@@ -192,18 +186,18 @@
 
 
         <div class="col-6 md:col-6 lg:6">
-            <p-progressBar *ngIf="ocuActCont_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
+            <p-progressBar *ngIf="catAct_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
             <div class="card  border-1 surface-border">
                 <!-- Tabla Actividad -->
                 <p-table #dt2 [value]="clasificacion_act_aux" dataKey="id_catalogo" [scrollable]="true"
-                    scrollHeight="400px" styleClass="p-datatable-customers p-datatable-sm" [showCurrentPageReport]="true"
+                    scrollHeight="400px" styleClass="p-datatable-customers p-datatable-sm"
+                    [showCurrentPageReport]="true"
                     currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
                     [rowsPerPageOptions]="[5]" [paginator]="true" stateStorage="local">
                     <ng-template pTemplate="header">
                         <!--  -->
                         <tr>
-                            <th pSortableColumn="codigo">CÓDIGO ACTIVIDAD <p-sortIcon
-                                    field="codigo"></p-sortIcon>
+                            <th pSortableColumn="codigo">CÓDIGO ACTIVIDAD <p-sortIcon field="codigo"></p-sortIcon>
                             </th>
                             <th pSortableColumn="descripcion">RESPUESTA <p-sortIcon field="descripcion"></p-sortIcon>
                             </th>
@@ -211,20 +205,14 @@
                         </tr>
                         <tr>
                             <th>
-                                <input pInputText type="text"
-                                    (input)="dt2.filter($event.target.value, 'codigo', 'contains')"
-                                    [value]="dt2.filters['codigo']?.value" placeholder="Buscar por código"
-                                    class="w-full">
+                                <input pInputText type="text" (keyup)="buscarPorCodigoAct()" [(ngModel)]="cod_act"
+                                    placeholder="Buscar por código" class="w-full">
                             </th>
                             <th>
-                                <input pInputText type="text"
-                                    (input)="dt2.filter($event.target.value, 'descripcion', 'contains')"
-                                    [value]="desc_act" placeholder="Buscar por respuesta" class="w-full">
+                                <input pInputText type="text" (keyup)="buscarPorDescripcionAct()" [(ngModel)]="desc_act"
+                                    placeholder="Buscar por respuesta" class="w-full">
                             </th>
                             <th>
-                                <!-- <button pButton pRipple icon="pi pi-eye"
-                                class="p-button-danger  white-space-nowrap"></button> -->
-                                <!-- <input pInputText type="text" (input)="dt1.filter($event.target.value, 'representative.name', 'contains')" [value]="dt1.filters['representative.name']?.value" placeholder="Search by Representative" class="w-full"> -->
                             </th>
                         </tr>
                     </ng-template>
