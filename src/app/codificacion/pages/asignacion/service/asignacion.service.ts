@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -36,6 +35,14 @@ export class AsignacionService {
   preguntasPorDepartamentoCod(body: object): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/preguntasPorDepartamentoCod`, body)
   }
+
+  //
+  preguntasPorDepartamentoSup(body: object): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/preguntasPorDepartamentoSup`, body)    
+  }
+
+
+
 
   updateAsignado(id: any, body: object[]): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/updateAsignado/${id}`, body)

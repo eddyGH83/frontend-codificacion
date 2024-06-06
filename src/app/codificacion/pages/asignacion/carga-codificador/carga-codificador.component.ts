@@ -224,8 +224,6 @@ export class CargaCodificadorComponent implements OnInit {
 
 
       if (res.success === true) {
-        //alert(res.message);        
-
         this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: res.message, life: 2500 });
         this.asignacionDialog = false;
         this.registrosTabla();

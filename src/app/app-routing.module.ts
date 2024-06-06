@@ -50,6 +50,9 @@ import { BlocksComponent } from './blocks/blocks/blocks.component';
                     // Codificación
                     { path: 'dashboard', loadChildren: () => import('./codificacion/pages/dashboard/dashboard.module').then(m => m.DashboardModule) },
 
+                    // Supervisión
+                    { path: 'supervision', loadChildren: () => import('./codificacion/pages/supervision/supervision.module').then(m => m.SupervisionModule) },
+
                     { path: 'codificacion', loadChildren: () => import('./codificacion/pages/codificacion/codificacion.module').then(m => m.CodificacionModule) },
                     // Perfil de usuario
                     { path: 'perfil', loadChildren: () => import('./codificacion/pages/perfil/perfil.module').then(m => m.PerfilModule) },

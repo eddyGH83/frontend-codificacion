@@ -1,1 +1,186 @@
-<p>asignacion works!</p>
+<div class="card">
+
+    <p-toast></p-toast>
+
+    <h4>Asignación de carga a Supervisores  
+        <p-chip class="ml-2" [removable]="true" label="AUTOMATICO_NORMALIZADO"></p-chip> 
+        <p-chip class="ml-4" [removable]="true" label="AUTOMATICO_NORMDOBLE"></p-chip>
+    </h4>
+    <hr>
+    <label for="username2">Departamento: </label>
+    <p-dropdown (onChange)="registrosTabla()" [options]="departamentos" [(ngModel)]="selectedDepartamento"
+        placeholder="Seleccione un Catalogo" optionLabel="value"></p-dropdown>
+
+    <button pButton pRipple label="Actualizar" icon="pi pi-refresh" class="p-button-warning ml-2"
+        pTooltip="Actualizar registros" placeholder="Right" (click)="registrosTabla()"></button> <br> <br>
+
+    <!-- {{ selectedCatalogo | json }} -->
+    <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
+
+    <p-table #dt1 [value]="registros" dataKey="id_catalogo" styleClass="p-datatable-sm">
+        <ng-template pTemplate="header">
+            <!--  -->
+            <tr>
+                <th>DEPARTAMENTO</th>
+                <th>VARIABLE</th>
+                <th>TOTAL</th>
+                <th>ACCIONES</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-reg>
+            <tr [pSelectableRow]="reg">
+                <td>
+                    <span class="p-column-title">DEPARTAMENTO</span>
+                    <span class="image-text">{{selectedDepartamento.value}}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">VARIABLE</span>
+                    <span class="image-text"><strong>Pregunta </strong>
+                        <p-chip label="{{reg.nro_preg}}" styleClass="mr-2 ml-2 custom-chip"></p-chip>
+                        {{reg.variable}}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">TOTAL</span>
+                    <span class="image-text"> {{reg.total_carga | number}}</span>
+                </td>
+                <td>
+                    <button (click)="asignarCarga(reg)" pButton pRipple label="Asignar" icon="pi pi-user-plus"
+                        class="p-button-info mr-3" *ngIf="reg.total_carga>0 || reg.totalAut>0" pTooltip="Asignar carga"
+                        tooltipPosition="left"></button>
+
+                    <button pButton pRipple label="Asignar" icon="pi pi-user-plus"
+                        class="p-button-outlined p-button-secondary mr-3" disabled *ngIf="reg.total_carga==0 "></button>
+
+
+                    <button (click)="reAsignarCarga(reg)" pButton pRipple label="Reasignar" icon="pi pi-user-minus"
+                        class="p-button-danger mr-2" 
+                        pTooltip="Reasignar carga" placeholder="Right"></button>
+
+                    <!-- <button pButton pRipple label="Reasignar" icon="pi pi-user-minus"
+                        class="p-button-outlined p-button-secondary mr-2" disabled *ngIf="reg.total_carga==0 "></button> -->
+
+
+
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="4">No hay registros para mostrar</td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <!-- Dialog asignacion -->
+    <p-dialog [(visible)]="asignacionDialog" [style]="{width: '550px'}" header="Asignación de carga" [modal]="true"
+        styleClass="p-fluid">
+
+        <div id="p-pregunta">
+            <span class="image-text"><strong>Pregunta </strong>
+                <p-chip label="{{registro?.nro_preg}}" styleClass="mr-2 ml-2 custom-chip"></p-chip>
+                {{registro?.variable}}</span>
+        </div>
+
+        <br>
+        <!--  {{registro?.total_carga}} -->
+        <!-- {{registros | json}} -->
+        <!-- {{usuarios | json}} -->
+
+        <ng-template pTemplate="content">
+
+            <p-table [value]="usuarios">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th> <p-checkbox (onChange)="seleccionarTodo()" class="mr-2" [(ngModel)]="checkedTodo"
+                                [binary]="true"></p-checkbox> Seleccionar todo</th>
+                        <th>Codificadores</th>
+                        <th style="width: 20%;">Cantidad</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-asig>
+                    <tr>
+                        <td>
+                            <p-checkbox (onChange)="dividirTotal()" class="ml-8" [(ngModel)]="asig.activo"
+                                [binary]="true"></p-checkbox>
+                        </td>
+                        <td><i class="pi pi-user" style="font-size: 1.3rem"></i> {{asig.nombre_completo}}</td>
+                        <td><input min="0" type="number" pInputText [(ngModel)]="asig.total"> </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <br>
+            <p-message *ngIf="msgService" severity="error" text="{{titleMsgError}}"></p-message>
+
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text "
+                (click)="asignacionDialog=false; registrosTabla() "></button>
+            <button pButton pRipple label="Asignar" icon="pi pi-check" class="p-button-text mr-2"
+                (click)="guardar()"></button>
+        </ng-template>
+
+    </p-dialog>
+
+
+
+
+    <!-- Dialog reasignacion -->
+    <p-dialog [(visible)]="reAsignacionDialog" [style]="{width: '550px'}" header="Reasignación de carga" [modal]="true"
+        styleClass="p-fluid">
+
+        <div id="p-pregunta">
+            <span class="image-text"><strong>Pregunta </strong>
+                <p-chip label="{{registro?.nro_preg}}" styleClass="mr-2 ml-2 custom-chip"></p-chip>
+                {{registro?.variable}}</span>
+        </div>
+
+        <br>
+        <!--  {{registro?.total_carga}} -->
+        <!-- {{registros | json}} -->
+        <!-- {{registro | json}} -->
+        <!-- {{usuarios | json}} -->
+
+        <ng-template pTemplate="content">
+
+            <p-table [value]="usuarios2">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <!-- <th> <p-checkbox (onChange)="seleccionarTodo()" class="mr-2" [(ngModel)]="checkedTodo"
+                                [binary]="true"></p-checkbox> Seleccionar todo</th> -->
+                        <th style="width: 60%;">Codificadores</th>
+                        <th style="width: 20%;">Cantidad asignada</th>
+                        <th style="width: 20%;"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-asig>
+                    <tr>
+                        <!-- <td>
+                            <p-checkbox (onChange)="dividirTotal()" class="ml-8" [(ngModel)]="asig.activo" [binary]="true"></p-checkbox>
+                        </td> -->
+                        <td> <i class="pi pi-user" style="font-size: 1.3rem"></i> {{asig.nombre_completo}}</td>
+                        <td><input min="0" type="number" pInputText [(ngModel)]="asig.total_asignado"> </td>
+                        <td><button (click)="resetCantAsignado(asig)" pButton pRipple type="button" icon="pi pi-times"
+                                class="p-button-rounded p-button-danger p-button-text" pTooltip="Cantidad = 0"
+                                tooltipPosition="right"></button></td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <br>
+            <p-message *ngIf="msgServiceAsig" severity="error" text="{{titleMsgErrorAsig}}"></p-message>
+
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text "
+                (click)="reAsignacionDialog=false"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text mr-2"></button>
+        </ng-template>
+
+    </p-dialog>
+
+</div>
+<!-- <p-messages [closable]="false"></p-messages>
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog> -->
+
+<!-- <p-confirmDialog [style]="{width: '30vw'}" [baseZIndex]="10000"
+    rejectButtonStyleClass="p-button-text"></p-confirmDialog> -->
+

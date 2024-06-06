@@ -142,6 +142,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
+
 FullCalendarModule.registerPlugins([
     dayGridPlugin,
     timeGridPlugin,

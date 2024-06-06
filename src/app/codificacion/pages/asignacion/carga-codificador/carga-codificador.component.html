@@ -14,7 +14,7 @@
     <!-- {{ selectedCatalogo | json }} -->
     <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
 
-    <p-table #dt1 [value]="registros" dataKey="id_catalogo">
+    <p-table #dt1 [value]="registros" dataKey="id_catalogo" styleClass="p-datatable-sm">
         <ng-template pTemplate="header">
             <!--  -->
             <tr>
