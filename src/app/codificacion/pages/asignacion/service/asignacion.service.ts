@@ -27,7 +27,7 @@ export class AsignacionService {
 
   // Listar codificadores con carga para reasignar
   codificadoresConCarga(body: object): Observable<any> {
-    return this.http.post(`${this._apiUrl}/codificacion/codificadoresConCarga`,body)
+    return this.http.post(`${this._apiUrl}/codificacion/codificadoresConCarga`, body)
   }
 
 
@@ -38,14 +38,20 @@ export class AsignacionService {
 
   //
   preguntasPorDepartamentoSup(body: object): Observable<any> {
-    return this.http.post(`${this._apiUrl}/codificacion/preguntasPorDepartamentoSup`, body)    
+    return this.http.post(`${this._apiUrl}/codificacion/preguntasPorDepartamentoSup`, body)
   }
 
 
 
-
+  // Asignación
   updateAsignado(id: any, body: object[]): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/updateAsignado/${id}`, body)
   }
+  
+  // Reasignación
+  updateReAsignado(id: any, body: object[]): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/updateReAsignado/${id}`, body)
+  }
+
 
 }

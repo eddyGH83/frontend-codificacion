@@ -34,14 +34,24 @@ export class CargaCodificadorComponent implements OnInit {
   checkedTodo: boolean = false;
   checked: boolean = false;
 
-  // msgService
+  // msgService asignacion
   msgService: boolean = false;
   titleMsgError: string = '';
-  msgServiceAsig: boolean = true;
+  msgServiceAsig: boolean = false;
   titleMsgErrorAsig: string = 'Ocurrio un error al reasignar la carga';
+
+  // msgService reasignacion
+  msgServiceReAsig: boolean = false;
+  titleMsgErrorReAsig: string = '';
+
+
+
+  // total carga asignada
+  total_carga_asignado: number = 0;
 
   //
   array_asg: Array<any> = [];
+  array_reasig: Array<any> = [];
 
   constructor(private messageService: MessageService, private asignacionService: AsignacionService) { }
 
@@ -84,7 +94,7 @@ export class CargaCodificadorComponent implements OnInit {
     });
   }
 
-  
+
   // SELECCIONA TODOS LOS CHECK
   seleccionarTodo() {
     if (this.checkedTodo !== false) {
@@ -176,20 +186,84 @@ export class CargaCodificadorComponent implements OnInit {
     });
   }
 
+
   codificadoresConCarga() {
-    this.asignacionService.codificadoresConCarga({ id: localStorage.getItem('id_usuario'), pregunta: this.registro.tabla_id }).subscribe(res => {
+    this.asignacionService.codificadoresConCarga({
+      id: localStorage.getItem('id_usuario'),
+      tabla_id: this.registro.tabla_id,
+      departamento: this.selectedDepartamento.value
+    }).subscribe(res => {
       this.usuarios2 = res.datos;
-      console.log("usuarios2");
-      console.log(this.usuarios2);
+      this.total_carga_asignado = res.total_carga_asignado;
     });
   }
+
+  // guardar reasignacion (REVISAR ESTA PARTE GENERADA POR CPLT)
+  guardarReAsignacion() {
+
+    // sacamos el todal de usuarios2 de las cargas asignadas
+    let total_aux = 0;
+    for (let i = 0; i < this.usuarios2.length; i++) {
+      total_aux = total_aux + Number(this.usuarios2[i].carga_asignado);
+    }
+
+    // verificamos que total_carga_asignado sea menor o igual a this.registro.total_carga
+    if (total_aux > this.total_carga_asignado) {
+      this.msgServiceReAsig = true;
+      this.titleMsgErrorReAsig = "La carga reasignada supera el total de la carga asignada";
+      setTimeout(() => {
+        this.msgServiceReAsig = false;
+        this.titleMsgErrorReAsig = '';
+      }, 3000);
+      return;
+    }
+
+    // verificamos que total_carga_asignado sea mayor a 0
+    if (total_aux === 0) {
+      this.msgServiceReAsig = true;
+      this.titleMsgErrorReAsig = "No hay carga para reasignar";
+      setTimeout(() => {
+        this.msgServiceReAsig = false;
+        this.titleMsgErrorReAsig = '';
+      }, 3000);
+      return;
+    }
+
+
+    this.array_reasig = [];
+
+    for (let j in this.usuarios2) {
+      if (this.usuarios2[j].carga_asignado > 0) {
+        const body = {
+          departamento: this.selectedDepartamento.value,
+          carga_asignado: this.usuarios2[j].carga_asignado,
+          usucre: this.usuarios2[j].login
+        }
+        this.array_reasig.push(body)
+      }
+    }
+
+
+    //alert("Reasignado correctamente");
+    this.asignacionService.updateReAsignado(this.registro.tabla_id, this.array_reasig).subscribe(res => {
+      if (res.success === true) {
+        this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: res.message, life: 2500 });
+        this.reAsignacionDialog = false;
+        this.registrosTabla();
+      }
+    });
+
+  }
+
+
+
 
   resetCantAsignado(reg: any) {
     // buscar en this.usuarios2 el usuario con id_usuario = reg.id_usuario
     // asignar 0 al total de ese usuario
     for (let i = 0; i < this.usuarios2.length; i++) {
       if (this.usuarios2[i].id_usuario === reg.id_usuario) {
-        this.usuarios2[i].total_asignado = 0;
+        this.usuarios2[i].carga_asignado = 0;
       }
     }
   }
@@ -211,16 +285,8 @@ export class CargaCodificadorComponent implements OnInit {
     }
 
 
-
-    // imprimir los registros de array_asg
-    //console.table(this.array_asg);
-
-    //alert("Asignado correctamente");
-
-
     this.asignacionService.updateAsignado(this.registro.tabla_id, this.array_asg,).subscribe(res => {
       // this.asignacionDialog = false;
-
 
 
       if (res.success === true) {
@@ -241,7 +307,6 @@ export class CargaCodificadorComponent implements OnInit {
       }
 
 
-
     });
 
   }
@@ -251,30 +316,6 @@ export class CargaCodificadorComponent implements OnInit {
 
 
 
-
-  // guardar reasignacion (REVISAR ESTA PARTE GENERADA POR CPLT)
-  guardarReAsignacion() {
-    this.array_asg = [];
-
-    for (let j in this.usuarios2) {
-      if (this.usuarios2[j].total_asignado > 0) {
-        const body = {
-          departamento: 'DEPTO AQUI', //this.codificacionService.depto,
-          count: this.usuarios2[j].total_asignado,
-          estado: 'ASIGNADO',
-          usucre: this.usuarios2[j].login,
-          area: 'AREA AQUI' // this.codificacionService.area1
-        }
-        this.array_asg.push(body)
-      }
-    }
-
-    //alert("Reasignado correctamente");
-    this.asignacionService.updateAsignado(this.registro.tabla_id, this.array_asg).subscribe(res => {
-      this.reAsignacionDialog = false;
-      this.registrosTabla();
-    });
-  }
 
 
 
