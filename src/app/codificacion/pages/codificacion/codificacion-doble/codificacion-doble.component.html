@@ -26,7 +26,7 @@
                                     {{secuencial}}</strong></th>
                             <th style="background-color: rgb(2, 136, 209); color: rgb(42, 42, 42); text-align: center;">
                                 POR CODIFICAR <br> <strong
-                                    style="font-family:Arial, Helvetica, sans-serif; color: white; ">{{totalCarga_ocu}}</strong>
+                                    style="font-family:Arial, Helvetica, sans-serif; color: white; ">{{porCodificar_ocu}}</strong>
                             </th>
                         </tr>
                     </ng-template>
@@ -41,7 +41,8 @@
                 </p>
                 <p class="ml-2 ">
                     <strong style="font-weight: normal; color:rgb(2, 136, 209)">ESTADO: </strong> {{estadoItem_ocu}}
-                    <strong class="ml-6" style="font-weight: normal; color:rgb(2, 136, 209)">CODIGO: </strong> 01010101
+                    <strong class="ml-6" style="font-weight: normal; color:rgb(2, 136, 209)">CODIGO: </strong> {{codigocodifItem_ocu}} <br>
+                    <strong style="font-weight: normal; color:rgb(2, 136, 209)">USUARIO CODIFICADOR: </strong> {{usucodificadorItem_ocu}}
                 </p>
             </div>
         </div>
@@ -67,7 +68,7 @@
                             <th
                                 style="background-color: rgb(17, 173, 228); color: rgb(42, 42, 42); text-align: center;">
                                 POR CODIFICAR <br> <strong
-                                    style="font-family:Arial, Helvetica, sans-serif; color: white; ">{{totalCarga_act}}</strong>
+                                    style="font-family:Arial, Helvetica, sans-serif; color: white; ">{{porCodificar_act}}</strong>
                             </th>
                         </tr>
                     </ng-template>
@@ -81,7 +82,8 @@
                 </p>
                 <p class="ml-2 ">
                     <strong style="font-weight: normal; color:rgb(17, 173, 228)">ESTADO: </strong>{{estadoItem_act}}
-                    <strong class="ml-6" style="font-weight: normal; color:rgb(17, 173, 228)">CODIGO: </strong> 02020202
+                    <strong class="ml-6" style="font-weight: normal; color:rgb(17, 173, 228)">CODIGO: </strong> {{codigocodifItem_act}} <br>
+                    <strong style="font-weight: normal; color:rgb(17, 173, 228)">USUARIO CODIFICADOR: </strong> {{usucodificadorItem_act}}
                 </p>
             </div>
         </div>

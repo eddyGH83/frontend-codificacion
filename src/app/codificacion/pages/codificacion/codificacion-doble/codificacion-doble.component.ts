@@ -41,6 +41,12 @@ export class CodificacionDobleComponent implements OnInit {
   respuestaItem_act: any;
   estadoItem_ocu: any;
   estadoItem_act: any;
+  codigocodifItem_ocu: any;
+  codigocodifItem_act: any;
+  usucodificadorItem_ocu: any;
+  usucodificadorItem_act: any;
+  porCodificar_act: number = 0;
+  porCodificar_ocu: number = 0;
   nAux: number = 0;
 
 
@@ -82,16 +88,18 @@ export class CodificacionDobleComponent implements OnInit {
     this.codificacionService.cargarParaCodificarDoble(body).subscribe(
       (data2: any) => {
 
-        this.totalCarga = data2.totalCarga,             // Total carga ocupacion y actividad
-          this.totalCarga_ocu = data2.totalCarga_ocu,   // Total carga ocupacion
-          this.totalCarga_act = data2.totalCarga_act,   // Total carga actividad
-          this.nroPreg_ocu = data2.nroPreg_ocu,   // nro de la pregunta acupacion
-          this.nroPreg_act = data2.nroPreg_act,   // nro de la pregunta actividad
-          this.descPreg_ocu = data2.descPreg_ocu, // descripcion de la pregunta ocupacion 
-          this.descPreg_act = data2.descPreg_act, // descripcion de la pregunta actividad
-          this.carga = data2.datos,               // datos de la carga
-          this.clasificacion_ocu = data2.clasificacion_ocu,   // clasificacion ocupacion (catalogo ocupacion)
-          this.clasificacion_act = data2.clasificacion_act    // clasificacion actividad (catalogo actividad)
+        this.totalCarga = data2.totalCarga;            // Total carga ocupacion y actividad
+        this.totalCarga_ocu = data2.totalCarga_ocu;   // Total carga ocupacion
+        this.totalCarga_act = data2.totalCarga_act;   // Total carga actividad
+        this.nroPreg_ocu = data2.nroPreg_ocu;   // nro de la pregunta acupacion
+        this.nroPreg_act = data2.nroPreg_act;   // nro de la pregunta actividad
+        this.descPreg_ocu = data2.descPreg_ocu; // descripcion de la pregunta ocupacion 
+        this.descPreg_act = data2.descPreg_act; // descripcion de la pregunta actividad
+        this.carga = data2.datos;               // datos de la carga
+        this.clasificacion_ocu = data2.clasificacion_ocu;   // clasificacion ocupacion (catalogo ocupacion)
+        this.clasificacion_act = data2.clasificacion_act;    // clasificacion actividad (catalogo actividad)
+        this.porCodificar_ocu = data2.totalCarga_ocu;
+        this.porCodificar_act = data2.totalCarga_act;
 
         this.primero();
         this.buscarSimilares();
@@ -101,9 +109,11 @@ export class CodificacionDobleComponent implements OnInit {
       })
   }
 
-  /* 
-  // Confirmar codificación
-  confirmarCodifiacion(registro: any) {
+
+
+  confirmarCodificacionOcu(registro: any) {
+    console.log('confirmarCodificacionOcu');
+
     this.confirmationService.confirm({
       message: '<strong>Codigo: </strong>' + registro.codigo + '<br><strong>Descripción: </strong>' + registro.descripcion,
       header: 'Confirmación',
@@ -111,68 +121,90 @@ export class CodificacionDobleComponent implements OnInit {
       accept: () => {
 
         // sim y cuando sea mayor a 0 y que estado sea diferente de CODIFICADO
-        if (this.porCodificar > 0 && this.estadoItem === 'ASIGNADO') {
-          this.porCodificar--;
+        if (this.porCodificar_ocu > 0 && this.estadoItem_ocu === 'ASIGNADO') {
+          this.porCodificar_ocu--;
         }
 
-        // Modificar el estado y
-        this.estadoItem = 'CODIFICADO';
 
         // Modificar: carga (foreach) su propiedad estado_ocu = 'CODIFICADO'
         this.carga.forEach(element => {
-          if (element.id_pregunta == this.idPregunta) {
-            element.estado = 'CODIFICADO';
+          if (element.id_p49_p51 == this.idPregunta) {
+            element.estado_ocu = 'CODIFICADO';
+            element.codigocodif_ocu = registro.codigo;
+            element.usucodificador_ocu = localStorage.getItem('login');
           }
         });
 
-        // Codificación
         const body = {
           id_registro: this.idPregunta,
-          tabla_id: localStorage.getItem('tabla_id'),
           codigocodif: registro.codigo,
           usucodificador: localStorage.getItem('login'),
         }
 
-        this.codificacionService.updatePreguntaSimple(body).subscribe(
+        this.codificacionService.updatePreguntaDobleOcu(body).subscribe(
           (data2: any) => {
-            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Codificación realizada' });
-            this.siguiente();
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: data2.message });
+            if (this.estadoItem_act == 'CODIFICADO') {
+              this.siguiente();
+            }
           })
+
       }
     });
+
   }
-  */
 
 
-
-  confirmarCodificacionAct(registro: any){
+  confirmarCodificacionAct(registro: any) {
     console.log('confirmarCodificacionAct');
 
     this.confirmationService.confirm({
-      message: '<strong>Codigo: </strong>' + registro.codigo + '<br><strong>Descripción: </strong>' + registro.descripcion, 
+      message: '<strong>Codigo: </strong>' + registro.codigo + '<br><strong>Descripción: </strong>' + registro.descripcion,
       header: 'Confirmación',
       icon: 'pi pi-check-square',
       accept: () => {
-        // 
+
+
+        // sim y cuando sea mayor a 0 y que estado sea diferente de CODIFICADO
+        if (this.porCodificar_act > 0 && this.estadoItem_act === 'ASIGNADO') {
+          this.porCodificar_act--;
+        }
+
+
+        // Modificar datos
+        this.estadoItem_act = 'CODIFICADO';
+        this.codigocodifItem_act = registro.codigo;
+        this.usucodificadorItem_act = localStorage.getItem('login');
+
+
+        // Modificar: carga (foreach) su propiedad estado_ocu = 'CODIFICADO'
+        this.carga.forEach(element => {
+          if (element.id_p49_p51 == this.idPregunta) {
+            element.estado_act = 'CODIFICADO';
+            element.codigocodif_act = registro.codigo;
+            element.usucodificador_act = localStorage.getItem('login');
+          }
+        });
+
+        const body = {
+          id_registro: this.idPregunta,
+          codigocodif: registro.codigo,
+          usucodificador: localStorage.getItem('login'),
+        }
+
+        this.codificacionService.updatePreguntaDobleAct(body).subscribe(
+          (data2: any) => {
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: data2.message });
+            if (this.estadoItem_ocu == 'CODIFICADO') {
+              this.siguiente();
+            }
+          })
+
       }
     });
-    
+
   }
 
-
-  confirmarCodificacionOcu( registro: any){
-    console.log('confirmarCodificacionOcu');
-
-    this.confirmationService.confirm({
-      message: '<strong>Codigo: </strong>' + registro.codigo + '<br><strong>Descripción: </strong>' + registro.descripcion, 
-      header: 'Confirmación',
-      icon: 'pi pi-check-square',
-      accept: () => {
-        // 
-      }
-    });
-    
-  }
 
 
   // Buscar registros por el input codigo en clasificacion_ocu
@@ -339,6 +371,11 @@ export class CodificacionDobleComponent implements OnInit {
     this.respuestaItem_act = this.carga[0].respuesta_act;   // respuesta actividad
     this.estadoItem_ocu = this.carga[0].estado_ocu;         // estado ocupacion
     this.estadoItem_act = this.carga[0].estado_act;         // estado actividad
+    this.codigocodifItem_ocu = this.carga[0].codigocodif_ocu; // codigo codificado ocupacion
+    this.codigocodifItem_act = this.carga[0].codigocodif_act; // codigo codificado actividad
+    this.usucodificadorItem_ocu = this.carga[0].usucodificador_ocu; // usuario codificador ocupacion
+    this.usucodificadorItem_act = this.carga[0].usucodificador_act; // usuario codificador actividad
+    this.nAux = 1;
 
 
     //  Reeplazar el input desc_ocu y desc_act por el valor de la respuesta
@@ -368,6 +405,10 @@ export class CodificacionDobleComponent implements OnInit {
       this.respuestaItem_act = this.carga[this.nAux - 1].respuesta_act;
       this.estadoItem_ocu = this.carga[this.nAux - 1].estado_ocu;
       this.estadoItem_act = this.carga[this.nAux - 1].estado_act;
+      this.codigocodifItem_ocu = this.carga[this.nAux - 1].codigocodif_ocu;
+      this.codigocodifItem_act = this.carga[this.nAux - 1].codigocodif_act;
+      this.usucodificadorItem_ocu = this.carga[this.nAux - 1].usucodificador_ocu;
+      this.usucodificadorItem_act = this.carga[this.nAux - 1].usucodificador_ocu;
     }
 
     //  Reeplazar el input desc_ocu y desc_act por el valor de la respuesta
@@ -383,7 +424,7 @@ export class CodificacionDobleComponent implements OnInit {
 
 
 
-  
+
 
 
   // 
@@ -397,6 +438,10 @@ export class CodificacionDobleComponent implements OnInit {
       this.respuestaItem_act = this.carga[this.nAux].respuesta_act;
       this.estadoItem_ocu = this.carga[this.nAux].estado_ocu;
       this.estadoItem_act = this.carga[this.nAux].estado_act;
+      this.codigocodifItem_ocu = this.carga[this.nAux].codigocodif_ocu;
+      this.codigocodifItem_act = this.carga[this.nAux].codigocodif_act;
+      this.usucodificadorItem_ocu = this.carga[this.nAux].usucodificador_ocu;
+      this.usucodificadorItem_act = this.carga[this.nAux].usucodificador_act;
       this.nAux++;
     }
 

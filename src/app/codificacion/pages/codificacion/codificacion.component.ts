@@ -16,7 +16,7 @@ export class CodificacionComponent implements OnInit {
   // Progress Bar
   tabla_pb: boolean = false;
 
-  constructor(private codificacionService: CodificacionService, private router: Router,) { }
+  constructor(private codificacionService: CodificacionService, private router: Router) { }
 
 
   ngOnInit(): void {

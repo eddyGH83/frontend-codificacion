@@ -1,17 +1,17 @@
 <div class="card">
 
-    <h4>Variables para supervisión</h4> 
+    <h4>Variables para supervisión</h4>
     <hr>
 
 
-    <button pButton pRipple label="Actualizar"
-                        icon="pi pi-refresh" class="p-button-warning"
-                        pTooltip="Actualizar tabla" placeholder="Right"></button>
-                        <br><br>
+    <button pButton pRipple label="Actualizar" icon="pi pi-refresh" class="p-button-warning" pTooltip="Actualizar tabla"
+        placeholder="Right"></button>
+    <br><br>
 
     <p-table #dt1 [value]="registros" dataKey="id_catalogo" styleClass="p-datatable-customers"
-        [showCurrentPageReport]="true"
-        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros"  stateStorage="local" stateKey="statedemo-local">
+        styleClass="p-datatable-sm" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" stateStorage="local"
+        stateKey="statedemo-local">
         <ng-template pTemplate="header">
             <!--  -->
             <tr>
@@ -25,7 +25,7 @@
                 <td>
                     <span class="p-column-title">VARIABLE</span>
                     <span class="image-text"><strong>Pregunta </strong>
-                        <p-chip label="{{reg.nroPreg}}" styleClass="mr-2"></p-chip>
+                        <p-chip label="{{reg.nro_preg}}" styleClass="mr-2 ml-2 custom-chip"></p-chip>
                         {{reg.variable}}</span>
                 </td>
                 <td>
@@ -34,21 +34,22 @@
                         reg.totalAut }}</span>
                 </td>
                 <td>
-                    <button routerLink="/codificacion/codificacion-simple" pButton pRipple label="Por lotes"
-                        icon="pi pi-table" class="p-button-info mr-3" *ngIf="reg.totalCod>0 || reg.totalAut>0"
-                        pTooltip="Supervisión por lotes" placeholder="Right"></button>
+                    <button (click)="supervisionPorLoteSimple()" pButton pRipple label="Por lotes" icon="pi pi-table"
+                        class="p-button-info mr-3" *ngIf="reg.btn_simple" pTooltip="Supervisión por lotes"
+                        tooltipPosition="left" ></button>
+                    <button (click)="supervisionPorLoteDoble()" pButton pRipple label="Por lotes" icon="pi pi-table"
+                        class="p-button-info mr-3" *ngIf="!reg.btn_simple" pTooltip="Supervisión por lotes" 
+                        tooltipPosition="left"></button>
 
-                    <button pButton pRipple label="Por lotes" icon="pi pi-table"
-                        class="p-button-outlined p-button-secondary mr-3" disabled
-                        *ngIf="reg.totalCod==0 && reg.totalAut==0"></button>
 
-                    <button routerLink="/codificacion/codificacion-simple" pButton pRipple label="Individual"
-                        icon="pi pi-stop" class="p-button-danger mr-2" *ngIf="reg.totalCod>0 || reg.totalAut>0"
+
+                    <button (click)="supervisionIndividualSimple()" pButton pRipple label="Individual"
+                        icon="pi pi-stop" class="p-button-danger mr-2" *ngIf="reg.btn_simple"
+                        pTooltip="Supervisión individual" placeholder="Right"></button>
+                    <button (click)="supervisionIndividualDoble()" pButton pRipple label="Individual"
+                        icon="pi pi-stop" class="p-button-danger mr-2" *ngIf="!reg.btn_simple"
                         pTooltip="Supervisión individual" placeholder="Right"></button>
 
-                    <button pButton pRipple label="Individual" icon="pi pi-stop"
-                        class="p-button-outlined p-button-secondary mr-2" disabled
-                        *ngIf="reg.totalCod==0 && reg.totalAut==0"></button>
                 </td>
             </tr>
         </ng-template>

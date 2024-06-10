@@ -1,0 +1,36 @@
+<div class="card">
+
+    <h4>Variables para codificación</h4>
+    <hr>
+    <button pButton pRipple label="Actualizar" icon="pi pi-refresh" class="p-button-warning ml-2"
+        pTooltip="Actualizar carga" placeholder="Right" (click)="registrosTabla()"></button> <br> <br>
+
+    <!-- <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar> -->
+
+    <p-table [value]="registros" [(selection)]="selectedProducts3" dataKey="code" >
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 4rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th>RESPUESTA</th>
+                <th>CODIGO</th>
+                <th>CODIFICADOR</th>
+                <th>VARIABLE DE APOYO</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="product"></p-tableCheckbox>
+                </td>
+                <td>{{product.respuesta}}</td>
+                <td>{{product.codigo}}</td>
+                <td>{{product.codificador}}</td>
+                <td>{{product.varApoyo}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+</div>
+<br>

@@ -27,6 +27,10 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { FileUploadModule } from 'primeng/fileupload';
 import { HttpClientModule } from '@angular/common/http';
 import { KnobModule } from 'primeng/knob';
+import { SupervisionLoteSimpleComponent } from './supervision-lote-simple/supervision-lote-simple.component';
+import { SupervisionLoteDobleComponent } from './supervision-lote-doble/supervision-lote-doble.component';
+import { SupervisionIndividualDobleComponent } from './supervision-individual-doble/supervision-individual-doble.component';
+import { SupervisionIndividualSimpleComponent } from './supervision-individual-simple/supervision-individual-simple.component';
 
 
 @NgModule({
@@ -36,7 +40,11 @@ import { KnobModule } from 'primeng/knob';
     SupervisarCodificacionComponent,
     CodificacionComponent,
     CodificacionSimpleComponent,
-    CodificacionDobleComponent
+    CodificacionDobleComponent,
+    SupervisionLoteSimpleComponent,
+    SupervisionLoteDobleComponent,
+    SupervisionIndividualDobleComponent,
+    SupervisionIndividualSimpleComponent
   ],
   imports: [
     CommonModule,

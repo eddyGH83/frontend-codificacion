@@ -24,6 +24,10 @@ export class AsignacionService {
     return this.http.get(`${this._apiUrl}/codificacion/codificadores/${id}`)
   }
 
+  // Listar supervisores sin carga
+  supervisoresSinCarga(id: any): Observable<any> {
+    return this.http.get(`${this._apiUrl}/codificacion/supervisoresSinCarga/${id}`)
+  }
 
   // Listar codificadores con carga para reasignar
   codificadoresConCarga(body: object): Observable<any> {
@@ -43,15 +47,25 @@ export class AsignacionService {
 
 
 
-  // Asignación
+  // Asignación de carga a codificadores
   updateAsignado(id: any, body: object[]): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/updateAsignado/${id}`, body)
   }
-  
-  // Reasignación
+  // Reasignación de carga a codificadores
   updateReAsignado(id: any, body: object[]): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/updateReAsignado/${id}`, body)
   }
 
+
+
+
+  // Asignación de carga a supervisores
+  updateAsignadoSup(id: any, body: object[]): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/updateAsignadoSup/${id}`, body)
+  }
+  // Reasignación de carga a supervisores
+  updateReAsignadoSup(id: any, body: object[]): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/updateReAsignadoSup/${id}`, body)
+  }
 
 }

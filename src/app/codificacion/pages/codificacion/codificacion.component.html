@@ -7,7 +7,7 @@
 
     <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
 
-    <p-table [value]="registros">
+    <p-table [value]="registros" styleClass="p-datatable-sm" >
         <ng-template pTemplate="header">
             <!--  -->
             <tr>

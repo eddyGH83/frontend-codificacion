@@ -2,7 +2,7 @@
 
     <p-toast></p-toast>
 
-    <h4>Asignación de carga a Supervisores  
+    <h4>Asignación de carga a Supervisores
         <p-chip class="ml-2" [removable]="true" label="AUTOMATICO_NORMALIZADO"></p-chip> 
         <p-chip class="ml-4" [removable]="true" label="AUTOMATICO_NORMDOBLE"></p-chip>
     </h4>
@@ -116,7 +116,7 @@
             <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text "
                 (click)="asignacionDialog=false; registrosTabla() "></button>
             <button pButton pRipple label="Asignar" icon="pi pi-check" class="p-button-text mr-2"
-                (click)="guardar()"></button>
+                (click)="guardarAsignacion()"></button>
         </ng-template>
 
     </p-dialog>

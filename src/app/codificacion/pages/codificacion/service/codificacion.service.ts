@@ -15,22 +15,37 @@ export class CodificacionService {
 
 
   // CODIFICACION SIMPLE - DOBLE  
-  cargarParaCodificarSimple(body: object): Observable<any> {        
+  cargarParaCodificarSimple(body: object): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/cargarParaCodificarSimple`, body)
   }
-  cargarParaCodificarDoble(body: object): Observable<any> {        
+  cargarParaCodificarDoble(body: object): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/cargarParaCodificarDoble`, body)
   }
   updateOcuAct(body: object): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/updateOcuAct`, body)
   }
-  
+
+
+  // Codificaión Simple
   updatePreguntaSimple(body: object): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/updatePreguntaSimple`, body)
   }
   updatePreguntaSimpleAnular(body: object): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/updatePreguntaSimpleAnular`, body)
   }
+
+
+  // Codificación Doble Ocu Act
+  updatePreguntaDobleOcu(body: object): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/updatePreguntaDobleOcu`, body)
+  }
+  updatePreguntaDobleAct(body: object): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/updatePreguntaDobleAct`, body)
+  }
+  updatePreguntaDobleAnular(body: object): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/updatePreguntaDobleAnular`, body)
+  }
+
 
 
 
@@ -78,6 +93,11 @@ export class CodificacionService {
   // CODIFICACION
   devuelvePreguntasCodificado(body: any): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/devuelvePreguntasCodificado`, body)
+  }
+
+  // PARA SUPERVISION
+  devuelvePreguntasSupervision(body: any): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/devuelvePreguntasSupervision`, body)
   }
 
 }

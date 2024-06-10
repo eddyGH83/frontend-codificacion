@@ -156,7 +156,7 @@ export class CargaSupervisorComponent implements OnInit {
 
   // 
   asignarCarga(registro: any) {
-    this.codificadores();
+    this.supervisores();
     this.registro = { ...registro };
     this.asignacionDialog = true;
   }
@@ -166,19 +166,21 @@ export class CargaSupervisorComponent implements OnInit {
   //
   reAsignarCarga(registro: any) {
     this.registro = { ...registro };
-    this.codificadoresConCarga();
+    this.supervisoresConCarga();
     this.reAsignacionDialog = true;
   }
 
 
-  codificadores() {
-    this.asignacionService.codificadores(localStorage.getItem('id_usuario')).subscribe(res => {
+  supervisores() {
+    this.asignacionService.supervisoresSinCarga(localStorage.getItem('id_usuario')).subscribe(res => {
       this.usuarios = res.datos.rows;
+      console.table(this.usuarios);
+      
       this.checkedTodo = false;
     });
   }
 
-  codificadoresConCarga() {
+  supervisoresConCarga() {
     this.asignacionService.codificadoresConCarga({ id: localStorage.getItem('id_usuario'), pregunta: this.registro.tabla_id }).subscribe(res => {
       this.usuarios2 = res.datos;
       console.log("usuarios2");
@@ -196,7 +198,7 @@ export class CargaSupervisorComponent implements OnInit {
     }
   }
 
-  guardar() {
+  guardarAsignacion() {
     this.array_asg = [];
 
     for (let j in this.usuarios) {
@@ -213,16 +215,8 @@ export class CargaSupervisorComponent implements OnInit {
     }
 
 
-
-    // imprimir los registros de array_asg
-    //console.table(this.array_asg);
-
-    //alert("Asignado correctamente");
-
-
-    this.asignacionService.updateAsignado(this.registro.tabla_id, this.array_asg,).subscribe(res => {
+    this.asignacionService.updateAsignadoSup(this.registro.tabla_id, this.array_asg,).subscribe(res => {
       // this.asignacionDialog = false;
-
 
 
       if (res.success === true) {
@@ -241,8 +235,6 @@ export class CargaSupervisorComponent implements OnInit {
           this.titleMsgError = '';
         }, 2500);
       }
-
-
 
     });
 
