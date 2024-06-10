@@ -328,9 +328,6 @@ export class CodificacionDobleComponent implements OnInit {
 
 
 
-
-
-
   // 
   primero() {
 
@@ -386,6 +383,7 @@ export class CodificacionDobleComponent implements OnInit {
 
 
 
+  
 
 
   // 

@@ -211,40 +211,23 @@ export class CargaCodificadorComponent implements OnInit {
     if (total_aux > this.total_carga_asignado) {
       this.msgServiceReAsig = true;
       this.titleMsgErrorReAsig = "La carga reasignada supera el total de la carga asignada";
-      setTimeout(() => {
-        this.msgServiceReAsig = false;
-        this.titleMsgErrorReAsig = '';
-      }, 3000);
+      setTimeout(() => { this.msgServiceReAsig = false; this.titleMsgErrorReAsig = ''; }, 3000);
       return;
     }
-
-    // verificamos que total_carga_asignado sea mayor a 0
-    if (total_aux === 0) {
-      this.msgServiceReAsig = true;
-      this.titleMsgErrorReAsig = "No hay carga para reasignar";
-      setTimeout(() => {
-        this.msgServiceReAsig = false;
-        this.titleMsgErrorReAsig = '';
-      }, 3000);
-      return;
-    }
-
 
     this.array_reasig = [];
 
+    // recorremos this.usuarios2 y creamos el array para enviar a la api
     for (let j in this.usuarios2) {
-      if (this.usuarios2[j].carga_asignado > 0) {
         const body = {
           departamento: this.selectedDepartamento.value,
           carga_asignado: this.usuarios2[j].carga_asignado,
           usucre: this.usuarios2[j].login
         }
         this.array_reasig.push(body)
-      }
     }
 
-
-    //alert("Reasignado correctamente");
+    // enviamos el array a la api
     this.asignacionService.updateReAsignado(this.registro.tabla_id, this.array_reasig).subscribe(res => {
       if (res.success === true) {
         this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: res.message, life: 2500 });
