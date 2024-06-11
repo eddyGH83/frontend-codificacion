@@ -51,7 +51,7 @@ export class CodificacionSimpleComponent implements OnInit {
 
   constructor(private router: Router, private messageService: MessageService, private codificacionService: CodificacionService, private confirmationService: ConfirmationService) { }
 
-  
+
 
   ngOnInit(): void {
     // Verificamos que la variable tabla_id exista en localStorage
@@ -79,8 +79,8 @@ export class CodificacionSimpleComponent implements OnInit {
     this.codificacionService.cargarParaCodificarSimple(body).subscribe(
       (data2: any) => {
         this.carga = data2.datos;
-        console.table( this.carga);
-        
+        console.table(this.carga);
+
         this.clasificacion = data2.clasificacion;
         this.totalCarga = data2.totalCarga;
         this.nroPreg = data2.nroPreg;
@@ -121,7 +121,7 @@ export class CodificacionSimpleComponent implements OnInit {
 
 
   // Buscar palabras similares con el input descripcion
-  buscarSimilaresPorDescripcion() {
+  buscarSimilaresPorDescripcion_() {
     // limpiar clasificacionAux    
     this.clasificacionAux = [];
     // Limpiar input codigo
@@ -143,13 +143,44 @@ export class CodificacionSimpleComponent implements OnInit {
 
 
 
+  // Buscar registros por el input codigo
+  buscarSimilaresPorDescripcion() {
+    // Limpiar clasificacionAux
+    this.clasificacionAux = [];
+
+    // Limpiar input descripcion
+    this.codigo = '';
+
+    // recorrer clasificacion
+    this.clasificacion.forEach(element => {
+      // La descripcion debe ser igual al input descripcion de izquierda a derecha sin importar mayusculas y minusculas
+      if (element.descripcion.toLowerCase().includes(this.descripcion.toLowerCase())) {
+        // agregar a clasificacionAux
+        this.clasificacionAux.push(element);
+      }
+
+    });
+
+    // ordenar por descripcion, de menor a mayor
+
+
+    // si el codigo no existe en la clasificacion limipar clasificacionAux
+    /* if (this.codigo.length === 0) {
+      this.clasificacionAux = [];
+    } */
+
+  }
+
+
+
+
 
 
 
 
 
   // Buscar registros por el input codigo
-  buscarPorCodigo() {
+  buscarPorCodigo_() {
     // Limpiar clasificacionAux
     this.clasificacionAux = [];
 
@@ -164,10 +195,37 @@ export class CodificacionSimpleComponent implements OnInit {
         this.clasificacionAux.push(element);
       }
     });
-
   }
 
 
+
+
+  // Buscar registros por el input codigo
+  buscarPorCodigo() {
+    // Limpiar clasificacionAux
+    this.clasificacionAux = [];
+
+    // Limpiar input descripcion
+    this.descripcion = '';
+
+    // recorrer clasificacion
+    this.clasificacion.forEach(element => {
+      // El codigo debe ser igual al input codigo de izquierda a derecha
+      if (element.codigo.startsWith(this.codigo)) {
+        // agregar a clasificacionAux
+        this.clasificacionAux.push(element);
+      }
+    });
+
+    // order por codigo
+    this.clasificacionAux.sort((a, b) => (a.codigo > b.codigo) ? 1 : -1);
+
+    // si el codigo no existe en la clasificacion limipar clasificacionAux
+    if (this.codigo.length === 0) {
+      this.clasificacionAux = [];
+    }
+
+  }
 
 
 
@@ -193,12 +251,8 @@ export class CodificacionSimpleComponent implements OnInit {
   }
 
 
-
-
-
-
   // primero de la carga
-  primero() {
+  primero_() {
     this.contexto = this.carga[0].contexto;
     this.departamentoItem = this.carga[0].departamento;
     this.idPregunta = this.carga[0].id_pregunta;
@@ -208,13 +262,35 @@ export class CodificacionSimpleComponent implements OnInit {
     this.nAux = 1;
     //  Reeplazar el input descripcion por el valor de la respuesta
     this.descripcion = this.respuestaItem;
-
     // Limpia el input codigo
     this.codigo = '';
     this.buscarSimilares();
   }
 
 
+  // Primero de la carga con estado ASIGNADO
+  primero() {
+    let i = 0;
+    while (i < this.totalCarga) {
+      if (this.carga[i].estado === 'ASIGNADO') {
+        this.contexto = this.carga[i].contexto;
+        this.departamentoItem = this.carga[i].departamento;
+        this.idPregunta = this.carga[i].id_pregunta;
+        this.secuencial = this.carga[i].secuencial;
+        this.respuestaItem = this.carga[i].respuesta;
+        this.estadoItem = this.carga[i].estado;
+        this.nAux = i + 1;
+        //  Reeplazar el input descripcion por el valor de la respuesta
+        this.descripcion = this.respuestaItem;
+
+        // Limpia el input codigo
+        this.codigo = '';
+        this.buscarSimilares();
+        break;
+      }
+      i++;
+    }
+  }
 
 
 
