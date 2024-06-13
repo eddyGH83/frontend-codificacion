@@ -76,15 +76,15 @@
     </div>
 
     <!-- TABLA DE CODIFICACIÓN Y CATALOGOS -->
-    <p-table #dt1 [value]="clasificacionAux" dataKey="id_catalogo" [scrollable]="true" scrollHeight="400px"
+    <p-table #dt1 [value]="clasificacionAux" dataKey="id_catalogo"  [(first)]="first"
         styleClass="p-datatable-customers" [showCurrentPageReport]="true"
-        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
-        [rowsPerPageOptions]="[5]" [paginator]="true" stateStorage="local">
+        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="15"
+        [rowsPerPageOptions]="[5,10,15]" [paginator]="true" stateStorage="local">
         <ng-template pTemplate="header">
             <!--  -->
             <tr>
-                <th pSortableColumn="variable">CÓDIGO CODIFICACIÓN <p-sortIcon field="variable"></p-sortIcon> </th>
-                <th pSortableColumn="total">RESPUESTA <p-sortIcon field="total"></p-sortIcon></th>
+                <th pSortableColumn="codigo">CÓDIGO CODIFICACIÓN <p-sortIcon field="codigo"></p-sortIcon> </th>
+                <th pSortableColumn="descripcion">RESPUESTA <p-sortIcon field="descripcion"></p-sortIcon></th>
                 <th>ACCIONES</th>
             </tr>
             <tr>

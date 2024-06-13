@@ -219,12 +219,12 @@ export class CargaCodificadorComponent implements OnInit {
 
     // recorremos this.usuarios2 y creamos el array para enviar a la api
     for (let j in this.usuarios2) {
-        const body = {
-          departamento: this.selectedDepartamento.value,
-          carga_asignado: this.usuarios2[j].carga_asignado,
-          usucre: this.usuarios2[j].login
-        }
-        this.array_reasig.push(body)
+      const body = {
+        departamento: this.selectedDepartamento.value,
+        carga_asignado: this.usuarios2[j].carga_asignado,
+        usucre: this.usuarios2[j].login
+      }
+      this.array_reasig.push(body)
     }
 
     // enviamos el array a la api

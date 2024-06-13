@@ -9,6 +9,8 @@
     <div class="grid">
 
 
+
+
         <!-- OCUPACION -->
         <div class="col-4 md:col-4 lg:6">
             <p-progressBar *ngIf="ocuActCont_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
@@ -41,11 +43,19 @@
                 </p>
                 <p class="ml-2 ">
                     <strong style="font-weight: normal; color:rgb(2, 136, 209)">ESTADO: </strong> {{estadoItem_ocu}}
-                    <strong class="ml-6" style="font-weight: normal; color:rgb(2, 136, 209)">CODIGO: </strong> {{codigocodifItem_ocu}} <br>
-                    <strong style="font-weight: normal; color:rgb(2, 136, 209)">USUARIO CODIFICADOR: </strong> {{usucodificadorItem_ocu}}
+                    <strong class="ml-6" style="font-weight: normal; color:rgb(2, 136, 209)">CODIGO: </strong>
+                    {{codigocodifItem_ocu}} 
+                    <strong class="ml-6" style="font-weight: normal; color:rgb(2, 136, 209)">DESC: </strong>
+                    {{descripcionItem_ocu}} 
+                    <br>
+                    <strong style="font-weight: normal; color:rgb(2, 136, 209)">USU CODIF: </strong>
+                    {{usucodificadorItem_ocu}}
                 </p>
             </div>
         </div>
+
+        <!-- descripcionItem_ocu -->
+
 
 
         <!-- ACTIVIDAD -->
@@ -82,11 +92,19 @@
                 </p>
                 <p class="ml-2 ">
                     <strong style="font-weight: normal; color:rgb(17, 173, 228)">ESTADO: </strong>{{estadoItem_act}}
-                    <strong class="ml-6" style="font-weight: normal; color:rgb(17, 173, 228)">CODIGO: </strong> {{codigocodifItem_act}} <br>
-                    <strong style="font-weight: normal; color:rgb(17, 173, 228)">USUARIO CODIFICADOR: </strong> {{usucodificadorItem_act}}
+                    <strong class="ml-6" style="font-weight: normal; color:rgb(17, 173, 228)">CODIGO: </strong>
+                    {{codigocodifItem_act}} 
+                    <strong class="ml-6" style="font-weight: normal; color:rgb(2, 136, 209)">DESC: </strong>
+                    {{descripcionItem_act}}
+                    <br>
+                    <strong style="font-weight: normal; color:rgb(17, 173, 228)">USUARIO CODIFICADOR: </strong>
+                    {{usucodificadorItem_act}}
                 </p>
             </div>
         </div>
+
+
+
 
         <!-- CONTEXTO -->
         <div class="col-4 md:col-4 lg:6">
@@ -106,21 +124,45 @@
             </div>
         </div>
 
+
+
+
+
     </div>
+
+
+
+
+
+
 
 
 
     <!-- CONTROLES -->
     <div class="text-700 text-center">
+        <!-- Anular anterior -->
         <button (click)="anularAnterior()" pButton pRipple label="Anular anterior" icon="pi pi-trash"
             class="p-button-danger mb-3  px-5 py-3 mr-2 white-space-nowrap"></button>
+        <!-- Primero -->
         <button (click)="primero()" pButton pRipple label="Primero" icon="pi pi-fast-backward"
             class="p-button-info mb-3  px-5 py-3 mr-2 white-space-nowrap"></button>
+        <!-- Siguiente -->
         <button (click)="siguiente()" pButton pRipple label="Siguiente" icon="pi pi-forward"
             class="p-button-info mb-3  px-5 py-3 mr-2 white-space-nowrap"></button>
+        <!-- Guardar -->
+        <button (click)="confirmarCodificacionOcuAct()" pButton pRipple label="Guardar" icon="pi pi-save"
+            class="p-button-primary mb-3  px-5 py-3 mr-2 white-space-nowrap"></button>
+        <!-- Contador -->
         <button pButton pRipple type="button" label="{{nAux}} / {{totalCarga}}" disabled
             class="p-button-outlined p-button-rounded p-button-secondary mb-3 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
     </div>
+
+
+
+
+
+
+
 
 
     <!-- TABLA DE CATALOGOS -->
@@ -129,11 +171,10 @@
             <p-progressBar *ngIf="catOcu_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
             <div class="card  border-1 surface-border">
                 <!-- Tabla Ocupacion -->
-                <p-table #dt1 [value]="clasificacion_ocu_aux" dataKey="id_catalogo" [scrollable]="true"
-                    scrollHeight="400px" styleClass="p-datatable-customers p-datatable-sm"
-                    [showCurrentPageReport]="true"
-                    currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
-                    [rowsPerPageOptions]="[5]" [paginator]="true" stateStorage="local">
+                <p-table #dt1 [value]="clasificacion_ocu_aux" dataKey="id_catalogo" styleClass="p-datatable-customers p-datatable-sm"
+                    [showCurrentPageReport]="true" [(first)]="first_ocu"
+                    currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="15"
+                    [rowsPerPageOptions]="[5,10,15]" [paginator]="true" stateStorage="local">
                     <ng-template pTemplate="header">
                         <!--  -->
                         <tr>
@@ -167,7 +208,7 @@
                                 <span class="image-text">{{reg.descripcion}}</span>
                             </td>
                             <td>
-                                <button (click)="confirmarCodificacionOcu(reg)" styleClass="p-button-lg" pButton pRipple
+                                <button (click)="codificarOcu(reg)" styleClass="p-button-lg" pButton pRipple
                                     icon="pi pi-check" pTooltip="Codificar" tooltipPosition="right"
                                     class="p-button-info mr-2"></button>
                             </td>
@@ -191,11 +232,10 @@
             <p-progressBar *ngIf="catAct_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
             <div class="card  border-1 surface-border">
                 <!-- Tabla Actividad -->
-                <p-table #dt2 [value]="clasificacion_act_aux" dataKey="id_catalogo" [scrollable]="true"
-                    scrollHeight="400px" styleClass="p-datatable-customers p-datatable-sm"
-                    [showCurrentPageReport]="true"
-                    currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
-                    [rowsPerPageOptions]="[5]" [paginator]="true" stateStorage="local">
+                <p-table #dt2 [value]="clasificacion_act_aux" dataKey="id_catalogo" styleClass="p-datatable-customers p-datatable-sm"
+                    [showCurrentPageReport]="true" [(first)]="first_act"
+                    currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="15"
+                    [rowsPerPageOptions]="[5,10,15]" [paginator]="true" stateStorage="local">
                     <ng-template pTemplate="header">
                         <!--  -->
                         <tr>
@@ -230,7 +270,7 @@
                             </td>
 
                             <td>
-                                <button (click)="confirmarCodificacionAct(reg)" styleClass="p-button-lg" pButton pRipple
+                                <button  (click)="codificarAct(reg)" styleClass="p-button-lg" pButton pRipple
                                     icon="pi pi-check" pTooltip="Codificar" tooltipPosition="right"
                                     class="p-button-primary mr-2"></button>
                             </td>

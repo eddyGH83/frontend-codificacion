@@ -47,6 +47,9 @@ export class CodificacionSimpleComponent implements OnInit {
   codigo: string = '';
   descripcion: string = '';
 
+  // paginador
+  first = 0;
+
 
 
   constructor(private router: Router, private messageService: MessageService, private codificacionService: CodificacionService, private confirmationService: ConfirmationService) { }
@@ -59,6 +62,20 @@ export class CodificacionSimpleComponent implements OnInit {
       //Redireccionar a la página de codificación
       this.router.navigate(['/codificacion']);
     }
+
+
+    // valores por defecto
+    this.contexto = '';
+    this.departamentoItem = '';
+    this.idPregunta = '';
+    this.secuencial = '';
+    this.respuestaItem = '';
+    this.estadoItem = '';
+    this.nAux = 0;
+    this.porCodificar = 0;
+    this.codigo = '';
+    this.descripcion = '';
+    this.clasificacionAux = [];
 
     // Cargar los registros para codificar (carga)
     this.cargarParaCodificar();
@@ -97,6 +114,9 @@ export class CodificacionSimpleComponent implements OnInit {
 
   // Buscar palabras similares en 
   buscarSimilares() {
+    // Paginador
+    this.first = 0;
+
     // limpiar clasificacionAux
     this.clasificacionAux = [];
     // recorrer clasificacion
@@ -120,31 +140,11 @@ export class CodificacionSimpleComponent implements OnInit {
 
 
 
-  // Buscar palabras similares con el input descripcion
-  buscarSimilaresPorDescripcion_() {
-    // limpiar clasificacionAux    
-    this.clasificacionAux = [];
-    // Limpiar input codigo
-    this.codigo = '';
-    // recorrer clasificacion
-    this.clasificacion.forEach(element => {
-      // calcular la similitud           
-      let sim = similarity(this.descripcion, element.descripcion);
-      // si la similitud es mayor a 0.5
-      if (sim > 0.5) {
-        // agregar a clasificacionAux, tambien la similitud
-        element.similitud = sim;
-        this.clasificacionAux.push(element);
-      }
-    });
-    // ordenar por similitud
-    this.clasificacionAux.sort((a, b) => (a.similitud > b.similitud) ? -1 : 1);
-  }
-
-
-
   // Buscar registros por el input codigo
   buscarSimilaresPorDescripcion() {
+    // Paginador
+    this.first = 0;
+
     // Limpiar clasificacionAux
     this.clasificacionAux = [];
 
@@ -153,75 +153,19 @@ export class CodificacionSimpleComponent implements OnInit {
 
     // recorrer clasificacion
     this.clasificacion.forEach(element => {
-      // La descripcion debe ser igual al input descripcion de izquierda a derecha sin importar mayusculas y minusculas
-      if (element.descripcion.toLowerCase().includes(this.descripcion.toLowerCase())) {
+      // La descripcion debe ser igual al input descripcion de izquierda a derecha sin importar mayusculas, minusculas y aceentos
+      if (element.descripcion.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").startsWith(this.descripcion.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))) {
         // agregar a clasificacionAux
         this.clasificacionAux.push(element);
       }
-
     });
 
-    // ordenar por descripcion, de menor a mayor
+    // ordenar por descripcion, de menor a mayor en cuanto a la longitud caracteres de la descripcion
+    this.clasificacionAux.sort((a, b) => (a.descripcion.length > b.descripcion.length) ? 1 : -1);
 
 
     // si el codigo no existe en la clasificacion limipar clasificacionAux
-    /* if (this.codigo.length === 0) {
-      this.clasificacionAux = [];
-    } */
-
-  }
-
-
-
-
-
-
-
-
-
-  // Buscar registros por el input codigo
-  buscarPorCodigo_() {
-    // Limpiar clasificacionAux
-    this.clasificacionAux = [];
-
-    // Limpiar input descripcion
-    this.descripcion = '';
-
-    // recoorer clasificacion
-    this.clasificacion.forEach(element => {
-      // si el codigo es igual al input codigo
-      if (element.codigo === this.codigo) {
-        // agregar a clasificacionAux
-        this.clasificacionAux.push(element);
-      }
-    });
-  }
-
-
-
-
-  // Buscar registros por el input codigo
-  buscarPorCodigo() {
-    // Limpiar clasificacionAux
-    this.clasificacionAux = [];
-
-    // Limpiar input descripcion
-    this.descripcion = '';
-
-    // recorrer clasificacion
-    this.clasificacion.forEach(element => {
-      // El codigo debe ser igual al input codigo de izquierda a derecha
-      if (element.codigo.startsWith(this.codigo)) {
-        // agregar a clasificacionAux
-        this.clasificacionAux.push(element);
-      }
-    });
-
-    // order por codigo
-    this.clasificacionAux.sort((a, b) => (a.codigo > b.codigo) ? 1 : -1);
-
-    // si el codigo no existe en la clasificacion limipar clasificacionAux
-    if (this.codigo.length === 0) {
+    if (this.descripcion.length === 0) {
       this.clasificacionAux = [];
     }
 
@@ -229,6 +173,42 @@ export class CodificacionSimpleComponent implements OnInit {
 
 
 
+
+
+
+  // Buscar registros por el input codigo
+  buscarPorCodigo() {
+    // Paginador
+    this.first = 0;
+
+    // Limpiar clasificacionAux
+    this.clasificacionAux = [];
+
+    // Limpiar input descripcion
+    this.descripcion = '';
+
+    // recorrer clasificacion
+    this.clasificacion.forEach(element => {
+      // El codigo debe ser igual al input codigo de izquierda a derecha, en caso de que el codigo sea null, no se debe mostrar
+      if (element.codigo.startsWith(this.codigo)) {
+        // agregar a clasificacionAux
+        this.clasificacionAux.push(element);
+      }
+    });
+
+
+    // order por codigo ORDER BY LENGTH(codigo), codigo ASCde mayor a menor
+    //this.clasificacionAux.sort((a, b) => (a.codigo > b.codigo) ? -1 : 1);
+
+
+    // this.clasificacionAux.sort((a, b) => (a.codigo > b.codigo) ? 1 : -1);
+
+    // si el codigo no existe en la clasificacion limipar clasificacionAux
+    if (this.codigo.length === 0) {
+      this.clasificacionAux = [];
+    }
+
+  }
 
 
 
@@ -319,9 +299,6 @@ export class CodificacionSimpleComponent implements OnInit {
 
 
 
-
-
-
   // Recorre la carga hacia adelante
   anularAnterior() {
     // Volver atras un registro
@@ -389,15 +366,24 @@ export class CodificacionSimpleComponent implements OnInit {
 
         this.codificacionService.updatePreguntaSimple(body).subscribe(
           (data2: any) => {
-            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Codificación realizada' });
-            this.siguiente();
+            //
+            if (data2.success) {
+              this.messageService.add({ severity: 'success', summary: 'Success', detail: data2.message });
+              // si por codificar es igual a 0, redireccionar a la página de /codificación
+              if (this.porCodificar === 0) {
+                this.router.navigate(['/codificacion']);
+              }
+              // paginador
+              this.first = 0;              
+              this.siguiente();
+            } else {
+              this.messageService.add({ severity: 'error', summary: 'error', detail: data2.message });
+              this.ngOnInit();
+            }
           })
       }
     });
   }
-
-
-
 
 
 }

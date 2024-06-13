@@ -36,9 +36,12 @@ export class CodificacionComponent implements OnInit {
       (data2: any) => {
         this.tabla_pb = false;
         this.registros = data2.datos.rows;
+        console.table(this.registros);
+        
       })
   }
 
+  
   codificacionSimple(rg: any) {
     // Redireccionar a la página de codificación simple
     this.router.navigate(['/codificacion/codificacion-simple']);

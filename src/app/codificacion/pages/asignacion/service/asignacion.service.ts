@@ -19,20 +19,37 @@ export class AsignacionService {
     return this.http.post(`${this._apiUrl}/diccionarios/devuelveCodificadores`, body)
   }
 
+
+
+
+
+
+
+  
+
   // Listar codificadores 
   codificadores(id: any): Observable<any> {
     return this.http.get(`${this._apiUrl}/codificacion/codificadores/${id}`)
   }
+  // Listar codificadores con carga para reasignar
+  codificadoresConCarga(body: object): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/codificadoresConCarga`, body)
+  }
+
+
+
+
+
+
+
+
 
   // Listar supervisores sin carga
   supervisoresSinCarga(id: any): Observable<any> {
     return this.http.get(`${this._apiUrl}/codificacion/supervisoresSinCarga/${id}`)
   }
 
-  // Listar codificadores con carga para reasignar
-  codificadoresConCarga(body: object): Observable<any> {
-    return this.http.post(`${this._apiUrl}/codificacion/codificadoresConCarga`, body)
-  }
+
 
 
   //

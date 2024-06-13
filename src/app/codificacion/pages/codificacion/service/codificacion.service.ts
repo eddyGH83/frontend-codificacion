@@ -13,7 +13,6 @@ export class CodificacionService {
   constructor(private http: HttpClient) { }
 
 
-
   // CODIFICACION SIMPLE - DOBLE  
   cargarParaCodificarSimple(body: object): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/cargarParaCodificarSimple`, body)
@@ -37,16 +36,16 @@ export class CodificacionService {
 
   // Codificación Doble Ocu Act
   updatePreguntaDobleOcu(body: object): Observable<any> {
-    return this.http.post(`${this._apiUrl}/codificacion/updatePreguntaDobleOcu`, body)
+    return this.http.post(`${this._apiUrl}/codificacion/updatePreguntaDobleOcuAct`, body)
   }
-  updatePreguntaDobleAct(body: object): Observable<any> {
+/*   updatePreguntaDobleAct(body: object): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/updatePreguntaDobleAct`, body)
-  }
+  } */
+
+
   updatePreguntaDobleAnular(body: object): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/updatePreguntaDobleAnular`, body)
   }
-
-
 
 
   ////CATALOGOS

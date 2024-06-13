@@ -230,6 +230,12 @@ export class MatrizOcupActEconComponent implements OnInit {
     }
   };
 
+
+
+
+
+  
+
   exportExcel() {
     let date = new Date();
     let formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
