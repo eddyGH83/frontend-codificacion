@@ -1,36 +1,123 @@
+<p-toast></p-toast>
+
 <div class="card">
+    <h5>Supervisión de la pregunta: </h5>
+    <p-toolbar styleClass="mb-4 gap-2">
+        <ng-template pTemplate="left">
+            <!-- <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+            <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button> -->
+            <strong class="mr-2 ml-3">Mostrar: </strong> <p-dropdown [options]="rows" [(ngModel)]="selectedRow"
+                optionLabel="value"></p-dropdown>
+            <p-button label="Actualizar" icon="pi pi-refresh" iconPos="left" class="ml-2"
+                styleClass="p-button-warning" pTooltip="Actualizar registros" tooltipPosition="right"></p-button>
+            <!-- {{registros.length}} {{selectedRegistros | json}} -->
+        </ng-template>
 
-    <h4>Variables para codificación</h4>
-    <hr>
-    <button pButton pRipple label="Actualizar" icon="pi pi-refresh" class="p-button-warning ml-2"
-        pTooltip="Actualizar carga" placeholder="Right" (click)="registrosTabla()"></button> <br> <br>
+        <ng-template pTemplate="right">
 
-    <!-- <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar> -->
+            <p-button label="Guardar" (click)="guardarSupervision()" icon="pi pi-save" iconPos="left"
+                styleClass="p-button-info" class="mr-2" pTooltip="Guardar Supervisión" tooltipPosition="left" ></p-button>
 
-    <p-table [value]="registros" [(selection)]="selectedProducts3" dataKey="code" >
+            <p-button label="Cancelar" (click)="cancelarYsalir()" icon="pi pi-times" iconPos="left"
+                styleClass="p-button-danger" pTooltip="Cancelar y salir" tooltipPosition="top"></p-button>
+
+        </ng-template>
+    </p-toolbar>
+
+
+
+
+
+    <!-- TABLA -->
+    <p-table #dt [value]="registros" [rows]="selectedRow.value" [paginator]="true" [(selection)]="selectedRegistros"
+        [rowHover]="true"
+        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros"
+        [showCurrentPageReport]="true">
+
         <ng-template pTemplate="header">
             <tr>
                 <th style="width: 4rem">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th>RESPUESTA</th>
-                <th>CODIGO</th>
-                <th>CODIFICADOR</th>
-                <th>VARIABLE DE APOYO</th>
+                <th pSortableColumn="respuesta" style="min-width:15rem">RESPUESTA<p-sortIcon field="respuesta"></p-sortIcon></th>
+                <th pSortableColumn="codigocodif">CODIGO<p-sortIcon field="codigocodif"></p-sortIcon></th>
+                <th pSortableColumn="descripcion" style="min-width:10rem">DESCRIPCIÓN <p-sortIcon field="descripcion"></p-sortIcon></th>
+                <th pSortableColumn="usucodificador">CODIFICADOR <p-sortIcon field="usucodificador"></p-sortIcon></th>
+                <th pSortableColumn="var_contexto">VARIABLE DE CONTEXTO <p-sortIcon field="var_contexto"></p-sortIcon></th>
+                <!-- <th></th> -->
             </tr>
+            <!-- Filtros de busqueda -->
+            <!-- <tr>
+                <th>
+                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'name', 'contains')" [value]="dt1.filters['name']?.value" placeholder="Search by Name" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'country.name', 'contains')" [value]="dt1.filters['country.name']?.value" placeholder="Search by Country" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'representative.name', 'contains')" [value]="dt1.filters['representative.name']?.value" placeholder="Search by Representative" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'status', 'contains')" [value]="dt1.filters['status']?.value" placeholder="Search by Status" class="w-full">
+                </th>
+            </tr> -->
+
+            <!-- https://www.primefaces.org/primeng-v14-lts/table/state -->
+
         </ng-template>
-        <ng-template pTemplate="body" let-product>
+        <ng-template pTemplate="body" let-registro>
             <tr>
                 <td>
-                    <p-tableCheckbox [value]="product"></p-tableCheckbox>
+                    <p-tableCheckbox [value]="registro"></p-tableCheckbox>
                 </td>
-                <td>{{product.respuesta}}</td>
-                <td>{{product.codigo}}</td>
-                <td>{{product.codificador}}</td>
-                <td>{{product.varApoyo}}</td>
+                <td>{{registro.respuesta}}</td>
+                <td>{{registro.codigocodif}}</td>
+                <td>{{registro.descripcion}}</td>
+                <td>{{registro.usucodificador}}</td>
+                <td>{{registro.var_contexto}}</td>
+                <!-- <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                        (click)="editregistro(registro)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                        (click)="deleteregistro(registro)"></button>
+                </td> -->
             </tr>
         </ng-template>
+        <!-- <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                In total there are {{products ? products.length : 0 }} products.
+            </div>
+        </ng-template> -->
     </p-table>
 
+    <!-- Boton para subir en la pagina -->
+    <p-scrollTop></p-scrollTop>
 </div>
-<br>
+
+
+<!-- DIALOG -->
+<p-dialog [(visible)]="confirmacionDialog" [style]="{width: '450px'}" header="Confirmación" [modal]="true"
+    styleClass="p-fluid">
+    <ng-template pTemplate="content">
+
+        <div *ngIf="nroRegSelected!==0" class="field">
+            <h5>¿Está seguro de guardar los datos?</h5>
+            <label class="mr-2" for="name">Nro de registros selecionados:</label>
+            <small style="font-size: large;" >{{selectedRegistros.length}}</small>
+        </div>
+
+        <div *ngIf="nroRegSelected==0" class="field">
+            <h5>No hay registros seleccionados.</h5>
+        </div>
+
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="No" icon="pi pi-times" class="p-button-text"
+            (click)="hideDialog()"></button>
+        <p-button label="Sí" icon="pi pi-check" iconPos="left" styleClass="p-button-info" class="mr-2"
+            (click)="saveProduct()"></p-button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

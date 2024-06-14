@@ -30,23 +30,22 @@
                 </td>
                 <td>
                     <span class="p-column-title">TOTAL</span>
-                    <span class="image-text"> Cod {{reg.totalCod}} + Aut {{reg.totalAut}} = {{reg.totalCod +
-                        reg.totalAut }}</span>
+                    <span class="image-text"> Cod {{reg.totalcod}} + Aut {{reg.totalaut}} = {{reg.totalcod }}</span>
                 </td>
                 <td>
-                    <button (click)="supervisionPorLoteSimple()" pButton pRipple label="Por lotes" icon="pi pi-table"
+                    <button (click)="supervisionPorLoteSimple(reg)" pButton pRipple label="Por lotes" icon="pi pi-table"
                         class="p-button-info mr-3" *ngIf="reg.btn_simple" pTooltip="Supervisión por lotes"
                         tooltipPosition="left" ></button>
-                    <button (click)="supervisionPorLoteDoble()" pButton pRipple label="Por lotes" icon="pi pi-table"
+                    <button (click)="supervisionPorLoteDoble(reg)" pButton pRipple label="Por lotes" icon="pi pi-table"
                         class="p-button-info mr-3" *ngIf="!reg.btn_simple" pTooltip="Supervisión por lotes" 
                         tooltipPosition="left"></button>
 
 
 
-                    <button (click)="supervisionIndividualSimple()" pButton pRipple label="Individual"
+                    <button (click)="supervisionIndividualSimple(reg)" pButton pRipple label="Individual"
                         icon="pi pi-stop" class="p-button-danger mr-2" *ngIf="reg.btn_simple"
                         pTooltip="Supervisión individual" placeholder="Right"></button>
-                    <button (click)="supervisionIndividualDoble()" pButton pRipple label="Individual"
+                    <button (click)="supervisionIndividualDoble(reg)" pButton pRipple label="Individual"
                         icon="pi pi-stop" class="p-button-danger mr-2" *ngIf="!reg.btn_simple"
                         pTooltip="Supervisión individual" placeholder="Right"></button>
 

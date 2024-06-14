@@ -31,6 +31,8 @@ import { SupervisionLoteSimpleComponent } from './supervision-lote-simple/superv
 import { SupervisionLoteDobleComponent } from './supervision-lote-doble/supervision-lote-doble.component';
 import { SupervisionIndividualDobleComponent } from './supervision-individual-doble/supervision-individual-doble.component';
 import { SupervisionIndividualSimpleComponent } from './supervision-individual-simple/supervision-individual-simple.component';
+import { ToolbarModule } from 'primeng/toolbar';
+import { ScrollTopModule } from 'primeng/scrolltop';
 
 
 @NgModule({
@@ -50,6 +52,8 @@ import { SupervisionIndividualSimpleComponent } from './supervision-individual-s
     CommonModule,
     CodificacionRoutingModule,
     KnobModule,
+    ToolbarModule,
+    ScrollTopModule,
     //BrowserModule,
     //BrowserAnimationsModule,
     TableModule,

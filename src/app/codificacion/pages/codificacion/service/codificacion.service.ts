@@ -98,5 +98,9 @@ export class CodificacionService {
   devuelvePreguntasSupervision(body: any): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/devuelvePreguntasSupervision`, body)
   }
+  devuelveCargaParaSupervision(body: any): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/devuelveCargaParaSupervision`, body)
+  }
+
 
 }

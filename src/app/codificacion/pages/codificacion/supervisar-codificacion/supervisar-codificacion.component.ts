@@ -31,7 +31,7 @@ export class SupervisarCodificacionComponent implements OnInit {
   // Tabla de preguntas
   registrosTabla() {
     //this.tabla_pb = true;
-    this.codificacionService.devuelvePreguntasSupervision({ usucre: localStorage.getItem('login') }).subscribe(
+    this.codificacionService.devuelvePreguntasSupervision({ id_usuario: localStorage.getItem('id_usuario') }).subscribe(
       (data2: any) => {
         console.table(data2.datos);
 
