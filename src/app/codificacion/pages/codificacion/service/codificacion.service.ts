@@ -35,7 +35,7 @@ export class CodificacionService {
 
 
   // Codificación Doble Ocu Act
-  updatePreguntaDobleOcu(body: object): Observable<any> {
+  updatePreguntaDobleOcuAct(body: object): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/updatePreguntaDobleOcuAct`, body)
   }
 /*   updatePreguntaDobleAct(body: object): Observable<any> {
@@ -100,6 +100,11 @@ export class CodificacionService {
   }
   devuelveCargaParaSupervision(body: any): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/devuelveCargaParaSupervision`, body)
+  }
+
+
+  updateCargaSupervision(body: any): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/updateCargaSupervision`, body)
   }
 
 

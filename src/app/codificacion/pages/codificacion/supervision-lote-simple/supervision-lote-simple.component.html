@@ -1,22 +1,31 @@
 <p-toast></p-toast>
 
 <div class="card">
-    <h5>Supervisión de la pregunta: </h5>
+    <h5>Supervisión</h5>
+    <div id="p-pregunta">
+        <span class="image-text"><strong>Pregunta </strong>
+            <p-chip label="{{preguntasSelected.nro_preg}}"
+                styleClass="mr-2 ml-2 custom-chip"></p-chip>{{preguntasSelected.descripcion}}</span>
+    </div>
+    <br>
+
+    <!-- {{preguntasSelected | json}} -->
     <p-toolbar styleClass="mb-4 gap-2">
         <ng-template pTemplate="left">
             <!-- <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
             <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button> -->
             <strong class="mr-2 ml-3">Mostrar: </strong> <p-dropdown [options]="rows" [(ngModel)]="selectedRow"
                 optionLabel="value"></p-dropdown>
-            <p-button label="Actualizar" icon="pi pi-refresh" iconPos="left" class="ml-2"
-                styleClass="p-button-warning" pTooltip="Actualizar registros" tooltipPosition="right"></p-button>
+            <p-button label="Actualizar" icon="pi pi-refresh" iconPos="left" class="ml-2" styleClass="p-button-warning"
+                pTooltip="Actualizar registros" tooltipPosition="right"></p-button>
             <!-- {{registros.length}} {{selectedRegistros | json}} -->
         </ng-template>
 
         <ng-template pTemplate="right">
 
             <p-button label="Guardar" (click)="guardarSupervision()" icon="pi pi-save" iconPos="left"
-                styleClass="p-button-info" class="mr-2" pTooltip="Guardar Supervisión" tooltipPosition="left" ></p-button>
+                styleClass="p-button-info" class="mr-2" pTooltip="Guardar Supervisión"
+                tooltipPosition="left"></p-button>
 
             <p-button label="Cancelar" (click)="cancelarYsalir()" icon="pi pi-times" iconPos="left"
                 styleClass="p-button-danger" pTooltip="Cancelar y salir" tooltipPosition="top"></p-button>
@@ -30,8 +39,7 @@
 
     <!-- TABLA -->
     <p-table #dt [value]="registros" [rows]="selectedRow.value" [paginator]="true" [(selection)]="selectedRegistros"
-        [rowHover]="true"
-        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros"
+        [rowHover]="true" currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros"
         [showCurrentPageReport]="true">
 
         <ng-template pTemplate="header">
@@ -39,11 +47,14 @@
                 <th style="width: 4rem">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th pSortableColumn="respuesta" style="min-width:15rem">RESPUESTA<p-sortIcon field="respuesta"></p-sortIcon></th>
+                <th pSortableColumn="respuesta" style="min-width:15rem">RESPUESTA<p-sortIcon
+                        field="respuesta"></p-sortIcon></th>
                 <th pSortableColumn="codigocodif">CODIGO<p-sortIcon field="codigocodif"></p-sortIcon></th>
-                <th pSortableColumn="descripcion" style="min-width:10rem">DESCRIPCIÓN <p-sortIcon field="descripcion"></p-sortIcon></th>
+                <th pSortableColumn="descripcion" style="min-width:10rem">DESCRIPCIÓN <p-sortIcon
+                        field="descripcion"></p-sortIcon></th>
                 <th pSortableColumn="usucodificador">CODIFICADOR <p-sortIcon field="usucodificador"></p-sortIcon></th>
-                <th pSortableColumn="var_contexto">VARIABLE DE CONTEXTO <p-sortIcon field="var_contexto"></p-sortIcon></th>
+                <th pSortableColumn="var_contexto">VARIABLE DE CONTEXTO <p-sortIcon field="var_contexto"></p-sortIcon>
+                </th>
                 <!-- <th></th> -->
             </tr>
             <!-- Filtros de busqueda -->
@@ -95,29 +106,43 @@
 </div>
 
 
-<!-- DIALOG -->
+<!-- DIALOG COFIRMACION -->
 <p-dialog [(visible)]="confirmacionDialog" [style]="{width: '450px'}" header="Confirmación" [modal]="true"
     styleClass="p-fluid">
     <ng-template pTemplate="content">
 
-        <div *ngIf="nroRegSelected!==0" class="field">
+        <div class="field">
             <h5>¿Está seguro de guardar los datos?</h5>
             <label class="mr-2" for="name">Nro de registros selecionados:</label>
-            <small style="font-size: large;" >{{selectedRegistros.length}}</small>
+            <small style="font-size: large;">{{selectedRegistros.length}}</small>
         </div>
 
-        <div *ngIf="nroRegSelected==0" class="field">
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="No" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <p-button label="Sí" icon="pi pi-check" iconPos="left" styleClass="p-button-info" class="mr-2"
+            (click)="confirmaSupervision()"></p-button>
+    </ng-template>
+</p-dialog>
+
+
+<!-- DIALOG ERROR: No hay registros seleccionados. -->
+<p-dialog [(visible)]="confirmacionDialogError" [style]="{width: '450px'}" header="Confirmación" [modal]="true"
+    styleClass="p-fluid">
+    <ng-template pTemplate="content">
+
+        <div class="field">
             <h5>No hay registros seleccionados.</h5>
         </div>
 
     </ng-template>
 
     <ng-template pTemplate="footer">
-        <button pButton pRipple label="No" icon="pi pi-times" class="p-button-text"
-            (click)="hideDialog()"></button>
-        <p-button label="Sí" icon="pi pi-check" iconPos="left" styleClass="p-button-info" class="mr-2"
-            (click)="saveProduct()"></p-button>
+        <p-button label="Aceptar" icon="pi pi-check" iconPos="left" styleClass="p-button-info" class="mr-2"
+            (click)="hideDialogError()"></p-button>
     </ng-template>
 </p-dialog>
 
-<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+<!-- <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog> -->

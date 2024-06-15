@@ -1,0 +1,16 @@
+#p-pregunta {
+    background:  rgb(248, 249, 250);
+    border: solid rgb(144, 205, 147);
+    border-width: 0 0 0 6px;
+    color: #224a23;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+
+
+:host ::ng-deep .p-chip.custom-chip {
+    background: var(--green-200);
+    color: var(--gray-800);
+    font-weight: bold;
+}

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { CodificacionService } from '../service/codificacion.service';
+import { MessageService } from 'primeng/api';
 
 
 // import { Product } from '../../domain/product';
@@ -28,10 +29,6 @@ export interface Product {
 })
 export class SupervisionLoteSimpleComponent implements OnInit {
 
-  products: any;
-  product: any;
-  selectedProducts: any;
-
 
 
   registros: any;
@@ -51,11 +48,44 @@ export class SupervisionLoteSimpleComponent implements OnInit {
 
   // Dialog
   confirmacionDialog: boolean = false;
+  confirmacionDialogError: boolean = false;
 
-  // router
-  constructor( private router: Router, private codificacionService: CodificacionService ) { }
+
+  // Preguntas para supervisión
+  preguntas: any = [
+    { tabla_id: 'p20esp', nro_preg: 20, descripcion: '¿Alguna persona que vivía con usted(es) en este hogar, ¿actualmente vive en otro país?' },
+    { tabla_id: 'p32esp', nro_preg: 32, descripcion: '¿Se autoidentifica con alguna nación, pueblo indígena originario campesino o afroboliviano?' },
+    { tabla_id: 'p331', nro_preg: 33, descripcion: 'Idioma 1' },
+    { tabla_id: 'p332', nro_preg: 33, descripcion: 'Idioma 2' },
+    { tabla_id: 'p333', nro_preg: 33, descripcion: 'Idioma 3' },
+    { tabla_id: 'p341', nro_preg: 34, descripcion: '¿Cuál es el primer idioma o lengua en el que aprendió a hablar en su niñez?' },
+    { tabla_id: 'p352a', nro_preg: 35, descripcion: '¿Dónde nació? ¿Municipio?' },
+    { tabla_id: 'p353', nro_preg: 35, descripcion: '¿Dónde nació? ¿País?' },
+    { tabla_id: 'p362a', nro_preg: 36, descripcion: '¿Dónde vive habitualmente? ¿Municipio?' },
+    { tabla_id: 'p363', nro_preg: 36, descripcion: '¿Dónde vive habitualmente? ¿País?' },
+    { tabla_id: 'p372a', nro_preg: 37, descripcion: '¿Dónde vivía el año 2019? ¿Municipio?' },
+    { tabla_id: 'p373', nro_preg: 37, descripcion: '¿Dónde vivía el año 2019? ¿País?' },
+    { tabla_id: 'p48esp', nro_preg: 48, descripcion: 'Las últimas 4 semanas:' },
+    { tabla_id: 'p49_p51', nro_preg: '49-51', descripcion: 'Ocupación - Actividad Económica' },
+    { tabla_id: 'p52esp', nro_preg: 52, descripcion: 'Principalmente, el lugar donde trabaja está ubicado:' }
+  ]
+
+  preguntasSelected: any = {};
+
+
+  constructor(private router: Router, private codificacionService: CodificacionService, private messageService: MessageService ) { }
 
   ngOnInit(): void {
+
+    // busar las preguntas de la tabla_id
+    this.preguntas.forEach((item: any) => {
+      if (item.tabla_id === localStorage.getItem("tabla_id_sup")) {
+        this.preguntasSelected = item;
+      }
+    });
+
+
+
 
     this.rows = [
       { nro: 10, value: 10 },
@@ -64,109 +94,11 @@ export class SupervisionLoteSimpleComponent implements OnInit {
       { nro: 200, value: 200 },
       { nro: 500, value: 500 },
     ];
-    this.selectedRow = {nro: 10,value: 10};
+    this.selectedRow = { nro: 10, value: 10 };
 
 
 
-    this.products = [
-      {
-        id: 1,
-        name: 'Test',
-        price: 100,
-        category: 'Test',
-        review: 4,
-        inventoryStatus: 'INSTOCK',
-      },
-      {
-        id: 2,
-        name: 'Phone',
-        price: 45,
-        category: 'mobiles',
-        review: 3,
-        inventoryStatus: 'LOWSTOCK',
-      },
-      {
-        id: 3,
-        name: 'Car',
-        price: 100,
-        category: 'vehicles',
-        review: 4,
-        inventoryStatus: 'INSTOCK',
-      },
-      {
-        id: 4,
-        name: 'TV',
-        price: 45,
-        category: 'electronics',
-        review: 3,
-        inventoryStatus: 'LOWSTOCK',
-      },
-      {
-        id: 5,
-        name: 'Laptop',
-        price: 100,
-        category: 'electronics',
-        review: 4,
-        inventoryStatus: 'INSTOCK',
-      },
-      {
-        id: 6,
-        name: 'Mouse',
-        price: 45,
-        category: 'electronics',
-        review: 3,
-        inventoryStatus: 'LOWSTOCK',
-      },
-      {
-        id: 7,
-        name: 'Keyboard',
-        price: 100,
-        category: 'electronics',
-        review: 4,
-        inventoryStatus: 'INSTOCK',
-      },
-      {
-        id: 8,
-        name: 'Speaker',
-        price: 45,
-        category: 'electronics',
-        review: 3,
-        inventoryStatus: 'LOWSTOCK',
-      },
-      {
-        id: 9,
-        name: 'Camera',
-        price: 100,
-        category: 'electronics',
-        review: 4,
-        inventoryStatus: 'INSTOCK',
-      },
-      {
-        id: 10,
-        name: 'Printer',
-        price: 45,
-        category: 'electronics',
-        review: 3,
-        inventoryStatus: 'LOWSTOCK',
-      },
-      {
-        id: 11,
-        name: 'Tablet',
-        price: 100,
-        category: 'electronics',
-        review: 4,
-        inventoryStatus: 'INSTOCK',
-      },
-      {
-        id: 12,
-        name: 'Monitor',
-        price: 45,
-        category: 'electronics',
-        review: 3,
-        inventoryStatus: 'LOWSTOCK',
-      }
 
-    ];
 
     this.registrosTabla();
 
@@ -180,7 +112,7 @@ export class SupervisionLoteSimpleComponent implements OnInit {
 
         //this.tabla_pb = false;
         this.registros = data2.datos;
-      })     
+      })
 
   }
 
@@ -191,16 +123,41 @@ export class SupervisionLoteSimpleComponent implements OnInit {
     this.confirmacionDialog = false;
   }
 
+  hideDialogError() {
+    this.confirmacionDialogError = false;
+  }
 
   guardarSupervision() {
     // calcular el total de registros seleccionados si es undefined o null 
     if (this.selectedRegistros === undefined || this.selectedRegistros === null || this.selectedRegistros.length === 0) {
       this.nroRegSelected = 0;
+      this.confirmacionDialogError = true;
     } else {
       this.nroRegSelected = this.selectedRegistros.length;
+      this.confirmacionDialog = true;
     }
 
-    this.confirmacionDialog = true;
+  }
+
+
+
+  // Confirmar la supervisión
+  confirmaSupervision() {
+    this.codificacionService.updateCargaSupervision(
+      {
+        id_usuario: localStorage.getItem('login'),
+        tabla_id: localStorage.getItem("tabla_id_sup"),
+        registros: this.selectedRegistros
+      }
+    ).subscribe(
+      (data2: any) => {
+        this.confirmacionDialog = false;
+        this.registrosTabla();
+        this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: data2.message, life: 2500 });
+
+        //this.tabla_pb = false;
+        //this.registros = data2.datos;
+      })
   }
 
 

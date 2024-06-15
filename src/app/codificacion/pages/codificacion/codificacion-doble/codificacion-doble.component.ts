@@ -108,8 +108,8 @@ export class CodificacionDobleComponent implements OnInit {
         this.carga = data2.datos;               // datos de la carga
         this.clasificacion_ocu = data2.clasificacion_ocu;   // clasificacion ocupacion (catalogo ocupacion)
         this.clasificacion_act = data2.clasificacion_act;    // clasificacion actividad (catalogo actividad)
-        this.porCodificar_ocu = data2.totalCarga_ocu;
-        this.porCodificar_act = data2.totalCarga_act;
+        this.porCodificar_ocu = data2.totalCarga;
+        this.porCodificar_act = data2.totalCarga;
 
         this.primero();
         this.buscarSimilares();
@@ -164,18 +164,41 @@ export class CodificacionDobleComponent implements OnInit {
             usucodificadorAct: this.usucodificadorItem_act,	// usuario que codifica
           }
 
-          this.codificacionService.updatePreguntaDobleOcu(body).subscribe(
+          this.codificacionService.updatePreguntaDobleOcuAct(body).subscribe(
             (data2: any) => {
 
               //
               if (data2.success) {
                 // verica si por codficar  de act y ocu es 0, redirecciona a la pagina /codificacion
-                if (this.porCodificar_ocu == 0 || this.porCodificar_act == 0) {
+                if (this.porCodificar_ocu == 0 && this.porCodificar_act == 0) {
                   this.router.navigate(['/codificacion']);
                 }
+
+                // mensaje
+                this.messageService.add({ severity: 'success', summary: 'success', detail: data2.message });
+
+
                 // paginador
                 this.first_ocu = 0;
                 this.first_act = 0;
+
+                // contador
+                this.porCodificar_ocu--;
+                this.porCodificar_act--;
+
+
+                // Modificar: carga (foreach) su propiedad estado_ocu = 'CODIFICADO'
+                this.carga.forEach(element => {
+                  if (element.id_p49_p51 == this.idPregunta) {
+                    element.estado_ocu = 'CODIFICADO';
+                    element.codigocodif_ocu = this.codigocodifItem_ocu;
+                    element.usucodificador_ocu = this.usucodificadorItem_ocu;
+                    element.estado_act = 'CODIFICADO';
+                    element.codigocodif_act = this.codigocodifItem_act;
+                    element.usucodificador_act = this.usucodificadorItem_act;
+                  }
+                });
+
 
                 this.siguiente();
               } else {
@@ -196,21 +219,6 @@ export class CodificacionDobleComponent implements OnInit {
 
   // Codificar ocupacion
   codificarOcu(registro: any) {
-
-    // sim y cuando sea mayor a 0 y que estado sea diferente de CODIFICADO
-    if (this.porCodificar_ocu > 0 && this.usucodificadorItem_ocu == 'ASIGNADO') {
-      this.porCodificar_ocu--;
-    }
-
-    // Modificar: carga (foreach) su propiedad estado_ocu = 'CODIFICADO'
-    this.carga.forEach(element => {
-      if (element.id_p49_p51 == this.idPregunta) {
-        element.estado_ocu = 'CODIFICADO';
-        element.codigocodif_ocu = registro.codigo;
-        element.usucodificador_ocu = localStorage.getItem('login');
-      }
-    });
-
     // Modificar datos actuales
     this.estadoItem_ocu = 'CODIFICADO';
     this.codigocodifItem_ocu = registro.codigo;
@@ -221,22 +229,6 @@ export class CodificacionDobleComponent implements OnInit {
 
   // Codificar actividad
   codificarAct(registro: any) {
-
-    // sim y cuando sea mayor a 0 y que estado sea diferente de CODIFICADO
-    if (this.porCodificar_act > 0 && this.estadoItem_act === 'ASIGNADO') {
-      this.porCodificar_act--;
-    }
-
-
-    // Modificar: carga (foreach) su propiedad estado_ocu = 'CODIFICADO'
-    this.carga.forEach(element => {
-      if (element.id_p49_p51 == this.idPregunta) {
-        element.estado_act = 'CODIFICADO';
-        element.codigocodif_act = registro.codigo;
-        element.usucodificador_act = localStorage.getItem('login');
-      }
-    });
-
     // Modificar datos actuales
     this.estadoItem_act = 'CODIFICADO';
     this.codigocodifItem_act = registro.codigo;
@@ -334,7 +326,7 @@ export class CodificacionDobleComponent implements OnInit {
     });
 
     // ordenar de forma ascendente por el tamaño de caracteres
-    this.clasificacion_ocu_aux.sort((a, b) => (a.descripcion.length > b.descripcion.length) ? 1 : -1);
+    //this.clasificacion_ocu_aux.sort((a, b) => (a.descripcion.length > b.descripcion.length) ? 1 : -1);
 
 
 
@@ -385,6 +377,7 @@ export class CodificacionDobleComponent implements OnInit {
     this.catOcu_pb = true;
     this.catAct_pb = true;
 
+
     // limpiar clasificacion_ocu_aux
     this.clasificacion_ocu_aux = [];
     // limpiar clasificacion_act_aux
@@ -426,34 +419,29 @@ export class CodificacionDobleComponent implements OnInit {
 
 
 
-  // Debe ir al primer registro con estado_ocu = 'ASIGNADO'
+  // Debe ir al primer registro con (estado_ocu = 'ASIGNADO' or estado_act = 'ASIGNADO')
   primero() {
-    if (this.porCodificar_ocu == 0 || this.porCodificar_act == 0) {
-      this.router.navigate(['/codificacion']);
-    }
-
-    let i = 0;
     let encontrado = false;
-    while (i < this.totalCarga && !encontrado) {
-      if (this.carga[i].estado_ocu == 'ASIGNADO') {
-        this.contexto = this.sanitizer.bypassSecurityTrustHtml(this.carga[i].contexto);
-        this.departamentoItem = this.carga[i].departamento;
-        this.idPregunta = this.carga[i].id_p49_p51;
-        this.secuencial = this.carga[i].secuencial;
-        this.respuestaItem_ocu = this.carga[i].respuesta_ocu;
-        this.respuestaItem_act = this.carga[i].respuesta_act;
-        this.estadoItem_ocu = this.carga[i].estado_ocu;
-        this.estadoItem_act = this.carga[i].estado_act;
-        this.codigocodifItem_ocu = this.carga[i].codigocodif_ocu;
-        this.codigocodifItem_act = this.carga[i].codigocodif_act;
-        this.usucodificadorItem_ocu = this.carga[i].usucodificador_ocu;
-        this.usucodificadorItem_act = this.carga[i].usucodificador_act;
+    this.nAux = 0;
+    while (this.nAux < this.totalCarga && !encontrado) {
+      if (this.carga[this.nAux].estado_ocu == 'ASIGNADO' || this.carga[this.nAux].estado_act == 'ASIGNADO') {
+        this.contexto = this.sanitizer.bypassSecurityTrustHtml(this.carga[this.nAux].contexto);
+        this.departamentoItem = this.carga[this.nAux].departamento;
+        this.idPregunta = this.carga[this.nAux].id_p49_p51;
+        this.secuencial = this.carga[this.nAux].secuencial;
+        this.respuestaItem_ocu = this.carga[this.nAux].respuesta_ocu;
+        this.respuestaItem_act = this.carga[this.nAux].respuesta_act;
+        this.estadoItem_ocu = this.carga[this.nAux].estado_ocu;
+        this.estadoItem_act = this.carga[this.nAux].estado_act;
+        this.codigocodifItem_ocu = this.carga[this.nAux].codigocodif_ocu;
+        this.codigocodifItem_act = this.carga[this.nAux].codigocodif_act;
+        this.usucodificadorItem_ocu = this.carga[this.nAux].usucodificador_ocu;
+        this.usucodificadorItem_act = this.carga[this.nAux].usucodificador_act;
         this.descripcionItem_ocu = '';
         this.descripcionItem_act = '';
-        this.nAux = i + 1;
         encontrado = true;
       }
-      i++;
+      this.nAux++;
     }
 
     //  Reeplazar el input desc_ocu y desc_act por el valor de la respuesta
@@ -504,27 +492,31 @@ export class CodificacionDobleComponent implements OnInit {
 
 
 
-  // 
+  // Recorre la carga hacia adelante omitiendo los registros con estado_ocu = 'CODIFICADO'
   siguiente() {
     if (this.nAux < this.totalCarga) {
-      this.contexto = this.sanitizer.bypassSecurityTrustHtml(this.carga[this.nAux].contexto);
-      this.departamentoItem = this.carga[this.nAux].departamento;
-      this.idPregunta = this.carga[this.nAux].id_p49_p51;
-      this.secuencial = this.carga[this.nAux].secuencial;
-      this.respuestaItem_ocu = this.carga[this.nAux].respuesta_ocu;
-      this.respuestaItem_act = this.carga[this.nAux].respuesta_act;
-      this.estadoItem_ocu = this.carga[this.nAux].estado_ocu;
-      this.estadoItem_act = this.carga[this.nAux].estado_act;
-      this.codigocodifItem_ocu = this.carga[this.nAux].codigocodif_ocu;
-      this.codigocodifItem_act = this.carga[this.nAux].codigocodif_act;
-      this.usucodificadorItem_ocu = this.carga[this.nAux].usucodificador_ocu;
-      this.usucodificadorItem_act = this.carga[this.nAux].usucodificador_act;
-      this.descripcionItem_ocu = '';
-      this.descripcionItem_act = '';
-      this.nAux++;
+      let encontrado = false;
+      while (this.nAux < this.totalCarga && !encontrado) {
+        if (this.carga[this.nAux].estado_ocu == 'ASIGNADO' || this.carga[this.nAux].estado_act == 'ASIGNADO') {
+          this.contexto = this.sanitizer.bypassSecurityTrustHtml(this.carga[this.nAux].contexto);
+          this.departamentoItem = this.carga[this.nAux].departamento;
+          this.idPregunta = this.carga[this.nAux].id_p49_p51;
+          this.secuencial = this.carga[this.nAux].secuencial;
+          this.respuestaItem_ocu = this.carga[this.nAux].respuesta_ocu;
+          this.respuestaItem_act = this.carga[this.nAux].respuesta_act;
+          this.estadoItem_ocu = this.carga[this.nAux].estado_ocu;
+          this.estadoItem_act = this.carga[this.nAux].estado_act;
+          this.codigocodifItem_ocu = this.carga[this.nAux].codigocodif_ocu;
+          this.codigocodifItem_act = this.carga[this.nAux].codigocodif_act;
+          this.usucodificadorItem_ocu = this.carga[this.nAux].usucodificador_ocu;
+          this.usucodificadorItem_act = this.carga[this.nAux].usucodificador_act;
+          this.descripcionItem_ocu = '';
+          this.descripcionItem_act = '';
+          encontrado = true;
+        }
+        this.nAux++;
+      }
     }
-
-
 
     //  Reeplazar el input desc_ocu y desc_act por el valor de la respuesta
     this.desc_ocu = this.respuestaItem_ocu;

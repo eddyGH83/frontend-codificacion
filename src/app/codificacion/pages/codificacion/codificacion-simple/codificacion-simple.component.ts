@@ -212,22 +212,28 @@ export class CodificacionSimpleComponent implements OnInit {
 
 
 
-  // recorre la carga
+  // recorre la carga al siguiente registro omitiendo los registros con estado CODIFICADO
   siguiente() {
-    if (this.nAux < this.totalCarga) {
-      this.contexto = this.carga[this.nAux].contexto;
-      this.departamentoItem = this.carga[this.nAux].departamento;
-      this.idPregunta = this.carga[this.nAux].id_pregunta;
-      this.secuencial = this.carga[this.nAux].secuencial;
-      this.respuestaItem = this.carga[this.nAux].respuesta;
-      this.estadoItem = this.carga[this.nAux].estado;
-      this.nAux++;
+    let i = this.nAux;
+    while (i < this.totalCarga) {
+      if (this.carga[i].estado === 'ASIGNADO') {
+        this.contexto = this.carga[i].contexto;
+        this.departamentoItem = this.carga[i].departamento;
+        this.idPregunta = this.carga[i].id_pregunta;
+        this.secuencial = this.carga[i].secuencial;
+        this.respuestaItem = this.carga[i].respuesta;
+        this.estadoItem = this.carga[i].estado;
+        this.nAux = i + 1;
+        //  Reeplazar el input descripcion por el valor de la respuesta
+        this.descripcion = this.respuestaItem;
+
+        // Limpia el input codigo
+        this.codigo = '';
+        this.buscarSimilares();
+        break;
+      }
+      i++;
     }
-    //  Reeplazar el input descripcion por el valor de la respuesta
-    this.descripcion = this.respuestaItem;
-    // Limpia el input codigo
-    this.codigo = '';
-    this.buscarSimilares();
   }
 
 
@@ -271,8 +277,6 @@ export class CodificacionSimpleComponent implements OnInit {
       i++;
     }
   }
-
-
 
 
 

@@ -10,7 +10,6 @@
 
 
 
-
         <!-- OCUPACION -->
         <div class="col-4 md:col-4 lg:6">
             <p-progressBar *ngIf="ocuActCont_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
@@ -44,9 +43,9 @@
                 <p class="ml-2 ">
                     <strong style="font-weight: normal; color:rgb(2, 136, 209)">ESTADO: </strong> {{estadoItem_ocu}}
                     <strong class="ml-6" style="font-weight: normal; color:rgb(2, 136, 209)">CODIGO: </strong>
-                    {{codigocodifItem_ocu}} 
+                    {{codigocodifItem_ocu}}
                     <strong class="ml-6" style="font-weight: normal; color:rgb(2, 136, 209)">DESC: </strong>
-                    {{descripcionItem_ocu}} 
+                    {{descripcionItem_ocu}}
                     <br>
                     <strong style="font-weight: normal; color:rgb(2, 136, 209)">USU CODIF: </strong>
                     {{usucodificadorItem_ocu}}
@@ -55,8 +54,6 @@
         </div>
 
         <!-- descripcionItem_ocu -->
-
-
 
         <!-- ACTIVIDAD -->
         <div class="col-4 md:col-4 lg:6">
@@ -93,7 +90,7 @@
                 <p class="ml-2 ">
                     <strong style="font-weight: normal; color:rgb(17, 173, 228)">ESTADO: </strong>{{estadoItem_act}}
                     <strong class="ml-6" style="font-weight: normal; color:rgb(17, 173, 228)">CODIGO: </strong>
-                    {{codigocodifItem_act}} 
+                    {{codigocodifItem_act}}
                     <strong class="ml-6" style="font-weight: normal; color:rgb(2, 136, 209)">DESC: </strong>
                     {{descripcionItem_act}}
                     <br>
@@ -171,8 +168,9 @@
             <p-progressBar *ngIf="catOcu_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
             <div class="card  border-1 surface-border">
                 <!-- Tabla Ocupacion -->
-                <p-table #dt1 [value]="clasificacion_ocu_aux" dataKey="id_catalogo" styleClass="p-datatable-customers p-datatable-sm"
-                    [showCurrentPageReport]="true" [(first)]="first_ocu"
+                <p-table #dt1 [value]="clasificacion_ocu_aux" dataKey="id_catalogo"
+                    styleClass="p-datatable-customers p-datatable-sm" [showCurrentPageReport]="true"
+                    [(first)]="first_ocu"
                     currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="15"
                     [rowsPerPageOptions]="[5,10,15]" [paginator]="true" stateStorage="local">
                     <ng-template pTemplate="header">
@@ -232,8 +230,9 @@
             <p-progressBar *ngIf="catAct_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
             <div class="card  border-1 surface-border">
                 <!-- Tabla Actividad -->
-                <p-table #dt2 [value]="clasificacion_act_aux" dataKey="id_catalogo" styleClass="p-datatable-customers p-datatable-sm"
-                    [showCurrentPageReport]="true" [(first)]="first_act"
+                <p-table #dt2 [value]="clasificacion_act_aux" dataKey="id_catalogo"
+                    styleClass="p-datatable-customers p-datatable-sm" [showCurrentPageReport]="true"
+                    [(first)]="first_act"
                     currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="15"
                     [rowsPerPageOptions]="[5,10,15]" [paginator]="true" stateStorage="local">
                     <ng-template pTemplate="header">
@@ -270,7 +269,7 @@
                             </td>
 
                             <td>
-                                <button  (click)="codificarAct(reg)" styleClass="p-button-lg" pButton pRipple
+                                <button (click)="codificarAct(reg)" styleClass="p-button-lg" pButton pRipple
                                     icon="pi pi-check" pTooltip="Codificar" tooltipPosition="right"
                                     class="p-button-primary mr-2"></button>
                             </td>
