@@ -38,9 +38,9 @@ export class CodificacionService {
   updatePreguntaDobleOcuAct(body: object): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/updatePreguntaDobleOcuAct`, body)
   }
-/*   updatePreguntaDobleAct(body: object): Observable<any> {
-    return this.http.post(`${this._apiUrl}/codificacion/updatePreguntaDobleAct`, body)
-  } */
+  /*   updatePreguntaDobleAct(body: object): Observable<any> {
+      return this.http.post(`${this._apiUrl}/codificacion/updatePreguntaDobleAct`, body)
+    } */
 
 
   updatePreguntaDobleAnular(body: object): Observable<any> {
@@ -101,11 +101,21 @@ export class CodificacionService {
   devuelveCargaParaSupervision(body: any): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/devuelveCargaParaSupervision`, body)
   }
-
+  // Carga para Supervision Simple
+  cargarParaSupervisionSimple(body: any): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/cargarParaSupervisionSimple`, body)
+  }
+  // Carga para Supervision Doble
+  cargarParaSupervisionDoble(body: any): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/cargarParaSupervisionDoble`, body)
+  }
+  // Actualizar Pregunta Simple Correccion
+  updatePreguntaSimpleCorreccion(body: any): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/updatePreguntaSimpleCorreccion`, body)
+  }
 
   updateCargaSupervision(body: any): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/updateCargaSupervision`, body)
   }
-
 
 }

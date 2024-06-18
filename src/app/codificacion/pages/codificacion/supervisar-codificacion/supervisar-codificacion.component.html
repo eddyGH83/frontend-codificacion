@@ -15,9 +15,11 @@
         <ng-template pTemplate="header">
             <!--  -->
             <tr>
-                <th>VARIABLE</th>
-                <th>TOTAL</th>
-                <th>ACCIONES</th>
+                <th>VARIABLE</th>                
+                <th>ASISTIDA</th>
+                <th>AUTOMATICA</th>
+                <th>TOTAL A SUPERVISAR</th>
+                <th style="text-align: center;">ACCIONES</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-reg>
@@ -29,17 +31,25 @@
                         {{reg.variable}}</span>
                 </td>
                 <td>
-                    <span class="p-column-title">TOTAL</span>
-                    <span class="image-text"> Cod {{reg.totalcod}} + Aut {{reg.totalaut}} = {{reg.totalcod }}</span>
+                    <span class="p-column-title">ASISTIDA</span>
+                    <span class="image-text ml-4"> {{reg.totalcod | number}}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">AUTOMATICA</span>
+                    <span class="image-text ml-4"> {{reg.totalaut  | number}}</span>
+                </td>
+
+                <td>
+                    <span class="p-column-title">TOTAL A SUPERVISAR</span>
+                    <span class="image-text ml-4"> <strong sty> {{reg.totalcod  | number}} </strong></span>
                 </td>
                 <td>
                     <button (click)="supervisionPorLoteSimple(reg)" pButton pRipple label="Por lotes" icon="pi pi-table"
                         class="p-button-info mr-3" *ngIf="reg.btn_simple" pTooltip="Supervisión por lotes"
-                        tooltipPosition="left" ></button>
-                    <button (click)="supervisionPorLoteDoble(reg)" pButton pRipple label="Por lotes" icon="pi pi-table"
-                        class="p-button-info mr-3" *ngIf="!reg.btn_simple" pTooltip="Supervisión por lotes" 
                         tooltipPosition="left"></button>
-
+                    <button (click)="supervisionPorLoteDoble(reg)" pButton pRipple label="Por lotes" icon="pi pi-table"
+                        class="p-button-info mr-3" *ngIf="!reg.btn_simple" pTooltip="Supervisión por lotes"
+                        tooltipPosition="left"></button>
 
 
                     <button (click)="supervisionIndividualSimple(reg)" pButton pRipple label="Individual"

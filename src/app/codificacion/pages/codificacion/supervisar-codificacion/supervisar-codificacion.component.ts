@@ -40,48 +40,36 @@ export class SupervisarCodificacionComponent implements OnInit {
       })
   }
 
-
   // POR LOTES
   supervisionPorLoteSimple(rg: any) {
     // Redireccionar a la página de codificación simple
     this.router.navigate(['/codificacion/supervision-lotes-simple']);
-
     // Guardar tabla_id en localStorage 
     localStorage.setItem('tabla_id_sup', rg.tabla_id);
   }
-
   supervisionPorLoteDoble(rg: any) {
     // Redireccionar a la página de codificación doble
     this.router.navigate(['/codificacion/supervision-lotes-doble']);
-
     // Guardar tabla_id en localStorage
     localStorage.setItem('tabla_id_sup', rg.tabla_id);
-
   }
-
 
   // INDIVIDUAL
   supervisionIndividualSimple(rg: any) {
     // Redireccionar a la página de codificación simple
     this.router.navigate(['/codificacion/supervision-individual-simple']);
-
     // Guardar tabla_id en localStorage 
     localStorage.setItem('tabla_id_sup', rg.tabla_id);
   }
-
   supervisionIndividualDoble(rg: any) {
     // Redireccionar a la página de codificación doble
     this.router.navigate(['/codificacion/supervision-individual-doble']);
-
     // Guardar tabla_id en localStorage
     localStorage.setItem('tabla_id_sup', rg.tabla_id);
-
   }
 
 
-
-
-
+// RECODIFICACION
 
 
 

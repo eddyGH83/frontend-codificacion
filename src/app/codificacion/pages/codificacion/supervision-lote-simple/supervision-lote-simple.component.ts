@@ -55,9 +55,9 @@ export class SupervisionLoteSimpleComponent implements OnInit {
   preguntas: any = [
     { tabla_id: 'p20esp', nro_preg: 20, descripcion: '¿Alguna persona que vivía con usted(es) en este hogar, ¿actualmente vive en otro país?' },
     { tabla_id: 'p32esp', nro_preg: 32, descripcion: '¿Se autoidentifica con alguna nación, pueblo indígena originario campesino o afroboliviano?' },
-    { tabla_id: 'p331', nro_preg: 33, descripcion: 'Idioma 1' },
-    { tabla_id: 'p332', nro_preg: 33, descripcion: 'Idioma 2' },
-    { tabla_id: 'p333', nro_preg: 33, descripcion: 'Idioma 3' },
+    { tabla_id: 'p331', nro_preg: 33, descripcion: '¿Qué idiomas o lenguas habla?, según el mayor uso: idioma 1' },
+    { tabla_id: 'p332', nro_preg: 33, descripcion: '¿Qué idiomas o lenguas habla?, según el mayor uso: idioma 2' },
+    { tabla_id: 'p333', nro_preg: 33, descripcion: '¿Qué idiomas o lenguas habla?, según el mayor uso: idioma 3' },
     { tabla_id: 'p341', nro_preg: 34, descripcion: '¿Cuál es el primer idioma o lengua en el que aprendió a hablar en su niñez?' },
     { tabla_id: 'p352a', nro_preg: 35, descripcion: '¿Dónde nació? ¿Municipio?' },
     { tabla_id: 'p353', nro_preg: 35, descripcion: '¿Dónde nació? ¿País?' },
@@ -73,7 +73,7 @@ export class SupervisionLoteSimpleComponent implements OnInit {
   preguntasSelected: any = {};
 
 
-  constructor(private router: Router, private codificacionService: CodificacionService, private messageService: MessageService ) { }
+  constructor(private router: Router, private codificacionService: CodificacionService, private messageService: MessageService) { }
 
   ngOnInit(): void {
 
@@ -85,8 +85,6 @@ export class SupervisionLoteSimpleComponent implements OnInit {
     });
 
 
-
-
     this.rows = [
       { nro: 10, value: 10 },
       { nro: 50, value: 50 },
@@ -95,9 +93,6 @@ export class SupervisionLoteSimpleComponent implements OnInit {
       { nro: 500, value: 500 },
     ];
     this.selectedRow = { nro: 10, value: 10 };
-
-
-
 
 
     this.registrosTabla();
@@ -167,16 +162,11 @@ export class SupervisionLoteSimpleComponent implements OnInit {
   }
 
 
+  recodificaicion() {
+    alert('Recodificación');
+    this.router.navigate(['/codificacion/supervision-individual-simple']);
+  }
 
-  /* 
-    createId(): string {
-      let id = '';
-      var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-      for (var i = 0; i < 5; i++) {
-        id += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      return id;
-    } */
 
 
 }

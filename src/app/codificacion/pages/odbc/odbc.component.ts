@@ -2,16 +2,10 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { OdbcService } from './service/odbc.service';
-
 import { environment } from 'src/environments/environment';
-
-// fileUploadEvent
-//import { FileUploadEvent } from 'primeng/fileupload';
 
 import * as moment from 'moment';
 import * as FileSaver from 'file-saver';
-
-
 
 
 @Component({
@@ -20,9 +14,7 @@ import * as FileSaver from 'file-saver';
 })
 export class OdbcComponent implements OnInit {
 
-
-  private _apiUrl_npioc: string = environment.base_url + "/reportes/subirOdbc_npioc/" + localStorage.getItem('login');
-
+  private _apiUrl: string = environment.base_url;
 
   rangeDates: Date[];
 
@@ -33,6 +25,7 @@ export class OdbcComponent implements OnInit {
   es: any;
 
   invalidDates: Array<Date>
+
 
 
   // ----------- Para la subida de archivos 
@@ -48,40 +41,26 @@ export class OdbcComponent implements OnInit {
   ntabla: String;
 
 
+  // Urls base para subir archivos
+  uploadUrl_npioc: string;
+  uploadUrl_migracion: string;
+  uploadUrl_acteco: string;
+
+  // Tamaño del archivo a subir
+  maxFileSize: number = 100000000;  // 100 Mb
+
+
+  rol_id: number=Number(localStorage.getItem('rol_id'));
+
+
+
   constructor(private messageService: MessageService, private odbcService: OdbcService) { }
 
   ngOnInit(): void {
-
-    /*  this.es = {
-       firstDayOfWeek: 1,
-       dayNames: ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
-       dayNamesShort: ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"],
-       dayNamesMin: ["D", "L", "M", "X", "J", "V", "S"],
-       monthNames: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
-       monthNamesShort: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
-       today: 'Hoy',
-       clear: 'Borrar'
-     } */
-    /* 
-        let today = new Date();
-        let month = today.getMonth();
-        let year = today.getFullYear();
-        let prevMonth = (month === 0) ? 11 : month - 1;
-        let prevYear = (prevMonth === 11) ? year - 1 : year;
-        let nextMonth = (month === 11) ? 0 : month + 1;
-        let nextYear = (nextMonth === 0) ? year + 1 : year;
-        this.minDate = new Date();
-        this.minDate.setMonth(prevMonth);
-        this.minDate.setFullYear(prevYear);
-        this.maxDate = new Date();
-        this.maxDate.setMonth(nextMonth);
-        this.maxDate.setFullYear(nextYear); */
-
-    /*   let invalidDate = new Date();
-      invalidDate.setDate(today.getDate() - 1);
-      this.invalidDates = [today, invalidDate];
-   */
-
+    let login = localStorage.getItem('login')
+    this.uploadUrl_npioc = `${this._apiUrl}/reportes/subirOdbc_npioc/${login}`;
+    this.uploadUrl_migracion = `${this._apiUrl}/reportes/subirOdbc_migracion/${login}`;
+    this.uploadUrl_acteco = `${this._apiUrl}/reportes/subirOdbc/${login}`;
   }
 
 
@@ -90,56 +69,6 @@ export class OdbcComponent implements OnInit {
       this.fileInput.nativeElement.value = '';
     }
   }
-
-
-  cargaOdbc_npioc() {
-
-    alert('Archivo Subido');
-
-  }
-
-
-
-
-  /*   onUpload(event: any) {
-      alert('File Uploaded');
-      for (let file of event.files) {
-        this.uploadedFiles.push(file);
-      }
-  
-      console.table(this.uploadedFiles);    
-  
-      //this.messageService.add({ severity: 'info', summary: 'File Uploaded', detail: '' });
-    } */
-
-
-  onUpload(event) {
-    console.log("xdsfsdfsfds");
-
-
-    for (let file of event.files) {
-      this.uploadedFiles.push(file);
-    }
-
-
-    // this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: ''});
-  }
-
-  /* 
-    onFileChange(e: any) {
-    this.uploadedFiles = e.target.files;
-    console.log('Archivo de Cambio: ', this.uploadedFiles)
-  }
-  */
-
-
-
-
-
-  fechaSeleccionada() {
-    console.log("sdsdfsdf");
-  }
-
 
   decargaOdbc_npioc() {
     this.ntabla = 'ArchivoODBC_npioc'
@@ -222,6 +151,78 @@ export class OdbcComponent implements OnInit {
     }
   }
 
+
+  cargaOdbc_npioc() {
+
+    //let user = localStorage.getItem('login')
+
+    this.loading = true
+    console.log('Upload')
+    let formData = new FormData();
+    for (let i = 0; i < this.uploadedFiles.length; i++) {
+      formData.append("uploads[]", this.uploadedFiles[i], this.uploadedFiles[i].name);
+    }
+    console.log(formData)
+    let login = localStorage.getItem('login')
+    this.odbcService.subirOdbc_npioc(formData, login).subscribe((res) => {
+      console.log('Response: ', res);
+      /* Swal.fire({
+        icon: 'success',
+        title: 'Registros Cargados Correctamente!!. ',
+      }) */
+      this.loading = false
+
+    })
+    this.clearFileInput();
+
+  }
+
+  cargaOdbc() {
+    this.loading = true
+    console.log('Upload')
+    let formData = new FormData();
+    for (let i = 0; i < this.uploadedFiles.length; i++) {
+      formData.append("uploads[]", this.uploadedFiles[i], this.uploadedFiles[i].name);
+    }
+
+    console.log(formData)
+    let login = localStorage.getItem('login')
+    this.odbcService.subirOdbc(formData, login).subscribe((res) => {
+      console.log('Response: ', res);
+      // Swal.fire({
+      //   icon: 'success',
+      //   title: 'Registros Cargados Correctamente!!. ',
+      // })
+      this.loading = false
+
+    })
+    this.clearFileInput();
+  }
+
+
+  // onUpload(event: any) {
+  //   console.log('llego onUpload');
+  //   this.uploadedFiles = [];
+  //   for (let file of event.files) {
+  //     this.uploadedFiles.push(file);
+  //   }
+  //this.messageService.add({ severity: 'info', summary: 'File Uploaded', detail: '' });
+  //}
+
+  onUpload(event: any) {
+
+    console.log('Archivo(s) cargado(s):', event.files);
+    //    this.uploadedFiles = event.files;
+    this.uploadedFiles = event.target.files;
+    console.log('Archivo de Cambio: ', this.uploadedFiles)
+
+  }
+
+  fechaSeleccionada() {
+    console.log("sdsdfsdf");
+  }
+
+
   exportExcel() {
     let variable: Array<any> = [];
     import("xlsx").then(xlsx => {
@@ -273,7 +274,7 @@ export class OdbcComponent implements OnInit {
         });
         FileSaver.saveAs(data, fileName + EXCEL_EXTENSION);
         this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: 'Exportación completada.', life: 2000 });
-      } */
+  } */
 
 
 

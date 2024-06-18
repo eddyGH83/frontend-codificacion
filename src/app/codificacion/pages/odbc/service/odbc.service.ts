@@ -23,6 +23,13 @@ export class OdbcService {
   subirOdbc_npioc(formData: any, login: any): Observable<any> {
     return this.http.post(`${this._apiUrl}/reportes/subirOdbc_npioc/${login}`, formData)
   }
+  subirOdbc_migracion(formData: any, login: any): Observable<any> {
+    return this.http.post(`${this._apiUrl}/reportes/subirOdbc_migracion/${login}`, formData)
+  }
+  subirOdbc(formData: any, login: any): Observable<any> {
+    return this.http.post(`${this._apiUrl}/reportes/subirOdbc/${login}`, formData)
+  }
+
 
 
   repOdbc_npioc(fechaInicial: any, fechaFinal: any): Observable<any> {

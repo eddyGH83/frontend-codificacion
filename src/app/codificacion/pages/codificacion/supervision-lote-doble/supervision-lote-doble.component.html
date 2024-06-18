@@ -21,10 +21,13 @@
         </ng-template>
 
         <ng-template pTemplate="right">
+            <p-button label="Recodificación" (click)="recodificaicion()" icon="pi pi-check-square" iconPos="left"
+                styleClass="p-button-secondary" class="mr-2" pTooltip="Recodificación"
+                tooltipPosition="left"></p-button>
 
             <p-button label="Guardar" (click)="guardarSupervision()" icon="pi pi-save" iconPos="left"
                 styleClass="p-button-info" class="mr-2" pTooltip="Guardar Supervisión"
-                tooltipPosition="left"></p-button>
+                tooltipPosition="top"></p-button>
 
             <p-button label="Cancelar" (click)="cancelarYsalir()" icon="pi pi-times" iconPos="left"
                 styleClass="p-button-danger" pTooltip="Cancelar y salir" tooltipPosition="top"></p-button>

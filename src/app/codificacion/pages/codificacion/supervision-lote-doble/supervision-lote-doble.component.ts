@@ -35,7 +35,7 @@ export class SupervisionLoteDobleComponent implements OnInit {
 
 
 
-  constructor(private router: Router, private codificacionService: CodificacionService,  private messageService: MessageService ) { }
+  constructor(private router: Router, private codificacionService: CodificacionService, private messageService: MessageService) { }
 
 
 
@@ -94,6 +94,10 @@ export class SupervisionLoteDobleComponent implements OnInit {
 
   }
 
+  recodificaicion() { 
+    alert('Recodificación');
+  }
+
 
   // Confirmar la supervisión
   confirmaSupervision() {
@@ -115,12 +119,10 @@ export class SupervisionLoteDobleComponent implements OnInit {
   }
 
 
-
   // 
   cancelarYsalir() {
     this.router.navigate(['/codificacion/supervisar-codificacion']);
   }
-
 
 
 }
