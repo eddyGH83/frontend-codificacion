@@ -26,8 +26,7 @@
                 tooltipPosition="left"></p-button>
 
             <p-button label="Guardar" (click)="guardarSupervision()" icon="pi pi-save" iconPos="left"
-                styleClass="p-button-info" class="mr-2" pTooltip="Guardar Supervisión"
-                tooltipPosition="top"></p-button>
+                styleClass="p-button-info" class="mr-2" pTooltip="Guardar Supervisión" tooltipPosition="top"></p-button>
 
             <p-button label="Cancelar" (click)="cancelarYsalir()" icon="pi pi-times" iconPos="left"
                 styleClass="p-button-danger" pTooltip="Cancelar y salir" tooltipPosition="top"></p-button>
@@ -60,9 +59,9 @@
         <ng-template pTemplate="header">
             <tr style="height: 0px; padding: 0px;">
                 <th></th>
-                <th colspan="4" style="text-align: center; color: white; background-color: rgba(2, 136, 209)">OCUPACIÓN
+                <th colspan="3" style="text-align: center; color: white; background-color: rgba(2, 136, 209)">OCUPACIÓN
                 </th>
-                <th colspan="4" style="text-align: center; color: white; background-color: rgb(17, 176, 232)">ACTIVIDAD
+                <th colspan="3" style="text-align: center; color: white; background-color: rgb(17, 176, 232)">ACTIVIDAD
                     ECONÓMICA</th>
                 <th colspan="7" style="text-align: center; color: white; background-color: rgb(15, 140, 80)">VARIABLES
                     DE CONTEXTO
@@ -74,45 +73,25 @@
                 </th>
                 <th pSortableColumn="respuesta_ocu">RESPUESTA<p-sortIcon field="respuesta_ocu"></p-sortIcon></th>
                 <th pSortableColumn="codigocodif_ocu">CODIGO<p-sortIcon field="codigocodif_ocu"></p-sortIcon></th>
-                <th pSortableColumn="descripcion_ocu">DESCRIPCIÓN<p-sortIcon field="descripcion_ocu"></p-sortIcon></th>
+                <!-- <th pSortableColumn="descripcion_ocu">DESCRIPCIÓN<p-sortIcon field="descripcion_ocu"></p-sortIcon></th> -->
                 <th pSortableColumn="usucodificador_ocu">CODIFICADOR<p-sortIcon field="usucodificador_ocu"></p-sortIcon>
                 </th>
 
                 <th pSortableColumn="respuesta_act">RESPUESTA<p-sortIcon field="respuesta_act"></p-sortIcon></th>
                 <th pSortableColumn="codigocodif_act">CODIGO<p-sortIcon field="codigocodif_act"></p-sortIcon></th>
-                <th pSortableColumn="descripcion_act">DESCRIPCIÓN<p-sortIcon field="descripcion_act"></p-sortIcon></th>
+                <!-- <th pSortableColumn="descripcion_act">DESCRIPCIÓN<p-sortIcon field="descripcion_act"></p-sortIcon></th> -->
                 <th pSortableColumn="usucodificador_act">CODIFICADOR<p-sortIcon field="usucodificador_act"></p-sortIcon>
                 </th>
 
-                <th style="color: rgb(15, 140, 80);" pSortableColumn="var_contexto">Edad</th>
-                <th style="color: rgb(15, 140, 80);" pSortableColumn="var_contexto">Nivel Ed.</th>
-                <th style="color: rgb(15, 140, 80);" pSortableColumn="var_contexto">Curso ó Año</th>
-                <th style="color: rgb(15, 140, 80);" pSortableColumn="var_contexto">Semana pasada?</th>
-                <th style="color: rgb(15, 140, 80);" pSortableColumn="var_contexto">Otro</th>
-                <th style="color: rgb(15, 140, 80);" pSortableColumn="var_contexto">¿En ese trabajo es o era?</th>
-                <th style="color: rgb(15, 140, 80);" pSortableColumn="var_contexto">Lugar</th>
+                <th style="color: rgb(15, 140, 80);" pSortableColumn="contexto_edad">Edad <p-sortIcon field="contexto_edad"></p-sortIcon></th>
+                <th style="color: rgb(15, 140, 80);" pSortableColumn="contexto_nivel_edu">Nivel Ed. <p-sortIcon field="contexto_nivel_edu"></p-sortIcon></th>
+                <th style="color: rgb(15, 140, 80);" pSortableColumn="contexto_curso">Curso ó Año  <p-sortIcon field="contexto_curso"></p-sortIcon></th>
+                <th style="color: rgb(15, 140, 80);" pSortableColumn="contexto_atendio">Semana pasada?  <p-sortIcon field="contexto_atendio"></p-sortIcon></th>
+                <th style="color: rgb(15, 140, 80);" pSortableColumn="contexto_otro">Otro  <p-sortIcon field="contexto_otro"></p-sortIcon></th>
+                <th style="color: rgb(15, 140, 80);" pSortableColumn="contexto_es_era">¿En ese trabajo es o era?  <p-sortIcon field="contexto_es_era"></p-sortIcon></th>
+                <th style="color: rgb(15, 140, 80);" pSortableColumn="contexto_lugar_trabajo">Lugar  <p-sortIcon field="contexto_lugar_trabajo"></p-sortIcon></th>
 
-                <!-- <th></th> -->
             </tr>
-            <!-- Filtros de busqueda -->
-            <!--   <tr>
-                <th></th>
-                <th>
-                    <input pInputText type="text" (input)="dt.filter($event.target.value, 'respuesta_ocu', 'contains')" [value]="dt1.filters['respuesta_ocu']?.value" placeholder="Search by respuesta_ocu" class="w-full">
-                </th>
-                <th>
-                    <input pInputText type="text" (input)="dt.filter($event.target.value, 'codigocodif_ocu', 'contains')" [value]="dt1.filters['codigocodif_ocu']?.value" placeholder="Search by codigocodif_ocu" class="w-full">
-                </th>
-                <th>
-                    <input pInputText type="text" (input)="dt.filter($event.target.value, 'descripcion_ocu', 'contains')" [value]="dt1.filters['descripcion_ocu']?.value" placeholder="Search by descripcion_ocu" class="w-full">
-                </th>
-                <th>
-                    <input pInputText type="text" (input)="dt.filter($event.target.value, 'usucodificador_ocu', 'contains')" [value]="dt1.filters['usucodificador_ocu']?.value" placeholder="Search by usucodificador_ocu" class="w-full">
-                </th>
-                <th colspan="11"></th>
-            </tr> -->
-
-            <!-- https://www.primefaces.org/primeng-v14-lts/table/state -->
 
         </ng-template>
         <ng-template pTemplate="body" let-registro>
@@ -121,14 +100,13 @@
                     <p-tableCheckbox [value]="registro"></p-tableCheckbox>
                 </td>
                 <td>{{registro.respuesta_ocu}}</td>
-                <td>{{registro.codigocodif_ocu}}</td>
-                <td>{{registro.descripcion_ocu}}</td>
+                <td> <p-chip pTooltip="{{registro.descripcion_ocu}}"  label="{{registro.codigocodif_ocu}}"></p-chip></td>
+                <!-- <td>{{registro.descripcion_ocu}}</td> -->
                 <td>{{registro.usucodificador_ocu}}</td>
                 <td>{{registro.respuesta_act}}</td>
-                <td>{{registro.codigocodif_act}}</td>
-                <td>{{registro.descripcion_act}}</td>
+                <td> <p-chip pTooltip="{{registro.descripcion_act}}" tooltipPosition="top"   label="{{registro.codigocodif_act}}"></p-chip></td>
+                <!-- <td>{{registro.descripcion_act}}</td> -->
                 <td>{{registro.usucodificador_act}}</td>
-
 
                 <td>{{registro.contexto_edad}}</td>
                 <td>{{registro.contexto_nivel_edu}}</td>
@@ -179,12 +157,13 @@
 
 
 <!-- DIALOG ERROR: No hay registros seleccionados. -->
-<p-dialog [(visible)]="confirmacionDialogError" [style]="{width: '450px'}" header="Confirmación" [modal]="true"
+<p-dialog [(visible)]="confirmacionDialogError" [style]="{width: '450px'}" header="Mensaje" [modal]="true"
     styleClass="p-fluid">
     <ng-template pTemplate="content">
 
         <div class="field">
-            <h5>No hay registros seleccionados.</h5>
+            
+            <h5> <i style="font-size: larger; color: red;" class="pi pi-exclamation-triangle mr-2 "></i> No hay registros seleccionados.</h5>
         </div>
 
     </ng-template>

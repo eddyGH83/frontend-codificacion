@@ -85,23 +85,7 @@ export class SupervisionIndividualSimpleComponent implements OnInit {
       header: 'Confirmación',
       icon: 'pi pi-check-square',
       accept: () => {
-
-        /* // sim y cuando sea mayor a 0 y que estado sea diferente de CODIFICADO
-        if (this.porCodificar > 0 && this.estadoItem === 'ASIGNADO') {
-          this.porCodificar--;
-        }
-
-        // Modificar el estado y
-        this.estadoItem = 'CODIFICADO';
-
-        // Modificar: carga (foreach) su propiedad estado_ocu = 'CODIFICADO'
-        this.carga.forEach(element => {
-          if (element.id_pregunta == this.idPregunta) {
-            element.estado = 'CODIFICADO';
-          }
-        }); */
-
-        // Codificación
+  
         const body = {
           id_registro: this.idPregunta,
           tabla_id: localStorage.getItem('tabla_id_sup'),
@@ -111,20 +95,30 @@ export class SupervisionIndividualSimpleComponent implements OnInit {
 
         this.codificacionService.updatePreguntaSimpleCorreccion(body).subscribe(
           (data2: any) => {
-            //
-            if (data2.success) {
-              this.messageService.add({ severity: 'success', summary: 'Success', detail: data2.message });
-              // si por codificar es igual a 0, redireccionar a la página de /codificación
-             /*  if (this.porCodificar === 0) {
-                this.router.navigate(['/codificacion']);
-              } */
-              // paginador
-              this.first = 0;
-              this.siguiente();
-            } else {
-              this.messageService.add({ severity: 'error', summary: 'error', detail: data2.message });
-              this.ngOnInit();
+
+            // Modificar: carga (foreach) su propiedad estado_ocu = 'CODIFICADO'
+            this.carga.forEach(element => {
+              if (element.id_pregunta == this.idPregunta) {
+                element.estado = 'VERIFICADO';
+              }
+            });
+
+            // Por codificar disminuye en 1
+            if (this.porCodificar > 0 && this.estadoItem === 'CODIFICADO') {
+              this.porCodificar--;
             }
+            
+            // si por codificar es igual a 0, redireccionar a la página de /codificación
+            if (this.porCodificar === 0) {
+              this.router.navigate(['/codificacion/supervisar-codificacion']);
+            }
+            
+            // eL Paginador se reinicia
+            this.first = 0;
+            this.siguiente();
+            
+            // Mensaje de éxito
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: data2.message });
           })
       }
     });
@@ -142,14 +136,14 @@ export class SupervisionIndividualSimpleComponent implements OnInit {
     }
     this.codificacionService.cargarParaSupervisionSimple(body).subscribe(
       (data2: any) => {
-        this.carga = data2.datos;
-        console.log(data2);
-
+        this.carga = data2.datos;        
         this.clasificacion = data2.clasificacion;
         this.totalCarga = data2.totalCarga;
         this.nroPreg = data2.nroPreg;
         this.descPreg = data2.descPreg;
         this.porCodificar = data2.totalCarga;
+        // si la carga es 0, redireccionar a la página de /codificacion/supervisar-codificacion
+        if (this.totalCarga === 0) {this.router.navigate(['/codificacion/supervisar-codificacion']);}
         this.primero();
         this.buscarSimilares();
       })
@@ -157,7 +151,7 @@ export class SupervisionIndividualSimpleComponent implements OnInit {
 
 
   // recorre la carga al siguiente registro omitiendo los registros con estado CODIFICADO
-  siguiente() {
+  siguiente__() {
     let i = this.nAux;
     while (i < this.totalCarga) {
       if (this.carga[i].estado === 'CODIFICADO') {
@@ -181,6 +175,29 @@ export class SupervisionIndividualSimpleComponent implements OnInit {
       i++;
     }
   }
+
+  // rrecorre la carga al siguiente registro sin ningun filtro
+  siguiente() {
+    let i = this.nAux;
+    while (i < this.totalCarga) {
+      this.contexto = this.carga[i].contexto;
+      this.departamentoItem = this.carga[i].departamento;
+      this.idPregunta = this.carga[i].id_pregunta;
+      this.secuencial = this.carga[i].secuencial;
+      this.respuestaItem = this.carga[i].respuesta;
+      this.estadoItem = this.carga[i].estado;
+      this.usucodificador = this.carga[i].usucodificador;
+      this.codigocodif = this.carga[i].codigocodif;
+      this.nAux = i + 1;
+      //  Reeplazar el input descripcion por el valor de la respuesta
+      this.descripcion = this.respuestaItem;
+      // Limpia el input codigo
+      this.codigo = '';
+      this.buscarSimilares();
+      break;
+    }
+  }
+
 
 
   // Buscar palabras similares en 
@@ -209,8 +226,6 @@ export class SupervisionIndividualSimpleComponent implements OnInit {
 
 
 
-
-
   // Buscar registros por el input codigo
   buscarSimilaresPorDescripcion() {
     // Paginador
@@ -234,16 +249,12 @@ export class SupervisionIndividualSimpleComponent implements OnInit {
     // ordenar por descripcion, de menor a mayor en cuanto a la longitud caracteres de la descripcion
     this.clasificacionAux.sort((a, b) => (a.descripcion.length > b.descripcion.length) ? 1 : -1);
 
-
     // si el codigo no existe en la clasificacion limipar clasificacionAux
     if (this.descripcion.length === 0) {
       this.clasificacionAux = [];
     }
 
   }
-
-
-
 
 
 
@@ -284,7 +295,7 @@ export class SupervisionIndividualSimpleComponent implements OnInit {
 
 
   // Primero de la carga con estado ASIGNADO
-  primero() {
+  primero__() {
     let i = 0;
     while (i < this.totalCarga) {
       if (this.carga[i].estado === 'CODIFICADO') {
@@ -299,7 +310,6 @@ export class SupervisionIndividualSimpleComponent implements OnInit {
         this.nAux = i + 1;
         //  Reeplazar el input descripcion por el valor de la respuesta
         this.descripcion = this.respuestaItem;
-
         // Limpia el input codigo
         this.codigo = '';
         this.buscarSimilares();
@@ -308,6 +318,25 @@ export class SupervisionIndividualSimpleComponent implements OnInit {
       i++;
     }
   }
+
+  // Recorre la carga hacia el primer registro, sin importar el estado
+  primero() {
+    this.contexto = this.carga[0].contexto;
+    this.departamentoItem = this.carga[0].departamento;
+    this.idPregunta = this.carga[0].id_pregunta;
+    this.secuencial = this.carga[0].secuencial;
+    this.respuestaItem = this.carga[0].respuesta;
+    this.estadoItem = this.carga[0].estado;
+    this.usucodificador = this.carga[0].usucodificador;
+    this.codigocodif = this.carga[0].codigocodif;
+    this.nAux = 1;
+    //  Reeplazar el input descripcion por el valor de la respuesta
+    this.descripcion = this.respuestaItem;
+    // Limpia el input codigo
+    this.codigo = '';
+    this.buscarSimilares();
+  }
+
 
 
 
@@ -342,7 +371,7 @@ export class SupervisionIndividualSimpleComponent implements OnInit {
       icon: 'pi pi-check-square',
       accept: () => {
 
-        // sim y cuando sea mayor a 0 y que estado sea diferente de CODIFICADO
+        /* // sim y cuando sea mayor a 0 y que estado sea diferente de CODIFICADO
         if (this.porCodificar > 0 && this.estadoItem === 'ASIGNADO') {
           this.porCodificar--;
         }
@@ -355,7 +384,7 @@ export class SupervisionIndividualSimpleComponent implements OnInit {
           if (element.id_pregunta == this.idPregunta) {
             element.estado = 'CODIFICADO';
           }
-        });
+        }); */
 
         // Codificación
         const body = {
@@ -367,7 +396,7 @@ export class SupervisionIndividualSimpleComponent implements OnInit {
 
         this.codificacionService.updatePreguntaSimple(body).subscribe(
           (data2: any) => {
-            //
+            /* //
             if (data2.success) {
               this.messageService.add({ severity: 'success', summary: 'Success', detail: data2.message });
               // si por codificar es igual a 0, redireccionar a la página de /codificación
@@ -380,7 +409,7 @@ export class SupervisionIndividualSimpleComponent implements OnInit {
             } else {
               this.messageService.add({ severity: 'error', summary: 'error', detail: data2.message });
               this.ngOnInit();
-            }
+            } */
           })
       }
     });

@@ -16,7 +16,7 @@
             <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button> -->
             <strong class="mr-2 ml-3">Mostrar: </strong> <p-dropdown [options]="rows" [(ngModel)]="selectedRow"
                 optionLabel="value"></p-dropdown>
-            <p-button label="Actualizar" icon="pi pi-refresh" iconPos="left" class="ml-2" styleClass="p-button-warning"
+            <p-button (click)="registrosTabla()" label="Actualizar" icon="pi pi-refresh" iconPos="left" class="ml-2" styleClass="p-button-warning"
                 pTooltip="Actualizar registros" tooltipPosition="right"></p-button>
             <!-- {{registros.length}} {{selectedRegistros | json}} -->
         </ng-template>
@@ -85,10 +85,10 @@
                     <p-tableCheckbox [value]="registro"></p-tableCheckbox>
                 </td>
                 <td>{{registro.respuesta}}</td>
-                <td>{{registro.codigocodif}}</td>
+                <td><p-chip label="{{registro.codigocodif}}"></p-chip> </td>
                 <td>{{registro.descripcion}}</td>
                 <td>{{registro.usucodificador}}</td>
-                <td>{{registro.var_contexto}}</td>
+                <td [innerHTML]="registro.var_contexto" ></td>
                 <!-- <td>
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
                         (click)="editregistro(registro)"></button>
@@ -131,12 +131,12 @@
 
 
 <!-- DIALOG ERROR: No hay registros seleccionados. -->
-<p-dialog [(visible)]="confirmacionDialogError" [style]="{width: '450px'}" header="Confirmación" [modal]="true"
+<p-dialog [(visible)]="confirmacionDialogError" [style]="{width: '450px'}" header="Mensaje" [modal]="true"
     styleClass="p-fluid">
     <ng-template pTemplate="content">
 
         <div class="field">
-            <h5>No hay registros seleccionados.</h5>
+            <h5><i style="font-size: larger; color: red;" class="pi pi-exclamation-triangle mr-2 "></i> No hay registros seleccionados.</h5>
         </div>
 
     </ng-template>
@@ -146,6 +146,3 @@
             (click)="hideDialogError()"></p-button>
     </ng-template>
 </p-dialog>
-
-
-<!-- <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog> -->

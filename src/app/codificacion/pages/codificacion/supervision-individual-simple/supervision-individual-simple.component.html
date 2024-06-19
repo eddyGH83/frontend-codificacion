@@ -9,7 +9,7 @@
 
         <!-- VARIABLES A CODIFICAR -->
         <div class="col-6 md:col-6 lg:6">
-            <div class="card  border-1 surface-border">
+            <div   style="min-height: 180px;" class="card  border-1 surface-border">
                 <p-table>
                     <ng-template pTemplate="header">
                         <tr>
@@ -22,7 +22,7 @@
                                     style="font-family:Arial, Helvetica, sans-serif; color: white; ">{{idPregunta}} -
                                     {{secuencial}}</strong></th>
                             <th style="background-color: rgb(2, 136, 209); color: rgb(42, 42, 42); text-align: center;">
-                                POR CODIFICAR <br> <strong
+                                POR SUPERVISAR <br> <strong
                                     style="font-family:Arial, Helvetica, sans-serif; color: white;">{{porCodificar}}</strong>
                             </th>
                         </tr>
@@ -34,7 +34,8 @@
                     {{descPreg}}
                 </p>
                 <p class="ml-2 mt-2"><strong style="color:rgb(2, 136, 209)">RESPUESTA: </strong> {{respuestaItem}}
-                    <strong class="ml-8" style="color:rgb(2, 136, 209)">ESTADO: </strong> {{estadoItem}}
+                    <strong class="ml-8" style="color:rgb(2, 136, 209)">CODIGO: </strong> {{codigocodif}} <br>
+                    <strong style="color:rgb(2, 136, 209)">ESTADO: </strong> {{estadoItem}}
                     <strong class="ml-8" style="color:rgb(2, 136, 209)">CODIFICADOR: </strong> {{usucodificador}}
                 </p>
             </div>
@@ -45,7 +46,7 @@
 
         <!-- VARIABLES DE CONTEXTO -->
         <div class="col-6 md:col-6 lg:6">
-            <div class="card  border-1 surface-border">
+            <div style="min-height: 180px;" class="card  border-1 surface-border">
                 <p-table>
                     <ng-template pTemplate="header">
                         <tr>
