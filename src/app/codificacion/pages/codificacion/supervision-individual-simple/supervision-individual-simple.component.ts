@@ -85,7 +85,7 @@ export class SupervisionIndividualSimpleComponent implements OnInit {
       header: 'Confirmación',
       icon: 'pi pi-check-square',
       accept: () => {
-  
+
         const body = {
           id_registro: this.idPregunta,
           tabla_id: localStorage.getItem('tabla_id_sup'),
@@ -107,16 +107,16 @@ export class SupervisionIndividualSimpleComponent implements OnInit {
             if (this.porCodificar > 0 && this.estadoItem === 'CODIFICADO') {
               this.porCodificar--;
             }
-            
+
             // si por codificar es igual a 0, redireccionar a la página de /codificación
             if (this.porCodificar === 0) {
               this.router.navigate(['/codificacion/supervisar-codificacion']);
             }
-            
+
             // eL Paginador se reinicia
             this.first = 0;
             this.siguiente();
-            
+
             // Mensaje de éxito
             this.messageService.add({ severity: 'success', summary: 'Success', detail: data2.message });
           })
@@ -125,8 +125,87 @@ export class SupervisionIndividualSimpleComponent implements OnInit {
   }
 
 
+  // Cuando se hace click en el check de los catalogos
+  confirmarCodifiacion(registro: any) {
+    this.confirmationService.confirm({
+      message: '<strong>Codigo: </strong>' + registro.codigo + '<br><strong>Descripción: </strong>' + registro.descripcion,
+      header: 'Confirmación',
+      icon: 'pi pi-check-square',
+      accept: () => {
+
+        /* // sim y cuando sea mayor a 0 y que estado sea diferente de CODIFICADO
+        if (this.porCodificar > 0 && this.estadoItem === 'ASIGNADO') {
+          this.porCodificar--;
+        }
+ 
+        // Modificar el estado y
+        this.estadoItem = 'CODIFICADO';
+ 
+        // Modificar: carga (foreach) su propiedad estado_ocu = 'CODIFICADO'
+        this.carga.forEach(element => {
+          if (element.id_pregunta == this.idPregunta) {
+            element.estado = 'CODIFICADO';
+          }
+        }); */
+
+        // Codificación
+        const body = {
+          id_registro: this.idPregunta,
+          tabla_id: localStorage.getItem('tabla_id_sup'),
+          codigocodif: registro.codigo,
+          usuverificador: localStorage.getItem('login'),
+        }
+
+        this.codificacionService.updatePreguntaSimpleCheck(body).subscribe(
+          (data2: any) => {
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: data2.message });
+
+
+
+            // si y cuando sea mayor a 0 y que estado sea diferente de CODIFICADO
+            if (this.porCodificar > 0 && this.estadoItem === 'CODIFICADO') {
+              this.porCodificar--;
+            }
+
+            // Modificar: carga (foreach) su propiedad estado_ocu = 'VERIFICADO'
+            this.carga.forEach(element => {
+              if (element.id_pregunta == this.idPregunta) {
+                element.estado = 'VERIFICADO';
+              }
+            });
+
+            // si por codificar es igual a 0, redireccionar a la página de /codificacion/supervisar-codificacion
+            if (this.porCodificar === 0) {
+              this.router.navigate(['/codificacion/supervisar-codificacion']);
+            }
+
+            // Paginador
+            this.first = 0;
+            this.siguiente();
+
+            /* //
+            if (data2.success) {
+              // si por codificar es igual a 0, redireccionar a la página de /codificación
+              if (this.porCodificar === 0) {
+                this.router.navigate(['/codificacion']);
+              }
+              // paginador
+              this.first = 0;
+              this.siguiente();
+            } else {
+              this.messageService.add({ severity: 'error', summary: 'error', detail: data2.message });
+              this.ngOnInit();
+            } */
+          })
+      }
+    });
+  }
+
+
+
   // carga para Supervisión
   cargarParaSupervision() {
+    this.tabla_pb = true;
     const body = {
       tabla_id: localStorage.getItem('tabla_id_sup'),
       id_usuario: localStorage.getItem('id_usuario'),
@@ -134,14 +213,15 @@ export class SupervisionIndividualSimpleComponent implements OnInit {
     }
     this.codificacionService.cargarParaSupervisionSimple(body).subscribe(
       (data2: any) => {
-        this.carga = data2.datos;        
+        this.carga = data2.datos;
         this.clasificacion = data2.clasificacion;
         this.totalCarga = data2.totalCarga;
         this.nroPreg = data2.nroPreg;
         this.descPreg = data2.descPreg;
         this.porCodificar = data2.totalCarga;
+        this.tabla_pb = false;
         // si la carga es 0, redireccionar a la página de /codificacion/supervisar-codificacion
-        if (this.totalCarga === 0) {this.router.navigate(['/codificacion/supervisar-codificacion']);}
+        if (this.totalCarga === 0) { this.router.navigate(['/codificacion/supervisar-codificacion']); }
         this.primero();
         this.buscarSimilares();
       })
@@ -361,57 +441,6 @@ export class SupervisionIndividualSimpleComponent implements OnInit {
   }
 
 
-  // Cuando se hace click en el check de los catalogos
-  confirmarCodifiacion(registro: any) {
-    this.confirmationService.confirm({
-      message: '<strong>Codigo: </strong>' + registro.codigo + '<br><strong>Descripción: </strong>' + registro.descripcion,
-      header: 'Confirmación',
-      icon: 'pi pi-check-square',
-      accept: () => {
-
-        /* // sim y cuando sea mayor a 0 y que estado sea diferente de CODIFICADO
-        if (this.porCodificar > 0 && this.estadoItem === 'ASIGNADO') {
-          this.porCodificar--;
-        }
-
-        // Modificar el estado y
-        this.estadoItem = 'CODIFICADO';
-
-        // Modificar: carga (foreach) su propiedad estado_ocu = 'CODIFICADO'
-        this.carga.forEach(element => {
-          if (element.id_pregunta == this.idPregunta) {
-            element.estado = 'CODIFICADO';
-          }
-        }); */
-
-        // Codificación
-        const body = {
-          id_registro: this.idPregunta,
-          tabla_id: localStorage.getItem('tabla_id'),
-          codigocodif: registro.codigo,
-          usucodificador: localStorage.getItem('login'),
-        }
-
-        this.codificacionService.updatePreguntaSimple(body).subscribe(
-          (data2: any) => {
-            /* //
-            if (data2.success) {
-              this.messageService.add({ severity: 'success', summary: 'Success', detail: data2.message });
-              // si por codificar es igual a 0, redireccionar a la página de /codificación
-              if (this.porCodificar === 0) {
-                this.router.navigate(['/codificacion']);
-              }
-              // paginador
-              this.first = 0;
-              this.siguiente();
-            } else {
-              this.messageService.add({ severity: 'error', summary: 'error', detail: data2.message });
-              this.ngOnInit();
-            } */
-          })
-      }
-    });
-  }
 
 
 

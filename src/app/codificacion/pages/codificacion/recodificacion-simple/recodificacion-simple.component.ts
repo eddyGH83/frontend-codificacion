@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CodificacionService } from '../service/codificacion.service';
 
 @Component({
   selector: 'app-recodificacion-simple',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RecodificacionSimpleComponent implements OnInit {
 
-  constructor() { }
+  datos: any;
+
+  constructor(private codificacionService: CodificacionService) {}
 
   ngOnInit(): void {
+    console.log('Recodificación Simple-------------------');
+    
+    this.datos=this.codificacionService.getItem();
+    console.table(this.datos);
   }
 
 }

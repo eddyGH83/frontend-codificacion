@@ -18,6 +18,10 @@ export class SupervisarCodificacionComponent implements OnInit {
   registro: any;
 
 
+    // Progress Bar
+    tabla_pb: boolean = false;
+
+
   constructor(private router: Router, private messageService: MessageService, private codificacionService: CodificacionService, private confirmationService: ConfirmationService) { }
 
 
@@ -30,13 +34,12 @@ export class SupervisarCodificacionComponent implements OnInit {
 
   // Tabla de preguntas
   registrosTabla() {
-    //this.tabla_pb = true;
+    this.tabla_pb = true;
     this.codificacionService.devuelvePreguntasSupervision({ id_usuario: localStorage.getItem('id_usuario') }).subscribe(
       (data2: any) => {
         console.table(data2.datos);
-
-        //this.tabla_pb = false;
         this.registros = data2.datos;
+        this.tabla_pb = false;
       })
   }
 

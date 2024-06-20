@@ -7,7 +7,7 @@
     <button pButton pRipple label="Actualizar" (click)="registrosTabla()" icon="pi pi-refresh" class="p-button-warning" pTooltip="Actualizar tabla"
         placeholder="Right"></button>
     <br><br>
-
+    <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
     <p-table #dt1 [value]="registros" dataKey="id_catalogo" styleClass="p-datatable-customers"
         styleClass="p-datatable-sm" [showCurrentPageReport]="true"
         currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" stateStorage="local"

@@ -12,6 +12,22 @@ export class CodificacionService {
 
   constructor(private http: HttpClient) { }
 
+  // PARA RECODIFICACION
+  private item: any[]=[];
+
+  addItem(item: any): void{
+    this.item.push(item);
+  }
+
+  getItem(): any[]{
+    return this.item;
+  }
+
+
+
+
+
+
 
   // CODIFICACION SIMPLE - DOBLE  
   cargarParaCodificarSimple(body: object): Observable<any> {
@@ -108,11 +124,15 @@ export class CodificacionService {
   cargarParaSupervisionDoble(body: any): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/cargarParaSupervisionDoble`, body)
   }
-  // Actualizar Pregunta Simple Correccion
+  // Actualizar Pregunta Simple [Correccion]
   updatePreguntaSimpleCorreccion(body: any): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/updatePreguntaSimpleCorreccion`, body)
   }
-  // Actualizar Pregunta Doble Correccion
+  // Actualizar Pregunta Simple [btn check]
+  updatePreguntaSimpleCheck(body: any): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/updatePreguntaSimpleCheck`, body)
+  }
+  // Actualizar Pregunta Doble [Correccion]
   updatePreguntaDobleCorreccion(body: any): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/updatePreguntaDobleCorreccion`, body)
   }
@@ -120,6 +140,9 @@ export class CodificacionService {
   updateCargaSupervision(body: any): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/updateCargaSupervision`, body)
   }
-  
+
+
+
+
 
 }

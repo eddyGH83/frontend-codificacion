@@ -163,8 +163,11 @@ export class SupervisionLoteSimpleComponent implements OnInit {
 
 
   recodificaicion() {
-    alert('Recodificación');
-    this.router.navigate(['/codificacion/supervision-individual-simple']);
+    //alert('Recodificación');
+    this.codificacionService.addItem(this.selectedRegistros);
+    this.router.navigate(['/codificacion/recodificacion-lotes-simple']);
+
+    
   }
 
 

@@ -34,6 +34,10 @@ export class SupervisionLoteDobleComponent implements OnInit {
   confirmacionDialogError: boolean = false;
 
 
+  // Progress Bar
+  tabla_pb: boolean = false;
+
+
 
   constructor(private router: Router, private codificacionService: CodificacionService, private messageService: MessageService) { }
 
@@ -57,12 +61,13 @@ export class SupervisionLoteDobleComponent implements OnInit {
 
   // 
   registrosTabla() {
+    this.tabla_pb = true;
     this.codificacionService.devuelveCargaParaSupervision({ id_usuario: localStorage.getItem('id_usuario'), tabla_id: localStorage.getItem("tabla_id_sup") }).subscribe(
       (data2: any) => {
         console.table(data2.datos);
 
-        //this.tabla_pb = false;
         this.registros = data2.datos;
+        this.tabla_pb = false;
       })
   }
 
@@ -90,6 +95,8 @@ export class SupervisionLoteDobleComponent implements OnInit {
 
   recodificaicion() { 
     alert('Recodificación');
+    this.codificacionService.addItem({ id: 1, name: 'Recodificación', price: 10, category: 'Recodificación', review: 4, inventoryStatus: 'Out of Stock' });
+    this.router.navigate(['/codificacion/supervision-individual-simple']);
   }
 
 
