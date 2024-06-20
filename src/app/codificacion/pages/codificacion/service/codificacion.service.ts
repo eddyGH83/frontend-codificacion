@@ -88,7 +88,6 @@ export class CodificacionService {
     return this.http.post(`${this._apiUrl}/diccionarios/insertarCatalogo`, body)
   }
 
-
   // CODIFICACION
   devuelvePreguntasCodificado(body: any): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/devuelvePreguntasCodificado`, body)
@@ -113,9 +112,14 @@ export class CodificacionService {
   updatePreguntaSimpleCorreccion(body: any): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/updatePreguntaSimpleCorreccion`, body)
   }
+  // Actualizar Pregunta Doble Correccion
+  updatePreguntaDobleCorreccion(body: any): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/updatePreguntaDobleCorreccion`, body)
+  }
 
   updateCargaSupervision(body: any): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/updateCargaSupervision`, body)
   }
+  
 
 }

@@ -10,6 +10,8 @@ import { SupervisionLoteSimpleComponent } from './supervision-lote-simple/superv
 import { SupervisionLoteDobleComponent } from './supervision-lote-doble/supervision-lote-doble.component';
 import { SupervisionIndividualSimpleComponent } from './supervision-individual-simple/supervision-individual-simple.component';
 import { SupervisionIndividualDobleComponent } from './supervision-individual-doble/supervision-individual-doble.component';
+import { RecodificacionDobleComponent } from './recodificacion-doble/recodificacion-doble.component';
+import { RecodificacionSimpleComponent } from './recodificacion-simple/recodificacion-simple.component';
 
 const routes: Routes = [];
 
@@ -26,6 +28,9 @@ const routes: Routes = [];
     { path: 'supervision-lotes-doble', component: SupervisionLoteDobleComponent },
     { path: 'supervision-individual-simple', component: SupervisionIndividualSimpleComponent },
     { path: 'supervision-individual-doble', component: SupervisionIndividualDobleComponent },
+
+    { path: 'recodificacion-lotes-simple', component: RecodificacionSimpleComponent },
+    { path: 'recodificacion-lotes-doble', component: RecodificacionDobleComponent },
   ])],
   exports: [RouterModule]
 })

@@ -33,6 +33,8 @@ import { SupervisionIndividualDobleComponent } from './supervision-individual-do
 import { SupervisionIndividualSimpleComponent } from './supervision-individual-simple/supervision-individual-simple.component';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ScrollTopModule } from 'primeng/scrolltop';
+import { RecodificacionSimpleComponent } from './recodificacion-simple/recodificacion-simple.component';
+import { RecodificacionDobleComponent } from './recodificacion-doble/recodificacion-doble.component';
 
 
 @NgModule({
@@ -46,7 +48,9 @@ import { ScrollTopModule } from 'primeng/scrolltop';
     SupervisionLoteSimpleComponent,
     SupervisionLoteDobleComponent,
     SupervisionIndividualDobleComponent,
-    SupervisionIndividualSimpleComponent
+    SupervisionIndividualSimpleComponent,
+    RecodificacionSimpleComponent,
+    RecodificacionDobleComponent
   ],
   imports: [
     CommonModule,

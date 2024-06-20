@@ -55,7 +55,6 @@ export class SupervisionLoteDobleComponent implements OnInit {
   }
 
 
-
   // 
   registrosTabla() {
     this.codificacionService.devuelveCargaParaSupervision({ id_usuario: localStorage.getItem('id_usuario'), tabla_id: localStorage.getItem("tabla_id_sup") }).subscribe(
@@ -65,10 +64,7 @@ export class SupervisionLoteDobleComponent implements OnInit {
         //this.tabla_pb = false;
         this.registros = data2.datos;
       })
-
   }
-
-
 
 
   hideDialog() {

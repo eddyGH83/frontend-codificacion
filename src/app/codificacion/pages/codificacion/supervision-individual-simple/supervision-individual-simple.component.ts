@@ -125,9 +125,7 @@ export class SupervisionIndividualSimpleComponent implements OnInit {
   }
 
 
-
-
-  // carga para codificar
+  // carga para Supervisión
   cargarParaSupervision() {
     const body = {
       tabla_id: localStorage.getItem('tabla_id_sup'),
