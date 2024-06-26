@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { FileUploadModule } from 'primeng/fileupload';
 import { HttpClientModule } from '@angular/common/http';
 import { DividerModule } from 'primeng/divider';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 
 @NgModule({
@@ -21,8 +22,8 @@ import { DividerModule } from 'primeng/divider';
     FormsModule,
     FileUploadModule,
     HttpClientModule,
-    DividerModule
-
+    DividerModule,
+    ProgressBarModule
   ]
 })
 export class OdbcModule { }

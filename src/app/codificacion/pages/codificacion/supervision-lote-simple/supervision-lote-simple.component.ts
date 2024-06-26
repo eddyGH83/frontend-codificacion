@@ -163,11 +163,14 @@ export class SupervisionLoteSimpleComponent implements OnInit {
 
 
   recodificaicion() {
-    //alert('Recodificación');
-    this.codificacionService.addItem(this.selectedRegistros);
-    this.router.navigate(['/codificacion/recodificacion-lotes-simple']);
+    // verificar si hay registros seleccionados
+    if (this.selectedRegistros === undefined || this.selectedRegistros === null || this.selectedRegistros.length === 0) {
+      this.messageService.add({ severity: 'error', summary: 'Mensaje:', detail: 'No hay registros seleccionados para recodificar', life: 2500 });
+    } else {
+      this.codificacionService.addItem(this.selectedRegistros);
+      this.router.navigate(['/codificacion/recodificacion-lotes-simple']);
+    }
 
-    
   }
 
 

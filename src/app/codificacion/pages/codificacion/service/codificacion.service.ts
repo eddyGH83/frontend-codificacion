@@ -12,16 +12,10 @@ export class CodificacionService {
 
   constructor(private http: HttpClient) { }
 
-  // PARA RECODIFICACION
-  private item: any[]=[];
-
-  addItem(item: any): void{
-    this.item.push(item);
-  }
-
-  getItem(): any[]{
-    return this.item;
-  }
+  // SERVICIO PARA RECODIFICACION
+  private id_registros: any[]= [];
+  addItem(ids: any): void{this.id_registros.push(ids)}
+  getItem(): any[]{return this.id_registros}
 
 
 
@@ -140,9 +134,5 @@ export class CodificacionService {
   updateCargaSupervision(body: any): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/updateCargaSupervision`, body)
   }
-
-
-
-
 
 }

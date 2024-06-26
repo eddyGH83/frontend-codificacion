@@ -198,7 +198,50 @@ export class CargaCodificadorComponent implements OnInit {
     });
   }
 
-  // guardar reasignacion (REVISAR ESTA PARTE GENERADA POR CPLT)
+
+  // Guardar asignacion
+  guardarAsignacion() {
+    this.array_asg = [];
+
+    for (let j in this.usuarios) {
+      if (this.usuarios[j].total > 0) {
+        const body = {
+          departamento: this.selectedDepartamento.value, //this.codificacionService.depto,
+          count: this.usuarios[j].total,
+          estado: 'ASIGNADO',
+          usucre: this.usuarios[j].login,
+          area: 'AREA AQUI' // this.codificacionService.area1
+        }
+        this.array_asg.push(body)
+      }
+    }
+
+    this.asignacionService.updateAsignado(this.registro.tabla_id, this.array_asg,).subscribe(res => {
+      // this.asignacionDialog = false;
+
+
+      if (res.success === true) {
+        this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: res.message, life: 2500 });
+        this.asignacionDialog = false;
+        this.registrosTabla();
+      }
+
+
+      if (res.success === false) {
+        // Mensaje de error
+        this.msgService = true;
+        this.titleMsgError = res.message;
+        setTimeout(() => {
+          this.msgService = false;
+          this.titleMsgError = '';
+        }, 2500);
+      }
+
+    });
+  }
+
+
+  // Guardar reasignacion
   guardarReAsignacion() {
 
     // sacamos el todal de usuarios2 de las cargas asignadas
@@ -251,48 +294,7 @@ export class CargaCodificadorComponent implements OnInit {
     }
   }
 
-  guardar() {
-    this.array_asg = [];
 
-    for (let j in this.usuarios) {
-      if (this.usuarios[j].total > 0) {
-        const body = {
-          departamento: this.selectedDepartamento.value, //this.codificacionService.depto,
-          count: this.usuarios[j].total,
-          estado: 'ASIGNADO',
-          usucre: this.usuarios[j].login,
-          area: 'AREA AQUI' // this.codificacionService.area1
-        }
-        this.array_asg.push(body)
-      }
-    }
-
-
-    this.asignacionService.updateAsignado(this.registro.tabla_id, this.array_asg,).subscribe(res => {
-      // this.asignacionDialog = false;
-
-
-      if (res.success === true) {
-        this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: res.message, life: 2500 });
-        this.asignacionDialog = false;
-        this.registrosTabla();
-      }
-
-
-      if (res.success === false) {
-        // Mensaje de error
-        this.msgService = true;
-        this.titleMsgError = res.message;
-        setTimeout(() => {
-          this.msgService = false;
-          this.titleMsgError = '';
-        }, 2500);
-      }
-
-
-    });
-
-  }
 
 
 

@@ -16,6 +16,14 @@ export class OdbcComponent implements OnInit {
 
   private _apiUrl: string = environment.base_url;
 
+
+
+  // progress bar
+  idiomasPueblos_pb: boolean = false;
+  migracion_pb: boolean = false;
+  ocupActiv_pb: boolean = false;
+
+
   rangeDates: Date[];
 
   minDate: Date;
@@ -50,7 +58,7 @@ export class OdbcComponent implements OnInit {
   maxFileSize: number = 100000000;  // 100 Mb
 
 
-  rol_id: number=Number(localStorage.getItem('rol_id'));
+  rol_id: number = Number(localStorage.getItem('rol_id'));
 
 
 
@@ -70,25 +78,23 @@ export class OdbcComponent implements OnInit {
     }
   }
 
+
+
   decargaOdbc_npioc() {
     this.ntabla = 'ArchivoODBC_npioc'
     // Verifica si se han seleccionado las fechas
     if (this.rangeDates_npioc && this.rangeDates_npioc.length === 2) {
+      this.idiomasPueblos_pb = true;
       // Obtiene las fechas seleccionadas
       console.log(this.rangeDates_npioc)
-      this.loading = true
+
       this.odbcService.repOdbc_npioc(moment(this.rangeDates_npioc[0]).format("DD-MM-YYYY"), moment(this.rangeDates_npioc[1]).format("DD-MM-YYYY")).subscribe(res => {
         this.datos = res.datos.rows;
         this.encabezados = res.datos.fields
 
         console.log(this.encabezados)
         this.exportExcel()
-
-        /* Swal.fire({
-          icon: 'success',
-          title: 'Archivo exportado!!. ',
-        }) */
-        this.loading = false
+        this.idiomasPueblos_pb = false;
 
       })
     } else {
@@ -97,25 +103,23 @@ export class OdbcComponent implements OnInit {
     }
   }
 
+
+
   decargaOdbc_migracion() {
     this.ntabla = 'ArchivoODBC_migracion'
     // Verifica si se han seleccionado las fechas
     if (this.rangeDates_ug && this.rangeDates_ug.length === 2) {
+      this.migracion_pb = true;
       // Obtiene las fechas seleccionadas
       console.log(this.rangeDates_ug)
-      this.loading = true
+
       this.odbcService.repOdbc_migracion(moment(this.rangeDates_ug[0]).format("DD-MM-YYYY"), moment(this.rangeDates_ug[1]).format("DD-MM-YYYY")).subscribe(res => {
         this.datos = res.datos.rows;
         this.encabezados = res.datos.fields
 
         console.log(this.encabezados)
         this.exportExcel()
-
-        /* Swal.fire({
-          icon: 'success',
-          title: 'Archivo exportado!!. ',
-        }) */
-        this.loading = false
+        this.migracion_pb = false;
 
       })
     } else {
@@ -124,32 +128,32 @@ export class OdbcComponent implements OnInit {
     }
   }
 
+
+
+
   decargaOdbc() {
     this.ntabla = 'ArchivoODBC_ocup_activ'
     // Verifica si se han seleccionado las fechas
     if (this.rangeDates_oa && this.rangeDates_oa.length === 2) {
+      this.ocupActiv_pb = true;
       // Obtiene las fechas seleccionadas
       console.log(this.rangeDates_oa)
-      this.loading = true
+
       this.odbcService.repOdbc(moment(this.rangeDates_oa[0]).format("DD-MM-YYYY"), moment(this.rangeDates_oa[1]).format("DD-MM-YYYY")).subscribe(res => {
         this.datos = res.datos.rows;
         this.encabezados = res.datos.fields
 
         console.log(this.encabezados)
         this.exportExcel()
-
-        /* Swal.fire({
-          icon: 'success',
-          title: 'Archivo exportado!!. ',
-        }) */
-        this.loading = false
-
+        this.ocupActiv_pb = false;
       })
     } else {
       // Si no se han seleccionado fechas, muestra un mensaje de error o realiza alguna otra acción
       console.log('Por favor, seleccione un rango de fechas válido.');
     }
   }
+
+
 
 
   cargaOdbc_npioc() {

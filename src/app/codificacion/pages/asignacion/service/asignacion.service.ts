@@ -22,11 +22,6 @@ export class AsignacionService {
 
 
 
-
-
-
-  
-
   // Listar codificadores 
   codificadores(id: any): Observable<any> {
     return this.http.get(`${this._apiUrl}/codificacion/codificadores/${id}`)
@@ -35,10 +30,6 @@ export class AsignacionService {
   codificadoresConCarga(body: object): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/codificadoresConCarga`, body)
   }
-
-
-
-
 
 
 
@@ -61,6 +52,8 @@ export class AsignacionService {
   preguntasPorDepartamentoSup(body: object): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/preguntasPorDepartamentoSup`, body)
   }
+
+
 
 
 

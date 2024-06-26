@@ -540,8 +540,8 @@ export class SupervisionIndividualDobleComponent implements OnInit {
     this.codigocodifItem_act = this.carga[this.nAux].codigocodif_act;
     this.usucodificadorItem_ocu = this.carga[this.nAux].usucodificador_ocu;
     this.usucodificadorItem_act = this.carga[this.nAux].usucodificador_act;
-    this.descripcionItem_ocu = '';
-    this.descripcionItem_act = '';
+    this.descripcionItem_ocu = this.carga[this.nAux].descripcion_ocu;
+    this.descripcionItem_act =  this.carga[this.nAux].descripcion_act;
 
     //  Reeplazar el input desc_ocu y desc_act por el valor de la respuesta
     this.desc_ocu = this.respuestaItem_ocu;
@@ -572,8 +572,8 @@ export class SupervisionIndividualDobleComponent implements OnInit {
       this.codigocodifItem_act = this.carga[this.nAux].codigocodif_act;
       this.usucodificadorItem_ocu = this.carga[this.nAux].usucodificador_ocu;
       this.usucodificadorItem_act = this.carga[this.nAux].usucodificador_ocu;
-      this.descripcionItem_ocu = '';
-      this.descripcionItem_act = '';
+      this.descripcionItem_ocu = this.carga[this.nAux].descripcion_ocu;
+      this.descripcionItem_act = this.carga[this.nAux].descripcion_act;
       //this.nAux++;
     }
 
