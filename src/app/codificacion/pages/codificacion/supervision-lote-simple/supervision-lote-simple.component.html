@@ -16,8 +16,8 @@
             <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button> -->
             <strong class="mr-2 ml-3">Mostrar: </strong> <p-dropdown [options]="rows" [(ngModel)]="selectedRow"
                 optionLabel="value"></p-dropdown>
-            <p-button (click)="registrosTabla()" label="Actualizar" icon="pi pi-refresh" iconPos="left" class="ml-2" styleClass="p-button-warning"
-                pTooltip="Actualizar registros" tooltipPosition="right"></p-button>
+            <p-button (click)="registrosTabla()" label="Actualizar" icon="pi pi-refresh" iconPos="left" class="ml-2"
+                styleClass="p-button-warning" pTooltip="Actualizar registros" tooltipPosition="right"></p-button>
             <!-- {{registros.length}} {{selectedRegistros | json}} -->
         </ng-template>
 
@@ -27,8 +27,7 @@
                 tooltipPosition="left"></p-button>
 
             <p-button label="Guardar" (click)="guardarSupervision()" icon="pi pi-save" iconPos="left"
-                styleClass="p-button-info" class="mr-2" pTooltip="Guardar Supervisión"
-                tooltipPosition="left"></p-button>
+                styleClass="p-button-info" class="mr-2" pTooltip="Guardar Supervisión" tooltipPosition="top"></p-button>
 
             <p-button label="Cancelar" (click)="cancelarYsalir()" icon="pi pi-times" iconPos="left"
                 styleClass="p-button-danger" pTooltip="Cancelar y salir" tooltipPosition="top"></p-button>
@@ -40,11 +39,11 @@
 
 
 
+    <p-progressBar *ngIf="tabla1_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
     <!-- TABLA -->
     <p-table #dt [value]="registros" [rows]="selectedRow.value" [paginator]="true" [(selection)]="selectedRegistros"
         [rowHover]="true" currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros"
         [showCurrentPageReport]="true">
-
         <ng-template pTemplate="header">
             <tr>
                 <th style="width: 4rem">
@@ -60,23 +59,6 @@
                 </th>
                 <!-- <th></th> -->
             </tr>
-            <!-- Filtros de busqueda -->
-            <!-- <tr>
-                <th>
-                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'name', 'contains')" [value]="dt1.filters['name']?.value" placeholder="Search by Name" class="w-full">
-                </th>
-                <th>
-                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'country.name', 'contains')" [value]="dt1.filters['country.name']?.value" placeholder="Search by Country" class="w-full">
-                </th>
-                <th>
-                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'representative.name', 'contains')" [value]="dt1.filters['representative.name']?.value" placeholder="Search by Representative" class="w-full">
-                </th>
-                <th>
-                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'status', 'contains')" [value]="dt1.filters['status']?.value" placeholder="Search by Status" class="w-full">
-                </th>
-            </tr> -->
-
-            <!-- https://www.primefaces.org/primeng-v14-lts/table/state -->
 
         </ng-template>
         <ng-template pTemplate="body" let-registro>
@@ -88,7 +70,7 @@
                 <td><p-chip label="{{registro.codigocodif}}"></p-chip> </td>
                 <td>{{registro.descripcion}}</td>
                 <td>{{registro.usucodificador}}</td>
-                <td [innerHTML]="registro.var_contexto" ></td>
+                <td [innerHTML]="registro.var_contexto"></td>
                 <!-- <td>
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
                         (click)="editregistro(registro)"></button>
@@ -136,7 +118,8 @@
     <ng-template pTemplate="content">
 
         <div class="field">
-            <h5><i style="font-size: larger; color: red;" class="pi pi-exclamation-triangle mr-2 "></i> No hay registros seleccionados.</h5>
+            <h5><i style="font-size: larger; color: red;" class="pi pi-exclamation-triangle mr-2 "></i> No hay registros
+                seleccionados.</h5>
         </div>
 
     </ng-template>
@@ -145,4 +128,135 @@
         <p-button label="Aceptar" icon="pi pi-check" iconPos="left" styleClass="p-button-info" class="mr-2"
             (click)="hideDialogError()"></p-button>
     </ng-template>
+</p-dialog>
+
+
+
+<!-- R E C O D I F I C A I O N -->
+<!-- Dialog -->
+<p-dialog (onHide)="onDialogRecodificacionClose()" header="Recodificación" [(visible)]="dialogRecodificacion"
+    [style]="{width: '90vw'}" [maximizable]="true" [resizable]="false">
+<br>
+    <div class="grid">
+        <!-- VARIABLES A CODIFICAR -->
+        <div class="col-6 md:col-6 lg:6">
+            <!-- <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar> -->
+            <div style="min-height: 180px;" class="card  border-1 surface-border">
+                <p-table>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="background-color: rgb(2, 136, 209); color: rgb(42, 42, 42); text-align: center;">
+                                DEPARTAMENTO <br> <strong
+                                    style="font-family:Arial, Helvetica, sans-serif; color: white; ">{{departamentoItem}}</strong>
+                            </th>
+                            <th style="background-color: rgb(2, 136, 209); color: rgb(42, 42, 42); text-align: center;">
+                                IDENTIFICADOR <br> <strong
+                                    style="font-family:Arial, Helvetica, sans-serif; color: white; ">{{idPreguntaItem}} -
+                                    {{"secuencial"}}</strong></th>
+                            <th style="background-color: rgb(2, 136, 209); color: rgb(42, 42, 42); text-align: center;">
+                                POR SUPERVISAR <br> <strong
+                                    style="font-family:Arial, Helvetica, sans-serif; color: white;">{{"porCodificar"}}</strong>
+                            </th>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <p class="ml-2 mt-2"><strong style="color:rgb(2, 136, 209)">RESPUESTA: </strong> {{"respuestaItem"}}
+                    <strong class="ml-8" style="color:rgb(2, 136, 209)">CODIGO: </strong> {{"codigocodif"}} <br>
+                    <strong style="color:rgb(2, 136, 209)">ESTADO: </strong> {{"estadoItem"}}
+                    <strong class="ml-8" style="color:rgb(2, 136, 209)">CODIFICADOR: </strong> {{"usucodificador"}}
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- VARIABLES DE CONTEXTO -->
+        <div class="col-6 md:col-6 lg:6">
+            <!-- <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar> -->
+            <div style="min-height: 180px;" class="card  border-1 surface-border">
+                <p-table>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="background-color: rgb(16, 177, 99); color: rgb(42, 42, 42);">VARIABLES DE
+                                CONTEXTO</th>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <br>
+                <!-- <p [innerHTML]="contexto"></p> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTONES  DE CONTROL -->
+    <div class="text-700 text-center">
+        <button (click)="primero()" pButton pRipple label="Primero" icon="pi pi-fast-backward"
+            class="p-button-info mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
+        <button (click)="siguiente()" pButton pRipple label="Siguiente" icon="pi pi-forward"
+            class="p-button-info mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
+        <button (click)="confirmarCodifiacionCorrecto()" pButton pRipple label="Correcto" icon="pi pi-check"
+            class="p-button-primary mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
+    </div>
+
+
+    <!-- TABLA DE CODIFICACIÓN Y CATALOGOS -->
+    <p-table #dt1 [value]="clasificacionAux" dataKey="id_catalogo" [(first)]="first" styleClass="p-datatable-customers"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="15"
+        [rowsPerPageOptions]="[5,10,15]" [paginator]="true" stateStorage="local">
+        <ng-template pTemplate="header">
+            <!--  -->
+            <tr>
+                <th pSortableColumn="codigo">CÓDIGO CODIFICACIÓN <p-sortIcon field="codigo"></p-sortIcon> </th>
+                <th pSortableColumn="descripcion">RESPUESTA <p-sortIcon field="descripcion"></p-sortIcon></th>
+                <th>ACCIONES</th>
+            </tr>
+            <tr>
+                <th>
+                    <input pInputText type="text" (keyup)="buscarPorCodigo()" [(ngModel)]="codigo"
+                        placeholder="Buscar por código" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" (keyup)="buscarSimilaresPorDescripcion()" [(ngModel)]="descripcion"
+                        placeholder="Buscar por respuesta" class="w-full">
+                </th>
+                <th>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-reg>
+            <tr [pSelectableRow]="reg">
+                <td>
+                    <span class="p-column-title">CÓDIGO CODIFICACIÓN</span>
+                    <span class="image-text"> <strong> {{reg.codigo}}</strong></span>
+                </td>
+                <td>
+                    <span class="p-column-title">RESPUESTA</span>
+                    <span class="image-text">{{reg.descripcion}}</span>
+                </td>
+
+                <td>
+                    <button (click)="confirmarCodifiacion(reg)" styleClass="p-button-lg" pTooltip="Codificar"
+                        tooltipPosition="right" pButton pRipple icon="pi pi-check" class="p-button-info mr-2"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="4">No hay registros para mostrar</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="paginatorleft">
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+        </ng-template>
+    </p-table>
+
+    <!-- FOOTER - BOTON SALIR -->
+    <!-- <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="dialogRecodificacion=false" label="Cerrar"
+            styleClass="p-button-text"></p-button>
+    </ng-template> -->
+
+
 </p-dialog>

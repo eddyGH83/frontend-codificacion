@@ -36,15 +36,12 @@ export class SupervisionLoteSimpleComponent implements OnInit {
   selectedRegistros: any;
 
 
-
   // paginador
   rows: any;
   selectedRow: any;
 
   // Cantidad de registros seleccionados
   nroRegSelected: number = 0;
-
-
 
   // Dialog
   confirmacionDialog: boolean = false;
@@ -72,6 +69,22 @@ export class SupervisionLoteSimpleComponent implements OnInit {
 
   preguntasSelected: any = {};
 
+  // progresBar
+  tabla1_pb: boolean = true;
+
+  /* 
+  * R E C O D I F I C A C I O N
+  */
+  dialogRecodificacion: boolean = false;
+
+  clasificacionAux: any;
+
+  first = 0;
+
+  contAux: number = 0;
+
+  departamentoItem: any;
+  idPreguntaItem: any;
 
   constructor(private router: Router, private codificacionService: CodificacionService, private messageService: MessageService) { }
 
@@ -101,12 +114,12 @@ export class SupervisionLoteSimpleComponent implements OnInit {
 
   // 
   registrosTabla() {
+    this.tabla1_pb = true;
     this.codificacionService.devuelveCargaParaSupervision({ id_usuario: localStorage.getItem('id_usuario'), tabla_id: localStorage.getItem("tabla_id_sup") }).subscribe(
       (data2: any) => {
         console.table(data2.datos);
-
-        //this.tabla_pb = false;
         this.registros = data2.datos;
+        this.tabla1_pb = false;
       })
 
   }
@@ -162,17 +175,75 @@ export class SupervisionLoteSimpleComponent implements OnInit {
   }
 
 
+
+
+
+
+  /* 
+  * R E C O D I F I C A C I O N
+  */
+
+
   recodificaicion() {
-    // verificar si hay registros seleccionados
+    console.table(this.selectedRegistros);
     if (this.selectedRegistros === undefined || this.selectedRegistros === null || this.selectedRegistros.length === 0) {
       this.messageService.add({ severity: 'error', summary: 'Mensaje:', detail: 'No hay registros seleccionados para recodificar', life: 2500 });
     } else {
-      this.codificacionService.addItem(this.selectedRegistros);
-      this.router.navigate(['/codificacion/recodificacion-lotes-simple']);
+      this.primero();
+      this.dialogRecodificacion = true;
     }
-
   }
 
+
+
+
+
+
+
+  // primer reistro  de la lista de registros seleccionados
+  primero() {
+    this.departamentoItem= this.selectedRegistros[0].departamento;
+    this.idPreguntaItem = this.selectedRegistros[0].id_registro;
+    this.contAux = 0;
+  }
+
+
+
+
+
+
+  // siuiente registro de la lista de registros seleccionados
+  siguiente() {    
+    this.contAux++;
+    if (this.contAux < this.selectedRegistros.length) {
+      this.departamentoItem= this.selectedRegistros[this.contAux].departamento;
+      this.idPreguntaItem = this.selectedRegistros[this.contAux].id_registro;
+    } else {
+      this.messageService.add({ severity: 'error', summary: 'Mensaje:', detail: 'Es el último registro', life: 2500 });
+    }       
+  }
+
+ 
+
+  confirmarCodifiacionCorrecto() { }
+
+
+
+
+
+
+
+
+
+  // cerrar el dialogo de recodificación (por todos los modos de cerrar el dialogo)
+  onDialogRecodificacionClose() {
+    // cerrar el dialogo de recodificación
+    this.registrosTabla();
+    // deselecciona los registros seleccionados
+    this.selectedRegistros = [];
+    // contador auxiliar
+    this.contAux = 0;
+  }
 
 
 }

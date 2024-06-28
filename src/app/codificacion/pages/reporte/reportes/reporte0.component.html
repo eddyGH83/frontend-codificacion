@@ -21,7 +21,7 @@
          *ngIf="progressBar.reporte_pb"></p-progressBar>
 
      <!-- <h5>Implicit Pagination</h5> -->
-     <p-table [value]="registros" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+     <!-- <p-table [value]="registros" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
          currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros"
          [rowsPerPageOptions]="[5,10,25,50]">
          <ng-template pTemplate="header">
@@ -41,10 +41,37 @@
              </tr>
          </ng-template>
          <ng-template pTemplate="paginatorleft">
-            <!--  <p-button type="button" (click)="reporte()" icon="pi pi-refresh" styleClass="p-button-text"
-                 label="Actualizar"></p-button> -->
          </ng-template>
          <ng-template pTemplate="paginatorright">
          </ng-template>
-     </p-table>
+     </p-table> -->
+     <p-table [value]="registros" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+     currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros"
+     [rowsPerPageOptions]="[5,10,25,50]">
+     <ng-template pTemplate="header">
+         <tr>
+             <th style="width:20%">DEPARTAMENTO</th>
+             <th style="width:20%">CONTADOR</th>
+             <th style="width:20%">FECHA</th>
+             <th style="width:20%">NUMERO DE CUESTIONARIOS</th>
+             <th style="width:20%">NUMERO DE PERSONAS (registros)</th>
+         </tr>
+     </ng-template>
+     <ng-template pTemplate="body" let-reg>
+         <tr>
+             <td>ORURO</td>
+             <td>1</td>
+             <td>27-06-2024</td>
+             <td>83,344</td>
+             <td>173,457</td>
+         </tr>
+     </ng-template>
+     <ng-template pTemplate="paginatorleft">
+        <!--  <p-button type="button" (click)="reporte()" icon="pi pi-refresh" styleClass="p-button-text"
+             label="Actualizar"></p-button> -->
+     </ng-template>
+     <ng-template pTemplate="paginatorright">
+     </ng-template>
+ </p-table>
+ 
 </div>

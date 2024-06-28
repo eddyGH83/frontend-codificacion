@@ -44,7 +44,8 @@ export class Reporte0Component implements OnInit {
       { cod_depto: '06', departamento: 'TARIJA' },
       { cod_depto: '07', departamento: 'SANTA CRUZ' },
       { cod_depto: '08', departamento: 'BENI' },
-      { cod_depto: '09', departamento: 'PANDO' }
+      { cod_depto: '09', departamento: 'PANDO' },
+      { cod_depto: '00', departamento: 'NACIONAL' }
     ]
     this.selectedDepartamento = { cod_depto: '04', departamento: 'ORURO' };
 

@@ -15,7 +15,7 @@ export class ReporteService {
 
   //  Reporte 0 : Nro de cuestionarios por departamento
   reporte0(body: object): Observable<any> {
-    return this.http.post(`${this._apiUrl}/reportes/reporte0`, body)
+    return this.http.post(`${this._apiUrl}/reportes/reporte13`, body)
   }
 
 
