@@ -13,6 +13,13 @@ export class ReporteService {
 
   constructor(private http: HttpClient) { }
 
+  //  Reporte 0 : Nro de cuestionarios por departamento
+  reporte0(body: object): Observable<any> {
+    return this.http.post(`${this._apiUrl}/reportes/reporte0`, body)
+  }
+
+
+
 
   //  Reporte 1
   reporte1(): Observable<any> {

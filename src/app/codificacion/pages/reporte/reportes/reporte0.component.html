@@ -1,0 +1,50 @@
+<div class="card">
+    <p-toast></p-toast>
+
+    <h5><a [routerLink]="['/reportes']"> <i class="pi pi-chevron-left" style="font-size: 1.4rem"></i> Reportes | </a> Nro de cuestionarios por departamento</h5>
+    <hr>
+
+    <label for="username2">Departamento: </label>
+    <p-dropdown (onChange)="reporte()"  [options]="departamentos" [(ngModel)]="selectedDepartamento" class="mr-2"
+        optionLabel="departamento"></p-dropdown> 
+
+
+        <button pButton pRipple type="button" icon="pi pi-refresh" label="Actualizar" class="p-button-warning ml-2 mr-2"
+        (click)="reporte()" pTooltip="Actualizar registros" tooltipPosition="bottom"></button>
+        <button pButton type="button" label="Exportar" icon="pi pi-file-excel" (click)="exportExcel()"
+                        class="p-button-success mr-2" pTooltip="Exportar registros a excel (.xlsx)" tooltipPosition="bottom"></button>
+        <br> <br>
+
+
+         <!-- ProgressBar -->
+         <p-progressBar mode="indeterminate" [style]="{'height': '2px'}"
+         *ngIf="progressBar.reporte_pb"></p-progressBar>
+
+     <!-- <h5>Implicit Pagination</h5> -->
+     <p-table [value]="registros" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+         currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros"
+         [rowsPerPageOptions]="[5,10,25,50]">
+         <ng-template pTemplate="header">
+             <tr>
+                 <th style="width:20%">DEPARTAMENTO</th>
+                 <th style="width:20%">CONTADOR</th>
+                 <th style="width:20%">FECHA</th>
+                 <th style="width:20%">NUMERO DE CUESTIONARIOS</th>
+             </tr>
+         </ng-template>
+         <ng-template pTemplate="body" let-reg>
+             <tr>
+                 <td>{{reg.codigo_departamento}} - {{reg.departamento}}</td>
+                 <td>{{reg.cont_creacion}}</td>
+                 <td>{{reg.fecha_creacion}}</td>
+                 <td>{{reg.cantidad | number}}</td>
+             </tr>
+         </ng-template>
+         <ng-template pTemplate="paginatorleft">
+            <!--  <p-button type="button" (click)="reporte()" icon="pi pi-refresh" styleClass="p-button-text"
+                 label="Actualizar"></p-button> -->
+         </ng-template>
+         <ng-template pTemplate="paginatorright">
+         </ng-template>
+     </p-table>
+</div>

@@ -34,7 +34,6 @@ export class AsignacionService {
 
 
 
-
   // Listar supervisores sin carga
   supervisoresSinCarga(id: any): Observable<any> {
     return this.http.get(`${this._apiUrl}/codificacion/supervisoresSinCarga/${id}`)

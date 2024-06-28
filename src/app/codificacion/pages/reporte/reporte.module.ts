@@ -29,6 +29,10 @@ import { TableModule } from 'primeng/table';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
+import { Reporte0Component } from './reportes/reporte0.component';
+import { ToastModule } from 'primeng/toast';
+
+
 
 
 @NgModule({
@@ -45,7 +49,8 @@ import { FormsModule } from '@angular/forms';
     Reporte9Component,
     Reporte10Component,
     Reporte11Component,
-    Reporte12Component
+    Reporte12Component,
+    Reporte0Component
   ],
   imports: [
     CommonModule,
@@ -63,7 +68,8 @@ import { FormsModule } from '@angular/forms';
     FieldsetModule,
     MenuModule,
     DividerModule,
-    SplitterModule
+    SplitterModule,
+    ToastModule
   ]
 })
 export class ReporteModule { }

@@ -101,7 +101,6 @@ export class MatrizOcupActEconComponent implements OnInit {
   }
 
 
-
   // Eliminar registros
   deletetRegistro(registro: any) {
     this.registro = { ...registro };

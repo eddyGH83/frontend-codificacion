@@ -13,12 +13,14 @@ import { Reporte9Component } from './reportes/reporte9.component';
 import { Reporte10Component } from './reportes/reporte10.component';
 import { Reporte11Component } from './reportes/reporte11.component';
 import { Reporte12Component } from './reportes/reporte12.component';
+import { Reporte0Component } from './reportes/reporte0.component';
 
 const routes: Routes = [];
 
 @NgModule({
   imports: [RouterModule.forChild([
     {path:'', component: ReporteComponent},
+    {path:'reporte0', component: Reporte0Component}, // Nro de cuestionarios por depto
     {path:'reporte1', component: Reporte1Component},
     {path:'reporte2', component: Reporte2Component},
     {path:'reporte3', component: Reporte3Component},
@@ -30,7 +32,7 @@ const routes: Routes = [];
     {path:'reporte9', component: Reporte9Component},
     {path:'reporte10', component: Reporte10Component},
     {path:'reporte11', component: Reporte11Component},
-    {path:'reporte12', component: Reporte12Component},
+    {path:'reporte12', component: Reporte12Component}
   ])],
   exports: [RouterModule]
 })
