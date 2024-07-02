@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { CodificacionService } from '../service/codificacion.service';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 
 import * as similarity from 'similarity';
@@ -104,7 +104,7 @@ export class SupervisionLoteSimpleComponent implements OnInit {
   codigo: any;
   respuesta: any;
 
-  constructor(private router: Router, private codificacionService: CodificacionService, private messageService: MessageService) { }
+  constructor(private confirmationService: ConfirmationService,private router: Router, private codificacionService: CodificacionService, private messageService: MessageService) { }
 
   ngOnInit(): void {
 
@@ -196,6 +196,17 @@ export class SupervisionLoteSimpleComponent implements OnInit {
   }
 
 
+  onRowSelect(event) {
+    alert('Row select');
+    // Verifica si ya hay diez elementos seleccionados
+    if (this.selectedRegistros.length > 10) {
+      // Si hay más de diez, elimina el último elemento añadido
+      this.selectedRegistros.pop();
+      // Opcionalmente, muestra un mensaje al usuario
+      alert('Solo puedes seleccionar hasta diez elementos.');
+    }
+  }
+
 
 
 
@@ -235,7 +246,7 @@ export class SupervisionLoteSimpleComponent implements OnInit {
     this.contAux = 0;
 
     // 
-    this.codigo = this.selectedRegistros[0].codigocodif;
+    this.codigo = '' // this.selectedRegistros[0].codigocodif;
     this.respuesta = this.selectedRegistros[0].respuesta;
 
     //
@@ -260,7 +271,7 @@ export class SupervisionLoteSimpleComponent implements OnInit {
       this.usucodificadorItem = this.selectedRegistros[this.contAux].usucodificador;
 
       //
-      this.codigo = this.selectedRegistros[this.contAux].codigocodif;
+      this.codigo = '' // this.selectedRegistros[this.contAux].codigocodif;
       this.respuesta = this.selectedRegistros[this.contAux].respuesta;
 
       //
@@ -295,14 +306,6 @@ export class SupervisionLoteSimpleComponent implements OnInit {
 
 
 
-
-
-  // Buscar por codigo
-  buscarPorCodigo() {
-    alert('buscar por codigo');
-  }
-
-
   // Buscar por respuesta
   buscarPorRespuesta() {
     // Paginador
@@ -333,7 +336,56 @@ export class SupervisionLoteSimpleComponent implements OnInit {
   }
 
 
-  confirmarCodifiacionCorrecto() { }
+  // Buscar por codigo
+  buscarPorCodigo() {
+
+    // Paginador
+    this.first = 0;
+
+    // Limpiar clasificacionAux
+    this.catalogoAux = [];
+
+    // Limpiar input descripcion
+    this.respuesta = '';
+
+    // recorrer clasificacion
+    this.catalogo.forEach(element => {
+      // El codigo debe ser igual al input codigo de izquierda a derecha, en caso de que el codigo sea null, no se debe mostrar
+      if (element.codigo.startsWith(this.codigo)) {
+        // agregar a clasificacionAux
+        this.catalogoAux.push(element);
+      }
+    });
+
+
+    // order por codigo ORDER BY LENGTH(codigo), codigo ASCde mayor a menor
+    //this.clasificacionAux.sort((a, b) => (a.codigo > b.codigo) ? -1 : 1);
+
+
+    // this.clasificacionAux.sort((a, b) => (a.codigo > b.codigo) ? 1 : -1);
+
+    // si el codigo no existe en la clasificacion limipar clasificacionAux
+    if (this.codigo.length === 0) {
+      this.clasificacionAux = [];
+    }
+
+  }
+
+
+  confirmarCodifiacionCorrecto(){}
+
+
+/*   confirmarCodifiacion() {
+    this.confirmationService.confirm({
+      message: '<strong>Codigo: </strong>' + registro.codigo + '<br><strong>Descripción: </strong>' + registro.descripcion,
+      header: 'Confirmación',
+      icon: 'pi pi-check-square',
+      accept: () => {
+
+ 
+      }
+    });
+  } */
 
 
   // cerrar el dialogo de recodificación (por todos los modos de cerrar el dialogo)

@@ -135,7 +135,7 @@
 <!-- R E C O D I F I C A I O N -->
 <!-- Dialog -->
 <p-dialog (onHide)="onDialogRecodificacionClose()" header="Recodificación Simple" [(visible)]="dialogRecodificacion"
-    [style]="{width: '90vw'}" [maximizable]="true" [resizable]="false">
+    [style]="{width: '90vw', height: '41vw'}" [maximizable]="true" [resizable]="false">
     <br>
     <div class="grid">
         <!-- VARIABLES A CODIFICAR -->
@@ -201,9 +201,10 @@
 
 
     <!-- TABLA DE CODIFICACIÓN Y CATALOGOS -->
-    <p-table #dt1 [value]="catalogoAux" [(first)]="first" styleClass="p-datatable-customers" [showCurrentPageReport]="true"
-        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="15"
-        [rowsPerPageOptions]="[5,10,15]" [paginator]="true" stateStorage="local">
+    <p-table #dt1 [value]="catalogoAux" [(first)]="first" styleClass="p-datatable-customers"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
+        [rowsPerPageOptions]="[5]" [paginator]="true" stateStorage="local">
         <ng-template pTemplate="header">
             <!--  -->
             <tr>
