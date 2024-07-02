@@ -96,6 +96,8 @@ export class SupervisionIndividualDobleComponent implements OnInit {
 
     this.codificacionService.cargarParaSupervisionDoble(body).subscribe(
       (data2: any) => {
+        console.table(data2.datos);
+        
 
         this.totalCarga = data2.totalCarga;           // Total carga ocupacion y actividad
         this.totalCarga_ocu = data2.totalCarga_ocu;   // Total carga ocupacion
@@ -571,7 +573,7 @@ export class SupervisionIndividualDobleComponent implements OnInit {
       this.codigocodifItem_ocu = this.carga[this.nAux].codigocodif_ocu;
       this.codigocodifItem_act = this.carga[this.nAux].codigocodif_act;
       this.usucodificadorItem_ocu = this.carga[this.nAux].usucodificador_ocu;
-      this.usucodificadorItem_act = this.carga[this.nAux].usucodificador_ocu;
+      this.usucodificadorItem_act = this.carga[this.nAux].usucodificador_act;
       this.descripcionItem_ocu = this.carga[this.nAux].descripcion_ocu;
       this.descripcionItem_act = this.carga[this.nAux].descripcion_act;
       //this.nAux++;

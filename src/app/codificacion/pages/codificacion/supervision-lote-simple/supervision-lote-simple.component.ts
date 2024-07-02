@@ -5,6 +5,9 @@ import { CodificacionService } from '../service/codificacion.service';
 import { MessageService } from 'primeng/api';
 
 
+import * as similarity from 'similarity';
+
+
 // import { Product } from '../../domain/product';
 // import { ProductService } from '../../service/productservice';
 // import { ConfirmationService } from 'primeng/api';
@@ -83,8 +86,23 @@ export class SupervisionLoteSimpleComponent implements OnInit {
 
   contAux: number = 0;
 
+  //
   departamentoItem: any;
   idPreguntaItem: any;
+  secuencialItem: any;
+  respuestaItem: any;
+  codigocodifItem: any;
+  estadoItem: any;
+  usucodificadorItem: any;
+  porRecodificar: number = 0;
+
+  // 
+  catalogo: any;
+  catalogoAux: any = [];
+
+  // 
+  codigo: any;
+  respuesta: any;
 
   constructor(private router: Router, private codificacionService: CodificacionService, private messageService: MessageService) { }
 
@@ -118,7 +136,10 @@ export class SupervisionLoteSimpleComponent implements OnInit {
     this.codificacionService.devuelveCargaParaSupervision({ id_usuario: localStorage.getItem('id_usuario'), tabla_id: localStorage.getItem("tabla_id_sup") }).subscribe(
       (data2: any) => {
         console.table(data2.datos);
+        //console.table(data2.catalogo);
+
         this.registros = data2.datos;
+        this.catalogo = data2.catalogo;
         this.tabla1_pb = false;
       })
 
@@ -191,6 +212,8 @@ export class SupervisionLoteSimpleComponent implements OnInit {
     } else {
       this.primero();
       this.dialogRecodificacion = true;
+      // porCodificar
+      this.porRecodificar = this.selectedRegistros.length;
     }
   }
 
@@ -202,9 +225,21 @@ export class SupervisionLoteSimpleComponent implements OnInit {
 
   // primer reistro  de la lista de registros seleccionados
   primero() {
-    this.departamentoItem= this.selectedRegistros[0].departamento;
+    this.departamentoItem = this.selectedRegistros[0].departamento;
     this.idPreguntaItem = this.selectedRegistros[0].id_registro;
+    this.secuencialItem = this.selectedRegistros[0].secuencial;
+    this.respuestaItem = this.selectedRegistros[0].respuesta;
+    this.codigocodifItem = this.selectedRegistros[0].codigocodif;
+    this.estadoItem = this.selectedRegistros[0].estado;
+    this.usucodificadorItem = this.selectedRegistros[0].usucodificador;
     this.contAux = 0;
+
+    // 
+    this.codigo = this.selectedRegistros[0].codigocodif;
+    this.respuesta = this.selectedRegistros[0].respuesta;
+
+    //
+    this.buscarSimilares();
   }
 
 
@@ -213,26 +248,92 @@ export class SupervisionLoteSimpleComponent implements OnInit {
 
 
   // siuiente registro de la lista de registros seleccionados
-  siguiente() {    
+  siguiente() {
     this.contAux++;
     if (this.contAux < this.selectedRegistros.length) {
-      this.departamentoItem= this.selectedRegistros[this.contAux].departamento;
+      this.departamentoItem = this.selectedRegistros[this.contAux].departamento;
       this.idPreguntaItem = this.selectedRegistros[this.contAux].id_registro;
+      this.secuencialItem = this.selectedRegistros[this.contAux].secuencial;
+      this.respuestaItem = this.selectedRegistros[this.contAux].respuesta;
+      this.codigocodifItem = this.selectedRegistros[this.contAux].codigocodif;
+      this.estadoItem = this.selectedRegistros[this.contAux].estado;
+      this.usucodificadorItem = this.selectedRegistros[this.contAux].usucodificador;
+
+      //
+      this.codigo = this.selectedRegistros[this.contAux].codigocodif;
+      this.respuesta = this.selectedRegistros[this.contAux].respuesta;
+
+      //
+      this.buscarSimilares();
+
     } else {
       this.messageService.add({ severity: 'error', summary: 'Mensaje:', detail: 'Es el último registro', life: 2500 });
-    }       
+    }
   }
 
- 
+  // Buscar palabras similares en 
+  buscarSimilares() {
+    // Paginador
+    this.first = 0;
+
+    // limpiar clasificacionAux
+    this.clasificacionAux = [];
+    // recorrer clasificacion
+    this.catalogo.forEach(element => {
+      // calcular la similitud           
+      let sim = similarity(this.respuestaItem, element.descripcion);
+      // si la similitud es mayor a 0.5
+      if (sim > 0.5) {
+        // agregar a clasificacionAux, tambien la similitud
+        element.similitud = sim;
+        this.catalogoAux.push(element);
+      }
+    });
+    // ordenar por similitud
+    this.catalogoAux.sort((a, b) => (a.similitud > b.similitud) ? -1 : 1);
+  }
+
+
+
+
+
+  // Buscar por codigo
+  buscarPorCodigo() {
+    alert('buscar por codigo');
+  }
+
+
+  // Buscar por respuesta
+  buscarPorRespuesta() {
+    // Paginador
+    this.first = 0;
+
+    // Limpiar clasificacionAux
+    this.catalogoAux = [];
+
+    // Limpiar input codigo
+    this.codigo = '';
+
+    // recorrer catalogo
+    this.catalogo.forEach(element => {
+      // La descripcion debe ser igual al input descripcion de izquierda a derecha sin importar mayusculas, minusculas y aceentos
+      if (element.descripcion.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").startsWith(this.respuesta.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))) {
+        // agregar a clasificacionAux
+        this.catalogoAux.push(element);
+      }
+    });
+
+    // ordenar por descripcion, de menor a mayor en cuanto a la longitud caracteres de la descripcion
+    this.catalogoAux.sort((a, b) => (a.descripcion.length > b.descripcion.length) ? 1 : -1);
+
+    // si el codigo no existe en la clasificacion limipar clasificacionAux
+    if (this.respuesta.length === 0) {
+      this.catalogoAux = [];
+    }
+  }
+
 
   confirmarCodifiacionCorrecto() { }
-
-
-
-
-
-
-
 
 
   // cerrar el dialogo de recodificación (por todos los modos de cerrar el dialogo)
@@ -244,6 +345,5 @@ export class SupervisionLoteSimpleComponent implements OnInit {
     // contador auxiliar
     this.contAux = 0;
   }
-
 
 }
