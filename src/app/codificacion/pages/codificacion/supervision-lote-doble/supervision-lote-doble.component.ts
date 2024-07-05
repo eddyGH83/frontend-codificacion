@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { CodificacionService } from '../service/codificacion.service';
 import { MessageService } from 'primeng/api';
 
-
+// Para el uso de HTML en el contexto
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-supervision-lote-doble',
@@ -18,6 +19,8 @@ export class SupervisionLoteDobleComponent implements OnInit {
   registro: any;
   selectedRegistros: any;
 
+
+  contexto: any;
 
 
   // paginador
@@ -38,8 +41,11 @@ export class SupervisionLoteDobleComponent implements OnInit {
   tabla_pb: boolean = false;
 
 
+  // R E C O D I F I C A C I O N
+  dialogRecodificacion: boolean = true;
 
-  constructor(private router: Router, private codificacionService: CodificacionService, private messageService: MessageService) { }
+
+  constructor(private sanitizer: DomSanitizer, private router: Router, private codificacionService: CodificacionService, private messageService: MessageService) { }
 
 
 
@@ -65,7 +71,6 @@ export class SupervisionLoteDobleComponent implements OnInit {
     this.codificacionService.devuelveCargaParaSupervision({ id_usuario: localStorage.getItem('id_usuario'), tabla_id: localStorage.getItem("tabla_id_sup") }).subscribe(
       (data2: any) => {
         // console.table(data2.datos);
-
         this.registros = data2.datos;
         this.tabla_pb = false;
       })
@@ -93,7 +98,7 @@ export class SupervisionLoteDobleComponent implements OnInit {
 
   }
 
-  recodificaicion() { 
+  recodificaicion() {
     alert('Recodificación');
     this.codificacionService.addItem({ id: 1, name: 'Recodificación', price: 10, category: 'Recodificación', review: 4, inventoryStatus: 'Out of Stock' });
     this.router.navigate(['/codificacion/supervision-individual-simple']);
@@ -124,6 +129,19 @@ export class SupervisionLoteDobleComponent implements OnInit {
   cancelarYsalir() {
     this.router.navigate(['/codificacion/supervisar-codificacion']);
   }
+
+
+
+
+  //  R E C O D I F I C A C I O N 
+
+
+  onDialogRecodificacionClose() {
+
+  }
+
+
+
 
 
 }

@@ -41,6 +41,14 @@ export class Reporte4Component implements OnInit {
 
   // exportar a excel 
   exportExcel() {
+    //
+    this.registros.forEach((element: any) => {
+      element.automatica = Number(element.automatica);
+      element.asistida = Number(element.asistida);
+      element.pendiente = Number(element.pendiente);
+      element.total = Number(element.total);
+    });
+
     let date = new Date();
     let formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
     import("xlsx").then(xlsx => {

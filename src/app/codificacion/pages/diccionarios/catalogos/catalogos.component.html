@@ -17,10 +17,10 @@
     <!-- {{ selectedCatalogo | json }} -->
     <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
 
-    <p-table #dt_catalogo [value]="registros" dataKey="id_catalogo" styleClass="p-datatable-customers"
+    <p-table #dt_catalogo [value]="registrosAux" dataKey="id_catalogo" styleClass="p-datatable-customers"
         [showCurrentPageReport]="true"
         currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
-        [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" >
+        [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" [(first)]="first">
         <ng-template pTemplate="header">
 
             <!--  -->
@@ -39,39 +39,32 @@
             <!--  -->
             <tr>
                 <th>
-                    <input pInputText type="text"
-                        (input)="dt_catalogo.filter($event.target.value, 'codigo', 'contains')"
-                        [value]="dt_catalogo.filters['codigo']?.value" placeholder="Buscar por codigo"
+                    <input pInputText type="text" (keyup)="buscarPorCodigo()" [(ngModel)]="codigo"
+                        placeholder="Buscar por codigo" class="p-column-filter">
+                </th>
+                <th>
+                    <input pInputText type="text" (keyup)="buscarPorDescripcion()" [(ngModel)]="descripcion"
+                     placeholder="Buscar por descripción"
                         class="p-column-filter">
                 </th>
                 <th>
-                    <input pInputText type="text"
-                        (input)="dt_catalogo.filter($event.target.value, 'descripcion', 'contains')"
-                        [value]="dt_catalogo.filters['descripcion']?.value" placeholder="Buscar por descripción"
+                    <input pInputText type="text" (keyup)="buscarPorFecCre()" [(ngModel)]="feccre"
+                        placeholder="Buscar por fecha"
                         class="p-column-filter">
                 </th>
                 <th>
-                    <input pInputText type="text"
-                        (input)="dt_catalogo.filter($event.target.value, 'feccre', 'contains')"
-                        [value]="dt_catalogo.filters['feccre']?.value" placeholder="Buscar por fecha"
+                    <input pInputText type="text" (keyup)="buscarPorUsuCre()" [(ngModel)]="usucre"
+                    placeholder="Buscar por usu. creador"
                         class="p-column-filter">
                 </th>
                 <th>
-                    <input pInputText type="text"
-                        (input)="dt_catalogo.filter($event.target.value, 'usucre', 'contains')"
-                        [value]="dt_catalogo.filters['usucre']?.value" placeholder="Buscar por usu. creador"
+                    <input pInputText type="text" (keyup)="buscarPorFecMod()" [(ngModel)]="fecmod"
+                        placeholder="Buscar por fecha"
                         class="p-column-filter">
                 </th>
                 <th>
-                    <input pInputText type="text"
-                        (input)="dt_catalogo.filter($event.target.value, 'fecmod', 'contains')"
-                        [value]="dt_catalogo.filters['fecmod']?.value" placeholder="Buscar por fecha"
-                        class="p-column-filter">
-                </th>
-                <th>
-                    <input pInputText type="text"
-                        (input)="dt_catalogo.filter($event.target.value, 'usumod', 'contains')"
-                        [value]="dt_catalogo.filters['usumod']?.value" placeholder="Buscar por usu. modificador"
+                    <input pInputText type="text" (keyup)="buscarPorUsuMod" [(ngModel)]="usumod"
+                     placeholder="Buscar por usu. modificador"
                         class="p-column-filter">
                 </th>
                 <th>ACCIONES</th>

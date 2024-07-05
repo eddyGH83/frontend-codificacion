@@ -50,6 +50,19 @@ export class CatalogosComponent implements OnInit {
   //dialog eliminar
   dialogEliminar: boolean = false;
 
+  //
+  registrosAux: any = [];
+  first: number = 0;
+
+  // Campos de busqueda
+  codigo: string = '';
+  descripcion: string = '';
+  feccre: string = '';
+  usucre: string = '';
+  fecmod: string = '';
+  usumod: string = '';
+
+
   constructor(private messageService: MessageService, private catalogosService: CatalogosService, private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
@@ -68,6 +81,168 @@ export class CatalogosComponent implements OnInit {
 
   }
 
+  // Buscar por el campo codigo
+  buscarPorCodigo() {
+
+    // limpiar los demas campos
+    this.descripcion = '';
+    this.feccre = '';
+    this.usucre = '';
+    this.fecmod = '';
+    this.usumod = '';
+
+    // Paginador
+    this.first = 0;
+
+    // Limpiar registrosAux
+    this.registrosAux = [];
+
+    // recorrer registros
+    this.registros.forEach(element => {
+      // El codigo debe ser igual al input codigo de izquierda a derecha, en caso de que el codigo sea null, no se debe mostrar
+      if (element.codigo.startsWith(this.codigo)) {
+        // agregar a registrosAux
+        this.registrosAux.push(element);
+      }
+    });
+
+    // ordenar por codigo registrosAux de menor tamaño de caracteres a mayor
+    this.registrosAux.sort((a, b) => (a.codigo.length > b.codigo.length) ? 1 : -1);
+
+  }
+
+  // Buscar por el campo descripcion
+  buscarPorDescripcion() {
+
+    // limpiar los demas campos
+    this.codigo = '';
+    this.feccre = '';
+    this.usucre = '';
+    this.fecmod = '';
+    this.usumod = '';
+
+    // Paginador
+    this.first = 0;
+
+    // Limpiar registrosAux
+    this.registrosAux = [];
+
+    // hacer la busqueda en los registros por descripcion
+    this.registros.forEach(element => {
+      if (element.descripcion.toLowerCase().includes(this.descripcion.toLowerCase())) {
+        // agregar a registrosAux
+        this.registrosAux.push(element);
+      }
+    });
+
+  }
+
+  // Buscar por el campo fecha de creacion
+  buscarPorFecCre() {
+
+    // limpiar los demas campos
+    this.codigo = '';
+    this.descripcion = '';
+    this.usucre = '';
+    this.fecmod = '';
+    this.usumod = '';
+
+    // Paginador
+    this.first = 0;
+
+    // Limpiar registrosAux
+    this.registrosAux = [];
+
+    // hacer la busqueda en los registros por fecha de creacion
+    this.registros.forEach(element => {
+      if (element.feccre.toLowerCase().includes(this.feccre.toLowerCase())) {
+        // agregar a registrosAux
+        this.registrosAux.push(element);
+      }
+    });
+  }
+
+  // Buscar por el campo usuario de creacion
+  buscarPorUsuCre() {
+
+    // limpiar los demas campos
+    this.codigo = '';
+    this.descripcion = '';
+    this.feccre = '';
+    this.fecmod = '';
+    this.usumod = '';
+
+    // Paginador
+    this.first = 0;
+
+    // Limpiar registrosAux
+    this.registrosAux = [];
+
+    // hacer la busqueda en los registros por usuario de creacion
+    this.registros.forEach(element => {
+      if (element.usucre.toLowerCase().includes(this.usucre.toLowerCase())) {
+        // agregar a registrosAux
+        this.registrosAux.push(element);
+      }
+    });
+  }
+
+  // Buscar por el campo fecha de modificacion
+  buscarPorFecMod() {
+
+    // limpiar los demas campos
+    this.codigo = '';
+    this.descripcion = '';
+    this.feccre = '';
+    this.usucre = '';
+    this.usumod = '';
+
+    // Paginador
+    this.first = 0;
+
+    // Limpiar registrosAux
+    this.registrosAux = [];
+
+    // hacer la busqueda en los registros por fecha de modificacion
+    this.registros.forEach(element => {
+      if (element.fecmod.toLowerCase().includes(this.fecmod.toLowerCase())) {
+        // agregar a registrosAux
+        this.registrosAux.push(element);
+      }
+    });
+  }
+
+  // Buscar por el campo usuario de modificacion
+  buscarPorUsuMod() {
+
+    // limpiar los demas campos
+    this.codigo = '';
+    this.descripcion = '';
+    this.feccre = '';
+    this.usucre = '';
+    this.fecmod = '';
+
+    // Paginador
+    this.first = 0;
+
+    // Limpiar registrosAux
+    this.registrosAux = [];
+
+    // hacer la busqueda en los registros por usuario de modificacion
+    this.registros.forEach(element => {
+      if (element.usumod.toLowerCase().includes(this.usumod.toLowerCase())) {
+        // agregar a registrosAux
+        this.registrosAux.push(element);
+      }
+    });
+  }
+
+  // Buscar por el campos
+  busquedaPorLosDemasCampos() {
+    this.registrosAux = this.registros;
+    this.codigo = '';
+  }
+
   openNew() {
     this.submitted = false;
     // this.productDialog = true;
@@ -83,12 +258,21 @@ export class CatalogosComponent implements OnInit {
 
   // Tabla detalle
   registrosTabla() {
+    // Limpiar todos los campos de busqueda
+    this.codigo = '';
+    this.descripcion = '';
+    this.feccre = '';
+    this.usucre = '';
+    this.fecmod = '';
+    this.usumod = '';
+        
     this.tabla_pb = true;
     this.catalogosService.devuelveCatalogo({ catalogo: this.selectedCatalogo.value }).subscribe(
       (data2: any) => {
-        //console.log("data2", data2.datos);
         this.tabla_pb = false;
         this.registros = data2.datos.rows;
+        console.table(data2.datos.rows);
+        this.registrosAux = data2.datos.rows;
       })
   }
 
@@ -161,7 +345,6 @@ export class CatalogosComponent implements OnInit {
     this.registroDialog = true;
   }
 
-
   // Eliminar registros
   deletetRegistro(registro: any) {
     this.registro = { ...registro };
@@ -182,7 +365,6 @@ export class CatalogosComponent implements OnInit {
     });
 
   }
-
 
   // exportar a excel 
   exportExcel() {
@@ -205,6 +387,5 @@ export class CatalogosComponent implements OnInit {
     FileSaver.saveAs(data, fileName + EXCEL_EXTENSION);
     this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: 'Exportación completada.', life: 2000 });
   }
-
 
 }

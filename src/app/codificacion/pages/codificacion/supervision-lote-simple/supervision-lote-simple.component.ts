@@ -104,7 +104,10 @@ export class SupervisionLoteSimpleComponent implements OnInit {
   codigo: any;
   respuesta: any;
 
-  constructor(private confirmationService: ConfirmationService,private router: Router, private codificacionService: CodificacionService, private messageService: MessageService) { }
+  //
+  checkedGroup: boolean = false;
+
+  constructor(private confirmationService: ConfirmationService, private router: Router, private codificacionService: CodificacionService, private messageService: MessageService) { }
 
   ngOnInit(): void {
 
@@ -196,16 +199,16 @@ export class SupervisionLoteSimpleComponent implements OnInit {
   }
 
 
-  onRowSelect(event) {
-    alert('Row select');
-    // Verifica si ya hay diez elementos seleccionados
-    if (this.selectedRegistros.length > 10) {
-      // Si hay más de diez, elimina el último elemento añadido
-      this.selectedRegistros.pop();
-      // Opcionalmente, muestra un mensaje al usuario
-      alert('Solo puedes seleccionar hasta diez elementos.');
-    }
-  }
+  /*  onRowSelect(event) {
+     alert('Row select');
+     // Verifica si ya hay diez elementos seleccionados
+     if (this.selectedRegistros.length > 10) {
+       // Si hay más de diez, elimina el último elemento añadido
+       this.selectedRegistros.pop();
+       // Opcionalmente, muestra un mensaje al usuario
+       alert('Solo puedes seleccionar hasta diez elementos.');
+     }
+   } */
 
 
 
@@ -214,6 +217,13 @@ export class SupervisionLoteSimpleComponent implements OnInit {
   /* 
   * R E C O D I F I C A C I O N
   */
+
+  // seleccionar los primeros n registros mostrados
+  seleccionarGrupoDeRegistros() {
+    this.selectedRegistros = this.registros.slice(0, this.selectedRow.value);
+  }
+
+
 
 
   recodificaicion() {
@@ -278,7 +288,7 @@ export class SupervisionLoteSimpleComponent implements OnInit {
       this.buscarSimilares();
 
     } else {
-      this.messageService.add({ severity: 'error', summary: 'Mensaje:', detail: 'Es el último registro', life: 2500 });
+      this.messageService.add({ severity: 'error', summary: 'Mensaje:', detail: 'Es el último registro', life: 1500 });
     }
   }
 
@@ -372,20 +382,67 @@ export class SupervisionLoteSimpleComponent implements OnInit {
   }
 
 
-  confirmarCodifiacionCorrecto(){}
+  confirmarCodifiacionCorrecto() {
+    this.confirmationService.confirm({
+      message: '<strong>Respuesta: </strong>' + this.respuestaItem + '<br><strong>Código: </strong>' + this.codigocodifItem,
+      header: 'Confirmación',
+      icon: 'pi pi-check-square',
+      accept: () => {
+
+        const body = {
+          id_registro: this.idPreguntaItem,
+          tabla_id: localStorage.getItem('tabla_id_sup'),
+          //codigocodif: registro.codigo,
+          usuverificador: localStorage.getItem('login'),
+        }
+
+        this.codificacionService.updatePreguntaSimpleCorreccion(body).subscribe(
+          (data2: any) => {
+
+            // Por recodificar disminuir en 1
+            if (this.porRecodificar > 0 && this.estadoItem === 'CODIFICADO') {
+              this.porRecodificar--;
+            }
+
+            // Modificar selectedRegistros (foreach) su propiedad estadoItem = 'VERIFICADO'
+            this.selectedRegistros.forEach(element => {
+              if (element.id_registro === this.idPreguntaItem) {
+                element.estado = 'VERIFICADO';
+                this.estadoItem = 'VERIFICADO';
+              }
+            });
+
+            // Si por recodificar es igual a 0, cerrar el dialogo de recodificación
+            if (this.porRecodificar === 0) {
+              // Cerrar el dialogo de recodificación
+              this.dialogRecodificacion = false;
+            }
+
+            // Mensaje de éxito
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: data2.message, life: 1500 });
+
+            // El paginador se reinicia
+            this.first = 0;
+            this.siguiente();
+
+          })
+
+      }
+    });
+  }
 
 
-/*   confirmarCodifiacion() {
+  confirmarCodifiacion(registro: any) {
     this.confirmationService.confirm({
       message: '<strong>Codigo: </strong>' + registro.codigo + '<br><strong>Descripción: </strong>' + registro.descripcion,
       header: 'Confirmación',
       icon: 'pi pi-check-square',
       accept: () => {
 
- 
+
       }
     });
-  } */
+  }
 
 
   // cerrar el dialogo de recodificación (por todos los modos de cerrar el dialogo)

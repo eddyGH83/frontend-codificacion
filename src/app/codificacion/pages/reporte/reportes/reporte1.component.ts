@@ -52,7 +52,7 @@ export class Reporte1Component implements OnInit {
     this.reporteService.reporte1().subscribe(
       (data2: any) => {        
         this.progressBar.reporte_pb = false;
-        this.registros = data2.datos.rows;
+        this.registros = data2.datos.rows;        
         this.registrosConFiltro = this.registros.filter((res: any) => res.catalogo == this.selectedCatalogo.value);       
       })
   }
@@ -61,10 +61,15 @@ export class Reporte1Component implements OnInit {
   changeCatalogo(){    
     this.registrosConFiltro = this.registros.filter((res: any) => res.catalogo == this.selectedCatalogo.value);   
   }
-
   
   // exportar a excel 
   exportExcel() {
+
+    // recorrer this.registrosConFiltro con un foreach y cambiar el tipo de dato de la propiedad suma de string a number    
+    this.registrosConFiltro.forEach((element: any) => {
+      element.sum = Number(element.sum);
+    });
+    
     let date = new Date();
     let formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
     import("xlsx").then(xlsx => {

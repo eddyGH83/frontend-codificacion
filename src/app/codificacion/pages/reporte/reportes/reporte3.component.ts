@@ -31,13 +31,17 @@ export class Reporte3Component implements OnInit {
         this.reporte_pb = false;
         this.registros = data2.datos.rows;
         console.log("registros", this.registros);
-        
+
       })
   }
 
 
   // exportar a excel 
   exportExcel() {
+    this.registros.forEach((element: any) => {
+      element.total = Number(element.total);
+    });
+
     let date = new Date();
     let formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
     import("xlsx").then(xlsx => {

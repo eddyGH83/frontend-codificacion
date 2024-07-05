@@ -18,6 +18,12 @@
                 optionLabel="value"></p-dropdown>
             <p-button (click)="registrosTabla()" label="Actualizar" icon="pi pi-refresh" iconPos="left" class="ml-2"
                 styleClass="p-button-warning" pTooltip="Actualizar registros" tooltipPosition="right"></p-button>
+            <p-button (click)="seleccionarGrupoDeRegistros()" icon="pi pi-check-square" iconPos="left" class="ml-2"
+                styleClass="p-button-primary" pTooltip="Selecciona los {{selectedRow.value}} primeros registros"
+                tooltipPosition="top"></p-button>
+            <!-- <p-toggleButton [(ngModel)]="checked2" class="ml-2" onLabel="Seleccionado" offLabel="Deseleccionado" onIcon="pi pi-check-square"
+                offIcon="pi pi-stop" [style]="{'width': '12em'}"></p-toggleButton> -->
+
             <!-- {{registros.length}} {{selectedRegistros | json}} -->
         </ng-template>
 
@@ -47,7 +53,8 @@
         <ng-template pTemplate="header">
             <tr>
                 <th style="width: 4rem">
-                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    <p-tableHeaderCheckbox pTooltip="Selecciona o deselecciona todo"
+                        tooltipPosition="right"></p-tableHeaderCheckbox>
                 </th>
                 <th pSortableColumn="respuesta" style="min-width:15rem">RESPUESTA<p-sortIcon
                         field="respuesta"></p-sortIcon></th>
@@ -134,8 +141,8 @@
 
 <!-- R E C O D I F I C A I O N -->
 <!-- Dialog -->
-<p-dialog (onHide)="onDialogRecodificacionClose()" header="Recodificación Simple" [(visible)]="dialogRecodificacion"
-    [style]="{width: '90vw', height: '41vw'}" [maximizable]="true" [resizable]="false">
+<p-dialog (onHide)="onDialogRecodificacionClose()" header="Recodificación simple" [(visible)]="dialogRecodificacion"
+    [style]="{width: '90vw', height: '41vw'}" [maximizable]="true" [resizable]="false"  [modal]="true">
     <br>
     <div class="grid">
         <!-- VARIABLES A CODIFICAR -->

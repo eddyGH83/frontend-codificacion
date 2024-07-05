@@ -35,6 +35,8 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { ScrollTopModule } from 'primeng/scrolltop';
 import { RecodificacionSimpleComponent } from './recodificacion-simple/recodificacion-simple.component';
 import { RecodificacionDobleComponent } from './recodificacion-doble/recodificacion-doble.component';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 
 @NgModule({
@@ -72,6 +74,8 @@ import { RecodificacionDobleComponent } from './recodificacion-doble/recodificac
     MessagesModule,
     MessageModule,
     TooltipModule,
+    CheckboxModule,
+    ToggleButtonModule,
 		//SliderModule,
 		//DialogModule,
 		//MultiSelectModule,

@@ -41,6 +41,15 @@ export class Reporte5Component implements OnInit {
 
   // exportar a excel 
   exportExcel() {
+    //
+    this.registros.forEach((element: any) => {
+      element.total = Number(element.total);
+      element.codificados = Number(element.codificados);
+      element.pendientes_codif = Number(element.pendientes_codif);
+      element.supervisados = Number(element.supervisados);
+      element.pendientes_super = Number(element.pendientes_super);
+    });
+
     let date = new Date();
     let formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
     import("xlsx").then(xlsx => {

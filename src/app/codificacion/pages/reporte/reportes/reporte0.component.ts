@@ -94,6 +94,7 @@ export class Reporte0Component implements OnInit {
 
   // exportar a excel 
   exportExcel() {
+    //alert('exportar a excel');
     // verificamos la cantidad de registros
     if (this.registros.length == 0) {      
       this.messageService.add({severity:'error', summary: 'Error', detail: 'No hay registros para exportar 😞'});

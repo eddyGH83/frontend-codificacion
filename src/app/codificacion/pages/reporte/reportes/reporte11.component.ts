@@ -38,6 +38,11 @@ export class Reporte11Component implements OnInit {
 
   // exportar a excel 
   exportExcel() {
+    // 
+    this.registros.forEach((element: any) => {
+      element.codificado = Number(element.codificado);
+    });
+
     let date = new Date();
     let formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
     import("xlsx").then(xlsx => {
