@@ -6,6 +6,8 @@ import { MessageService } from 'primeng/api';
 // Para el uso de HTML en el contexto
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
+import * as similarity from 'similarity';
+
 @Component({
   selector: 'app-supervision-lote-doble',
   templateUrl: './supervision-lote-doble.component.html',
@@ -20,7 +22,6 @@ export class SupervisionLoteDobleComponent implements OnInit {
   selectedRegistros: any;
 
 
-  contexto: any;
 
 
   // paginador
@@ -48,6 +49,8 @@ export class SupervisionLoteDobleComponent implements OnInit {
   clasificacion_ocu_aux: any;
   clasificacion_act_aux: any;
 
+
+  // Paginador
   first_ocu: number = 0;
   first_act: number = 0;
 
@@ -66,9 +69,25 @@ export class SupervisionLoteDobleComponent implements OnInit {
   usucodificadorOcuItem: any;
   usucodificadorActItem: any;
   porRecodificar: number = 0;
+  contextoHtmlOcuActItem: any;
+
+  // Catalogos
+  catalogoOcu: any = [];
+  catalogoAct: any = [];
+  catalogoOcuAux: any = [];
+  catalogoActAux: any = [];
+
 
   //
   contAux: number = 0;
+
+  // Para las buquedas
+  cod_ocu: string = '';
+  desc_ocu: string = '';
+  cod_act: string = '';
+  desc_act: string = '';
+
+
 
 
   constructor(private sanitizer: DomSanitizer, private router: Router, private codificacionService: CodificacionService, private messageService: MessageService) { }
@@ -96,8 +115,9 @@ export class SupervisionLoteDobleComponent implements OnInit {
     this.tabla_pb = true;
     this.codificacionService.devuelveCargaParaSupervision({ id_usuario: localStorage.getItem('id_usuario'), tabla_id: localStorage.getItem("tabla_id_sup") }).subscribe(
       (data2: any) => {
-        console.table(data2.datos);
         this.registros = data2.datos;
+        this.catalogoOcu = data2.catalogo_ocu;
+        this.catalogoAct = data2.catalogo_act;
         this.tabla_pb = false;
       })
   }
@@ -162,10 +182,15 @@ export class SupervisionLoteDobleComponent implements OnInit {
   //  R E C O D I F I C A C I O N 
 
   onDialogRecodificacionClose() {
-
+    // cerrar el dialogo de recodificación
+    this.registrosTabla();
+    // deselecciona los registros seleccionados
+    this.selectedRegistros = [];
+    // contador auxiliar
+    this.contAux = 0;
   }
 
-// primer reistro  de la lista de registros seleccionados
+  // primer reistro  de la lista de registros seleccionados
   primero() {
     this.departamentoOcuActItem = this.selectedRegistros[0].departamento;
     this.idPreguntaOcuActItem = this.selectedRegistros[0].id_registro
@@ -180,10 +205,20 @@ export class SupervisionLoteDobleComponent implements OnInit {
     this.estadoActItem = this.selectedRegistros[0].estado_act
     this.usucodificadorOcuItem = this.selectedRegistros[0].usucodificador_ocu
     this.usucodificadorActItem = this.selectedRegistros[0].usucodificador_act
+    this.contextoHtmlOcuActItem = this.sanitizer.bypassSecurityTrustHtml(this.selectedRegistros[0].contexto_html);
     this.contAux = 0;
+
+    //
+    this.cod_ocu = '';
+    this.cod_act = '';
+    this.desc_ocu = this.respuestaOcuItem;
+    this.desc_act = this.respuestaActItem;
+
+    //
+    this.buscarSimilares();
   }
 
-// siuiente registro de la lista de registros seleccionados
+  // siuiente registro de la lista de registros seleccionados
   siguiente() {
     this.contAux++;
     if (this.contAux < this.selectedRegistros.length) {
@@ -200,21 +235,275 @@ export class SupervisionLoteDobleComponent implements OnInit {
       this.estadoActItem = this.selectedRegistros[this.contAux].estado_act
       this.usucodificadorOcuItem = this.selectedRegistros[this.contAux].usucodificador_ocu
       this.usucodificadorActItem = this.selectedRegistros[this.contAux].usucodificador_act
-    }else {
+      this.contextoHtmlOcuActItem = this.sanitizer.bypassSecurityTrustHtml(this.selectedRegistros[this.contAux].contexto_html);
+
+      //
+      this.cod_ocu = '';
+      this.cod_act = '';
+      this.desc_ocu = this.respuestaOcuItem;
+      this.desc_act = this.respuestaActItem;
+
+      //
+      this.buscarSimilares();
+
+    } else {
       this.messageService.add({ severity: 'error', summary: 'Mensaje:', detail: 'Es el último registro', life: 1500 });
     }
-    
+
 
   }
 
 
-  confirmarSupervisionCorrecto() { }
+  confirmarSupervisionCorrecto() {
+  /*   this.confirmationService.confirm({
+      message: `
+          <strong>OCUPACION</strong> <br>
+          <strong>Codigo: </strong> ${this.codigocodifItem_ocu} <br>
+          <strong>Descripción: </strong> ${this.descripcionItem_ocu} <br>        
+          <strong>Usuario: </strong> ${this.usucodificadorItem_ocu} <br> <br>
+
+          
+          <strong>ACTIVIDAD</strong> <br>
+          <strong>Codigo: </strong> ${this.codigocodifItem_act} <br>
+          <strong>Descripción: </strong> ${this.descripcionItem_act} <br>
+          <strong>Usuario: </strong> ${this.usucodificadorItem_act} <br>
+      `,
+      header: 'Confirmación',
+      icon: 'pi pi-check-square',
+      accept: () => {
+
+
+        this.codificacionService.updatePreguntaDobleCorreccion(
+          {
+            id_usuario: localStorage.getItem('login'),
+            tabla_id: localStorage.getItem("tabla_id_sup"),
+            id_registro: this.idPregunta,
+          }
+        ).subscribe(
+          (data2: any) => {
+            // Modificar: carga (foreach) su propiedad estado_ocu = 'VERIFICADO' Y estado_act = 'VERIFICADO'
+            this.carga.forEach(element => {
+              if (element.id_p49_p51 == this.idPregunta) {
+                element.estado_ocu = 'VERIFICADO';
+                element.estado_act = 'VERIFICADO';
+              }
+            });
+
+            // Por codificar disminuye en 1, si   estadoItem_ocu === 'CODIFICADO' y estadoItem_act === 'CODIFICADO'
+            if (this.porCodificar_ocu > 0 && this.porCodificar_act > 0) {
+              this.porCodificar_ocu--;
+              this.porCodificar_act--;
+            }
+
+            // si por codificar es igual a 0, redireccionar a la página de /codificacion/supervisar-codificacion
+            if (this.porCodificar_ocu === 0 && this.porCodificar_act === 0) {
+              this.router.navigate(['/codificacion/supervisar-codificacion']);
+            }
+
+            // Mensaje de éxito
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: data2.message });
+
+            // eL Paginador se reinicia
+            this.first_ocu = 0;
+            this.first_act = 0;
+
+            this.siguiente();
+
+          })
+          
+      }
+    }); */
+  }
 
 
   recodificaicion() {
-    this.primero();
-    this.dialogRecodificacion = true;
+
+    if (this.selectedRegistros === undefined || this.selectedRegistros === null || this.selectedRegistros.length === 0) {
+      this.messageService.add({ severity: 'error', summary: 'Mensaje:', detail: 'No hay registros seleccionados para recodificar', life: 2500 });
+    } else {
+      this.primero();
+      this.dialogRecodificacion = true;
+      // porCodificar
+      this.porRecodificar = this.selectedRegistros.length;
+    }
+
   }
+
+
+
+
+  buscarSimilares() {
+    // Progres bar
+    //this.catOcu_pb = true;
+    //this.catAct_pb = true;
+
+
+    // limpiar catalogoOcuAux
+    this.catalogoOcuAux = [];
+    // limpiar catalogoActAux
+    this.catalogoActAux = [];
+
+
+    // recorrer clasificacion ocupacion
+    this.catalogoOcu.forEach(element => {
+      // calcular la similitud           
+      let sim = similarity(this.respuestaOcuItem, element.descripcion);
+      // si la similitud es mayor a 0.5
+      if (sim > 0.5) {
+        // agregar a catalogoOcuAux, tambien la similitud
+        element.similitud = sim;
+        this.catalogoOcuAux.push(element);
+      }
+    });
+
+    // recorrer clasificacion actividad
+    this.catalogoAct.forEach(element => {
+      // calcular la similitud           
+      let sim = similarity(this.respuestaActItem, element.descripcion);
+      // si la similitud es mayor a 0.5
+      if (sim > 0.5) {
+        // agregar a catalogoActAux, tambien la similitud
+        element.similitud = sim;
+        this.catalogoActAux.push(element);
+      }
+    });
+
+    // ordenar por similitud
+    this.catalogoOcuAux.sort((a, b) => (a.similitud > b.similitud) ? -1 : 1);
+    this.catalogoActAux.sort((a, b) => (a.similitud > b.similitud) ? -1 : 1);
+
+    // Progres bar
+    //this.catOcu_pb = false;
+    //this.catAct_pb = false;
+  };
+
+
+
+
+
+  // BUSCAR registros por el input descripcion en clasificacion_ocu
+  buscarPorDescripcionOcu() {
+    // paginador
+    this.first_ocu = 0;
+
+
+    // Limpiar catalogoOcuAux
+    this.catalogoOcuAux = [];
+
+    // Limpiar input cod_ocu
+    this.cod_ocu = '';
+
+    // recoorer catalogoOcu
+    this.catalogoOcu.forEach(element => {
+      // La descripcion debe ser igual al input descripcion de izquierda a derecha sin importar mayusculas, minusculas y acentos
+      if (element.descripcion.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(this.desc_ocu.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))) {
+        // agregar a clasificacion_ocu_aux
+        this.catalogoOcuAux.push(element);
+      }
+    });
+
+    // ordenar de forma descendente por el tamaño de caracteres
+    this.catalogoOcuAux.sort((a, b) => (a.descripcion.length > b.descripcion.length) ? 1 : -1);
+
+    // si el descripcion no existe en la clasificacion limipar clasificacion_ocu_aux
+    if (this.desc_ocu == '') {
+      this.catalogoOcuAux = [];
+    }
+  }
+
+
+
+
+  // BUSCAR registros por el input descripcion en clasificacion_act
+  buscarPorDescripcionAct() {
+    // paginador
+    this.first_act = 0;
+
+
+    // Limpiar catalogoActAux
+    this.catalogoActAux = [];
+
+    // Limpiar input cod_act
+    this.cod_act = '';
+
+    // recoorer clasificacion_act
+    this.catalogoAct.forEach(element => {
+      // La descripcion debe ser igual al input descripcion de izquierda a derecha sin importar mayusculas, minusculas y acentos
+      if (element.descripcion.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(this.desc_act.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))) {
+        // agregar a catalogoActAux
+        this.catalogoActAux.push(element);
+      }
+
+    });
+
+    // ordenar de forma descendente por el tamaño de caracteres
+    this.catalogoActAux.sort((a, b) => (a.descripcion.length > b.descripcion.length) ? 1 : -1);
+
+    // si el descripcion no existe en la clasificacion limipar clasificacion_act_aux
+    if (this.desc_act == '') {
+      this.catalogoActAux = [];
+    }
+  }
+
+
+
+  // BUSCAR registros por el input codigo en clasificacion_ocu
+  buscarPorCodigoOcu() {
+    // paginador
+    this.first_ocu = 0;
+
+
+    // Limpiar catalogoOcuAux
+    this.catalogoOcuAux = [];
+
+    // Limpiar input desc_ocu
+    this.desc_ocu = '';
+
+    // recoorer catalogoOcu
+    this.catalogoOcu.forEach(element => {
+      // El codigo debe ser igual al input codigo de izquierda a derecha
+      if (element.codigo.startsWith(this.cod_ocu)) {
+        // agregar a catalogoOcuAux
+        this.catalogoOcuAux.push(element);
+      }
+    });
+
+    // this.cod_ocu == '' limpiar catalogoOcuAux
+    if (this.cod_ocu == '') {
+      this.catalogoOcuAux = [];
+    }
+  }
+
+
+
+  // BUSAR registros por el input codigo en clasificacion_act
+  buscarPorCodigoAct() {
+    // paginador
+    this.first_act = 0;
+
+    // Limpiar catalogoActAux
+    this.catalogoActAux = [];
+
+    // Limpiar input desc_act
+    this.desc_act = '';
+
+    // recoorer catalogoAct
+    this.catalogoAct.forEach(element => {
+
+      // El codigo debe ser igual al input estrictamente  en tamaño de caracteres
+      if (element.codigo.startsWith(this.cod_act)) {
+        // agregar a catalogoActAux
+        this.catalogoActAux.push(element);
+      }
+
+    });
+
+    // this.cod_act == '' limpiar catalogoActAux
+    if (this.cod_act == '') {
+      this.catalogoActAux = [];
+    }
+  }
+
 
 
 
