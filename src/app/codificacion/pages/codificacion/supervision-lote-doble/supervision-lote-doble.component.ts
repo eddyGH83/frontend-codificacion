@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CodificacionService } from '../service/codificacion.service';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 // Para el uso de HTML en el contexto
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -87,10 +87,12 @@ export class SupervisionLoteDobleComponent implements OnInit {
   cod_act: string = '';
   desc_act: string = '';
 
+  // porCodificar_act
+  porCodificarOcuAct: number = 0;
 
 
 
-  constructor(private sanitizer: DomSanitizer, private router: Router, private codificacionService: CodificacionService, private messageService: MessageService) { }
+  constructor(private confirmationService: ConfirmationService, private sanitizer: DomSanitizer, private router: Router, private codificacionService: CodificacionService, private messageService: MessageService) { }
 
 
 
@@ -101,6 +103,7 @@ export class SupervisionLoteDobleComponent implements OnInit {
     this.rows = [
       { nro: 50, value: 50 },
       { nro: 100, value: 100 },
+      { nro: 500, value: 500 },
       { nro: 1000, value: 1000 },
     ];
     this.selectedRow = { nro: 50, value: 50 };
@@ -255,18 +258,18 @@ export class SupervisionLoteDobleComponent implements OnInit {
 
 
   confirmarSupervisionCorrecto() {
-  /*   this.confirmationService.confirm({
+    this.confirmationService.confirm({
       message: `
           <strong>OCUPACION</strong> <br>
-          <strong>Codigo: </strong> ${this.codigocodifItem_ocu} <br>
-          <strong>Descripción: </strong> ${this.descripcionItem_ocu} <br>        
-          <strong>Usuario: </strong> ${this.usucodificadorItem_ocu} <br> <br>
+          <strong>Codigo: </strong> ${this.codigocodifOcuItem} <br>
+          <strong>Descripción: </strong> ${this.descripcionOcuItem} <br>        
+          <strong>Usuario: </strong> ${this.usucodificadorOcuItem} <br> <br>
 
           
           <strong>ACTIVIDAD</strong> <br>
-          <strong>Codigo: </strong> ${this.codigocodifItem_act} <br>
-          <strong>Descripción: </strong> ${this.descripcionItem_act} <br>
-          <strong>Usuario: </strong> ${this.usucodificadorItem_act} <br>
+          <strong>Codigo: </strong> ${this.codigocodifActItem} <br>
+          <strong>Descripción: </strong> ${this.descripcionActItem} <br>
+          <strong>Usuario: </strong> ${this.usucodificadorActItem} <br>
       `,
       header: 'Confirmación',
       icon: 'pi pi-check-square',
@@ -277,27 +280,26 @@ export class SupervisionLoteDobleComponent implements OnInit {
           {
             id_usuario: localStorage.getItem('login'),
             tabla_id: localStorage.getItem("tabla_id_sup"),
-            id_registro: this.idPregunta,
+            id_registro: this.idPreguntaOcuActItem,
           }
         ).subscribe(
           (data2: any) => {
-            // Modificar: carga (foreach) su propiedad estado_ocu = 'VERIFICADO' Y estado_act = 'VERIFICADO'
-            this.carga.forEach(element => {
-              if (element.id_p49_p51 == this.idPregunta) {
+            // Modificar: selectedRegistros (foreach) su propiedad estado_ocu = 'VERIFICADO' Y estado_act = 'VERIFICADO'
+            this.selectedRegistros.forEach(element => {
+              if (element.id_registro === this.idPreguntaOcuActItem) {
                 element.estado_ocu = 'VERIFICADO';
                 element.estado_act = 'VERIFICADO';
               }
             });
 
-            // Por codificar disminuye en 1, si   estadoItem_ocu === 'CODIFICADO' y estadoItem_act === 'CODIFICADO'
-            if (this.porCodificar_ocu > 0 && this.porCodificar_act > 0) {
-              this.porCodificar_ocu--;
-              this.porCodificar_act--;
+            // porRecodificar disminuye en 1, siempre y cuando sea mayor a 0
+            if (this.porRecodificar > 0) {
+              this.porRecodificar--;
             }
 
-            // si por codificar es igual a 0, redireccionar a la página de /codificacion/supervisar-codificacion
-            if (this.porCodificar_ocu === 0 && this.porCodificar_act === 0) {
-              this.router.navigate(['/codificacion/supervisar-codificacion']);
+            // Si porRecodificar es igual a 0, cerrar el dialogo de recodificación
+            if (this.porRecodificar === 0) {
+              this.dialogRecodificacion = false;
             }
 
             // Mensaje de éxito
@@ -310,13 +312,14 @@ export class SupervisionLoteDobleComponent implements OnInit {
             this.siguiente();
 
           })
-          
+
       }
-    }); */
+    });
   }
 
 
   recodificaicion() {
+    if (this.tabla_pb) { return }
 
     if (this.selectedRegistros === undefined || this.selectedRegistros === null || this.selectedRegistros.length === 0) {
       this.messageService.add({ severity: 'error', summary: 'Mensaje:', detail: 'No hay registros seleccionados para recodificar', life: 2500 });

@@ -17,12 +17,16 @@
             <strong class="mr-2 ml-3">Mostrar: </strong> <p-dropdown [options]="rows" [(ngModel)]="selectedRow"
                 optionLabel="value"></p-dropdown>
             <p-button (click)="registrosTabla()" label="Actualizar" icon="pi pi-refresh" iconPos="left" class="ml-2"
-                styleClass="p-button-warning" pTooltip="Actualizar registros" tooltipPosition="right"></p-button>
+                styleClass="p-button-warning" pTooltip="Actualizar registros" tooltipPosition="top"></p-button>
+            <p-button (click)="seleccionarGrupoDeRegistros()" icon="pi pi-check-square" iconPos="left" class="ml-2"
+                styleClass="p-button-primary" pTooltip="Selecciona los {{selectedRow.value}} primeros registros"
+                tooltipPosition="top"></p-button>
+
             <!-- {{registros.length}} {{selectedRegistros | json}} -->
         </ng-template>
 
         <ng-template pTemplate="right">
-            <p-button label="Recodificación" (click)="recodificaicion()" icon="pi pi-check-square" iconPos="left"
+            <p-button label="Recodificación" [disabled]="tabla_pb"  (click)="recodificaicion()" icon="pi pi-check-square" iconPos="left"
                 styleClass="p-button-secondary" class="mr-2" pTooltip="Recodificación"
                 tooltipPosition="left"></p-button>
 
@@ -31,7 +35,7 @@
 
             <p-button label="Cancelar" (click)="cancelarYsalir()" icon="pi pi-times" iconPos="left"
                 styleClass="p-button-danger" pTooltip="Cancelar y salir" tooltipPosition="top"></p-button>
-    
+
 
         </ng-template>
     </p-toolbar>
@@ -243,7 +247,8 @@
                             <th
                                 style="background-color: rgb(17, 173, 228); color: rgb(42, 42, 42); text-align: center;">
                                 IDENTIFICADOR <br> <strong
-                                    style="font-family:Arial, Helvetica, sans-serif; color: white; ">{{idPreguntaOcuActItem}} -
+                                    style="font-family:Arial, Helvetica, sans-serif; color: white; ">{{idPreguntaOcuActItem}}
+                                    -
                                     {{secuencialOcuActItem}}</strong></th>
                             <th
                                 style="background-color: rgb(17, 173, 228); color: rgb(42, 42, 42); text-align: center;">

@@ -31,15 +31,6 @@ export class ReporteComponent implements OnInit {
 
   ngOnInit(): void {
 
-alert(Number(localStorage.getItem('anio')));
-
-
-  // recupera del local storage
- /*  recuperarLocal(){
-    this.anio = Number(localStorage.getItem('anio'));
-    this.mes = localStorage.getItem('mes');
-  } */
-
 
 
     this.rol_id = Number(localStorage.getItem('rol_id'));
@@ -96,16 +87,16 @@ alert(Number(localStorage.getItem('anio')));
     if (this.rol_id === 4) {
       this.rep01 = false;
       this.rep02 = false;
-      this.rep03 = false;
+      this.rep03 = true;
       this.rep04 = false;
-      this.rep05 = false;
-      this.rep06 = true;
-      this.rep07 = true;
-      this.rep08 = true;
-      this.rep09 = false;
-      this.rep10 = false;
-      this.rep11 = false;
-      this.rep12 = false;
+      this.rep05 = true;
+      this.rep06 = false;
+      this.rep07 = false;
+      this.rep08 = false;
+      this.rep09 = true;
+      this.rep10 = true;
+      this.rep11 = true;
+      this.rep12 = true;
       this.rep13 = false;
     }
     // Reportes que debe ver el usuario Técnico de codificación
