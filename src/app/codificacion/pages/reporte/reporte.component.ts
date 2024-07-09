@@ -30,6 +30,18 @@ export class ReporteComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+
+alert(Number(localStorage.getItem('anio')));
+
+
+  // recupera del local storage
+ /*  recuperarLocal(){
+    this.anio = Number(localStorage.getItem('anio'));
+    this.mes = localStorage.getItem('mes');
+  } */
+
+
+
     this.rol_id = Number(localStorage.getItem('rol_id'));
 
     // Reportes que debe ver el usuario SuperAdmin

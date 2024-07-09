@@ -71,6 +71,7 @@ export class UsuariosComponent implements OnInit {
     constructor(private productService: ProductoserviciosService, private messageService: MessageService, private confirmationService: ConfirmationService, private usuariosService: UsuariosService) { }
 
     ngOnInit(): void {
+        
 
         this.registros = [];
         this.supervisores = [];
