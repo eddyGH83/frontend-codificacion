@@ -107,6 +107,9 @@ export class SupervisionLoteSimpleComponent implements OnInit {
   //
   checkedGroup: boolean = false;
 
+  //check
+  checkedSelect: boolean = false;
+
   constructor(private confirmationService: ConfirmationService, private router: Router, private codificacionService: CodificacionService, private messageService: MessageService) { }
 
   ngOnInit(): void {
@@ -220,9 +223,14 @@ export class SupervisionLoteSimpleComponent implements OnInit {
 
   // seleccionar los primeros n registros mostrados
   seleccionarGrupoDeRegistros() {
-    this.selectedRegistros = this.registros.slice(0, this.selectedRow.value);
-  }
+    // Si checkedSelect es true, seleccionar todos los registros
+    if (this.checkedSelect) {
+      this.selectedRegistros = this.registros.slice(0, this.selectedRow.value);
+    } else {
+      this.selectedRegistros = [];
+    }
 
+  }
 
 
 

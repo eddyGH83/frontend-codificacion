@@ -18,11 +18,13 @@
                 optionLabel="value"></p-dropdown>
             <p-button (click)="registrosTabla()" label="Actualizar" icon="pi pi-refresh" iconPos="left" class="ml-2"
                 styleClass="p-button-warning" pTooltip="Actualizar registros" tooltipPosition="right"></p-button>
-            <p-button (click)="seleccionarGrupoDeRegistros()" icon="pi pi-check-square" iconPos="left" class="ml-2"
+            <!-- <p-button (click)="seleccionarGrupoDeRegistros()" icon="pi pi-check-square" iconPos="left" class="ml-2"
                 styleClass="p-button-primary" pTooltip="Selecciona los {{selectedRow.value}} primeros registros"
-                tooltipPosition="top"></p-button>
-            <!-- <p-toggleButton [(ngModel)]="checked2" class="ml-2" onLabel="Seleccionado" offLabel="Deseleccionado" onIcon="pi pi-check-square"
-                offIcon="pi pi-stop" [style]="{'width': '12em'}"></p-toggleButton> -->
+                tooltipPosition="top"></p-button> -->
+            <p-checkbox class="ml-4" [(ngModel)]="checkedSelect" [binary]="true"
+                (onChange)="seleccionarGrupoDeRegistros()" inputId="binary"></p-checkbox>
+            <label class="ml-2" for="binary">Seleccionar los primeros <strong>{{selectedRow.value}}</strong>
+                registros</label>
 
             <!-- {{registros.length}} {{selectedRegistros | json}} -->
         </ng-template>
@@ -142,7 +144,7 @@
 <!-- R E C O D I F I C A I O N -->
 <!-- Dialog -->
 <p-dialog (onHide)="onDialogRecodificacionClose()" header="Recodificación simple" [(visible)]="dialogRecodificacion"
-    [style]="{width: '90vw', height: '41vw'}" [maximizable]="true" [resizable]="false"  [modal]="true">
+    [style]="{width: '90vw', height: '41vw'}" [maximizable]="true" [resizable]="false" [modal]="true">
     <br>
     <div class="grid">
         <!-- VARIABLES A CODIFICAR -->

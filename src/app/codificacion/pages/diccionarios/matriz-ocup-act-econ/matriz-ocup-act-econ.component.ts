@@ -47,6 +47,21 @@ export class MatrizOcupActEconComponent implements OnInit {
   dialogEliminar: boolean = false;
 
 
+  // Para los campos de busqueda
+  codigo_ocupacion: string = '';
+  descripcion_ocupacion: string = '';
+  codigo_acteco: string = '';
+  descripcion_acteco: string = '';
+  usucre: string = '';
+  feccre: string = '';
+  usumod: string = '';
+  fecmod: string = '';
+
+  // Paginador
+  first: number = 0;
+
+
+
   constructor(private messageService: MessageService, private matrizService: MatrizService, private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
@@ -93,7 +108,7 @@ export class MatrizOcupActEconComponent implements OnInit {
     this.tabla_pb = true;
     this.matrizService.devuelveMatriz().subscribe(
       (data2: any) => {
-        console.log("data2", data2.datos.rows);
+        console.table(data2.datos.rows);
         this.tabla_pb = false;
         this.registros = data2.datos.rows;
         this.registrosAux = data2.datos.rows;
@@ -120,6 +135,237 @@ export class MatrizOcupActEconComponent implements OnInit {
   }
 
 
+  buscar_codigo_ocupacion() {
+    //alert("buscar_codigo_ocupacion");
+    //this.codigo_ocupacion = '';
+    this.descripcion_ocupacion = '';
+    this.codigo_acteco = '';
+    this.descripcion_acteco = '';
+    this.usucre = '';
+    this.feccre = '';
+    this.usumod = '';
+    this.fecmod = '';
+
+    // Paginador
+    this.first = 0;
+
+    // Limpiar registrosAux
+    this.registrosAux = [];
+
+    // recorrer registros
+    this.registros.forEach(element => {
+      // El codigo debe ser igual al input codigo_ocupacion de izquierda a derecha, en caso de que el codigo_ocupacion sea null, no se debe mostrar
+      if (element.codigo_ocupacion.startsWith(this.codigo_ocupacion)) {
+        // agregar a registrosAux
+        this.registrosAux.push(element);
+      }
+    });
+
+    // ordenar por codigo registrosAux de menor tamaño de caracteres a mayor
+    this.registrosAux.sort((a, b) => (a.codigo_ocupacion.length > b.codigo_ocupacion.length) ? 1 : -1);
+
+  }
+
+
+
+  buscar_descripcion_ocupacion() {
+    this.codigo_ocupacion = '';
+    //this.descripcion_ocupacion = '';
+    this.codigo_acteco = '';
+    this.descripcion_acteco = '';
+    this.usucre = '';
+    this.feccre = '';
+    this.usumod = '';
+    this.fecmod = '';
+
+    // Paginador
+    this.first = 0;
+
+    // Limpiar registrosAux
+    this.registrosAux = [];
+  }
+
+
+  buscar_codigo_acteco() {
+    this.codigo_ocupacion = '';
+    this.descripcion_ocupacion = '';
+    //this.codigo_acteco = '';
+    this.descripcion_acteco = '';
+    this.usucre = '';
+    this.feccre = '';
+    this.usumod = '';
+    this.fecmod = '';
+
+    // Paginador
+    this.first = 0;
+
+    // Limpiar registrosAux
+    this.registrosAux = [];
+
+    // recorrer registros
+    this.registros.forEach(element => {
+      // El codigo debe ser igual al input codigo_ocupacion de izquierda a derecha, en caso de que el codigo_ocupacion sea null, no se debe mostrar
+      if (element.codigo_acteco.startsWith(this.codigo_acteco)) {
+        // agregar a registrosAux
+        this.registrosAux.push(element);
+      }
+    });
+
+    // ordenar por codigo registrosAux de menor tamaño de caracteres a mayor
+    this.registrosAux.sort((a, b) => (a.codigo.length > b.codigo.length) ? 1 : -1);
+  }
+
+
+  buscar_descripcion_acteco() {
+    this.codigo_ocupacion = '';
+    this.descripcion_ocupacion = '';
+    this.codigo_acteco = '';
+    //this.descripcion_acteco = '';
+    this.usucre = '';
+    this.feccre = '';
+    this.usumod = '';
+    this.fecmod = '';
+
+    // Paginador
+    this.first = 0;
+
+    // Limpiar registrosAux
+    this.registrosAux = [];
+
+  }
+
+
+  buscar_usucre() {
+    this.codigo_ocupacion = '';
+    this.descripcion_ocupacion = '';
+    this.codigo_acteco = '';
+    this.descripcion_acteco = '';
+    //this.usucre = '';
+    this.feccre = '';
+    this.usumod = '';
+    this.fecmod = '';
+
+    // Paginador
+    this.first = 0;
+
+    // Limpiar registrosAux
+    this.registrosAux = [];
+  }
+
+
+  buscar_feccre() {
+    this.codigo_ocupacion = '';
+    this.descripcion_ocupacion = '';
+    this.codigo_acteco = '';
+    this.descripcion_acteco = '';
+    this.usucre = '';
+    //this.feccre = '';
+    this.usumod = '';
+    this.fecmod = '';
+
+    // Paginador
+    this.first = 0;
+
+    // Limpiar registrosAux
+    this.registrosAux = [];
+  }
+
+
+  buscar_usumod() {
+    this.codigo_ocupacion = '';
+    this.descripcion_ocupacion = '';
+    this.codigo_acteco = '';
+    this.descripcion_acteco = '';
+    this.usucre = '';
+    this.feccre = '';
+    //this.usumod = '';
+    this.fecmod = '';
+
+    // Paginador
+    this.first = 0;
+
+    // Limpiar registrosAux
+    this.registrosAux = [];
+  }
+
+
+  buscar_fecmod() {
+    this.codigo_ocupacion = '';
+    this.descripcion_ocupacion = '';
+    this.codigo_acteco = '';
+    this.descripcion_acteco = '';
+    this.usucre = '';
+    this.feccre = '';
+    this.usumod = '';
+    //this.fecmod = '';
+
+    // Paginador
+    this.first = 0;
+
+    // Limpiar registrosAux
+    this.registrosAux = [];
+  }
+
+
+
+  /* 
+    // Buscar por el campo codigo
+  buscarPorCodigo() {
+
+    // limpiar los demas campos
+    this.descripcion = '';
+    this.feccre = '';
+    this.usucre = '';
+    this.fecmod = '';
+    this.usumod = '';
+
+    // Paginador
+    this.first = 0;
+
+    // Limpiar registrosAux
+    this.registrosAux = [];
+
+    // recorrer registros
+    this.registros.forEach(element => {
+      // El codigo debe ser igual al input codigo de izquierda a derecha, en caso de que el codigo sea null, no se debe mostrar
+      if (element.codigo.startsWith(this.codigo)) {
+        // agregar a registrosAux
+        this.registrosAux.push(element);
+      }
+    });
+
+    // ordenar por codigo registrosAux de menor tamaño de caracteres a mayor
+    this.registrosAux.sort((a, b) => (a.codigo.length > b.codigo.length) ? 1 : -1);
+
+  }
+
+  // Buscar por el campo descripcion
+  buscarPorDescripcion() {
+
+    // limpiar los demas campos
+    this.codigo = '';
+    this.feccre = '';
+    this.usucre = '';
+    this.fecmod = '';
+    this.usumod = '';
+
+    // Paginador
+    this.first = 0;
+
+    // Limpiar registrosAux
+    this.registrosAux = [];
+
+    // hacer la busqueda en los registros por descripcion
+    this.registros.forEach(element => {
+      if (element.descripcion.toLowerCase().includes(this.descripcion.toLowerCase())) {
+        // agregar a registrosAux
+        this.registrosAux.push(element);
+      }
+    });
+
+  }
+  */
+
   // FILTRO PERSONANALIZADO: de izquierda a derecha codigo_ocupacion
   filtrarIzquierdaADerechaCodOcup(evento: any) {
     // si el valor del input es vacío, entonces mostrar todos los registros
@@ -139,8 +385,8 @@ export class MatrizOcupActEconComponent implements OnInit {
 
     // Buscar todos los registros con el tamaño de la cadena ingresada en el input de busqueda de codigo_ocupacion, y que coincidan con el valor ingresado en el input de busqueda de codigo_ocupacion
     this.registros = this.registrosAux.filter((item: any) => item.codigo_ocupacion.length === tamanoCadena && item.codigo_ocupacion.startsWith(valorBusqueda));
-       
-    
+
+
   }
 
   // FILTRO PERSONANALIZADO: de izquierda a derecha codigo_acteco
@@ -157,12 +403,12 @@ export class MatrizOcupActEconComponent implements OnInit {
 
     // tamaño de la cadena ingresada
     const tamanoCadena = valorBusqueda.length;
-    
+
     // Buscar todos los registros con el tamaño de la cadena ingresada en el input de busqueda de codigo_acteco, y que coincidan con el valor ingresado en el input de busqueda de codigo_acteco
     this.registros = this.registrosAux.filter((item: any) => item.codigo_acteco.length === tamanoCadena && item.codigo_acteco.startsWith(valorBusqueda));
   }
 
-  
+
 
   // Guaradar o editar registro
   saveRegistro() {
@@ -233,7 +479,7 @@ export class MatrizOcupActEconComponent implements OnInit {
 
 
 
-  
+
 
   exportExcel() {
     let date = new Date();

@@ -13,10 +13,10 @@
     <!-- {{ | json }} -->
     <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
 
-    <p-table #dt_matriz [value]="registros" dataKey="id" [showCurrentPageReport]="true"
+    <p-table #dt_matriz [value]="registrosAux" dataKey="id" [showCurrentPageReport]="true"
         currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
-        [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" [tableStyle]="{'min-width': '50rem'}">
-        <ng-template pTemplate="header">
+        [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" [tableStyle]="{'min-width': '50rem'}"  [(first)]="first">
+        <ng-template pTemplate="header" >
             <!--  -->
             <tr>
                 <th style="width:10%" pSortableColumn="codigo_ocupacion">CÓDIGO <br> OCUP.<p-sortIcon
@@ -43,12 +43,17 @@
                         tooltipPosition="top"></button></th>
             </tr>
             <!--  -->
+            <!-- 
+             <th>
+                    <input pInputText type="text" (keyup)="buscarPorDescripcion()" [(ngModel)]="descripcion"
+                     placeholder="Buscar por descripción"
+                        class="p-column-filter">
+                </th>
+            -->
             <tr>
                 <th style="width:10%">
-                    <input style="width:100%" pInputText type="text"
-                        (input)="filtrarIzquierdaADerechaCodOcup($event)" id="codigo_ocupacion"
-                        [value]="dt_matriz.filters['codigo_ocupacion']?.value" placeholder="Buscar por código"
-                        class="p-column-filter">
+                    <input style="width:100%" pInputText type="text" (keyup)="buscar_codigo_ocupacion()"
+                        [(ngModel)]="codigo_ocupacion" placeholder="Buscar por código" class="p-column-filter">
                 </th>
                 <th style="width:10%">
                     <input style="width:100%" pInputText type="text"
@@ -57,10 +62,9 @@
                         class="p-column-filter">
                 </th>
                 <th style="width:10%">
-                    <input style="width:100%" pInputText type="text"
-                    (input)="filtrarIzquierdaADerechaCodActeco($event)" id="codigo_acteco"
-                        [value]="dt_matriz.filters['codigo_acteco']?.value" placeholder="Buscar por código"
-                        class="p-column-filter">
+                    <input style="width:100%" pInputText type="text" (input)="filtrarIzquierdaADerechaCodActeco($event)"
+                        id="codigo_acteco" [value]="dt_matriz.filters['codigo_acteco']?.value"
+                        placeholder="Buscar por código" class="p-column-filter">
                 </th>
                 <th style="width:10%">
                     <input style="width:100%" pInputText type="text"
@@ -170,8 +174,8 @@
             <div class="field col-12 md:col-6">
                 <p style="color: rgb(2, 136, 209); font-size: 12pt">Ocupación</p>
                 <label for="basic">Código de ocupación</label>
-                <input autocomplete="off" type="text" pInputText id="codigo_ocupacion" [(ngModel)]="registro.codigo_ocupacion" required
-                    autofocus />
+                <input autocomplete="off" type="text" pInputText id="codigo_ocupacion"
+                    [(ngModel)]="registro.codigo_ocupacion" required autofocus />
                 <small class="p-invalid" *ngIf="submitted && !registro.codigo_ocupacion" style="color: #d32f2f;">
                     <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
                     Este campo es requerido.</small>
@@ -180,8 +184,8 @@
             <div class="field col-12 md:col-6">
                 <p style="color: rgb(2, 136, 209); font-size: 12pt">Actividad económica</p>
                 <label for="basic">Código actividad económica</label>
-                <input autocomplete="off"  type="text" pInputText id="codigo_acteco" [(ngModel)]="registro.codigo_acteco" required
-                    autofocus />
+                <input autocomplete="off" type="text" pInputText id="codigo_acteco" [(ngModel)]="registro.codigo_acteco"
+                    required autofocus />
                 <small class="p-invalid" *ngIf="submitted && !registro.codigo_acteco" style="color: #d32f2f;">
                     <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
                     Este campo es requerido.</small>
@@ -190,7 +194,7 @@
             <div class="field col-12 md:col-6">
                 <label for="basic">Descripción ocupación</label>
                 <textarea id="descripcion_ocupacion" pInputTextarea [(ngModel)]="registro.descripcion_ocupacion"
-                     rows="4" cols="20"></textarea>
+                    rows="4" cols="20"></textarea>
                 <small class="p-invalid" *ngIf="submitted && !registro.descripcion_ocupacion" style="color: #d32f2f;">
                     <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
                     Este campo es requerido.
@@ -199,8 +203,8 @@
 
             <div class="field col-12 md:col-6">
                 <label for="basic">Descripción actividad económica</label>
-                <textarea id="descripcion_acteco" pInputTextarea [(ngModel)]="registro.descripcion_acteco" 
-                    rows="4" cols="20"></textarea>
+                <textarea id="descripcion_acteco" pInputTextarea [(ngModel)]="registro.descripcion_acteco" rows="4"
+                    cols="20"></textarea>
                 <small class="p-invalid" *ngIf="submitted && !registro.descripcion_acteco" style="color: #d32f2f;">
                     <i class="pi pi-exclamation-circle" style="font-size: 1rem"></i>
                     Este campo es requerido.
@@ -222,4 +226,5 @@
 
 </p-dialog>
 
-<p-confirmDialog [style]="{width: '30vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+<p-confirmDialog [style]="{width: '30vw'}" [baseZIndex]="10000"
+    rejectButtonStyleClass="p-button-text"></p-confirmDialog>

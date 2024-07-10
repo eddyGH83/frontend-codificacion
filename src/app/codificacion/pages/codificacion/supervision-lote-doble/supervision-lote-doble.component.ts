@@ -90,6 +90,9 @@ export class SupervisionLoteDobleComponent implements OnInit {
   // porCodificar_act
   porCodificarOcuAct: number = 0;
 
+  //check
+  checkedSelect: boolean = false;
+
 
 
   constructor(private confirmationService: ConfirmationService, private sanitizer: DomSanitizer, private router: Router, private codificacionService: CodificacionService, private messageService: MessageService) { }
@@ -165,8 +168,14 @@ export class SupervisionLoteDobleComponent implements OnInit {
     ).subscribe(
       (data2: any) => {
         this.confirmacionDialog = false;
-        this.registrosTabla();
+        // this.registrosTabla();
         this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: data2.message, life: 2500 });
+
+        // Elimiinar de registros los selectedRegistros
+        this.registros = this.registros.filter(registro =>
+          !this.selectedRegistros.includes(registro)
+        );
+
 
         //this.tabla_pb = false;
         //this.registros = data2.datos;
@@ -184,13 +193,44 @@ export class SupervisionLoteDobleComponent implements OnInit {
 
   //  R E C O D I F I C A C I O N 
 
+
+  // seleccionar los primeros n registros mostrados
+  seleccionarGrupoDeRegistros() {
+    // Si checkedSelect es true, seleccionar todos los registros
+    if (this.checkedSelect) {
+      this.selectedRegistros = this.registros.slice(0, this.selectedRow.value);
+    } else {
+      this.selectedRegistros = [];
+    }
+
+  }
+
+
+
+
   onDialogRecodificacionClose() {
-    // cerrar el dialogo de recodificación
-    this.registrosTabla();
-    // deselecciona los registros seleccionados
+    const selectedIds = new Set(this.selectedRegistros.map(reg => reg.id_registro));
+    // Filtrar la lista de registros
+    this.registros = this.registros.filter(registro =>
+      // Conservar registros que no cumplan alguna de las condiciones
+      !selectedIds.has(registro.id_registro) || // No está en selectedRegistros
+      registro.estado_ocu !== 'VERIFICADO' || // estado_ocu no es 'VERIFICADO'
+      registro.estado_act !== 'VERIFICADO' // estado_act no es 'VERIFICADO'
+    );
+
+
+
+
+
+
+
     this.selectedRegistros = [];
     // contador auxiliar
     this.contAux = 0;
+
+    // this.registros = this.registros.filter(element => !this.selectedRegistros.includes(element));
+
+
   }
 
   // primer reistro  de la lista de registros seleccionados
@@ -316,6 +356,28 @@ export class SupervisionLoteDobleComponent implements OnInit {
       }
     });
   }
+
+
+  // Codificar ocupacion
+  codificarOcu(registro: any) {
+    // Modificar datos actuales
+    this.estadoOcuItem = 'CODIFICADO';
+    this.codigocodifOcuItem = registro.codigo;
+    this.usucodificadorOcuItem = localStorage.getItem('login');
+    this.descripcionOcuItem = registro.descripcion;
+  }
+
+
+  // Codificar actividad
+  codificarAct(registro: any) {
+    // Modificar datos actuales
+    this.estadoActItem = 'CODIFICADO';
+    this.codigocodifActItem = registro.codigo;
+    this.usucodificadorActItem = localStorage.getItem('login');
+    this.descripcionActItem = registro.descripcion;
+
+  }
+
 
 
   recodificaicion() {
