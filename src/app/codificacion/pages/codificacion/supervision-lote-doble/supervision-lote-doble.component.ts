@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { CodificacionService } from '../service/codificacion.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+
+
 
 // Para el uso de HTML en el contexto
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -138,23 +140,8 @@ export class SupervisionLoteDobleComponent implements OnInit {
   }
 
 
-  guardarSupervision() {
-    // calcular el total de registros seleccionados si es undefined o null 
-    if (this.selectedRegistros === undefined || this.selectedRegistros === null || this.selectedRegistros.length === 0) {
-      this.nroRegSelected = 0;
-      this.confirmacionDialogError = true;
-    } else {
-      this.nroRegSelected = this.selectedRegistros.length;
-      this.confirmacionDialog = true;
-    }
 
-  }
 
-  /*   recodificaicion() {
-      alert('Recodificación');
-      this.codificacionService.addItem({ id: 1, name: 'Recodificación', price: 10, category: 'Recodificación', review: 4, inventoryStatus: 'Out of Stock' });
-      this.router.navigate(['/codificacion/supervision-individual-simple']);
-    } */
 
 
   // Confirmar la supervisión
@@ -176,6 +163,7 @@ export class SupervisionLoteDobleComponent implements OnInit {
           !this.selectedRegistros.includes(registro)
         );
 
+        this.selectedRegistros = [];
 
         //this.tabla_pb = false;
         //this.registros = data2.datos;
@@ -194,17 +182,12 @@ export class SupervisionLoteDobleComponent implements OnInit {
   //  R E C O D I F I C A C I O N 
 
 
-  // seleccionar los primeros n registros mostrados
-  seleccionarGrupoDeRegistros() {
-    // Si checkedSelect es true, seleccionar todos los registros
-    if (this.checkedSelect) {
-      this.selectedRegistros = this.registros.slice(0, this.selectedRow.value);
-    } else {
-      this.selectedRegistros = [];
-    }
 
+ 
+
+  borrarSeleccion(){
+    this.selectedRegistros = [];
   }
-
 
 
 
@@ -380,7 +363,7 @@ export class SupervisionLoteDobleComponent implements OnInit {
 
 
 
-  recodificaicion() {
+  recodificacion() {
     if (this.tabla_pb) { return }
 
     if (this.selectedRegistros === undefined || this.selectedRegistros === null || this.selectedRegistros.length === 0) {
@@ -390,6 +373,22 @@ export class SupervisionLoteDobleComponent implements OnInit {
       this.dialogRecodificacion = true;
       // porCodificar
       this.porRecodificar = this.selectedRegistros.length;
+    }
+
+  }
+
+
+  
+  guardarSupervision() {
+    if (this.tabla_pb) { return }
+
+    // calcular el total de registros seleccionados si es undefined o null 
+    if (this.selectedRegistros === undefined || this.selectedRegistros === null || this.selectedRegistros.length === 0) {
+      this.selectedRegistros=[];
+      this.messageService.add({ severity: 'error', summary: 'Mensaje:', detail: 'No hay registros seleccionados para guardar', life: 2500 });
+    } else {
+      this.nroRegSelected = this.selectedRegistros.length;
+      this.confirmacionDialog = true;
     }
 
   }

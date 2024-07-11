@@ -17,27 +17,22 @@
             <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button> -->
             <strong class="mr-2 ml-3">Mostrar: </strong> <p-dropdown [options]="rows" [(ngModel)]="selectedRow"
                 optionLabel="value"></p-dropdown>
-            <p-button (click)="registrosTabla()" label="Actualizar" icon="pi pi-refresh" iconPos="left" class="ml-2"
-                styleClass="p-button-warning" pTooltip="Actualizar registros" tooltipPosition="top"></p-button>
-            <!-- <p-button (click)="seleccionarGrupoDeRegistros()" icon="pi pi-check-square" iconPos="left" class="ml-2"
-                styleClass="p-button-primary" pTooltip="Selecciona los {{selectedRow.value}} primeros registros"
-                tooltipPosition="top"></p-button> -->
 
-            <p-checkbox  class="ml-4" [(ngModel)]="checkedSelect" [binary]="true" (onChange)="seleccionarGrupoDeRegistros()"
-                inputId="binary"></p-checkbox>
-            <label class="ml-2" for="binary">Seleccionar los primeros <strong>{{selectedRow.value}}</strong> registros</label>
+            <p-button (click)="borrarSeleccion()"  icon="pi pi-stop" iconPos="left" class="ml-2"
+                styleClass="p-button-info" pTooltip="Deseleccionar todo" tooltipPosition="top"></p-button>
 
-            <!-- {{registros.length}} {{selectedRegistros | json}} -->
+
+            <label class="ml-2" for="binary"> <strong>{{(selectedRegistros?.length ? selectedRegistros.length : 0) | number}}</strong> registros seleccionados de <strong>{{(registros?.length ? registros.length : 0) | number}}</strong></label>
         </ng-template>
 
         <ng-template pTemplate="right">
            
 
-            <p-button label="Recodificación" [disabled]="tabla_pb" (click)="recodificaicion()" icon="pi pi-check-square"
+            <p-button label="Recodificación" [disabled]="tabla_pb" (click)="recodificacion()" icon="pi pi-check-square"
                 iconPos="left" styleClass="p-button-secondary" class="mr-2" pTooltip="Recodificación"
                 tooltipPosition="left"></p-button>
 
-            <p-button label="Guardar" (click)="guardarSupervision()" icon="pi pi-save" iconPos="left"
+            <p-button label="Guardar" [disabled]="tabla_pb" (click)="guardarSupervision()" icon="pi pi-save" iconPos="left"
                 styleClass="p-button-info" class="mr-2" pTooltip="Guardar Supervisión" tooltipPosition="top"></p-button>
 
             <p-button label="Cancelar" (click)="cancelarYsalir()" icon="pi pi-times" iconPos="left"
@@ -51,11 +46,11 @@
 
     <p-table #dt [value]="registros" [rows]="selectedRow.value" [paginator]="true" [(selection)]="selectedRegistros"
         [rowHover]="true" currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros"
-        [showCurrentPageReport]="true">
+        [showCurrentPageReport]="true" [selectionPageOnly]="true"  [loading]="tabla_pb" styleClass="p-datatable-sm" >
 
         <ng-template pTemplate="header">
             <tr style="height: 0px; padding: 0px;">
-                <th colspan="3" style="text-align: center; color: white; background-color: rgba(2, 136, 209)"></th>
+                <th></th>
                 <th colspan="3" style="text-align: center; color: white; background-color: rgba(2, 136, 209)">OCUPACIÓN
                 </th>
                 <th colspan="3" style="text-align: center; color: white; background-color: rgb(17, 176, 232)">ACTIVIDAD
@@ -65,35 +60,35 @@
                 </th>
             </tr>
             <tr>
-                <th style="width: 4rem">
-                    <!-- <p-tableHeaderCheckbox></p-tableHeaderCheckbox> -->
+                <th style="background-color: rgb(227, 227, 227); text-align: center;">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th pSortableColumn="respuesta_ocu">RESPUESTA<p-sortIcon field="respuesta_ocu"></p-sortIcon></th>
-                <th pSortableColumn="codigocodif_ocu">CODIGO<p-sortIcon field="codigocodif_ocu"></p-sortIcon></th>
+                <th style="font-size:11px" pSortableColumn="respuesta_ocu">RESPUESTA<p-sortIcon field="respuesta_ocu"></p-sortIcon></th>
+                <th style="font-size:11px" pSortableColumn="codigocodif_ocu">CODIGO<p-sortIcon field="codigocodif_ocu"></p-sortIcon></th>
                 <!-- <th pSortableColumn="descripcion_ocu">DESCRIPCIÓN<p-sortIcon field="descripcion_ocu"></p-sortIcon></th> -->
-                <th pSortableColumn="usucodificador_ocu">CODIFICADOR<p-sortIcon field="usucodificador_ocu"></p-sortIcon>
+                <th style="font-size:11px" pSortableColumn="usucodificador_ocu">CODIFICADOR<p-sortIcon field="usucodificador_ocu"></p-sortIcon>
                 </th>
 
-                <th pSortableColumn="respuesta_act">RESPUESTA<p-sortIcon field="respuesta_act"></p-sortIcon></th>
-                <th pSortableColumn="codigocodif_act">CODIGO<p-sortIcon field="codigocodif_act"></p-sortIcon></th>
+                <th style="font-size:11px" pSortableColumn="respuesta_act">RESPUESTA<p-sortIcon field="respuesta_act"></p-sortIcon></th>
+                <th style="font-size:11px" pSortableColumn="codigocodif_act">CODIGO<p-sortIcon field="codigocodif_act"></p-sortIcon></th>
                 <!-- <th pSortableColumn="descripcion_act">DESCRIPCIÓN<p-sortIcon field="descripcion_act"></p-sortIcon></th> -->
-                <th pSortableColumn="usucodificador_act">CODIFICADOR<p-sortIcon field="usucodificador_act"></p-sortIcon>
+                <th style="font-size:11px" pSortableColumn="usucodificador_act">CODIFICADOR<p-sortIcon field="usucodificador_act"></p-sortIcon>
                 </th>
 
-                <th style="color: rgb(15, 140, 80);" pSortableColumn="contexto_edad">Edad <p-sortIcon
+                <th  style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_edad">Edad <p-sortIcon
                         field="contexto_edad"></p-sortIcon></th>
-                <th style="color: rgb(15, 140, 80);" pSortableColumn="contexto_nivel_edu">Nivel Ed. <p-sortIcon
+                <th  style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_nivel_edu">Nivel Ed. <p-sortIcon
                         field="contexto_nivel_edu"></p-sortIcon></th>
-                <th style="color: rgb(15, 140, 80);" pSortableColumn="contexto_curso">Curso ó Año <p-sortIcon
+                <th  style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_curso">Curso ó Año <p-sortIcon
                         field="contexto_curso"></p-sortIcon></th>
-                <th style="color: rgb(15, 140, 80);" pSortableColumn="contexto_atendio">Semana pasada? <p-sortIcon
+                <th  style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_atendio">Semana pasada? <p-sortIcon
                         field="contexto_atendio"></p-sortIcon></th>
-                <th style="color: rgb(15, 140, 80);" pSortableColumn="contexto_otro">Otro <p-sortIcon
+                <th  style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_otro">Otro <p-sortIcon
                         field="contexto_otro"></p-sortIcon></th>
-                <th style="color: rgb(15, 140, 80);" pSortableColumn="contexto_es_era">¿En ese trabajo es o era?
+                <th  style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_es_era">¿En ese trabajo es o era?
                     <p-sortIcon field="contexto_es_era"></p-sortIcon>
                 </th>
-                <th style="color: rgb(15, 140, 80);" pSortableColumn="contexto_lugar_trabajo">Lugar <p-sortIcon
+                <th  style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_lugar_trabajo">Lugar <p-sortIcon
                         field="contexto_lugar_trabajo"></p-sortIcon></th>
 
             </tr>
@@ -101,7 +96,7 @@
         </ng-template>
         <ng-template pTemplate="body" let-registro>
             <tr>
-                <td>
+                <td style="text-align: center;">
                     <p-tableCheckbox [value]="registro"></p-tableCheckbox>
                 </td>
                 <td>{{registro.respuesta_ocu}}</td>
@@ -144,6 +139,7 @@
 <!-- DIALOG COFIRMACION -->
 <p-dialog [(visible)]="confirmacionDialog" [style]="{width: '450px'}" header="Confirmación" [modal]="true"
     styleClass="p-fluid">
+    <br>
     <ng-template pTemplate="content">
 
         <div class="field">
