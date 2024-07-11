@@ -6,13 +6,15 @@ import { DashboardComponent } from './dashboard.component';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { KnobModule } from 'primeng/knob';
+import { DashboardUsuarioComponent } from './dashboard-usuario/dashboard-usuario.component';
 
 
 
 @NgModule({
   declarations: [
   
-    DashboardComponent
+    DashboardComponent,
+       DashboardUsuarioComponent
   ],
   imports: [
     CommonModule,

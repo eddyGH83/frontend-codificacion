@@ -141,9 +141,6 @@ export class SupervisionLoteDobleComponent implements OnInit {
 
 
 
-
-
-
   // Confirmar la supervisión
   confirmaSupervision() {
     this.codificacionService.updateCargaSupervision(
