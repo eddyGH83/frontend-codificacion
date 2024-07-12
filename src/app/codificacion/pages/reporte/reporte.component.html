@@ -183,16 +183,25 @@
             </div>
         </div>
 
-
-        <!-- 
-        <div class="col-12 md:col-12 ">
-            <div class=" p-3 h-full flex flex-column surface-card"
-                style="border-radius: 6px; border: 1px solid var(--surface-d)">
-               
-            </div>
-        </div> -->
-
-
     </div>
 
+</div>
+
+<div class="card" *ngIf="down01">
+    <h4>Descargas <i class="pi pi-download ml-2" style="font-size: 2rem"></i> </h4>
+    <hr>
+    <div class="grid">
+        <div class="col-12 md:col-3 ">
+            <div class=" p-3 h-full flex flex-column surface-card"
+                style="border-radius: 6px; border: 1px solid var(--surface-d)">
+                <span class="font-bold text-xl text-800" mb-2><i
+                        class="pi pi-file-excel text-2xl text-green-500 mr-2"></i>
+                    Descarga 1</span>
+                <div class="text-700 text-xl mb-4"> Ocupación y Actividad Económica (p49-p51, mas variables de contexto)
+                </div>
+                <button (click)="download01()" type="button" pButton label="Descargar" class="p-button-success p-3 p-button-rounded "
+                    icon="pi pi-download" iconPos="right"></button>
+            </div>
+        </div>
+    </div>
 </div>

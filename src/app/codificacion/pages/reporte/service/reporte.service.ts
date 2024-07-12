@@ -81,4 +81,8 @@ export class ReporteService {
     return this.http.get(`${this._apiUrl}/reportes/reporte12`)
   }
 
+  // Download 01
+  download01(): Observable<any> {
+    return this.http.get(`${this._apiUrl}/reportes/download01`)
+  }
 }

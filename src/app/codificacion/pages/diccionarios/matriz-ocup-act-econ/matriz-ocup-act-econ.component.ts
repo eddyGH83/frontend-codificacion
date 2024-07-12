@@ -71,13 +71,7 @@ export class MatrizOcupActEconComponent implements OnInit {
 
     this.registrosTabla();
 
-
-
-
-
   }
-
-
 
   openNew() {
     this.submitted = false;
@@ -101,7 +95,6 @@ export class MatrizOcupActEconComponent implements OnInit {
     this.registro = { ...registro };
     this.registroDialog = true;
   }
-
 
   // Tabla detalle
   registrosTabla() {
