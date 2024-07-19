@@ -122,14 +122,13 @@ export class SupervisionLoteSimpleComponent implements OnInit {
     });
 
 
-    this.rows = [
-      { nro: 10, value: 10 },
+    this.rows = [      
       { nro: 50, value: 50 },
-      { nro: 100, value: 100 },
-      { nro: 200, value: 200 },
+      { nro: 100, value: 100 },      
       { nro: 500, value: 500 },
+      { nro: 1000, value: 1000 },
     ];
-    this.selectedRow = { nro: 10, value: 10 };
+    this.selectedRow = { nro: 50, value: 50 };
 
 
     this.registrosTabla();

@@ -151,7 +151,6 @@ export class ReporteComponent implements OnInit {
         this.exportExcel();
       })
   }
-  
 
   // exportar a excel 
   exportExcel() {
