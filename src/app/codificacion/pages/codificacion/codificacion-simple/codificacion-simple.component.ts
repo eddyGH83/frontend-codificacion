@@ -153,15 +153,20 @@ export class CodificacionSimpleComponent implements OnInit {
 
     // recorrer clasificacion
     this.clasificacion.forEach(element => {
-      // La descripcion debe ser igual al input descripcion de izquierda a derecha sin importar mayusculas, minusculas y aceentos
-      if (element.descripcion.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").startsWith(this.descripcion.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))) {
+      // La descripcion debe ser similar (debe buscar subcadenas) al input descripcion sin importar mayusculas, minusculas y aceentos
+      if (element.descripcion.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(this.descripcion.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))) {
         // agregar a clasificacionAux
         this.clasificacionAux.push(element);
       }
+      
+      
     });
 
-    // ordenar por descripcion, de menor a mayor en cuanto a la longitud caracteres de la descripcion
+    // Ordenar el resultado de la busqueda por tamaño cadena de la descripcion
     this.clasificacionAux.sort((a, b) => (a.descripcion.length > b.descripcion.length) ? 1 : -1);
+
+
+
 
 
     // si el codigo no existe en la clasificacion limipar clasificacionAux
@@ -170,11 +175,6 @@ export class CodificacionSimpleComponent implements OnInit {
     }
 
   }
-
-
-
-
-
 
   // Buscar registros por el input codigo
   buscarPorCodigo() {
@@ -198,10 +198,10 @@ export class CodificacionSimpleComponent implements OnInit {
 
 
     // order por codigo ORDER BY LENGTH(codigo), codigo ASCde mayor a menor
-    //this.clasificacionAux.sort((a, b) => (a.codigo > b.codigo) ? -1 : 1);
+    // this.clasificacionAux.sort((a, b) => (a.codigo > b.codigo) ? -1 : 1);
 
 
-    // this.clasificacionAux.sort((a, b) => (a.codigo > b.codigo) ? 1 : -1);
+    this.clasificacionAux.sort((a, b) => (a.codigo > b.codigo) ? 1 : -1);
 
     // si el codigo no existe en la clasificacion limipar clasificacionAux
     if (this.codigo.length === 0) {

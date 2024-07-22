@@ -76,8 +76,8 @@
     </div>
 
     <!-- TABLA DE CODIFICACIÓN Y CATALOGOS -->
-    <p-table #dt1 [value]="clasificacionAux" dataKey="id_catalogo"  [(first)]="first"
-        styleClass="p-datatable-customers" [showCurrentPageReport]="true"
+    <p-table #dt1 [value]="clasificacionAux" dataKey="id_catalogo" [(first)]="first" styleClass="p-datatable-customers"
+        [showCurrentPageReport]="true"
         currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="15"
         [rowsPerPageOptions]="[5,10,15]" [paginator]="true" stateStorage="local">
         <ng-template pTemplate="header">
@@ -87,6 +87,7 @@
                 <th pSortableColumn="descripcion">RESPUESTA <p-sortIcon field="descripcion"></p-sortIcon></th>
                 <th>ACCIONES</th>
             </tr>
+
             <tr>
                 <th>
                     <input pInputText type="text" (keyup)="buscarPorCodigo()" [(ngModel)]="codigo"
@@ -95,6 +96,7 @@
                 <th>
                     <input pInputText type="text" (keyup)="buscarSimilaresPorDescripcion()" [(ngModel)]="descripcion"
                         placeholder="Buscar por respuesta" class="w-full">
+
                 </th>
                 <th>
                 </th>
