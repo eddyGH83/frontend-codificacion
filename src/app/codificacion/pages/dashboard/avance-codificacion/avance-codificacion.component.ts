@@ -72,7 +72,6 @@ export class AvanceCodificacionComponent implements OnInit {
       pinchZoomX: true
     }));
 
-
     let date = new Date();
     date.setHours(0, 0, 0, 0);
     let value = 100;
