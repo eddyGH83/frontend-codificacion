@@ -283,3 +283,19 @@ export class OdbcComponent implements OnInit {
 
 
 }
+
+
+
+/* 
+Me sale este error
+*/
+
+/* 
+¡Vaya!
+se ha producido un error en la página web.
+Código de error: Out of Memory
+
+mas informacion
+
+volver a cargar
+*/
