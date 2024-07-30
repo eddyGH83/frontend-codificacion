@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';  // El HostListener es para escuchar eventos en el documento
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { MatrizService } from './services/matriz.service';
 
@@ -13,6 +13,18 @@ import * as FileSaver from 'file-saver';
   styleUrls: ['./matriz-ocup-act-econ.component.scss']
 })
 export class MatrizOcupActEconComponent implements OnInit {
+
+  // Este decorador permite escuchar eventos en el documento.
+  @HostListener('document:keydown', ['$event'])
+
+  // Esta función se ejecuta cada vez que se presiona una tecla en el documento.
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.ctrlKey && (event.key === 'p' || event.key === 'P')) {
+      event.preventDefault(); // Esto previene la acción predeterminada de Ctrl+A (seleccionar todo).
+      this.openNew();
+    }
+  }
+
 
   // registros
   registros: any;
@@ -65,15 +77,14 @@ export class MatrizOcupActEconComponent implements OnInit {
   constructor(private messageService: MessageService, private matrizService: MatrizService, private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
-
-    //this.catalogosService.getCustomersMedium().then(data => this.customers1 = data);
-    //this.catalogosService.getCustomersMedium().then(data => this.customers2 = data);
-
     this.registrosTabla();
-
   }
 
+
+
+
   openNew() {
+    // alert('Ctrl + P');
     this.submitted = false;
     this.registro = {};
     this.registroDialog = true;
@@ -101,13 +112,12 @@ export class MatrizOcupActEconComponent implements OnInit {
     this.tabla_pb = true;
     this.matrizService.devuelveMatriz().subscribe(
       (data2: any) => {
-        console.table(data2.datos.rows);
+        //console.table(data2.datos.rows);
         this.tabla_pb = false;
         this.registros = data2.datos.rows;
         this.registrosAux = data2.datos.rows;
       })
   }
-
 
   // Eliminar registros
   deletetRegistro(registro: any) {
@@ -127,279 +137,33 @@ export class MatrizOcupActEconComponent implements OnInit {
     });
   }
 
+  //$event.target.value   
+  ordenar(cod_aux: any) {
 
-  buscar_codigo_ocupacion() {
-    //alert("buscar_codigo_ocupacion");
-    //this.codigo_ocupacion = '';
-    this.descripcion_ocupacion = '';
-    this.codigo_acteco = '';
-    this.descripcion_acteco = '';
-    this.usucre = '';
-    this.feccre = '';
-    this.usumod = '';
-    this.fecmod = '';
 
-    // Paginador
-    this.first = 0;
+    /* const valorCodigoOcupacion = this.inputCodigoOcupacionRef.nativeElement.value;
+    const valorCodigoActEco = this.inputCodigoActEcoRef.nativeElement.value;
 
-    // Limpiar registrosAux
-    this.registrosAux = [];
+    if (valorCodigoOcupacion.length == 0 && valorCodigoActEco.length == 0) {
+      this.registros = this.registrosAux;      
+    } */
 
-    // recorrer registros
-    this.registros.forEach(element => {
-      // El codigo debe ser igual al input codigo_ocupacion de izquierda a derecha, en caso de que el codigo_ocupacion sea null, no se debe mostrar
-      if (element.codigo_ocupacion.startsWith(this.codigo_ocupacion)) {
-        // agregar a registrosAux
-        this.registrosAux.push(element);
-      }
-    });
+    //console.log('Valor de #inputCodigoOcupacion:', valorCodigoOcupacion);
+    //console.log('Valor de #inputCodigoActEco:', valorCodigoActEco);
 
-    // ordenar por codigo registrosAux de menor tamaño de caracteres a mayor
-    this.registrosAux.sort((a, b) => (a.codigo_ocupacion.length > b.codigo_ocupacion.length) ? 1 : -1);
 
+    if (cod_aux == 'codigo_ocupacion') {
+      this.registros.sort((a, b) => (a.codigo_ocupacion.length > b.codigo_ocupacion.length) ? 1 : -1);
+    }
+
+    if (cod_aux == 'codigo_acteco') {
+      this.registros.sort((a, b) => (a.codigo_acteco.length > b.codigo_acteco.length) ? 1 : -1);
+    }
   }
 
 
 
-  buscar_descripcion_ocupacion() {
-    this.codigo_ocupacion = '';
-    //this.descripcion_ocupacion = '';
-    this.codigo_acteco = '';
-    this.descripcion_acteco = '';
-    this.usucre = '';
-    this.feccre = '';
-    this.usumod = '';
-    this.fecmod = '';
 
-    // Paginador
-    this.first = 0;
-
-    // Limpiar registrosAux
-    this.registrosAux = [];
-  }
-
-
-  buscar_codigo_acteco() {
-    this.codigo_ocupacion = '';
-    this.descripcion_ocupacion = '';
-    //this.codigo_acteco = '';
-    this.descripcion_acteco = '';
-    this.usucre = '';
-    this.feccre = '';
-    this.usumod = '';
-    this.fecmod = '';
-
-    // Paginador
-    this.first = 0;
-
-    // Limpiar registrosAux
-    this.registrosAux = [];
-
-    // recorrer registros
-    this.registros.forEach(element => {
-      // El codigo debe ser igual al input codigo_ocupacion de izquierda a derecha, en caso de que el codigo_ocupacion sea null, no se debe mostrar
-      if (element.codigo_acteco.startsWith(this.codigo_acteco)) {
-        // agregar a registrosAux
-        this.registrosAux.push(element);
-      }
-    });
-
-    // ordenar por codigo registrosAux de menor tamaño de caracteres a mayor
-    this.registrosAux.sort((a, b) => (a.codigo.length > b.codigo.length) ? 1 : -1);
-  }
-
-
-  buscar_descripcion_acteco() {
-    this.codigo_ocupacion = '';
-    this.descripcion_ocupacion = '';
-    this.codigo_acteco = '';
-    //this.descripcion_acteco = '';
-    this.usucre = '';
-    this.feccre = '';
-    this.usumod = '';
-    this.fecmod = '';
-
-    // Paginador
-    this.first = 0;
-
-    // Limpiar registrosAux
-    this.registrosAux = [];
-
-  }
-
-
-  buscar_usucre() {
-    this.codigo_ocupacion = '';
-    this.descripcion_ocupacion = '';
-    this.codigo_acteco = '';
-    this.descripcion_acteco = '';
-    //this.usucre = '';
-    this.feccre = '';
-    this.usumod = '';
-    this.fecmod = '';
-
-    // Paginador
-    this.first = 0;
-
-    // Limpiar registrosAux
-    this.registrosAux = [];
-  }
-
-
-  buscar_feccre() {
-    this.codigo_ocupacion = '';
-    this.descripcion_ocupacion = '';
-    this.codigo_acteco = '';
-    this.descripcion_acteco = '';
-    this.usucre = '';
-    //this.feccre = '';
-    this.usumod = '';
-    this.fecmod = '';
-
-    // Paginador
-    this.first = 0;
-
-    // Limpiar registrosAux
-    this.registrosAux = [];
-  }
-
-
-  buscar_usumod() {
-    this.codigo_ocupacion = '';
-    this.descripcion_ocupacion = '';
-    this.codigo_acteco = '';
-    this.descripcion_acteco = '';
-    this.usucre = '';
-    this.feccre = '';
-    //this.usumod = '';
-    this.fecmod = '';
-
-    // Paginador
-    this.first = 0;
-
-    // Limpiar registrosAux
-    this.registrosAux = [];
-  }
-
-
-  buscar_fecmod() {
-    this.codigo_ocupacion = '';
-    this.descripcion_ocupacion = '';
-    this.codigo_acteco = '';
-    this.descripcion_acteco = '';
-    this.usucre = '';
-    this.feccre = '';
-    this.usumod = '';
-    //this.fecmod = '';
-
-    // Paginador
-    this.first = 0;
-
-    // Limpiar registrosAux
-    this.registrosAux = [];
-  }
-
-
-
-  /* 
-    // Buscar por el campo codigo
-  buscarPorCodigo() {
-
-    // limpiar los demas campos
-    this.descripcion = '';
-    this.feccre = '';
-    this.usucre = '';
-    this.fecmod = '';
-    this.usumod = '';
-
-    // Paginador
-    this.first = 0;
-
-    // Limpiar registrosAux
-    this.registrosAux = [];
-
-    // recorrer registros
-    this.registros.forEach(element => {
-      // El codigo debe ser igual al input codigo de izquierda a derecha, en caso de que el codigo sea null, no se debe mostrar
-      if (element.codigo.startsWith(this.codigo)) {
-        // agregar a registrosAux
-        this.registrosAux.push(element);
-      }
-    });
-
-    // ordenar por codigo registrosAux de menor tamaño de caracteres a mayor
-    this.registrosAux.sort((a, b) => (a.codigo.length > b.codigo.length) ? 1 : -1);
-
-  }
-
-  // Buscar por el campo descripcion
-  buscarPorDescripcion() {
-
-    // limpiar los demas campos
-    this.codigo = '';
-    this.feccre = '';
-    this.usucre = '';
-    this.fecmod = '';
-    this.usumod = '';
-
-    // Paginador
-    this.first = 0;
-
-    // Limpiar registrosAux
-    this.registrosAux = [];
-
-    // hacer la busqueda en los registros por descripcion
-    this.registros.forEach(element => {
-      if (element.descripcion.toLowerCase().includes(this.descripcion.toLowerCase())) {
-        // agregar a registrosAux
-        this.registrosAux.push(element);
-      }
-    });
-
-  }
-  */
-
-  // FILTRO PERSONANALIZADO: de izquierda a derecha codigo_ocupacion
-  filtrarIzquierdaADerechaCodOcup(evento: any) {
-    // si el valor del input es vacío, entonces mostrar todos los registros
-    if (!evento.target.value) { this.registros = this.registrosAux; return; }
-
-    // el input para el codigo_acteco de busqueda debe estar vacío una vez que se haya ingresado un valor en el input de busqueda de codigo_ocupacion
-    const codigoActecoInput = document.getElementById('codigo_acteco') as HTMLInputElement;
-    codigoActecoInput.value = '';
-
-    // Obtener el valor del input
-    const valorBusqueda = evento.target.value;
-
-    // tamaño de la cadena ingresada
-    const tamanoCadena = valorBusqueda.length;
-
-    console.log("tamanoCadena", tamanoCadena);
-
-    // Buscar todos los registros con el tamaño de la cadena ingresada en el input de busqueda de codigo_ocupacion, y que coincidan con el valor ingresado en el input de busqueda de codigo_ocupacion
-    this.registros = this.registrosAux.filter((item: any) => item.codigo_ocupacion.length === tamanoCadena && item.codigo_ocupacion.startsWith(valorBusqueda));
-
-
-  }
-
-  // FILTRO PERSONANALIZADO: de izquierda a derecha codigo_acteco
-  filtrarIzquierdaADerechaCodActeco(evento: any) {
-    // si el valor del input es vacío, entonces mostrar todos los registros
-    if (!evento.target.value) { this.registros = this.registrosAux; return; }
-
-    // el input para el codigo_ocupacion de busqueda debe estar vacío una vez que se haya ingresado un valor en el input de busqueda de codigo_acteco
-    const codigoOcupacionInput = document.getElementById('codigo_ocupacion') as HTMLInputElement;
-    codigoOcupacionInput.value = '';
-
-    // Obtener el valor del input
-    const valorBusqueda = evento.target.value;
-
-    // tamaño de la cadena ingresada
-    const tamanoCadena = valorBusqueda.length;
-
-    // Buscar todos los registros con el tamaño de la cadena ingresada en el input de busqueda de codigo_acteco, y que coincidan con el valor ingresado en el input de busqueda de codigo_acteco
-    this.registros = this.registrosAux.filter((item: any) => item.codigo_acteco.length === tamanoCadena && item.codigo_acteco.startsWith(valorBusqueda));
-  }
 
 
 

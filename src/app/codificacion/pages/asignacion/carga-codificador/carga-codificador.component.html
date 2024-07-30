@@ -2,7 +2,7 @@
 
     <p-toast></p-toast>
 
-    <h4>Asignación de carga a codificadorddes</h4>
+    <h4>Asignación de carga a Codificadores</h4>
     <hr>
     <label for="username2">Departamento: </label>
     <p-dropdown (onChange)="registrosTabla()" [options]="departamentos" [(ngModel)]="selectedDepartamento"
@@ -47,7 +47,6 @@
 
                     <button pButton pRipple label="Asignar" icon="pi pi-user-plus"
                         class="p-button-outlined p-button-secondary mr-3" disabled *ngIf="reg.total_carga==0 "></button>
-
 
                     <button (click)="reAsignarCarga(reg)" pButton pRipple label="Reasignar" icon="pi pi-user-minus"
                         class="p-button-danger mr-2" 

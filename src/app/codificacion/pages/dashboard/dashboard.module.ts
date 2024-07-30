@@ -7,6 +7,8 @@ import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { KnobModule } from 'primeng/knob';
 import { DashboardUsuarioComponent } from './dashboard-usuario/dashboard-usuario.component';
+import { AvanceCodificacionComponent } from './avance-codificacion/avance-codificacion.component';
+import { CardModule } from 'primeng/card';
 
 
 
@@ -14,14 +16,16 @@ import { DashboardUsuarioComponent } from './dashboard-usuario/dashboard-usuario
   declarations: [
   
     DashboardComponent,
-       DashboardUsuarioComponent
+       DashboardUsuarioComponent,
+       AvanceCodificacionComponent
   ],
   imports: [
     CommonModule,
     DashboardRoutingModule,
     ButtonModule,
     FormsModule,
-    KnobModule
+    KnobModule,
+    CardModule
   ]
 })
 export class DashboardModule { }

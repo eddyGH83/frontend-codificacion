@@ -7,16 +7,17 @@
         (click)="registrosTabla()" pTooltip="Actualizar registros" tooltipPosition="bottom"></button>
 
     <button pButton pRipple type="button" icon="pi pi-file-excel" label="Exportar" class="p-button-success"
-        (click)="exportExcel()" pTooltip="Exportar registros a excel (.xlsx)" tooltipPosition="right"></button> <br>
+        (click)="exportExcel()" pTooltip="Exportar registros a excel (.xlsx)" tooltipPosition="right"></button>
+    <br>
     <br>
 
     <!-- {{ | json }} -->
     <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
 
-    <p-table #dt_matriz [value]="registrosAux" dataKey="id" [showCurrentPageReport]="true"
+    <p-table #dt_matriz [value]="registros" dataKey="id" [showCurrentPageReport]="true"
         currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
-        [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" [tableStyle]="{'min-width': '50rem'}"  [(first)]="first">
-        <ng-template pTemplate="header" >
+        [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" [tableStyle]="{'min-width': '50rem'}" [(first)]="first">
+        <ng-template pTemplate="header">
             <!--  -->
             <tr>
                 <th style="width:10%" pSortableColumn="codigo_ocupacion">CÓDIGO <br> OCUP.<p-sortIcon
@@ -43,58 +44,47 @@
                         tooltipPosition="top"></button></th>
             </tr>
             <!--  -->
-            <!-- 
-             <th>
-                    <input pInputText type="text" (keyup)="buscarPorDescripcion()" [(ngModel)]="descripcion"
-                     placeholder="Buscar por descripción"
-                        class="p-column-filter">
-                </th>
-            -->
             <tr>
-                <th style="width:10%">
-                    <input style="width:100%" pInputText type="text" (keyup)="buscar_codigo_ocupacion()"
-                        [(ngModel)]="codigo_ocupacion" placeholder="Buscar por código" class="p-column-filter">
+                <th>
+                    <input pInputText type="text"
+                        (input)="dt_matriz.filter($event.target.value, 'codigo_ocupacion', 'startsWith'); ordenar('codigo_ocupacion')"
+                        [value]="dt_matriz.filters['codigo_ocupacion']?.value" placeholder="Buscar por código"
+                        class="w-full">
                 </th>
                 <th style="width:10%">
-                    <input style="width:100%" pInputText type="text"
+                    <input pInputText type="text"
                         (input)="dt_matriz.filter($event.target.value, 'descripcion_ocupacion', 'contains')"
                         [value]="dt_matriz.filters['descripcion_ocupacion']?.value" placeholder="Buscar por descripción"
-                        class="p-column-filter">
+                        class="w-full">
                 </th>
                 <th style="width:10%">
-                    <input style="width:100%" pInputText type="text" (input)="filtrarIzquierdaADerechaCodActeco($event)"
-                        id="codigo_acteco" [value]="dt_matriz.filters['codigo_acteco']?.value"
-                        placeholder="Buscar por código" class="p-column-filter">
+                    <input pInputText type="text"
+                        (input)="dt_matriz.filter($event.target.value, 'codigo_acteco', 'startsWith'); ordenar('codigo_acteco')"
+                        [value]="dt_matriz.filters['codigo_acteco']?.value" placeholder="Buscar por código"
+                        class="w-full">
                 </th>
                 <th style="width:10%">
-                    <input style="width:100%" pInputText type="text"
+                    <input pInputText type="text"
                         (input)="dt_matriz.filter($event.target.value, 'descripcion_acteco', 'contains')"
                         [value]="dt_matriz.filters['descripcion_acteco']?.value" placeholder="Buscar por descripción"
-                        class="p-column-filter">
+                        class="w-full">
                 </th>
                 <th style="width:10%">
-                    <input style="width:100%" pInputText type="text"
-                        (input)="dt_matriz.filter($event.target.value, 'feccre', 'contains')"
-                        [value]="dt_matriz.filters['feccre']?.value" placeholder="Buscar por fecha"
-                        class="p-column-filter">
+                    <input pInputText type="text" (input)="dt_matriz.filter($event.target.value, 'feccre', 'contains')"
+                        [value]="dt_matriz.filters['feccre']?.value" placeholder="Buscar por fecha" class="w-full">
                 </th>
                 <th style="width:10%">
-                    <input style="width:100%" pInputText type="text"
-                        (input)="dt_matriz.filter($event.target.value, 'usucre', 'contains')"
-                        [value]="dt_matriz.filters['usucre']?.value" placeholder="Buscar el creador"
-                        class="p-column-filter">
+                    <input pInputText type="text" (input)="dt_matriz.filter($event.target.value, 'usucre', 'contains')"
+                        [value]="dt_matriz.filters['usucre']?.value" placeholder="Buscar por creador" class="w-full">
                 </th>
                 <th style="width:10%">
-                    <input style="width:100%" pInputText type="text"
-                        (input)="dt_matriz.filter($event.target.value, 'femod', 'contains')"
-                        [value]="dt_matriz.filters['femod']?.value" placeholder="Buscar por fecha"
-                        class="p-column-filter">
+                    <input pInputText type="text" (input)="dt_matriz.filter($event.target.value, 'femod', 'contains')"
+                        [value]="dt_matriz.filters['femod']?.value" placeholder="Buscar por fecha" class="w-full">
                 </th>
                 <th style="width:10%">
-                    <input style="width:100%" pInputText type="text"
-                        (input)="dt_matriz.filter($event.target.value, 'usumod', 'contains')"
+                    <input pInputText type="text" (input)="dt_matriz.filter($event.target.value, 'usumod', 'contains')"
                         [value]="dt_matriz.filters['usumod']?.value" placeholder="Buscar por el modificador"
-                        class="p-column-filter">
+                        class="w-full">
                 </th>
                 <th style="width:10%">Acciones</th>
             </tr>
