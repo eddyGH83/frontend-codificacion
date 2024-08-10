@@ -140,7 +140,7 @@ export class SupervisionLoteSimpleComponent implements OnInit {
     this.tabla1_pb = true;
     this.codificacionService.devuelveCargaParaSupervision({ id_usuario: localStorage.getItem('id_usuario'), tabla_id: localStorage.getItem("tabla_id_sup") }).subscribe(
       (data2: any) => {
-        console.table(data2.datos);
+        // console.table(data2.datos);
         //console.table(data2.catalogo);
 
         this.registros = data2.datos;

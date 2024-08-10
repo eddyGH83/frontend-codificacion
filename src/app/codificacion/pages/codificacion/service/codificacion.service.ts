@@ -20,9 +20,6 @@ export class CodificacionService {
 
 
 
-
-
-
   // CODIFICACION SIMPLE - DOBLE  
   cargarParaCodificarSimple(body: object): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/cargarParaCodificarSimple`, body)

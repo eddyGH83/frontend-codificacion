@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CodificacionService } from '../service/codificacion.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -180,9 +180,9 @@ export class SupervisionLoteDobleComponent implements OnInit {
 
 
 
- 
 
-  borrarSeleccion(){
+
+  borrarSeleccion() {
     this.selectedRegistros = [];
   }
 
@@ -301,6 +301,8 @@ export class SupervisionLoteDobleComponent implements OnInit {
             id_usuario: localStorage.getItem('login'),
             tabla_id: localStorage.getItem("tabla_id_sup"),
             id_registro: this.idPreguntaOcuActItem,
+            codigocodifOcuItem:this.codigocodifOcuItem,
+            codigocodifActItem:this.codigocodifActItem
           }
         ).subscribe(
           (data2: any) => {
@@ -375,13 +377,13 @@ export class SupervisionLoteDobleComponent implements OnInit {
   }
 
 
-  
+
   guardarSupervision() {
     if (this.tabla_pb) { return }
 
     // calcular el total de registros seleccionados si es undefined o null 
     if (this.selectedRegistros === undefined || this.selectedRegistros === null || this.selectedRegistros.length === 0) {
-      this.selectedRegistros=[];
+      this.selectedRegistros = [];
       this.messageService.add({ severity: 'error', summary: 'Mensaje:', detail: 'No hay registros seleccionados para guardar', life: 2500 });
     } else {
       this.nroRegSelected = this.selectedRegistros.length;
