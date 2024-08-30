@@ -19,6 +19,9 @@ export class Reporte0Component implements OnInit {
   registros: any;
   registrosConFiltro: any;
 
+  // total depto
+  total_depto: any = 0;
+
   // Busqueda
   busqueda: any;
 
@@ -31,7 +34,7 @@ export class Reporte0Component implements OnInit {
     reporte1_pb: false
   };
 
-  constructor(private router: Router, private reporteService: ReporteService,private messageService: MessageService) { }
+  constructor(private router: Router, private reporteService: ReporteService, private messageService: MessageService) { }
 
   ngOnInit(): void {
 
@@ -61,6 +64,7 @@ export class Reporte0Component implements OnInit {
       (data2: any) => {
         this.progressBar.reporte_pb = false;
         this.registros = data2.datos//.resultado//data2.datos.rows;
+        this.total_depto =  data2.total_depto;
         console.table(this.registros);
 
         //this.registrosConFiltro = this.registros.filter((res: any) => res.catalogo == this.selectedDepartamento.cod_depto);       
@@ -73,7 +77,7 @@ export class Reporte0Component implements OnInit {
    } */
 
 
-    
+
   // simbolo de carita feliz y otros emojis
   /* caritaFeliz(value: any) {
     if (value == 1) {
@@ -96,8 +100,8 @@ export class Reporte0Component implements OnInit {
   exportExcel() {
     //alert('exportar a excel');
     // verificamos la cantidad de registros
-    if (this.registros.length == 0) {      
-      this.messageService.add({severity:'error', summary: 'Error', detail: 'No hay registros para exportar 😞'});
+    if (this.registros.length == 0) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No hay registros para exportar 😞' });
       return;
     }
     let date = new Date();
