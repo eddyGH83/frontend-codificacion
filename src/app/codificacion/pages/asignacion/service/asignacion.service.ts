@@ -47,7 +47,7 @@ export class AsignacionService {
     return this.http.post(`${this._apiUrl}/codificacion/preguntasPorDepartamentoCod`, body)
   }
 
-  //
+  // Lista la carga para AUTOMATICO_NORMALIZADO, AUTOMATICO_NORMDOBLE
   preguntasPorDepartamentoSup(body: object): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/preguntasPorDepartamentoSup`, body)
   }

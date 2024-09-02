@@ -198,7 +198,7 @@ export class CargaSupervisorComponent implements OnInit {
     }
   }
 
-  guardarAsignacion() {
+  guardarAsignacionSup() {
     this.array_asg = [];
 
     for (let j in this.usuarios) {

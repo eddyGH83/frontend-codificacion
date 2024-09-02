@@ -38,6 +38,7 @@ export class CodificacionSimpleComponent implements OnInit {
   departamentoItem: any;
   idPregunta: any;
   secuencial: any;
+  edad: any;
   respuestaItem: any;
   estadoItem: any;
   nAux: number = 0;
@@ -69,6 +70,7 @@ export class CodificacionSimpleComponent implements OnInit {
     this.departamentoItem = '';
     this.idPregunta = '';
     this.secuencial = '';
+    this.edad = '';
     this.respuestaItem = '';
     this.estadoItem = '';
     this.nAux = 0;
@@ -221,6 +223,7 @@ export class CodificacionSimpleComponent implements OnInit {
         this.departamentoItem = this.carga[i].departamento;
         this.idPregunta = this.carga[i].id_pregunta;
         this.secuencial = this.carga[i].secuencial;
+        this.edad = this.carga[i].edad;
         this.respuestaItem = this.carga[i].respuesta;
         this.estadoItem = this.carga[i].estado;
         this.nAux = i + 1;
@@ -243,6 +246,7 @@ export class CodificacionSimpleComponent implements OnInit {
     this.departamentoItem = this.carga[0].departamento;
     this.idPregunta = this.carga[0].id_pregunta;
     this.secuencial = this.carga[0].secuencial;
+    this.edad = this.carga[0].edad;
     this.respuestaItem = this.carga[0].respuesta;
     this.estadoItem = this.carga[0].estado;
     this.nAux = 1;
@@ -263,6 +267,7 @@ export class CodificacionSimpleComponent implements OnInit {
         this.departamentoItem = this.carga[i].departamento;
         this.idPregunta = this.carga[i].id_pregunta;
         this.secuencial = this.carga[i].secuencial;
+        this.edad = this.carga[i].edad;
         this.respuestaItem = this.carga[i].respuesta;
         this.estadoItem = this.carga[i].estado;
         this.nAux = i + 1;
@@ -288,6 +293,7 @@ export class CodificacionSimpleComponent implements OnInit {
       this.departamentoItem = this.carga[this.nAux].departamento;
       this.idPregunta = this.carga[this.nAux].id_pregunta;
       this.secuencial = this.carga[this.nAux].secuencial;
+      this.edad = this.carga[this.nAux].edad;
       this.respuestaItem = this.carga[this.nAux].respuesta;
       this.estadoItem = this.carga[this.nAux].estado;
       this.nAux++;

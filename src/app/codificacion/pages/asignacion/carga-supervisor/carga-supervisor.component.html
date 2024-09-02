@@ -70,7 +70,7 @@
     </p-table>
 
     <!-- Dialog asignacion -->
-    <p-dialog [(visible)]="asignacionDialog" [style]="{width: '550px'}" header="Asignación de carga" [modal]="true"
+    <p-dialog [(visible)]="asignacionDialog" [style]="{width: '650px'}" header="Asignación de carga" [modal]="true"
         styleClass="p-fluid">
 
         <div id="p-pregunta">
@@ -91,7 +91,7 @@
                     <tr>
                         <th> <p-checkbox (onChange)="seleccionarTodo()" class="mr-2" [(ngModel)]="checkedTodo"
                                 [binary]="true"></p-checkbox> Seleccionar todo</th>
-                        <th>Codificadores</th>
+                        <th>Supervisores</th>
                         <th style="width: 20%;">Cantidad</th>
                     </tr>
                 </ng-template>
@@ -114,7 +114,7 @@
             <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text "
                 (click)="asignacionDialog=false; registrosTabla() "></button>
             <button pButton pRipple label="Asignar" icon="pi pi-check" class="p-button-text mr-2"
-                (click)="guardarAsignacion()"></button>
+                (click)="guardarAsignacionSup()"></button>
         </ng-template>
 
     </p-dialog>
