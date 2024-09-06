@@ -75,6 +75,12 @@ export class SupervisionLoteSimpleComponent implements OnInit {
   // progresBar
   tabla1_pb: boolean = true;
 
+
+
+  // Progress Bar
+  tabla_pb: boolean = true;
+
+
   /* 
   * R E C O D I F I C A C I O N
   */
@@ -95,6 +101,7 @@ export class SupervisionLoteSimpleComponent implements OnInit {
   estadoItem: any;
   usucodificadorItem: any;
   porRecodificar: number = 0;
+  varContextoItem: any;
 
   // 
   catalogo: any;
@@ -122,9 +129,9 @@ export class SupervisionLoteSimpleComponent implements OnInit {
     });
 
 
-    this.rows = [      
+    this.rows = [
       { nro: 50, value: 50 },
-      { nro: 100, value: 100 },      
+      { nro: 100, value: 100 },
       { nro: 500, value: 500 },
       { nro: 1000, value: 1000 },
     ];
@@ -135,21 +142,23 @@ export class SupervisionLoteSimpleComponent implements OnInit {
 
   }
 
-  // 
-  registrosTabla() {
-    this.tabla1_pb = true;
-    this.codificacionService.devuelveCargaParaSupervision({ id_usuario: localStorage.getItem('id_usuario'), tabla_id: localStorage.getItem("tabla_id_sup") }).subscribe(
-      (data2: any) => {
-        // console.table(data2.datos);
-        //console.table(data2.catalogo);
 
-        this.registros = data2.datos;
-        this.catalogo = data2.catalogo;
-        this.tabla1_pb = false;
-      })
-
+  borrarSeleccion() {
+    this.selectedRegistros = [];
   }
 
+
+
+  // 
+  registrosTabla() {
+    this.tabla_pb = true;
+    this.codificacionService.devuelveCargaParaSupervision({ id_usuario: localStorage.getItem('id_usuario'), tabla_id: localStorage.getItem("tabla_id_sup") }).subscribe(
+      (data2: any) => {
+        this.registros = data2.datos;
+        this.catalogo = data2.catalogo;
+        this.tabla_pb = false;
+      })
+  }
 
 
 
@@ -162,6 +171,7 @@ export class SupervisionLoteSimpleComponent implements OnInit {
   }
 
   guardarSupervision() {
+    if (this.tabla_pb) { return }
     // calcular el total de registros seleccionados si es undefined o null 
     if (this.selectedRegistros === undefined || this.selectedRegistros === null || this.selectedRegistros.length === 0) {
       this.nroRegSelected = 0;
@@ -172,7 +182,6 @@ export class SupervisionLoteSimpleComponent implements OnInit {
     }
 
   }
-
 
 
   // Confirmar la supervisión
@@ -186,11 +195,17 @@ export class SupervisionLoteSimpleComponent implements OnInit {
     ).subscribe(
       (data2: any) => {
         this.confirmacionDialog = false;
-        this.registrosTabla();
+        //this.registrosTabla();
         this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: data2.message, life: 2500 });
 
-        //this.tabla_pb = false;
-        //this.registros = data2.datos;
+        // Elimianr los registros selectedRegistros
+        this.registros = this.registros.filter(registro =>
+          !this.selectedRegistros.includes(registro)
+        );
+
+        // Vaciar selectedRegistros
+        this.selectedRegistros = [];
+
       })
   }
 
@@ -199,21 +214,6 @@ export class SupervisionLoteSimpleComponent implements OnInit {
   cancelarYsalir() {
     this.router.navigate(['/codificacion/supervisar-codificacion']);
   }
-
-
-  /*  onRowSelect(event) {
-     alert('Row select');
-     // Verifica si ya hay diez elementos seleccionados
-     if (this.selectedRegistros.length > 10) {
-       // Si hay más de diez, elimina el último elemento añadido
-       this.selectedRegistros.pop();
-       // Opcionalmente, muestra un mensaje al usuario
-       alert('Solo puedes seleccionar hasta diez elementos.');
-     }
-   } */
-
-
-
 
 
   /* 
@@ -233,7 +233,9 @@ export class SupervisionLoteSimpleComponent implements OnInit {
 
 
 
-  recodificaicion() {
+  recodificacion() {
+    if (this.tabla_pb) { return }
+
     console.table(this.selectedRegistros);
     if (this.selectedRegistros === undefined || this.selectedRegistros === null || this.selectedRegistros.length === 0) {
       this.messageService.add({ severity: 'error', summary: 'Mensaje:', detail: 'No hay registros seleccionados para recodificar', life: 2500 });
@@ -260,6 +262,7 @@ export class SupervisionLoteSimpleComponent implements OnInit {
     this.codigocodifItem = this.selectedRegistros[0].codigocodif;
     this.estadoItem = this.selectedRegistros[0].estado;
     this.usucodificadorItem = this.selectedRegistros[0].usucodificador;
+    this.varContextoItem = this.selectedRegistros[0].var_contexto;
     this.contAux = 0;
 
     // 
@@ -286,6 +289,7 @@ export class SupervisionLoteSimpleComponent implements OnInit {
       this.codigocodifItem = this.selectedRegistros[this.contAux].codigocodif;
       this.estadoItem = this.selectedRegistros[this.contAux].estado;
       this.usucodificadorItem = this.selectedRegistros[this.contAux].usucodificador;
+      this.varContextoItem = this.selectedRegistros[this.contAux].var_contexto;
 
       //
       this.codigo = '' // this.selectedRegistros[this.contAux].codigocodif;
@@ -389,17 +393,18 @@ export class SupervisionLoteSimpleComponent implements OnInit {
   }
 
 
-  confirmarCodifiacionCorrecto() {
+
+  confirmarSupervisionCorrecto() {
     this.confirmationService.confirm({
-      message: '<strong>Respuesta: </strong>' + this.respuestaItem + '<br><strong>Código: </strong>' + this.codigocodifItem,
+      message: '<strong>Respuesta: </strong>' + this.respuestaItem + '<br><strong>Código: </strong>' + this.codigocodifItem + '<br><strong>Usuario: </strong>' + this.usucodificadorItem,
       header: 'Confirmación',
       icon: 'pi pi-check-square',
       accept: () => {
 
         const body = {
           id_registro: this.idPreguntaItem,
+          codigocodif: this.codigocodifItem,
           tabla_id: localStorage.getItem('tabla_id_sup'),
-          //codigocodif: registro.codigo,
           usuverificador: localStorage.getItem('login'),
         }
 
@@ -419,6 +424,7 @@ export class SupervisionLoteSimpleComponent implements OnInit {
               }
             });
 
+
             // Si por recodificar es igual a 0, cerrar el dialogo de recodificación
             if (this.porRecodificar === 0) {
               // Cerrar el dialogo de recodificación
@@ -427,6 +433,8 @@ export class SupervisionLoteSimpleComponent implements OnInit {
 
             // Mensaje de éxito
             this.messageService.add({ severity: 'success', summary: 'Success', detail: data2.message, life: 1500 });
+
+
 
             // El paginador se reinicia
             this.first = 0;
@@ -439,23 +447,34 @@ export class SupervisionLoteSimpleComponent implements OnInit {
   }
 
 
-  confirmarCodifiacion(registro: any) {
-    this.confirmationService.confirm({
+  codificar(registro: any) {
+    // Modificar datos actuales
+    this.estadoItem = 'CODIFICADO';
+    this.codigocodifItem = registro.codigo;
+    this.usucodificadorItem = localStorage.getItem('login');
+    //this.respuestaItem = registro.descripcion;
+
+    // Confirmar la codificación
+    /* this.confirmationService.confirm({
       message: '<strong>Codigo: </strong>' + registro.codigo + '<br><strong>Descripción: </strong>' + registro.descripcion,
       header: 'Confirmación',
       icon: 'pi pi-check-square',
       accept: () => {
-
-
       }
-    });
+    }); */
   }
 
-
+  
   // cerrar el dialogo de recodificación (por todos los modos de cerrar el dialogo)
   onDialogRecodificacionClose() {
-    // cerrar el dialogo de recodificación
-    this.registrosTabla();
+    // Eliminar de this.registros todos registros con estado = 'VERIFICADO'
+    this.registros = this.registros.filter(registro =>
+      registro.estado !== 'VERIFICADO'
+    );
+    
+
+    // cerrar el dialogo de recodificación 
+    // this.registrosTabla();
     // deselecciona los registros seleccionados
     this.selectedRegistros = [];
     // contador auxiliar

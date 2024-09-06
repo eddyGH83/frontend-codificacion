@@ -38,6 +38,8 @@
                 </th>
                 <th style="width:10%" pSortableColumn="usumod"> MODIFICADOR <p-sortIcon field="usumod"></p-sortIcon>
                 </th>
+                <th style="width:10%"> NORMALIZACION 
+                </th>                
                 <!-- Bton + Nuevo -->
                 <th style="width:10%"><button pButton pRipple type="button" icon="pi pi-plus" label="Nuevo"
                         class="p-button-info" (click)="openNew()" pTooltip="Nuevo registro"
@@ -86,6 +88,7 @@
                         [value]="dt_matriz.filters['usumod']?.value" placeholder="Buscar por el modificador"
                         class="w-full">
                 </th>
+                <th></th>
                 <th style="width:10%">Acciones</th>
             </tr>
         </ng-template>
@@ -126,7 +129,11 @@
                     <span class="p-column-title">MODIFICADOR</span>
                     <span class="image-text">{{reg.usumod }}</span>
                 </td>
-
+                <td>
+                    <span class="p-column-title">NORMALIZACION</span>
+                    <span class="image-text"><strong>ocu: </strong> {{reg.desc_ocu_norm }}</span> <br>
+                    <span class="image-text"><strong>act: </strong> {{reg.desc_acteco_norm }}</span>
+                </td>
 
                 <!--  -->
                 <td>

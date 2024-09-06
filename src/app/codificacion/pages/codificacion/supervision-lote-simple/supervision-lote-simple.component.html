@@ -1,7 +1,9 @@
 <p-toast></p-toast>
 
 <div class="card">
-    <h5>Supervisión</h5>
+    <h4> <a [routerLink]="['/codificacion/supervisar-codificacion']">Variables para supervisión | </a> Supervisión
+        simple
+    </h4>
     <div id="p-pregunta">
         <span class="image-text"><strong>Pregunta </strong>
             <p-chip label="{{preguntasSelected.nro_preg}}"
@@ -10,32 +12,33 @@
     <br>
 
     <!-- {{preguntasSelected | json}} -->
+    <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
     <p-toolbar styleClass="mb-4 gap-2">
         <ng-template pTemplate="left">
-            <!-- <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
-            <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button> -->
+
             <strong class="mr-2 ml-3">Mostrar: </strong> <p-dropdown [options]="rows" [(ngModel)]="selectedRow"
                 optionLabel="value"></p-dropdown>
-            <p-button (click)="registrosTabla()" label="Actualizar" icon="pi pi-refresh" iconPos="left" class="ml-2"
-                styleClass="p-button-warning" pTooltip="Actualizar registros" tooltipPosition="right"></p-button>
-            <!-- <p-button (click)="seleccionarGrupoDeRegistros()" icon="pi pi-check-square" iconPos="left" class="ml-2"
-                styleClass="p-button-primary" pTooltip="Selecciona los {{selectedRow.value}} primeros registros"
-                tooltipPosition="top"></p-button> -->
-            <p-checkbox class="ml-4" [(ngModel)]="checkedSelect" [binary]="true"
-                (onChange)="seleccionarGrupoDeRegistros()" inputId="binary"></p-checkbox>
-            <label class="ml-2" for="binary">Seleccionar los primeros <strong>{{selectedRow.value}}</strong>
-                registros</label>
+
+
+            <p-button (click)="borrarSeleccion()" icon="pi pi-stop" iconPos="left" class="ml-2"
+                styleClass="p-button-info" pTooltip="Deseleccionar todo" tooltipPosition="top"></p-button>
+
+
+            <label class="ml-2" for="binary"> <strong>{{(selectedRegistros?.length ? selectedRegistros.length : 0) |
+                    number}}</strong> registros seleccionados de <strong>{{(registros?.length ? registros.length : 0) |
+                    number}}</strong></label>
 
             <!-- {{registros.length}} {{selectedRegistros | json}} -->
         </ng-template>
 
         <ng-template pTemplate="right">
-            <p-button label="Recodificación" (click)="recodificaicion()" icon="pi pi-check-square" iconPos="left"
-                styleClass="p-button-secondary" class="mr-2" pTooltip="Recodificación"
+            <p-button label="Recodificación" (click)="recodificacion()" icon="pi pi-check-square" iconPos="left"
+                [disabled]="tabla_pb" styleClass="p-button-secondary" class="mr-2" pTooltip="Recodificación"
                 tooltipPosition="left"></p-button>
 
             <p-button label="Guardar" (click)="guardarSupervision()" icon="pi pi-save" iconPos="left"
-                styleClass="p-button-info" class="mr-2" pTooltip="Guardar Supervisión" tooltipPosition="top"></p-button>
+                [disabled]="tabla_pb" styleClass="p-button-info" class="mr-2" pTooltip="Guardar Supervisión"
+                tooltipPosition="top"></p-button>
 
             <p-button label="Cancelar" (click)="cancelarYsalir()" icon="pi pi-times" iconPos="left"
                 styleClass="p-button-danger" pTooltip="Cancelar y salir" tooltipPosition="top"></p-button>
@@ -44,14 +47,10 @@
     </p-toolbar>
 
 
-
-
-
-    <p-progressBar *ngIf="tabla1_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
     <!-- TABLA -->
     <p-table #dt [value]="registros" [rows]="selectedRow.value" [paginator]="true" [(selection)]="selectedRegistros"
         [rowHover]="true" currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros"
-        [showCurrentPageReport]="true">
+        [showCurrentPageReport]="true" [selectionPageOnly]="true" [loading]="tabla_pb">
         <ng-template pTemplate="header">
             <tr>
                 <th style="width: 4rem">
@@ -188,8 +187,9 @@
                     <ng-template pTemplate="header">
                         <tr>
                             <th style="background-color: rgb(16, 177, 99); color: rgb(42, 42, 42);">VARIABLES DE
-                                CONTEXTO</th>
+                                CONTEXTO</th>                           
                         </tr>
+                        <p [innerHTML]="varContextoItem"></p>
                     </ng-template>
                 </p-table>
                 <br>
@@ -204,10 +204,9 @@
             class="p-button-info mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
         <button (click)="siguiente()" pButton pRipple label="Siguiente" icon="pi pi-forward"
             class="p-button-info mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
-        <button (click)="confirmarCodifiacionCorrecto()" pButton pRipple label="Correcto" icon="pi pi-check"
+        <button (click)="confirmarSupervisionCorrecto()" pButton pRipple label="Correcto" icon="pi pi-check"
             class="p-button-primary mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
     </div>
-
 
     <!-- TABLA DE CODIFICACIÓN Y CATALOGOS -->
     <p-table #dt1 [value]="catalogoAux" [(first)]="first" styleClass="p-datatable-customers"
@@ -246,7 +245,7 @@
                 </td>
 
                 <td>
-                    <button (click)="confirmarCodifiacion(reg)" styleClass="p-button-lg" pTooltip="Codificar"
+                    <button (click)="codificar(reg)" styleClass="p-button-lg" pTooltip="Codificar"
                         tooltipPosition="right" pButton pRipple icon="pi pi-check" class="p-button-info mr-2"></button>
                 </td>
             </tr>

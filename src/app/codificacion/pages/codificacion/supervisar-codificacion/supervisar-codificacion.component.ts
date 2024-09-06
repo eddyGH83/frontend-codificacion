@@ -18,8 +18,8 @@ export class SupervisarCodificacionComponent implements OnInit {
   registro: any;
 
 
-    // Progress Bar
-    tabla_pb: boolean = false;
+  // Progress Bar
+  tabla_pb: boolean = false;
 
 
   constructor(private router: Router, private messageService: MessageService, private codificacionService: CodificacionService, private confirmationService: ConfirmationService) { }
@@ -72,7 +72,7 @@ export class SupervisarCodificacionComponent implements OnInit {
   }
 
 
-// RECODIFICACION
+  // RECODIFICACION
 
 
 

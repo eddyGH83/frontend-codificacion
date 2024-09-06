@@ -238,7 +238,7 @@ export class SupervisionIndividualDobleComponent implements OnInit {
     this.estadoItem_ocu = 'CODIFICADO';
     this.codigocodifItem_ocu = registro.codigo;
     this.usucodificadorItem_ocu = localStorage.getItem('login');
-    this.descripcionItem_ocu = registro.descripcion;
+    //this.descripcionItem_ocu = registro.descripcion;
   }
 
 
@@ -248,7 +248,7 @@ export class SupervisionIndividualDobleComponent implements OnInit {
     this.estadoItem_act = 'CODIFICADO';
     this.codigocodifItem_act = registro.codigo;
     this.usucodificadorItem_act = localStorage.getItem('login');
-    this.descripcionItem_act = registro.descripcion;
+    //this.descripcionItem_act = registro.descripcion;
 
   }
 

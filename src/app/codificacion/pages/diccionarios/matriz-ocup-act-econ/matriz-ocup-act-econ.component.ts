@@ -112,7 +112,7 @@ export class MatrizOcupActEconComponent implements OnInit {
     this.tabla_pb = true;
     this.matrizService.devuelveMatriz().subscribe(
       (data2: any) => {
-        //console.table(data2.datos.rows);
+        console.table(data2.datos.rows);
         this.tabla_pb = false;
         this.registros = data2.datos.rows;
         this.registrosAux = data2.datos.rows;

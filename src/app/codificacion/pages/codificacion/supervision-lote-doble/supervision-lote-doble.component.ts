@@ -141,7 +141,7 @@ export class SupervisionLoteDobleComponent implements OnInit {
 
 
 
-  // Confirmar la supervisión
+  // Confirmar la supervisión::
   confirmaSupervision() {
     this.codificacionService.updateCargaSupervision(
       {
@@ -160,10 +160,10 @@ export class SupervisionLoteDobleComponent implements OnInit {
           !this.selectedRegistros.includes(registro)
         );
 
+        // Vaciar selectedRegistros
         this.selectedRegistros = [];
 
-        //this.tabla_pb = false;
-        //this.registros = data2.datos;
+
       })
   }
 
@@ -176,7 +176,7 @@ export class SupervisionLoteDobleComponent implements OnInit {
 
 
 
-  //  R E C O D I F I C A C I O N 
+  //  R E C O D I F I C A C I O N  
 
 
 
@@ -301,8 +301,8 @@ export class SupervisionLoteDobleComponent implements OnInit {
             id_usuario: localStorage.getItem('login'),
             tabla_id: localStorage.getItem("tabla_id_sup"),
             id_registro: this.idPreguntaOcuActItem,
-            codigocodifOcuItem:this.codigocodifOcuItem,
-            codigocodifActItem:this.codigocodifActItem
+            codigocodifOcuItem: this.codigocodifOcuItem,
+            codigocodifActItem: this.codigocodifActItem
           }
         ).subscribe(
           (data2: any) => {
