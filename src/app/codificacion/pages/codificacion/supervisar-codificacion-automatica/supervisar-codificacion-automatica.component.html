@@ -1,6 +1,6 @@
 <div class="card">
 
-    <h4>Variables para supervisión asistida</h4>
+    <h4>Variables para supervisión automática</h4>
     <hr>
 
     <button pButton pRipple label="Actualizar" (click)="registrosTabla()" icon="pi pi-refresh" class="p-button-warning"
@@ -15,7 +15,7 @@
             <!--  -->
             <tr>
                 <th>VARIABLE</th>
-                <th>TOTAL ASISTIDA</th>
+                <th>TOTAL AUTOMATICA</th>
                 <th style="text-align: center;">ACCIONES</th>
             </tr>
         </ng-template>
@@ -28,7 +28,7 @@
                         {{reg.variable}}</span>
                 </td>
                 <td>
-                    <span class="p-column-title">TOTAL ASISTIDA</span>
+                    <span class="p-column-title">TOTAL AUTOMATICA</span>
                     <span class="image-text ml-4"> <strong sty> {{reg.totalcod | number}} </strong></span>
                 </td>
                 <td>
@@ -39,11 +39,11 @@
                         class="p-button-info mr-3" *ngIf="!reg.btn_simple" pTooltip="Supervisión por lotes"
                         tooltipPosition="left"></button>
 
-                    <button pButton pRipple label="Individual" disabled icon="pi pi-stop" class="p-button-danger mr-2"
+                    <!-- <button pButton pRipple label="Individual" disabled icon="pi pi-stop" class="p-button-danger mr-2"
                         *ngIf="reg.btn_simple" pTooltip="Supervisión individual" placeholder="Right"></button>
                     <button (click)="supervisionIndividualDoble(reg)" pButton pRipple label="Individual"
                         icon="pi pi-stop" class="p-button-danger mr-2" *ngIf="!reg.btn_simple"
-                        pTooltip="Supervisión individual" placeholder="Right"></button>
+                        pTooltip="Supervisión individual" placeholder="Right"></button> -->
                 </td>
             </tr>
         </ng-template>

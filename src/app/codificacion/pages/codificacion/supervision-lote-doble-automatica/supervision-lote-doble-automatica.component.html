@@ -1,0 +1,468 @@
+<p-toast></p-toast>
+
+<div class="card">
+    <h4> <a [routerLink]="['/codificacion/supervisar-codificacion-automatica']">Variables para supervisión | </a> Supervisión doble automática
+    </h4>
+
+    <div id="p-pregunta">
+        <span class="image-text"><strong>Pregunta </strong>
+            <p-chip label="49-51" styleClass="mr-2 ml-2 custom-chip"></p-chip>Ocupación - Actividad Económica</span>
+    </div>
+    <br>
+
+    <p-progressBar *ngIf="tabla_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar>
+    <p-toolbar styleClass="mb-4 gap-2">
+        <ng-template pTemplate="left">
+            <!-- <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+            <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button> -->
+            <strong class="mr-2 ml-3">Mostrar: </strong> <p-dropdown [options]="rows" [(ngModel)]="selectedRow"
+                optionLabel="value"></p-dropdown>
+
+            <p-button (click)="borrarSeleccion()"  icon="pi pi-stop" iconPos="left" class="ml-2"
+                styleClass="p-button-info" pTooltip="Deseleccionar todo" tooltipPosition="top"></p-button>
+
+
+            <label class="ml-2" for="binary"> <strong>{{(selectedRegistros?.length ? selectedRegistros.length : 0) | number}}</strong> registros seleccionados de <strong>{{(registros?.length ? registros.length : 0) | number}}</strong></label>
+        </ng-template>
+
+        <ng-template pTemplate="right">
+           
+
+            <p-button label="Recodificación" [disabled]="tabla_pb" (click)="recodificacion()" icon="pi pi-check-square"
+                iconPos="left" styleClass="p-button-secondary" class="mr-2" pTooltip="Recodificación"
+                tooltipPosition="left"></p-button>
+
+            <p-button label="Guardar" [disabled]="tabla_pb" (click)="guardarSupervision()" icon="pi pi-save" iconPos="left"
+                styleClass="p-button-info" class="mr-2" pTooltip="Guardar Supervisión" tooltipPosition="top"></p-button>
+
+            <p-button label="Cancelar" (click)="cancelarYsalir()" icon="pi pi-times" iconPos="left"
+                styleClass="p-button-danger" pTooltip="Cancelar y salir" tooltipPosition="top"></p-button>
+
+
+        </ng-template>
+    </p-toolbar>
+
+    <!-- TABLA --> <!-- styleClass="p-datatable-sm" -->
+
+    <p-table #dt [value]="registros" [rows]="selectedRow.value" [paginator]="true" [(selection)]="selectedRegistros"
+        [rowHover]="true" currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros"
+        [showCurrentPageReport]="true" [selectionPageOnly]="true"  [loading]="tabla_pb" styleClass="p-datatable-sm" >
+
+        <ng-template pTemplate="header">
+            <tr style="height: 0px; padding: 0px;">
+                <th></th>
+                <th colspan="3" style="text-align: center; color: white; background-color: rgba(2, 136, 209)">OCUPACIÓN
+                </th>
+                <th colspan="3" style="text-align: center; color: white; background-color: rgb(17, 176, 232)">ACTIVIDAD
+                    ECONÓMICA</th>
+                <th colspan="7" style="text-align: center; color: white; background-color: rgb(15, 140, 80)">VARIABLES
+                    DE CONTEXTO
+                </th>
+            </tr>
+            <tr>
+                <th style="background-color: rgb(227, 227, 227); text-align: center;">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th style="font-size:11px" pSortableColumn="respuesta_ocu">RESPUESTA<p-sortIcon field="respuesta_ocu"></p-sortIcon></th>
+                <th style="font-size:11px" pSortableColumn="codigocodif_ocu">CODIGO<p-sortIcon field="codigocodif_ocu"></p-sortIcon></th>
+                <!-- <th pSortableColumn="descripcion_ocu">DESCRIPCIÓN<p-sortIcon field="descripcion_ocu"></p-sortIcon></th> -->
+                <th style="font-size:11px" pSortableColumn="usucodificador_ocu">CODIFICADOR<p-sortIcon field="usucodificador_ocu"></p-sortIcon>
+                </th>
+
+                <th style="font-size:11px" pSortableColumn="respuesta_act">RESPUESTA<p-sortIcon field="respuesta_act"></p-sortIcon></th>
+                <th style="font-size:11px" pSortableColumn="codigocodif_act">CODIGO<p-sortIcon field="codigocodif_act"></p-sortIcon></th>
+                <!-- <th pSortableColumn="descripcion_act">DESCRIPCIÓN<p-sortIcon field="descripcion_act"></p-sortIcon></th> -->
+                <th style="font-size:11px" pSortableColumn="usucodificador_act">CODIFICADOR<p-sortIcon field="usucodificador_act"></p-sortIcon>
+                </th>
+
+                <th  style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_edad">Edad <p-sortIcon
+                        field="contexto_edad"></p-sortIcon></th>
+                <th  style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_nivel_edu">Nivel Ed. <p-sortIcon
+                        field="contexto_nivel_edu"></p-sortIcon></th>
+                <th  style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_curso">Curso ó Año <p-sortIcon
+                        field="contexto_curso"></p-sortIcon></th>
+                <th  style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_atendio">Semana pasada? <p-sortIcon
+                        field="contexto_atendio"></p-sortIcon></th>
+                <th  style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_otro">Otro <p-sortIcon
+                        field="contexto_otro"></p-sortIcon></th>
+                <th  style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_es_era">¿En ese trabajo es o era?
+                    <p-sortIcon field="contexto_es_era"></p-sortIcon>
+                </th>
+                <th  style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_lugar_trabajo">Lugar <p-sortIcon
+                        field="contexto_lugar_trabajo"></p-sortIcon></th>
+
+            </tr>
+
+        </ng-template>
+        <ng-template pTemplate="body" let-registro>
+            <tr>
+                <td style="text-align: center;">
+                    <p-tableCheckbox [value]="registro"></p-tableCheckbox>
+                </td>
+                <td>{{registro.respuesta_ocu}}</td>
+                <td> <p-chip pTooltip="{{registro.descripcion_ocu}}" label="{{registro.codigocodif_ocu}}"></p-chip></td>
+                <!-- <td>{{registro.descripcion_ocu}}</td> -->
+                <td>{{registro.usucodificador_ocu}}</td>
+                <td>{{registro.respuesta_act}}</td>
+                <td> <p-chip pTooltip="{{registro.descripcion_act}}" tooltipPosition="top"
+                        label="{{registro.codigocodif_act}}"></p-chip></td>
+                <!-- <td>{{registro.descripcion_act}}</td> -->
+                <td>{{registro.usucodificador_act}}</td>
+
+                <td>{{registro.contexto_edad}}</td>
+                <td>{{registro.contexto_nivel_edu}}</td>
+                <td>{{registro.contexto_curso}}</td>
+                <td>{{registro.contexto_atendio}}</td>
+                <td>{{registro.contexto_otro}}</td>
+                <td>{{registro.contexto_es_era}}</td>
+                <td>{{registro.contexto_lugar_trabajo}}</td>
+                <!-- <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                        (click)="editregistro(registro)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                        (click)="deleteregistro(registro)"></button>
+                </td> -->
+            </tr>
+        </ng-template>
+        <!-- <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                In total there are {{products ? products.length : 0 }} products.
+            </div>
+        </ng-template> -->
+    </p-table>
+
+    <!-- Boton para subir en la pagina -->
+    <p-scrollTop></p-scrollTop>
+</div>
+
+
+<!-- DIALOG COFIRMACION -->
+<p-dialog [(visible)]="confirmacionDialog" [style]="{width: '450px'}" header="Confirmación" [modal]="true"
+    styleClass="p-fluid">
+    <br>
+    <ng-template pTemplate="content">
+
+        <div class="field">
+            <h5>¿Está seguro de guardar los datos?</h5>
+            <label class="mr-2" for="name">Nro de registros selecionados:</label>
+            <small style="font-size: large;">{{selectedRegistros.length}}</small>
+        </div>
+
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="No" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <p-button label="Sí" icon="pi pi-check" iconPos="left" styleClass="p-button-info" class="mr-2"
+            (click)="confirmaSupervision()"></p-button>
+    </ng-template>
+</p-dialog>
+
+
+<!-- DIALOG ERROR: No hay registros seleccionados. -->
+<p-dialog [(visible)]="confirmacionDialogError" [style]="{width: '450px'}" header="Mensaje" [modal]="true"
+    styleClass="p-fluid">
+    <ng-template pTemplate="content">
+
+        <div class="field">
+
+            <h5> <i style="font-size: larger; color: red;" class="pi pi-exclamation-triangle mr-2 "></i> No hay
+                registros seleccionados.</h5>
+        </div>
+
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <p-button label="Aceptar" icon="pi pi-check" iconPos="left" styleClass="p-button-info" class="mr-2"
+            (click)="hideDialogError()"></p-button>
+    </ng-template>
+</p-dialog>
+
+
+
+
+
+
+<!-- R E C O D I F I C A I O N -->
+<!-- Dialog -->
+<p-dialog (onHide)="onDialogRecodificacionClose()" header="Recodificación doble" [(visible)]="dialogRecodificacion"
+    [style]="{width: '90vw', height: '43vw'}" [maximizable]="true" [resizable]="false" [modal]="true">
+    <br>
+
+    <!-- INFORMACION DE LA PREGUNTA -->
+    <div class="grid">
+        <!-- OCUPACION -->
+        <div class="col-4 md:col-4 lg:6">
+            <!-- <p-progressBar *ngIf="ocuActCont_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar> -->
+            <div style="min-height: 210px;" class="card  border-1 surface-border">
+                <p-table>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="background-color: rgb(2, 136, 209); color: rgb(42, 42, 42); text-align: center;">
+                                DEPARTAMENTO <br> <strong
+                                    style="font-family:Arial, Helvetica, sans-serif ; color: white; ">{{departamentoOcuActItem}}</strong>
+                            </th>
+                            <th style="background-color: rgb(2, 136, 209); color: rgb(42, 42, 42); text-align: center;">
+                                IDENTIFICADOR <br> <strong
+                                    style="font-family:Arial, Helvetica, sans-serif; color: white; ">{{idPreguntaOcuActItem}}
+                                    -
+                                    {{secuencialOcuActItem}}</strong></th>
+                            <th style="background-color: rgb(2, 136, 209); color: rgb(42, 42, 42); text-align: center;">
+                                POR CODIFICAR <br> <strong
+                                    style="font-family:Arial, Helvetica, sans-serif; color: white; ">{{porRecodificar}}</strong>
+                            </th>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <p class="ml-2 mt-2"><strong style="color:rgb(58, 58, 58)">PREGUNTA: </strong> <span
+                        class="image-text"></span>
+                    <p-chip label="49" styleClass="mr-2"></p-chip>
+                    ¿Cuál es (era) su trabajo, ocupación u oficio principal?
+                </p> <br>
+                <p class="ml-2 "><strong style="font-weight: normal; color:rgb(2, 136, 209)">RESPUESTA: </strong>
+                    {{respuestaOcuItem}}
+                    <strong class="ml-2" style="font-weight: normal; color:rgb(2, 136, 209)">ESTADO: </strong>
+                    {{estadoOcuItem}} <br>
+
+                    <strong style="font-weight: normal; color:rgb(2, 136, 209)">CODIGO: </strong>
+                    {{codigocodifOcuItem}}
+                    <strong class="ml-2" style="font-weight: normal; color:rgb(2, 136, 209)">DESC: </strong>
+                    {{descripcionOcuItem}}
+                    <br>
+                    <strong style="font-weight: normal; color:rgb(2, 136, 209)">CODIFICADOR: </strong>
+                    {{usucodificadorOcuItem}}
+                </p>
+            </div>
+        </div>
+
+
+        <!-- ACTIVIDAD -->
+        <div class="col-4 md:col-4 lg:6">
+            <!-- <p-progressBar *ngIf="ocuActCont_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar> -->
+            <div style="min-height: 210px;" class="card  border-1 surface-border">
+                <p-table>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th
+                                style="background-color: rgb(17, 173, 228); color: rgb(42, 42, 42); text-align: center;">
+                                DEPARTAMENTO <br> <strong
+                                    style="font-family:Arial, Helvetica, sans-serif ; color: white; ">{{departamentoOcuActItem}}</strong>
+                            </th>
+                            <th
+                                style="background-color: rgb(17, 173, 228); color: rgb(42, 42, 42); text-align: center;">
+                                IDENTIFICADOR <br> <strong
+                                    style="font-family:Arial, Helvetica, sans-serif; color: white; ">{{idPreguntaOcuActItem}}
+                                    -
+                                    {{secuencialOcuActItem}}</strong></th>
+                            <th
+                                style="background-color: rgb(17, 173, 228); color: rgb(42, 42, 42); text-align: center;">
+                                POR CODIFICAR <br> <strong
+                                    style="font-family:Arial, Helvetica, sans-serif; color: white; ">{{porRecodificar}}</strong>
+                            </th>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <p class="ml-2 mt-2"><strong style="color:rgb(58, 58, 58)">PREGUNTA: </strong> <span class="image-text">
+                        <p-chip label="51" styleClass="mr-2"></p-chip>
+                        Principalmente, ¿qué produce, vende o a que actividad se dedica el lugar o establecimiento donde
+                        trabaja?
+                    </span></p>
+                <p class="ml-2">
+                    <strong style="font-weight: normal; color:rgb(17, 173, 228)">RESPUESTA: </strong>
+                    {{respuestaActItem}}
+                    <strong class="ml-2" style="font-weight: normal; color:rgb(17, 173, 228)">ESTADO:
+                    </strong>{{estadoActItem}} <br>
+                    <strong style="font-weight: normal; color:rgb(17, 173, 228)">CODIGO: </strong>
+                    {{codigocodifActItem}}
+                    <strong class="ml-2" style="font-weight: normal; color:rgb(17, 173, 228)">DESC: </strong>
+                    {{descripcionActItem}}
+                    <br>
+                    <strong style="font-weight: normal; color:rgb(17, 173, 228)">CODIFICADOR: </strong>
+                    {{usucodificadorActItem}}
+                </p>
+            </div>
+        </div>
+
+
+        <!-- CONTEXTO -->
+        <div class="col-4 md:col-4 lg:6">
+            <!-- <p-progressBar *ngIf="ocuActCont_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar> -->
+            <div style="min-height: 210px;" class="card  border-1 surface-border">
+
+                <p-table>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="background-color: rgb(16, 177, 99); color: rgb(42, 42, 42);">VARIABLES DE
+                                CONTEXTO</th>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <p [innerHTML]="contextoHtmlOcuActItem" class="mt-1 ml-2"></p>
+
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- VARIABLES A CODIFICAR -->
+
+
+
+
+
+
+    <!-- BOTONES  DE CONTROL -->
+
+    <!-- CONTROLES -->
+    <div class="text-700 text-center">
+        <!-- Anular anterior -->
+        <!-- <button (click)="anularAnterior()" pButton pRipple label="Anular anterior" icon="pi pi-trash"
+            class="p-button-danger mb-3  px-5 py-3 mr-2 white-space-nowrap"></button> -->
+        <!-- Primero -->
+        <button (click)="primero()" pButton pRipple label="Primero" icon="pi pi-fast-backward"
+            class="p-button-info mb-3  px-5 py-3 mr-2 white-space-nowrap"></button>
+        <!-- Siguiente -->
+        <button (click)="siguiente()" pButton pRipple label="Siguiente" icon="pi pi-forward"
+            class="p-button-info mb-3  px-5 py-3 mr-2 white-space-nowrap"></button>
+        <!-- Guardar -->
+        <button (click)="confirmarSupervisionCorrecto()" pButton pRipple label="Correcto" icon="pi pi-save"
+            class="p-button-primary mb-3  px-5 py-3 mr-2 white-space-nowrap"></button>
+        <!-- Contador -->
+        <!-- <button pButton pRipple type="button" label="{{nAux}} / {{totalCarga}}" disabled
+            class="p-button-outlined p-button-rounded p-button-secondary mb-3 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button> -->
+    </div>
+
+
+
+
+    <!-- TABLA DE CODIFICACIÓN Y CATALOGOS -->
+    <div class="grid">
+        <div class="col-6 md:col-6 lg:6">
+            <!-- <p-progressBar *ngIf="catOcu_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar> -->
+            <div class="card  border-1 surface-border">
+                <!-- Tabla Ocupacion -->
+                <p-table #dt1 [value]="catalogoOcuAux" dataKey="id_catalogo"
+                    styleClass="p-datatable-customers p-datatable-sm" [showCurrentPageReport]="true"
+                    [(first)]="first_ocu"
+                    currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
+                    [rowsPerPageOptions]="[5,10,15]" [paginator]="true" stateStorage="local">
+                    <ng-template pTemplate="header">
+                        <!--  -->
+                        <tr>
+                            <th pSortableColumn="codigo">CÓDIGO OCUPACIÓN<p-sortIcon field="codigo"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="descripcion">RESPUESTA <p-sortIcon field="descripcion"></p-sortIcon>
+                            </th>
+                            <th>ACCIONES</th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input pInputText type="text" (keyup)="buscarPorCodigoOcu()" [(ngModel)]="cod_ocu"
+                                    placeholder="Buscar por código" class="w-full">
+                            </th>
+                            <th>
+                                <input pInputText type="text" (keyup)="buscarPorDescripcionOcu()" [(ngModel)]="desc_ocu"
+                                    placeholder="Buscar por respuesta" class="w-full">
+                            </th>
+                            <th>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-reg>
+                        <tr [pSelectableRow]="reg">
+                            <td>
+                                <span class="p-column-title">CÓDIGO OCUPACIÓN</span>
+                                <span class="image-text"> <strong> {{reg.codigo}}</strong></span>
+                            </td>
+                            <td>
+                                <span class="p-column-title">RESPUESTA</span>
+                                <span class="image-text">{{reg.descripcion}}</span>
+                            </td>
+                            <td>
+                                <button (click)="codificarOcu(reg)" styleClass="p-button-lg" pButton pRipple
+                                    icon="pi pi-check" pTooltip="Codificar" tooltipPosition="right"
+                                    class="p-button-info mr-2"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="4">No hay registros para mostrar</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="paginatorleft">
+                    </ng-template>
+                    <ng-template pTemplate="paginatorright">
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+
+
+        <div class="col-6 md:col-6 lg:6">
+            <!-- <p-progressBar *ngIf="catAct_pb" mode="indeterminate" [style]="{'height': '2px'}"></p-progressBar> -->
+            <div class="card  border-1 surface-border">
+                <!-- Tabla Actividad -->
+                <p-table #dt2 [value]="catalogoActAux" dataKey="id_catalogo"
+                    styleClass="p-datatable-customers p-datatable-sm" [showCurrentPageReport]="true"
+                    [(first)]="first_act"
+                    currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros" [rows]="5"
+                    [rowsPerPageOptions]="[5,10,15]" [paginator]="true" stateStorage="local">
+                    <ng-template pTemplate="header">
+                        <!--  -->
+                        <tr>
+                            <th pSortableColumn="codigo">CÓDIGO ACTIVIDAD <p-sortIcon field="codigo"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="descripcion">RESPUESTA <p-sortIcon field="descripcion"></p-sortIcon>
+                            </th>
+                            <th>ACCIONES</th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input pInputText type="text" (keyup)="buscarPorCodigoAct()" [(ngModel)]="cod_act"
+                                    placeholder="Buscar por código" class="w-full">
+                            </th>
+                            <th>
+                                <input pInputText type="text" (keyup)="buscarPorDescripcionAct()" [(ngModel)]="desc_act"
+                                    placeholder="Buscar por respuesta" class="w-full">
+                            </th>
+                            <th>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-reg>
+                        <tr [pSelectableRow]="reg">
+                            <td>
+                                <span class="p-column-title">CÓDIGO ACTIVIDAD </span>
+                                <span class="image-text"> <strong> {{reg.codigo}}</strong></span>
+                            </td>
+                            <td>
+                                <span class="p-column-title">RESPUESTA</span>
+                                <span class="image-text">{{reg.descripcion}}</span>
+                            </td>
+
+                            <td>
+                                <button (click)="codificarAct(reg)" styleClass="p-button-lg" pButton pRipple
+                                    icon="pi pi-check" pTooltip="Codificar" tooltipPosition="right"
+                                    class="p-button-primary mr-2"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="4">No hay registros para mostrar</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="paginatorleft">
+                        <!-- <p-button type="button" icon="pi pi-refresh" styleClass="p-button-text" label="Actualizar"
+                        pTooltip="Click para actualizar la tabla"></p-button> -->
+                    </ng-template>
+                    <ng-template pTemplate="paginatorright">
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </div>
+
+
+</p-dialog>

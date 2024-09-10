@@ -242,10 +242,6 @@ export class CargaSupervisorComponent implements OnInit {
 
 
 
-
-
-
-
   // guardar reasignacion (REVISAR ESTA PARTE GENERADA POR CPLT)
   guardarReAsignacion() {
     this.array_asg = [];

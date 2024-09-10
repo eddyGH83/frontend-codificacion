@@ -100,13 +100,25 @@ export class CodificacionService {
     return this.http.post(`${this._apiUrl}/codificacion/devuelvePreguntasCodificado`, body)
   }
 
-  // PARA SUPERVISION
+  // PARA SUPERVISION ASISTIDA
   devuelvePreguntasSupervision(body: any): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/devuelvePreguntasSupervision`, body)
   }
+
+  // PARA SUPERVISION AUTOMATICA
+  devuelvePreguntasSupervisionAutomatica(body: any): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/devuelvePreguntasSupervisionAutomatica`, body)
+  }
+
+  // Asistida
   devuelveCargaParaSupervision(body: any): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/devuelveCargaParaSupervision`, body)
   }
+  // Automática
+  devuelveCargaParaSupervisionAutomatica(body: any): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/devuelveCargaParaSupervisionAutomatica`, body)
+  }
+
   // Carga para Supervision Simple
   cargarParaSupervisionSimple(body: any): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/cargarParaSupervisionSimple`, body)

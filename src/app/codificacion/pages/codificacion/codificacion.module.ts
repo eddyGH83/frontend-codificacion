@@ -37,6 +37,9 @@ import { RecodificacionSimpleComponent } from './recodificacion-simple/recodific
 import { RecodificacionDobleComponent } from './recodificacion-doble/recodificacion-doble.component';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ToggleButtonModule } from 'primeng/togglebutton';
+import { SupervisarCodificacionAutomaticaComponent } from './supervisar-codificacion-automatica/supervisar-codificacion-automatica.component';
+import { SupervisionLoteDobleAutomaticaComponent } from './supervision-lote-doble-automatica/supervision-lote-doble-automatica.component';
+import { SupervisionLoteSimpleAutomaticaComponent } from './supervision-lote-simple-automatica/supervision-lote-simple-automatica.component';
 
 
 @NgModule({
@@ -52,7 +55,10 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
     SupervisionIndividualDobleComponent,
     SupervisionIndividualSimpleComponent,
     RecodificacionSimpleComponent,
-    RecodificacionDobleComponent
+    RecodificacionDobleComponent,
+    SupervisarCodificacionAutomaticaComponent,
+    SupervisionLoteDobleAutomaticaComponent,
+    SupervisionLoteSimpleAutomaticaComponent
   ],
   imports: [
     CommonModule,

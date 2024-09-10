@@ -12,6 +12,9 @@ import { SupervisionIndividualSimpleComponent } from './supervision-individual-s
 import { SupervisionIndividualDobleComponent } from './supervision-individual-doble/supervision-individual-doble.component';
 import { RecodificacionDobleComponent } from './recodificacion-doble/recodificacion-doble.component';
 import { RecodificacionSimpleComponent } from './recodificacion-simple/recodificacion-simple.component';
+import { SupervisarCodificacionAutomaticaComponent } from './supervisar-codificacion-automatica/supervisar-codificacion-automatica.component';
+import { SupervisionLoteSimpleAutomaticaComponent } from './supervision-lote-simple-automatica/supervision-lote-simple-automatica.component';
+import { SupervisionLoteDobleAutomaticaComponent } from './supervision-lote-doble-automatica/supervision-lote-doble-automatica.component';
 
 const routes: Routes = [];
 
@@ -23,6 +26,12 @@ const routes: Routes = [];
     { path: 'asignar-carga-codificacion', component: AsignarCargaCodificacionComponent },
     { path: 'asignar-carga-supervision', component: AsignarCargaSupervisionComponent },
     { path: 'supervisar-codificacion', component: SupervisarCodificacionComponent },
+
+
+    { path: 'supervisar-codificacion-automatica', component: SupervisarCodificacionAutomaticaComponent },
+    { path: 'supervision-lotes-simple-automatica', component: SupervisionLoteSimpleAutomaticaComponent },
+    { path: 'supervision-lotes-doble-automatica', component: SupervisionLoteDobleAutomaticaComponent },
+
 
     { path: 'supervision-lotes-simple', component: SupervisionLoteSimpleComponent },
     { path: 'supervision-lotes-doble', component: SupervisionLoteDobleComponent },
