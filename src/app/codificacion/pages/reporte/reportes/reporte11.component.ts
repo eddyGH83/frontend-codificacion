@@ -26,7 +26,7 @@ export class Reporte11Component implements OnInit {
   // Reporte
   reporte() {
     this.reporte_pb = true;
-    this.reporteService.reporte11().subscribe(
+    this.reporteService.reporte11({login: localStorage.getItem('login')}).subscribe(
       (data2: any) => {
         this.reporte_pb = false;
         this.registros = data2.datos.rows;
@@ -38,11 +38,6 @@ export class Reporte11Component implements OnInit {
 
   // exportar a excel 
   exportExcel() {
-    // 
-    this.registros.forEach((element: any) => {
-      element.codificado = Number(element.codificado);
-    });
-
     let date = new Date();
     let formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
     import("xlsx").then(xlsx => {

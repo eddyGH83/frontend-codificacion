@@ -30,6 +30,10 @@ export class AsignacionService {
   codificadoresConCarga(body: object): Observable<any> {
     return this.http.post(`${this._apiUrl}/codificacion/codificadoresConCarga`, body)
   }
+  // Listar supervisores con carga para reasignar
+  supervisoresConCarga(body: object): Observable<any> {
+    return this.http.post(`${this._apiUrl}/codificacion/supervisoresConCarga`, body)
+  }
 
 
 

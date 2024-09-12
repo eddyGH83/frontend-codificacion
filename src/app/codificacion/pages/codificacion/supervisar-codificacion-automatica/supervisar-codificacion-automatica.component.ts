@@ -41,7 +41,7 @@ export class SupervisarCodificacionAutomaticaComponent implements OnInit {
       login: localStorage.getItem('login') 
     }).subscribe(
       (data2: any) => {
-        console.table(data2.datos);
+        //console.table(data2.datos);
         this.registros = data2.datos;
         this.tabla_pb = false;
       })

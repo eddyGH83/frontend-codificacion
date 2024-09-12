@@ -173,7 +173,7 @@ export class SupervisionLoteDobleAutomaticaComponent implements OnInit {
 
   // 
   cancelarYsalir() {
-    this.router.navigate(['/codificacion/supervisar-codificacion']);
+    this.router.navigate(['/codificacion/supervisar-codificacion-automatica']);
   }
 
 

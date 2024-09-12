@@ -89,11 +89,15 @@ export class OdbcComponent implements OnInit {
       console.log(this.rangeDates_npioc)
 
       this.odbcService.repOdbc_npioc(moment(this.rangeDates_npioc[0]).format("DD-MM-YYYY"), moment(this.rangeDates_npioc[1]).format("DD-MM-YYYY")).subscribe(res => {
-        this.datos = res.datos.rows;
-        this.encabezados = res.datos.fields
+        this.datos = res.datos;
+        console.log(this.datos);
 
-        console.log(this.encabezados)
-        this.exportExcel()
+        // 
+        
+        //this.encabezados = res.datos.fields
+
+        //console.log(this.encabezados)
+       // this.exportExcel()
         this.idiomasPueblos_pb = false;
 
       })
@@ -130,7 +134,6 @@ export class OdbcComponent implements OnInit {
 
 
 
-
   decargaOdbc() {
     this.ntabla = 'ArchivoODBC_ocup_activ'
     // Verifica si se han seleccionado las fechas
@@ -140,11 +143,11 @@ export class OdbcComponent implements OnInit {
       console.log(this.rangeDates_oa)
 
       this.odbcService.repOdbc(moment(this.rangeDates_oa[0]).format("DD-MM-YYYY"), moment(this.rangeDates_oa[1]).format("DD-MM-YYYY")).subscribe(res => {
-        this.datos = res.datos.rows;
-        this.encabezados = res.datos.fields
+        this.datos = res.datos;        
+        // this.encabezados = res.datos.fields
 
-        console.log(this.encabezados)
-        this.exportExcel()
+        // console.log(this.encabezados)
+        //this.exportExcel()
         this.ocupActiv_pb = false;
       })
     } else {

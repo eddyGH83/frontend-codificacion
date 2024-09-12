@@ -67,13 +67,13 @@ export class ReporteService {
   }
 
   //  Reporte 10
-  reporte10(): Observable<any> {
-    return this.http.get(`${this._apiUrl}/reportes/reporte10`)
+  reporte10(body: object): Observable<any> {
+    return this.http.post(`${this._apiUrl}/reportes/reporte10`,body)
   }
 
   //  Reporte 11
-  reporte11(): Observable<any> {
-    return this.http.get(`${this._apiUrl}/reportes/reporte11`)
+  reporte11(body: object): Observable<any> {
+    return this.http.post(`${this._apiUrl}/reportes/reporte11`,body)
   }
 
   //  Reporte 12
