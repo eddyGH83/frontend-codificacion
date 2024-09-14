@@ -143,11 +143,14 @@ export class SupervisionLoteDobleComponent implements OnInit {
 
   // Confirmar la supervisión::
   confirmaSupervision() {
+    // el nuevo selectedRegistros solo debe contener registros: id_registro,secuencial,codigocodif_ocu,codigocodif_act del selectedRegistros
+    this.selectedRegistros = this.selectedRegistros.map(({ id_registro, secuencial, codigocodif_ocu, codigocodif_act }) => ({ id_registro, secuencial, codigocodif_ocu, codigocodif_act }));  
+
     this.codificacionService.updateCargaSupervision(
       {
         id_usuario: localStorage.getItem('login'),
         tabla_id: localStorage.getItem("tabla_id_sup"),
-        registros: this.selectedRegistros
+        registros:this.selectedRegistros
       }
     ).subscribe(
       (data2: any) => {
