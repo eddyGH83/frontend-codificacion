@@ -28,8 +28,8 @@ export class Reporte10Component implements OnInit {
   // Reporte
   reporte() {
     this.reporte_pb = true;
-    
-    this.reporteService.reporte10({login: localStorage.getItem('login')}).subscribe(
+
+    this.reporteService.reporte10({ login: localStorage.getItem('login') }).subscribe(
       (data2: any) => {
         this.reporte_pb = false;
         this.registros = data2.datos.rows;
@@ -41,6 +41,13 @@ export class Reporte10Component implements OnInit {
 
   // exportar a excel 
   exportExcel() {
+    // recorrer this.registrosConFiltro con un foreach y cambiar el tipo de dato de la propiedad suma de string a number    
+    this.registros.forEach((element: any) => {
+      element.codificado = Number(element.codificado);
+      element.total = Number(element.total);
+    });
+
+
     let date = new Date();
     let formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
     import("xlsx").then(xlsx => {

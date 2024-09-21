@@ -158,10 +158,8 @@ export class SupervisionLoteDobleComponent implements OnInit {
         // this.registrosTabla();
         this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: data2.message, life: 2500 });
 
-        // Elimiinar de registros los selectedRegistros
-        this.registros = this.registros.filter(registro =>
-          !this.selectedRegistros.includes(registro)
-        );
+        // Eliminar de registros los selectedRegistros
+        this.registros = this.registros.filter(registro => !this.selectedRegistros.some(({ id_registro }) => registro.id_registro === id_registro));
 
         // Vaciar selectedRegistros
         this.selectedRegistros = [];

@@ -15,6 +15,7 @@ import * as FileSaver from 'file-saver';
 export class OdbcComponent implements OnInit {
 
   private _apiUrl: string = environment.base_url;
+  private _apiUrlOdbc: string = environment.base_odbc;
 
 
 
@@ -90,14 +91,8 @@ export class OdbcComponent implements OnInit {
 
       this.odbcService.repOdbc_npioc(moment(this.rangeDates_npioc[0]).format("DD-MM-YYYY"), moment(this.rangeDates_npioc[1]).format("DD-MM-YYYY")).subscribe(res => {
         this.datos = res.datos;
-        console.log(this.datos);
-
-        // 
-        
-        //this.encabezados = res.datos.fields
-
-        //console.log(this.encabezados)
-       // this.exportExcel()
+        // Descargar el archivo
+        this.descargarArchivo(this._apiUrlOdbc + '/odbc-excel/odbc_npioc.xlsx');
         this.idiomasPueblos_pb = false;
 
       })
@@ -106,8 +101,6 @@ export class OdbcComponent implements OnInit {
       console.log('Por favor, seleccione un rango de fechas válido.');
     }
   }
-
-
 
   decargaOdbc_migracion() {
     this.ntabla = 'ArchivoODBC_migracion'
@@ -119,20 +112,17 @@ export class OdbcComponent implements OnInit {
 
       this.odbcService.repOdbc_migracion(moment(this.rangeDates_ug[0]).format("DD-MM-YYYY"), moment(this.rangeDates_ug[1]).format("DD-MM-YYYY")).subscribe(res => {
         this.datos = res.datos.rows;
-        this.encabezados = res.datos.fields
 
-        console.log(this.encabezados)
-        this.exportExcel()
+        // Descargar el archivo
+        this.descargarArchivo(this._apiUrlOdbc + '/odbc-excel/odbc_emigracion.xlsx');
+
         this.migracion_pb = false;
-
       })
     } else {
       // Si no se han seleccionado fechas, muestra un mensaje de error o realiza alguna otra acción
       console.log('Por favor, seleccione un rango de fechas válido.');
     }
   }
-
-
 
   decargaOdbc() {
     this.ntabla = 'ArchivoODBC_ocup_activ'
@@ -143,17 +133,27 @@ export class OdbcComponent implements OnInit {
       console.log(this.rangeDates_oa)
 
       this.odbcService.repOdbc(moment(this.rangeDates_oa[0]).format("DD-MM-YYYY"), moment(this.rangeDates_oa[1]).format("DD-MM-YYYY")).subscribe(res => {
-        this.datos = res.datos;        
-        // this.encabezados = res.datos.fields
+        this.datos = res.datos;
 
-        // console.log(this.encabezados)
-        //this.exportExcel()
+        // Descargar el archivo
+        this.descargarArchivo(this._apiUrlOdbc + '/odbc-excel/odbc_ocu_act.xlsx');
+
         this.ocupActiv_pb = false;
       })
     } else {
       // Si no se han seleccionado fechas, muestra un mensaje de error o realiza alguna otra acción
       console.log('Por favor, seleccione un rango de fechas válido.');
     }
+  }
+
+
+  descargarArchivo(url: string) {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = url.split('/').pop(); // Extrae el nombre del archivo de la URL
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
 
@@ -205,7 +205,6 @@ export class OdbcComponent implements OnInit {
     })
     this.clearFileInput();
   }
-
 
   // onUpload(event: any) {
   //   console.log('llego onUpload');

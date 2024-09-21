@@ -166,7 +166,6 @@ export class SupervisionLoteDobleAutomaticaComponent implements OnInit {
         // Vaciar selectedRegistros
         this.selectedRegistros = [];
 
-
       })
   }
 

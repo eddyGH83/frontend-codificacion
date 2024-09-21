@@ -98,7 +98,7 @@ export class CodificacionDobleComponent implements OnInit {
     this.codificacionService.cargarParaCodificarDoble(body).subscribe(
       (data2: any) => {
 
-        this.totalCarga = data2.totalCarga;            // Total carga ocupacion y actividad
+        this.totalCarga = data2.totalCarga;           // Total carga ocupacion y actividad
         this.totalCarga_ocu = data2.totalCarga_ocu;   // Total carga ocupacion
         this.totalCarga_act = data2.totalCarga_act;   // Total carga actividad
         this.nroPreg_ocu = data2.nroPreg_ocu;   // nro de la pregunta acupacion
@@ -107,7 +107,7 @@ export class CodificacionDobleComponent implements OnInit {
         this.descPreg_act = data2.descPreg_act; // descripcion de la pregunta actividad
         this.carga = data2.datos;               // datos de la carga
         this.clasificacion_ocu = data2.clasificacion_ocu;   // clasificacion ocupacion (catalogo ocupacion)
-        this.clasificacion_act = data2.clasificacion_act;    // clasificacion actividad (catalogo actividad)
+        this.clasificacion_act = data2.clasificacion_act;   // clasificacion actividad (catalogo actividad)
         this.porCodificar_ocu = data2.totalCarga;
         this.porCodificar_act = data2.totalCarga;
 

@@ -51,13 +51,12 @@
                     <button pButton pRipple label="Asignar" icon="pi pi-user-plus"
                         class="p-button-outlined p-button-secondary mr-3" disabled *ngIf="reg.total_carga==0 "></button>
 
-                    <!-- <button (click)="reAsignarCarga(reg)" pButton pRipple label="Reasignar" icon="pi pi-user-minus"
-                        class="p-button-danger mr-2" pTooltip="Reasignar carga" placeholder="Right"></button> -->
+                    <!-- Reasignación -->
+                    <button (click)="reAsignarCarga(reg)" pButton pRipple label="Reasignar" icon="pi pi-user-minus"
+                        class="p-button-danger mr-2" pTooltip="Reasignar carga" placeholder="Right"></button>
 
-                    <!-- <button pButton pRipple label="Reasignar" icon="pi pi-user-minus"
-                        class="p-button-outlined p-button-secondary mr-2" disabled *ngIf="reg.total_carga==0 "></button> -->
-
-
+                    <button pButton pRipple label="Reasignar" icon="pi pi-user-minus"
+                        class="p-button-outlined p-button-secondary mr-2" disabled *ngIf="reg.total_carga==0 "></button>
 
                 </td>
             </tr>
@@ -91,7 +90,7 @@
                     <tr>
                         <th> <p-checkbox (onChange)="seleccionarTodo()" class="mr-2" [(ngModel)]="checkedTodo"
                                 [binary]="true"></p-checkbox> Seleccionar todo</th>
-                        <th>Supervisores</th>
+                        <th>Usuarios (SUP-CONT-JT)</th>
                         <th style="width: 20%;">Cantidad</th>
                     </tr>
                 </ng-template>
@@ -101,7 +100,10 @@
                             <p-checkbox (onChange)="dividirTotal()" class="ml-8" [(ngModel)]="asig.activo"
                                 [binary]="true"></p-checkbox>
                         </td>
-                        <td><i class="pi pi-user" style="font-size: 1.3rem"></i> {{asig.nombre_completo}}</td>
+                        <td>
+                            <i class="pi pi-user" style="font-size: 1.3rem"></i> {{asig.nombre_completo}} <br>
+                            <strong class="ml-4" style="color: rgb(64, 147, 210); font-size:10px">{{asig.rol}}</strong> 
+                        </td>
                         <td><input min="0" type="number" pInputText [(ngModel)]="asig.total"> </td>
                     </tr>
                 </ng-template>

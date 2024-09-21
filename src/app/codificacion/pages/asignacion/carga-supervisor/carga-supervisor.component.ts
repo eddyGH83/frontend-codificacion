@@ -180,8 +180,10 @@ export class CargaSupervisorComponent implements OnInit {
     });
   }
 
+  // Lista de supervisores con carga
   supervisoresConCarga() {
-    this.asignacionService.codificadoresConCarga({ id: localStorage.getItem('id_usuario'), pregunta: this.registro.tabla_id }).subscribe(res => {
+    //alert("supervisoresConCarga");
+    this.asignacionService.supervisoresConCarga({ id: localStorage.getItem('id_usuario'), pregunta: this.registro.tabla_id }).subscribe(res => {
       this.usuarios2 = res.datos;
       console.log("usuarios2");
       console.log(this.usuarios2);
