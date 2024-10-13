@@ -13,6 +13,12 @@ export class CodificacionComponent implements OnInit {
   registros: any;
   registro: any;
 
+
+  // Cities
+  departamento: any;
+  selectedDepartamento: any;
+
+
   // Progress Bar
   tabla_pb: boolean = false;
 
@@ -25,23 +31,42 @@ export class CodificacionComponent implements OnInit {
     localStorage.removeItem('tabla_id');
 
 
+    this.departamento = [
+      { depto: 'ORURO', codigo: '04' },
+      { depto: 'POTOSI', codigo: '05' }
+    ];
+
+    this.selectedDepartamento = {
+      depto: 'ORURO', codigo: '04'
+    };
+
+    localStorage.setItem('carga_depto', this.selectedDepartamento.depto);
+
     this.registrosTabla();
   }
+
+
+
+
+
 
 
   // Tabla de preguntas
   registrosTabla() {
     this.tabla_pb = true;
-    this.codificacionService.devuelvePreguntasCodificado({ usucre: localStorage.getItem('login') }).subscribe(
+    this.codificacionService.devuelvePreguntasCodificado({ 
+      usucre: localStorage.getItem('login'),
+      departamento: this.selectedDepartamento.depto
+    }).subscribe(
       (data2: any) => {
         this.tabla_pb = false;
         this.registros = data2.datos.rows;
-        console.table(this.registros);
-        
+        localStorage.setItem('carga_depto', this.selectedDepartamento.depto);
+
       })
   }
 
-  
+
   codificacionSimple(rg: any) {
     // Redireccionar a la página de codificación simple
     this.router.navigate(['/codificacion/codificacion-simple']);

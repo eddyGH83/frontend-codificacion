@@ -1,8 +1,7 @@
 <p-toast></p-toast>
 
 <div class="card">
-    <h4> <a [routerLink]="['/codificacion/supervisar-codificacion-automatica']">Variables para supervisión | </a> Supervisión
-        simple automática
+    <h4> <a [routerLink]="['/codificacion/supervisar-codificacion-automatica']">Variables para supervisión | </a> Supervisión simple automática
     </h4>
     <div id="p-pregunta">
         <span class="image-text"><strong>Pregunta </strong>
@@ -114,8 +113,11 @@
 
     <ng-template pTemplate="footer">
         <button pButton pRipple label="No" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <p-button label="Sí" icon="pi pi-check" iconPos="left" styleClass="p-button-info" class="mr-2"
-            (click)="confirmaSupervision()"></p-button>
+
+        <!-- <p-button label="Sí" icon="pi pi-check" iconPos="left" styleClass="p-button-info" class="mr-2"
+            (click)="confirmaSupervision()"></p-button> -->
+        
+        <p-button label="Sí" icon="pi pi-check" [loading]="siLoading" (click)="confirmaSupervision()"></p-button>
     </ng-template>
 </p-dialog>
 

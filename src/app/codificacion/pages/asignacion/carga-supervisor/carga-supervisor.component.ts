@@ -13,9 +13,7 @@ import { Message } from 'primeng/api';
 })
 export class CargaSupervisorComponent implements OnInit {
 
- 
-  departamentos: any;
-  selectedDepartamento: any;
+
 
   // selectedCustomer1: any;
   // registros: any;
@@ -42,8 +40,23 @@ export class CargaSupervisorComponent implements OnInit {
   msgServiceAsig: boolean = true;
   titleMsgErrorAsig: string = 'Ocurrio un error al reasignar la carga';
 
+
+  // msgService reasignacion
+  msgServiceReAsig: boolean = false;
+  titleMsgErrorReAsig: string = '';
+
+
+  // total carga asignada
+  total_carga_asignado: number = 0;
+
   //
   array_asg: Array<any> = [];
+  array_reasig: Array<any> = [];
+
+  
+  departamento: any;
+  selectedDepartamento: any;
+
 
   constructor(private messageService: MessageService, private asignacionService: AsignacionService) { }
 
@@ -55,20 +68,16 @@ export class CargaSupervisorComponent implements OnInit {
     ] */
     this.registros = []
 
-    this.departamentos = [
-      { label: 'Chuquisaca', value: 'CHUQUISACA' },
-      { label: 'La Paz', value: 'LA PAZ' },
-      { label: 'Cochabamba', value: 'COCHABAMBA' },
-      { label: 'Oruro', value: 'ORURO' },
-      { label: 'Potosí', value: 'POTOSI' },
-      { label: 'Tarija', value: 'TARIJA' },
-      { label: 'Santa Cruz', value: 'SANTA CRUZ' },
-      { label: 'Beni', value: 'BENI' },
-      { label: 'Pando', value: 'PANDO' },
-      { label: 'Otros', value: 'OTROS' }
+    this.departamento = [
+      { depto: 'ORURO', codigo: '04' },
+      { depto: 'POTOSI', codigo: '05' }
     ];
 
-    this.selectedDepartamento = { label: 'Oruro', value: 'ORURO' };
+    this.selectedDepartamento = {
+      depto: 'ORURO', codigo: '04'
+    };
+
+
     this.registrosTabla();
 
     this.dividirTotal();
@@ -78,7 +87,9 @@ export class CargaSupervisorComponent implements OnInit {
   // ACTUALIZA REGISTROS DE LA TABLA
   registrosTabla() {
     this.tabla_pb = true;
-    this.asignacionService.preguntasPorDepartamentoSup({ depto: this.selectedDepartamento?.value }).subscribe(res => {
+    this.asignacionService.preguntasPorDepartamentoSup({ 
+      departamento: this.selectedDepartamento?.depto 
+    }).subscribe(res => {
       this.registros = res.datos.rows;
       this.tabla_pb = false;
       //this.registros = res;
@@ -86,7 +97,7 @@ export class CargaSupervisorComponent implements OnInit {
     });
   }
 
-  
+
   // SELECCIONA TODOS LOS CHECK
   seleccionarTodo() {
     if (this.checkedTodo !== false) {
@@ -153,7 +164,6 @@ export class CargaSupervisorComponent implements OnInit {
   }
 
 
-
   // 
   asignarCarga(registro: any) {
     this.supervisores();
@@ -171,34 +181,30 @@ export class CargaSupervisorComponent implements OnInit {
   }
 
 
+
   supervisores() {
     this.asignacionService.supervisoresSinCarga(localStorage.getItem('id_usuario')).subscribe(res => {
       this.usuarios = res.datos.rows;
-      console.table(this.usuarios);
-      
       this.checkedTodo = false;
     });
   }
 
-  // Lista de supervisores con carga
+
+
+  // Lista de supervisores y jt con carga
   supervisoresConCarga() {
     //alert("supervisoresConCarga");
-    this.asignacionService.supervisoresConCarga({ id: localStorage.getItem('id_usuario'), pregunta: this.registro.tabla_id }).subscribe(res => {
+    this.asignacionService.supervisoresConCarga({
+      id: localStorage.getItem('id_usuario'),
+      tabla_id: this.registro.tabla_id,
+      departamento: this.selectedDepartamento.depto
+    }).subscribe(res => {
       this.usuarios2 = res.datos;
-      console.log("usuarios2");
-      console.log(this.usuarios2);
+      this.total_carga_asignado = res.total_carga_asignado;
     });
   }
 
-  resetCantAsignado(reg: any) {
-    // buscar en this.usuarios2 el usuario con id_usuario = reg.id_usuario
-    // asignar 0 al total de ese usuario
-    for (let i = 0; i < this.usuarios2.length; i++) {
-      if (this.usuarios2[i].id_usuario === reg.id_usuario) {
-        this.usuarios2[i].total_asignado = 0;
-      }
-    }
-  }
+
 
   guardarAsignacionSup() {
     this.array_asg = [];
@@ -206,7 +212,7 @@ export class CargaSupervisorComponent implements OnInit {
     for (let j in this.usuarios) {
       if (this.usuarios[j].total > 0) {
         const body = {
-          departamento: this.selectedDepartamento.value, //this.codificacionService.depto,
+          departamento: this.selectedDepartamento.depto, //this.codificacionService.depto,
           count: this.usuarios[j].total,
           estado: 'ASIGNADO',
           usucre: this.usuarios[j].login,
@@ -245,38 +251,78 @@ export class CargaSupervisorComponent implements OnInit {
 
 
   // guardar reasignacion (REVISAR ESTA PARTE GENERADA POR CPLT)
-  guardarReAsignacion() {
-    this.array_asg = [];
-
-    for (let j in this.usuarios2) {
-      if (this.usuarios2[j].total_asignado > 0) {
-        const body = {
-          departamento: 'DEPTO AQUI', //this.codificacionService.depto,
-          count: this.usuarios2[j].total_asignado,
-          estado: 'ASIGNADO',
-          usucre: this.usuarios2[j].login,
-          area: 'AREA AQUI' // this.codificacionService.area1
+  /*   guardarReAsignacion() {
+      this.array_asg = [];
+  
+      for (let j in this.usuarios2) {
+        if (this.usuarios2[j].total_asignado > 0) {
+          const body = {
+            departamento: 'DEPTO AQUI', //this.codificacionService.depto,
+            count: this.usuarios2[j].total_asignado,
+            estado: 'ASIGNADO',
+            usucre: this.usuarios2[j].login,
+            area: 'AREA AQUI' // this.codificacionService.area1
+          }
+          this.array_asg.push(body)
         }
-        this.array_asg.push(body)
       }
+  
+      //alert("Reasignado correctamente");
+      this.asignacionService.updateAsignado(this.registro.tabla_id, this.array_asg).subscribe(res => {
+        this.reAsignacionDialog = false;
+        this.registrosTabla();
+      });
+    } */
+
+
+
+  // Guardar reasignacion sup
+  guardarReAsignacionSup() {
+
+    // sacamos el todal de usuarios2 de las cargas asignadas
+    let total_aux = 0;
+    for (let i = 0; i < this.usuarios2.length; i++) {
+      total_aux = total_aux + Number(this.usuarios2[i].carga_asignado);
     }
 
-    //alert("Reasignado correctamente");
-    this.asignacionService.updateAsignado(this.registro.tabla_id, this.array_asg).subscribe(res => {
-      this.reAsignacionDialog = false;
-      this.registrosTabla();
+    // verificamos que total_carga_asignado sea menor o igual a this.registro.total_carga
+    if (total_aux > this.total_carga_asignado) {
+      this.msgServiceReAsig = true;
+      this.titleMsgErrorReAsig = "La carga reasignada supera el total de la carga asignada";
+      setTimeout(() => { this.msgServiceReAsig = false; this.titleMsgErrorReAsig = ''; }, 3000);
+      return;
+    }
+
+    this.array_reasig = [];
+
+    // recorremos this.usuarios2 y creamos el array para enviar a la api
+    for (let j in this.usuarios2) {
+      const body = {
+        departamento: this.selectedDepartamento.depto,
+        carga_asignado: this.usuarios2[j].carga_asignado,
+        usucre: this.usuarios2[j].login
+      }
+      this.array_reasig.push(body)
+    }
+
+    // enviamos el array a la api
+    this.asignacionService.updateReAsignadoSup(this.registro.tabla_id, this.array_reasig).subscribe(res => {
+      if (res.success === true) {
+        this.messageService.add({ severity: 'success', summary: 'Mensaje:', detail: res.message, life: 2500 });
+        this.reAsignacionDialog = false;
+        this.registrosTabla();
+      }
     });
+
   }
 
-
-
-
-
-  /*  this.asignacionService.updateAsignado('49-51', this.array_asg).subscribe( res => {
-      this.asignacionDialog = false;
-      this.registrosTabla();       
-    }, error=> console.error(error)) */
-
+  resetCantAsignado(reg: any) {
+    for (let i = 0; i < this.usuarios2.length; i++) {
+      if (this.usuarios2[i].id_usuario === reg.id_usuario) {
+        this.usuarios2[i].carga_asignado = 0;
+      }
+    }
+  }
 
 
 }

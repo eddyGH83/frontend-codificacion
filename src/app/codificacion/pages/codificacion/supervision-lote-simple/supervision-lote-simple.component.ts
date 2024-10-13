@@ -117,6 +117,9 @@ export class SupervisionLoteSimpleComponent implements OnInit {
   //check
   checkedSelect: boolean = false;
 
+  //loading
+  siLoading: boolean = false;
+
   constructor(private confirmationService: ConfirmationService, private router: Router, private codificacionService: CodificacionService, private messageService: MessageService) { }
 
   ngOnInit(): void {
@@ -152,11 +155,16 @@ export class SupervisionLoteSimpleComponent implements OnInit {
   // 
   registrosTabla() {
     this.tabla_pb = true;
-    this.codificacionService.devuelveCargaParaSupervision({ id_usuario: localStorage.getItem('id_usuario'), tabla_id: localStorage.getItem("tabla_id_sup") }).subscribe(
+    this.codificacionService.devuelveCargaParaSupervision({ 
+      id_usuario: localStorage.getItem('id_usuario'), 
+      tabla_id: localStorage.getItem("tabla_id_sup"),
+      departamento: localStorage.getItem('carga_depto_sup')
+    }).subscribe(
       (data2: any) => {
         this.registros = data2.datos;
         this.catalogo = data2.catalogo;
         this.tabla_pb = false;
+        //localStorage.setItem('carga_depto_sup', data2.departamento);
       })
   }
 
@@ -186,6 +194,8 @@ export class SupervisionLoteSimpleComponent implements OnInit {
 
   // Confirmar la supervisión
   confirmaSupervision() {
+    // alert('Confirmar la supervisión');
+    this.siLoading = true;
     this.codificacionService.updateCargaSupervision(
       {
         id_usuario: localStorage.getItem('login'),
@@ -205,7 +215,7 @@ export class SupervisionLoteSimpleComponent implements OnInit {
 
         // Vaciar selectedRegistros
         this.selectedRegistros = [];
-
+        this.siLoading = false;
       })
   }
 
@@ -389,7 +399,6 @@ export class SupervisionLoteSimpleComponent implements OnInit {
     if (this.codigo.length === 0) {
       this.clasificacionAux = [];
     }
-
   }
 
 
@@ -464,14 +473,14 @@ export class SupervisionLoteSimpleComponent implements OnInit {
     }); */
   }
 
-  
+
   // cerrar el dialogo de recodificación (por todos los modos de cerrar el dialogo)
   onDialogRecodificacionClose() {
     // Eliminar de this.registros todos registros con estado = 'VERIFICADO'
     this.registros = this.registros.filter(registro =>
       registro.estado !== 'VERIFICADO'
     );
-    
+
 
     // cerrar el dialogo de recodificación 
     // this.registrosTabla();

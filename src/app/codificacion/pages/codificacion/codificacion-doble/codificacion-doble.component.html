@@ -1,7 +1,7 @@
 <div class="card">
     <p-toast></p-toast>
 
-    <h4> <a [routerLink]="['/codificacion']">Variables para codificación | </a> Codificación doble </h4>
+    <h4> <a [routerLink]="['/codificacion']">Variables para codificación | </a> Codificación doble</h4>
     <!-- Variables para supervisión -->
 
 
@@ -138,11 +138,14 @@
     <!-- CONTROLES -->
     <div class="text-700 text-center">
         <!-- Anular anterior -->
-        <button (click)="anularAnterior()" pButton pRipple label="Anular anterior" icon="pi pi-trash"
-            class="p-button-danger mb-3  px-5 py-3 mr-2 white-space-nowrap"></button>
+        <!-- <button (click)="anularAnterior()" pButton pRipple label="Anular anterior" icon="pi pi-trash"
+            class="p-button-danger mb-3  px-5 py-3 mr-2 white-space-nowrap"></button> -->
         <!-- Primero -->
         <button (click)="primero()" pButton pRipple label="Primero" icon="pi pi-fast-backward"
             class="p-button-info mb-3  px-5 py-3 mr-2 white-space-nowrap"></button>
+        <!-- Atras -->
+        <!-- <button (click)="atras()" pButton pRipple label="Atras" icon="pi pi-backward"
+            class="p-button-info mb-3  px-5 py-3 mr-2 white-space-nowrap"></button> -->
         <!-- Siguiente -->
         <button (click)="siguiente()" pButton pRipple label="Siguiente" icon="pi pi-forward"
             class="p-button-info mb-3  px-5 py-3 mr-2 white-space-nowrap"></button>
@@ -150,8 +153,8 @@
         <button (click)="confirmarCodificacionOcuAct()" pButton pRipple label="Guardar" icon="pi pi-save"
             class="p-button-primary mb-3  px-5 py-3 mr-2 white-space-nowrap"></button>
         <!-- Contador -->
-        <button pButton pRipple type="button" label="{{nAux}} / {{totalCarga}}" disabled
-            class="p-button-outlined p-button-rounded p-button-secondary mb-3 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
+        <!-- <button pButton pRipple type="button" label="{{nAux}} / {{totalCarga}}" disabled
+            class="p-button-outlined p-button-rounded p-button-secondary mb-3 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button> -->
     </div>
 
 

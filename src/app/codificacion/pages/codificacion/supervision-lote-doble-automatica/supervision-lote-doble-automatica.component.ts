@@ -95,6 +95,8 @@ export class SupervisionLoteDobleAutomaticaComponent implements OnInit {
   checkedSelect: boolean = false;
 
 
+  // loading
+  siLoading: boolean = false;
 
   constructor(private confirmationService: ConfirmationService, private sanitizer: DomSanitizer, private router: Router, private codificacionService: CodificacionService, private messageService: MessageService) { }
 
@@ -123,7 +125,8 @@ export class SupervisionLoteDobleAutomaticaComponent implements OnInit {
     this.codificacionService.devuelveCargaParaSupervisionAutomatica({ 
       id_usuario: localStorage.getItem('id_usuario'), 
       tabla_id: localStorage.getItem("tabla_id_sup"),
-      login: localStorage.getItem('login')
+      login: localStorage.getItem('login'),
+      departamento: localStorage.getItem('carga_depto_sup')
     }).subscribe(
       (data2: any) => {
         this.registros = data2.datos;
@@ -146,6 +149,7 @@ export class SupervisionLoteDobleAutomaticaComponent implements OnInit {
 
   // Confirmar la supervisión::
   confirmaSupervision() {
+    this.siLoading = true;
     this.codificacionService.updateCargaSupervision(
       {
         id_usuario: localStorage.getItem('login'),
@@ -165,6 +169,7 @@ export class SupervisionLoteDobleAutomaticaComponent implements OnInit {
 
         // Vaciar selectedRegistros
         this.selectedRegistros = [];
+        this.siLoading = false;
 
       })
   }

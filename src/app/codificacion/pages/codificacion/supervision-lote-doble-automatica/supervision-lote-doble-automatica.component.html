@@ -90,7 +90,6 @@
                 </th>
                 <th  style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_lugar_trabajo">Lugar <p-sortIcon
                         field="contexto_lugar_trabajo"></p-sortIcon></th>
-
             </tr>
 
         </ng-template>
@@ -152,8 +151,9 @@
 
     <ng-template pTemplate="footer">
         <button pButton pRipple label="No" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <p-button label="Sí" icon="pi pi-check" iconPos="left" styleClass="p-button-info" class="mr-2"
-            (click)="confirmaSupervision()"></p-button>
+        <!-- <p-button label="Sí" icon="pi pi-check" iconPos="left" styleClass="p-button-info" class="mr-2"
+            (click)="confirmaSupervision()"></p-button> -->
+        <p-button label="Sí" icon="pi pi-check" [loading]="siLoading" (click)="confirmaSupervision()"></p-button>
     </ng-template>
 </p-dialog>
 

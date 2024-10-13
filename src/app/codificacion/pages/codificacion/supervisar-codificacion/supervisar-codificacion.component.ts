@@ -17,6 +17,10 @@ export class SupervisarCodificacionComponent implements OnInit {
   registros: any;
   registro: any;
 
+    // Cities
+    departamento: any;
+    selectedDepartamento: any;
+
 
   // Progress Bar
   tabla_pb: boolean = false;
@@ -27,6 +31,18 @@ export class SupervisarCodificacionComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.departamento = [
+      { depto: 'ORURO', codigo: '04' },
+      { depto: 'POTOSI', codigo: '05' }
+    ];
+
+    this.selectedDepartamento = {
+      depto: 'ORURO', codigo: '04'
+    };
+
+    localStorage.setItem('carga_depto_sup', this.selectedDepartamento.depto);
+
+
     this.registrosTabla();
 
   }
@@ -35,11 +51,15 @@ export class SupervisarCodificacionComponent implements OnInit {
   // Tabla de preguntas
   registrosTabla() {
     this.tabla_pb = true;
-    this.codificacionService.devuelvePreguntasSupervision({ id_usuario: localStorage.getItem('id_usuario') }).subscribe(
+    this.codificacionService.devuelvePreguntasSupervision({ 
+      id_usuario: localStorage.getItem('id_usuario'), 
+      departamento : this.selectedDepartamento.depto
+    }).subscribe(
       (data2: any) => {
         console.table(data2.datos);
         this.registros = data2.datos;
         this.tabla_pb = false;
+        localStorage.setItem('carga_depto_sup', this.selectedDepartamento.depto);
       })
   }
 

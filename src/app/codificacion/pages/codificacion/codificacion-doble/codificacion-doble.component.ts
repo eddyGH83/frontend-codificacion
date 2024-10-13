@@ -93,12 +93,13 @@ export class CodificacionDobleComponent implements OnInit {
       tabla_id: localStorage.getItem('tabla_id'),
       id_usuario: localStorage.getItem('id_usuario'),
       login: localStorage.getItem('login'),
+      departamento:localStorage.getItem('carga_depto')
     }
 
     this.codificacionService.cargarParaCodificarDoble(body).subscribe(
       (data2: any) => {
 
-        this.totalCarga = data2.totalCarga;           // Total carga ocupacion y actividad
+        this.totalCarga = data2.totalCarga;            // Total carga ocupacion y actividad
         this.totalCarga_ocu = data2.totalCarga_ocu;   // Total carga ocupacion
         this.totalCarga_act = data2.totalCarga_act;   // Total carga actividad
         this.nroPreg_ocu = data2.nroPreg_ocu;   // nro de la pregunta acupacion
@@ -107,7 +108,7 @@ export class CodificacionDobleComponent implements OnInit {
         this.descPreg_act = data2.descPreg_act; // descripcion de la pregunta actividad
         this.carga = data2.datos;               // datos de la carga
         this.clasificacion_ocu = data2.clasificacion_ocu;   // clasificacion ocupacion (catalogo ocupacion)
-        this.clasificacion_act = data2.clasificacion_act;   // clasificacion actividad (catalogo actividad)
+        this.clasificacion_act = data2.clasificacion_act;    // clasificacion actividad (catalogo actividad)
         this.porCodificar_ocu = data2.totalCarga;
         this.porCodificar_act = data2.totalCarga;
 
@@ -457,28 +458,33 @@ export class CodificacionDobleComponent implements OnInit {
 
 
 
-  // 
+  // similar ala funcion siguiente, pero en sentido contrario, con un solo click debe voler atras
   atras() {
-    if (this.nAux > 1) {
-      this.nAux--;
-      this.contexto = this.sanitizer.bypassSecurityTrustHtml(this.carga[this.nAux - 1].contexto);
-      this.departamentoItem = this.carga[this.nAux - 1].departamento;
-      this.idPregunta = this.carga[this.nAux - 1].id_p49_p51;
-      this.secuencial = this.carga[this.nAux - 1].secuencial;
-      this.respuestaItem_ocu = this.carga[this.nAux - 1].respuesta_ocu;
-      this.respuestaItem_act = this.carga[this.nAux - 1].respuesta_act;
-      this.estadoItem_ocu = this.carga[this.nAux - 1].estado_ocu;
-      this.estadoItem_act = this.carga[this.nAux - 1].estado_act;
-      this.codigocodifItem_ocu = this.carga[this.nAux - 1].codigocodif_ocu;
-      this.codigocodifItem_act = this.carga[this.nAux - 1].codigocodif_act;
-      this.usucodificadorItem_ocu = this.carga[this.nAux - 1].usucodificador_ocu;
-      this.usucodificadorItem_act = this.carga[this.nAux - 1].usucodificador_ocu;
-      this.descripcionItem_ocu = '';
-      this.descripcionItem_act = '';
+    alert(this.nAux);
+     if (this.nAux > 0) {
+      // let encontrado = false;
+      while (this.nAux ) {
+        this.nAux--;
+        if (this.carga[this.nAux].estado_ocu == 'ASIGNADO' || this.carga[this.nAux].estado_act == 'ASIGNADO') {
+          this.contexto = this.sanitizer.bypassSecurityTrustHtml(this.carga[this.nAux].contexto);
+          this.departamentoItem = this.carga[this.nAux].departamento;
+          this.idPregunta = this.carga[this.nAux].id_p49_p51;
+          this.secuencial = this.carga[this.nAux].secuencial;
+          this.respuestaItem_ocu = this.carga[this.nAux].respuesta_ocu;
+          this.respuestaItem_act = this.carga[this.nAux].respuesta_act;
+          this.estadoItem_ocu = this.carga[this.nAux].estado_ocu;
+          this.estadoItem_act = this.carga[this.nAux].estado_act;
+          this.codigocodifItem_ocu = this.carga[this.nAux].codigocodif_ocu;
+          this.codigocodifItem_act = this.carga[this.nAux].codigocodif_act;
+          this.usucodificadorItem_ocu = this.carga[this.nAux].usucodificador_ocu;
+          this.usucodificadorItem_act = this.carga[this.nAux].usucodificador_act;
+          this.descripcionItem_ocu = '';
+          this.descripcionItem_act = '';
+          //encontrado = true;
+        } 
+      }
     }
-
-
-
+/*
     //  Reeplazar el input desc_ocu y desc_act por el valor de la respuesta
     this.desc_ocu = this.respuestaItem_ocu;
     this.desc_act = this.respuestaItem_act;
@@ -487,7 +493,7 @@ export class CodificacionDobleComponent implements OnInit {
     this.cod_ocu = '';
     this.cod_act = '';
 
-    this.buscarSimilares();
+    this.buscarSimilares(); */
   }
 
 

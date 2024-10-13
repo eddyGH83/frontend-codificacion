@@ -1,9 +1,7 @@
 <p-toast></p-toast>
 
 <div class="card">
-    <h4> <a [routerLink]="['/codificacion/supervisar-codificacion']">Variables para supervisión | </a> Supervisión
-        simple
-    </h4>
+    <h4> <a [routerLink]="['/codificacion/supervisar-codificacion']">Variables para supervisión | </a> Supervisión simple </h4>
     <div id="p-pregunta">
         <span class="image-text"><strong>Pregunta </strong>
             <p-chip label="{{preguntasSelected.nro_preg}}"
@@ -105,6 +103,7 @@
     <ng-template pTemplate="content">
 
         <div class="field">
+            <br>
             <h5>¿Está seguro de guardar los datos?</h5>
             <label class="mr-2" for="name">Nro de registros selecionados:</label>
             <small style="font-size: large;">{{selectedRegistros.length}}</small>
@@ -114,10 +113,15 @@
 
     <ng-template pTemplate="footer">
         <button pButton pRipple label="No" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <p-button label="Sí" icon="pi pi-check" iconPos="left" styleClass="p-button-info" class="mr-2"
-            (click)="confirmaSupervision()"></p-button>
+        <!-- <p-button label="Sí" icon="pi pi-check" iconPos="left" styleClass="p-button-info" class="mr-2"
+            (click)="confirmaSupervision()"></p-button> -->
+        <p-button label="Sí" icon="pi pi-check" [loading]="siLoading" (click)="confirmaSupervision()"></p-button>
+
     </ng-template>
 </p-dialog>
+
+
+
 
 
 <!-- DIALOG ERROR: No hay registros seleccionados. -->
@@ -187,7 +191,7 @@
                     <ng-template pTemplate="header">
                         <tr>
                             <th style="background-color: rgb(16, 177, 99); color: rgb(42, 42, 42);">VARIABLES DE
-                                CONTEXTO</th>                           
+                                CONTEXTO</th>
                         </tr>
                         <p [innerHTML]="varContextoItem"></p>
                     </ng-template>

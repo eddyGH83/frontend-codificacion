@@ -92,9 +92,12 @@ export class SupervisionLoteDobleComponent implements OnInit {
   // porCodificar_act
   porCodificarOcuAct: number = 0;
 
-  //check
+  // check
   checkedSelect: boolean = false;
 
+
+  // loading
+  siLoading: boolean = false;
 
 
   constructor(private confirmationService: ConfirmationService, private sanitizer: DomSanitizer, private router: Router, private codificacionService: CodificacionService, private messageService: MessageService) { }
@@ -121,7 +124,11 @@ export class SupervisionLoteDobleComponent implements OnInit {
   // 
   registrosTabla() {
     this.tabla_pb = true;
-    this.codificacionService.devuelveCargaParaSupervision({ id_usuario: localStorage.getItem('id_usuario'), tabla_id: localStorage.getItem("tabla_id_sup") }).subscribe(
+    this.codificacionService.devuelveCargaParaSupervision({ 
+      id_usuario: localStorage.getItem('id_usuario'), 
+      tabla_id: localStorage.getItem("tabla_id_sup"),
+      departamento: localStorage.getItem('carga_depto_sup') 
+    }).subscribe(
       (data2: any) => {
         this.registros = data2.datos;
         this.catalogoOcu = data2.catalogo_ocu;
@@ -143,14 +150,15 @@ export class SupervisionLoteDobleComponent implements OnInit {
 
   // Confirmar la supervisión::
   confirmaSupervision() {
+    this.siLoading = true;
     // el nuevo selectedRegistros solo debe contener registros: id_registro,secuencial,codigocodif_ocu,codigocodif_act del selectedRegistros
-    this.selectedRegistros = this.selectedRegistros.map(({ id_registro, secuencial, codigocodif_ocu, codigocodif_act }) => ({ id_registro, secuencial, codigocodif_ocu, codigocodif_act }));  
+    this.selectedRegistros = this.selectedRegistros.map(({ id_registro, codigocodif_ocu, codigocodif_act }) => ({ id_registro, codigocodif_ocu, codigocodif_act }));
 
     this.codificacionService.updateCargaSupervision(
       {
         id_usuario: localStorage.getItem('login'),
         tabla_id: localStorage.getItem("tabla_id_sup"),
-        registros:this.selectedRegistros
+        registros: this.selectedRegistros
       }
     ).subscribe(
       (data2: any) => {
@@ -163,11 +171,9 @@ export class SupervisionLoteDobleComponent implements OnInit {
 
         // Vaciar selectedRegistros
         this.selectedRegistros = [];
-
-
+        this.siLoading = false;
       })
   }
-
 
   // 
   cancelarYsalir() {

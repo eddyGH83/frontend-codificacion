@@ -79,8 +79,20 @@ export class AuthComponent implements OnInit {
           localStorage.setItem('id_usuario', data2.data.id_usuario)
           localStorage.setItem('telefono', data2.data.telefono)
 
+
+          // authService
+          /* this.authService.authVariables = {
+            usuario: data2.data.login,
+            id: data2.data.id_usuario,
+            rol: data2.data.rol_codigo,
+            nombre: data2.data.nombres,
+            apellido: data2.data.pr_apellido,
+            email: data2.data.email,
+            departamento: data2.data.departamento
+          } */
+
           //localStorage.setItem('token_cod', data2.token_cod);
-          this.router.navigate(['/perfil']);
+          this.router.navigate(['/perfil']); 
 
         }
 

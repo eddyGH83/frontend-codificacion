@@ -94,6 +94,7 @@ export class CodificacionSimpleComponent implements OnInit {
       tabla_id: localStorage.getItem('tabla_id'),
       id_usuario: localStorage.getItem('id_usuario'),
       login: localStorage.getItem('login'),
+      departamento: localStorage.getItem('carga_depto'),
     }
     this.codificacionService.cargarParaCodificarSimple(body).subscribe(
       (data2: any) => {

@@ -186,7 +186,7 @@ export class CargaCodificadorComponent implements OnInit {
     });
   }
 
-
+  // Lista de codificadores con carga
   codificadoresConCarga() {
     this.asignacionService.codificadoresConCarga({
       id: localStorage.getItem('id_usuario'),
@@ -285,8 +285,6 @@ export class CargaCodificadorComponent implements OnInit {
 
 
   resetCantAsignado(reg: any) {
-    // buscar en this.usuarios2 el usuario con id_usuario = reg.id_usuario
-    // asignar 0 al total de ese usuario
     for (let i = 0; i < this.usuarios2.length; i++) {
       if (this.usuarios2[i].id_usuario === reg.id_usuario) {
         this.usuarios2[i].carga_asignado = 0;

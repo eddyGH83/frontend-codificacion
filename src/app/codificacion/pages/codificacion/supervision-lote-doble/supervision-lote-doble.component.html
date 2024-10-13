@@ -3,7 +3,7 @@
 <div class="card">
     <h4> <a [routerLink]="['/codificacion/supervisar-codificacion']">Variables para supervisión | </a> Supervisión doble
     </h4>
-<!-- {{selectedRegistros|json}} -->
+    <!-- {{selectedRegistros|json}} -->
     <div id="p-pregunta">
         <span class="image-text"><strong>Pregunta </strong>
             <p-chip label="49-51" styleClass="mr-2 ml-2 custom-chip"></p-chip>Ocupación - Actividad Económica</span>
@@ -18,26 +18,27 @@
             <strong class="mr-2 ml-3">Mostrar: </strong> <p-dropdown [options]="rows" [(ngModel)]="selectedRow"
                 optionLabel="value"></p-dropdown>
 
-            <p-button (click)="borrarSeleccion()"  icon="pi pi-stop" iconPos="left" class="ml-2"
+            <p-button (click)="borrarSeleccion()" icon="pi pi-stop" iconPos="left" class="ml-2"
                 styleClass="p-button-info" pTooltip="Deseleccionar todo" tooltipPosition="top"></p-button>
 
 
-            <label class="ml-2" for="binary"> <strong>{{(selectedRegistros?.length ? selectedRegistros.length : 0) | number}}</strong> registros seleccionados de <strong>{{(registros?.length ? registros.length : 0) | number}}</strong></label>
+            <label class="ml-2" for="binary"> <strong>{{(selectedRegistros?.length ? selectedRegistros.length : 0) |
+                    number}}</strong> registros seleccionados de <strong>{{(registros?.length ? registros.length : 0) |
+                    number}}</strong></label>
         </ng-template>
 
         <ng-template pTemplate="right">
-           
 
             <p-button label="Recodificación" [disabled]="tabla_pb" (click)="recodificacion()" icon="pi pi-check-square"
                 iconPos="left" styleClass="p-button-secondary" class="mr-2" pTooltip="Recodificación"
                 tooltipPosition="left"></p-button>
 
-            <p-button label="Guardar" [disabled]="tabla_pb" (click)="guardarSupervision()" icon="pi pi-save" iconPos="left"
-                styleClass="p-button-info" class="mr-2" pTooltip="Guardar Supervisión" tooltipPosition="top"></p-button>
+            <p-button label="Guardar" [disabled]="tabla_pb" (click)="guardarSupervision()" icon="pi pi-save"
+                iconPos="left" styleClass="p-button-info" class="mr-2" pTooltip="Guardar Supervisión"
+                tooltipPosition="top"></p-button>
 
             <p-button label="Cancelar" (click)="cancelarYsalir()" icon="pi pi-times" iconPos="left"
                 styleClass="p-button-danger" pTooltip="Cancelar y salir" tooltipPosition="top"></p-button>
-
 
         </ng-template>
     </p-toolbar>
@@ -46,7 +47,7 @@
 
     <p-table #dt [value]="registros" [rows]="selectedRow.value" [paginator]="true" [(selection)]="selectedRegistros"
         [rowHover]="true" currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros"
-        [showCurrentPageReport]="true" [selectionPageOnly]="true"  [loading]="tabla_pb" styleClass="p-datatable-sm" >
+        [showCurrentPageReport]="true" [selectionPageOnly]="true" [loading]="tabla_pb" styleClass="p-datatable-sm">
 
         <ng-template pTemplate="header">
             <tr style="height: 0px; padding: 0px;">
@@ -63,33 +64,40 @@
                 <th style="background-color: rgb(227, 227, 227); text-align: center;">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th style="font-size:11px" pSortableColumn="respuesta_ocu">RESPUESTA<p-sortIcon field="respuesta_ocu"></p-sortIcon></th>
-                <th style="font-size:11px" pSortableColumn="codigocodif_ocu">CODIGO<p-sortIcon field="codigocodif_ocu"></p-sortIcon></th>
+                <th style="font-size:11px" pSortableColumn="respuesta_ocu">RESPUESTA<p-sortIcon
+                        field="respuesta_ocu"></p-sortIcon></th>
+                <th style="font-size:11px" pSortableColumn="codigocodif_ocu">CODIGO<p-sortIcon
+                        field="codigocodif_ocu"></p-sortIcon></th>
                 <!-- <th pSortableColumn="descripcion_ocu">DESCRIPCIÓN<p-sortIcon field="descripcion_ocu"></p-sortIcon></th> -->
-                <th style="font-size:11px" pSortableColumn="usucodificador_ocu">CODIFICADOR<p-sortIcon field="usucodificador_ocu"></p-sortIcon>
+                <th style="font-size:11px" pSortableColumn="usucodificador_ocu">CODIFICADOR<p-sortIcon
+                        field="usucodificador_ocu"></p-sortIcon>
                 </th>
 
-                <th style="font-size:11px" pSortableColumn="respuesta_act">RESPUESTA<p-sortIcon field="respuesta_act"></p-sortIcon></th>
-                <th style="font-size:11px" pSortableColumn="codigocodif_act">CODIGO<p-sortIcon field="codigocodif_act"></p-sortIcon></th>
+                <th style="font-size:11px" pSortableColumn="respuesta_act">RESPUESTA<p-sortIcon
+                        field="respuesta_act"></p-sortIcon></th>
+                <th style="font-size:11px" pSortableColumn="codigocodif_act">CODIGO<p-sortIcon
+                        field="codigocodif_act"></p-sortIcon></th>
                 <!-- <th pSortableColumn="descripcion_act">DESCRIPCIÓN<p-sortIcon field="descripcion_act"></p-sortIcon></th> -->
-                <th style="font-size:11px" pSortableColumn="usucodificador_act">CODIFICADOR<p-sortIcon field="usucodificador_act"></p-sortIcon>
+                <th style="font-size:11px" pSortableColumn="usucodificador_act">CODIFICADOR<p-sortIcon
+                        field="usucodificador_act"></p-sortIcon>
                 </th>
 
-                <th  style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_edad">Edad <p-sortIcon
+                <th style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_edad">Edad <p-sortIcon
                         field="contexto_edad"></p-sortIcon></th>
-                <th  style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_nivel_edu">Nivel Ed. <p-sortIcon
-                        field="contexto_nivel_edu"></p-sortIcon></th>
-                <th  style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_curso">Curso ó Año <p-sortIcon
-                        field="contexto_curso"></p-sortIcon></th>
-                <th  style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_atendio">Semana pasada? <p-sortIcon
-                        field="contexto_atendio"></p-sortIcon></th>
-                <th  style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_otro">Otro <p-sortIcon
+                <th style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_nivel_edu">Nivel Ed.
+                    <p-sortIcon field="contexto_nivel_edu"></p-sortIcon></th>
+                <th style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_curso">Curso ó Año
+                    <p-sortIcon field="contexto_curso"></p-sortIcon></th>
+                <th style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_atendio">Semana pasada?
+                    <p-sortIcon field="contexto_atendio"></p-sortIcon></th>
+                <th style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_otro">Otro <p-sortIcon
                         field="contexto_otro"></p-sortIcon></th>
-                <th  style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_es_era">¿En ese trabajo es o era?
+                <th style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_es_era">¿En ese trabajo
+                    es o era?
                     <p-sortIcon field="contexto_es_era"></p-sortIcon>
                 </th>
-                <th  style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_lugar_trabajo">Lugar <p-sortIcon
-                        field="contexto_lugar_trabajo"></p-sortIcon></th>
+                <th style=" font-size:11px; color: rgb(15, 140, 80);" pSortableColumn="contexto_lugar_trabajo">Lugar
+                    <p-sortIcon field="contexto_lugar_trabajo"></p-sortIcon></th>
 
             </tr>
 
@@ -152,8 +160,9 @@
 
     <ng-template pTemplate="footer">
         <button pButton pRipple label="No" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <p-button label="Sí" icon="pi pi-check" iconPos="left" styleClass="p-button-info" class="mr-2"
-            (click)="confirmaSupervision()"></p-button>
+        <!-- <p-button label="Sí" icon="pi pi-check" iconPos="left" styleClass="p-button-info" class="mr-2"
+            (click)="confirmaSupervision()"></p-button> -->
+        <p-button label="Sí" icon="pi pi-check" [loading]="siLoading" (click)="confirmaSupervision()"></p-button>
     </ng-template>
 </p-dialog>
 

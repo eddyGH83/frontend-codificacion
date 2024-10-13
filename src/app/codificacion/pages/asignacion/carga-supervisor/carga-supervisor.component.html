@@ -8,8 +8,8 @@
     </h4>
     <hr>
     <label for="username2">Departamento: </label>
-    <p-dropdown (onChange)="registrosTabla()" [options]="departamentos" [(ngModel)]="selectedDepartamento"
-        placeholder="Seleccione un Catalogo" optionLabel="value"></p-dropdown>
+    <p-dropdown (onChange)="registrosTabla()" [options]="departamento" [(ngModel)]="selectedDepartamento"
+        placeholder="Seleccione un Catalogo" optionLabel="depto"></p-dropdown>
 
     <button pButton pRipple label="Actualizar" icon="pi pi-refresh" class="p-button-warning ml-2"
         pTooltip="Actualizar registros" placeholder="Right" (click)="registrosTabla()"></button> <br> <br>
@@ -21,7 +21,7 @@
         <ng-template pTemplate="header">
             <!--  -->
             <tr>
-                <th>DEPARTAMENTO</th>
+
                 <th>VARIABLE</th>
                 <th>TOTAL</th>
                 <th>ACCIONES</th>
@@ -29,10 +29,6 @@
         </ng-template>
         <ng-template pTemplate="body" let-reg>
             <tr [pSelectableRow]="reg">
-                <td>
-                    <span class="p-column-title">DEPARTAMENTO</span>
-                    <span class="image-text">{{selectedDepartamento.value}}</span>
-                </td>
                 <td>
                     <span class="p-column-title">VARIABLE</span>
                     <span class="image-text"><strong>Pregunta </strong>
@@ -55,8 +51,8 @@
                     <button (click)="reAsignarCarga(reg)" pButton pRipple label="Reasignar" icon="pi pi-user-minus"
                         class="p-button-danger mr-2" pTooltip="Reasignar carga" placeholder="Right"></button>
 
-                    <button pButton pRipple label="Reasignar" icon="pi pi-user-minus"
-                        class="p-button-outlined p-button-secondary mr-2" disabled *ngIf="reg.total_carga==0 "></button>
+                    <!-- <button pButton pRipple label="Reasignar" icon="pi pi-user-minus"
+                        class="p-button-outlined p-button-secondary mr-2" disabled *ngIf="reg.total_carga==0 "></button> -->
 
                 </td>
             </tr>
@@ -157,8 +153,11 @@
                         <!-- <td>
                             <p-checkbox (onChange)="dividirTotal()" class="ml-8" [(ngModel)]="asig.activo" [binary]="true"></p-checkbox>
                         </td> -->
-                        <td> <i class="pi pi-user" style="font-size: 1.3rem"></i> {{asig.nombre_completo}}</td>
-                        <td><input min="0" type="number" pInputText [(ngModel)]="asig.total_asignado"> </td>
+                        <td> 
+                            <i class="pi pi-user" style="font-size: 1.3rem"></i> {{asig.nombre_completo}} <br>
+                            <strong class="ml-4" style="color: rgb(64, 147, 210); font-size:10px">{{asig.rol}}</strong>
+                        </td>
+                        <td><input min="0" type="number" pInputText [(ngModel)]="asig.carga_asignado"> </td>
                         <td><button (click)="resetCantAsignado(asig)" pButton pRipple type="button" icon="pi pi-times"
                                 class="p-button-rounded p-button-danger p-button-text" pTooltip="Cantidad = 0"
                                 tooltipPosition="right"></button></td>
@@ -166,13 +165,13 @@
                 </ng-template>
             </p-table>
             <br>
-            <p-message *ngIf="msgServiceAsig" severity="error" text="{{titleMsgErrorAsig}}"></p-message>
+            <p-message *ngIf="msgServiceReAsig" severity="error" text="{{titleMsgErrorReAsig}}"></p-message>
 
         </ng-template>
         <ng-template pTemplate="footer">
             <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text "
                 (click)="reAsignacionDialog=false"></button>
-            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text mr-2"></button>
+            <button (click)="guardarReAsignacionSup()"  pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text mr-2"></button>
         </ng-template>
 
     </p-dialog>

@@ -9,10 +9,35 @@ import { environment } from 'src/environments/environment';
 })
 export class AsignacionService {
 
+  private _authVariables: any = {
+    token: '',
+    usuario: '',
+    id: '',
+    rol: '',
+    nombre: '',
+    apellido: '',
+    email: '',
+    departamento: ''
+  };
+
+
 
   private _apiUrl: string = environment.base_url;
 
   constructor(private http: HttpClient) { }
+
+
+  // Método para obtener el valor de la variable global
+  get authVariables(): any {
+    return this._authVariables;
+  }
+
+  // Método para asignar valor a la variable global, sera de tipo objeto
+  set authVariables(value: any) {
+    this._authVariables = value;
+  }
+
+
 
   // devuelve lista de codificadores
   devuelveCodificadores(body: object): Observable<any> {

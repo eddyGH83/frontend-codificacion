@@ -22,11 +22,26 @@ export class SupervisarCodificacionAutomaticaComponent implements OnInit {
   // Progress Bar
   tabla_pb: boolean = false;
 
+  // Cities
+  departamento: any;
+  selectedDepartamento: any;
+
 
   constructor(private router: Router, private messageService: MessageService, private codificacionService: CodificacionService, private confirmationService: ConfirmationService) { }
 
 
   ngOnInit(): void {
+
+    this.departamento = [
+      { depto: 'ORURO', codigo: '04' },
+      { depto: 'POTOSI', codigo: '05' }
+    ];
+
+    this.selectedDepartamento = {
+      depto: 'ORURO', codigo: '04'
+    };
+
+    localStorage.setItem('carga_depto_sup', this.selectedDepartamento.depto);
 
     this.registrosTabla();
 
@@ -36,14 +51,16 @@ export class SupervisarCodificacionAutomaticaComponent implements OnInit {
   // Tabla de preguntas
   registrosTabla() {
     this.tabla_pb = true;
-    this.codificacionService.devuelvePreguntasSupervisionAutomatica({ 
+    this.codificacionService.devuelvePreguntasSupervisionAutomatica({
       id_usuario: localStorage.getItem('id_usuario'),
-      login: localStorage.getItem('login') 
+      login: localStorage.getItem('login'),
+      departamento: this.selectedDepartamento.depto
     }).subscribe(
       (data2: any) => {
         //console.table(data2.datos);
         this.registros = data2.datos;
         this.tabla_pb = false;
+        localStorage.setItem('carga_depto_sup', this.selectedDepartamento.depto);
       })
   }
 
@@ -61,19 +78,19 @@ export class SupervisarCodificacionAutomaticaComponent implements OnInit {
     localStorage.setItem('tabla_id_sup', rg.tabla_id);
   }
 
-/*   // INDIVIDUAL
-  supervisionIndividualSimple(rg: any) {
-    // Redireccionar a la página de codificación simple
-    this.router.navigate(['/codificacion/supervision-individual-simple']);
-    // Guardar tabla_id en localStorage 
-    localStorage.setItem('tabla_id_sup', rg.tabla_id);
-  }
-  supervisionIndividualDoble(rg: any) {
-    // Redireccionar a la página de codificación doble
-    this.router.navigate(['/codificacion/supervision-individual-doble']);
-    // Guardar tabla_id en localStorage
-    localStorage.setItem('tabla_id_sup', rg.tabla_id);
-  } */
+  /*   // INDIVIDUAL
+    supervisionIndividualSimple(rg: any) {
+      // Redireccionar a la página de codificación simple
+      this.router.navigate(['/codificacion/supervision-individual-simple']);
+      // Guardar tabla_id en localStorage 
+      localStorage.setItem('tabla_id_sup', rg.tabla_id);
+    }
+    supervisionIndividualDoble(rg: any) {
+      // Redireccionar a la página de codificación doble
+      this.router.navigate(['/codificacion/supervision-individual-doble']);
+      // Guardar tabla_id en localStorage
+      localStorage.setItem('tabla_id_sup', rg.tabla_id);
+    } */
 
 
   // RECODIFICACION
