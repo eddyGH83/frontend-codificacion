@@ -33,8 +33,15 @@ export class SupervisarCodificacionAutomaticaComponent implements OnInit {
   ngOnInit(): void {
 
     this.departamento = [
+      { depto: 'CHUQUISACA', codigo: '01' },
+      { depto: 'LA PAZ', codigo: '02' },
+      { depto: 'COCHABAMBA', codigo: '03' },
       { depto: 'ORURO', codigo: '04' },
-      { depto: 'POTOSI', codigo: '05' }
+      { depto: 'POTOSI', codigo: '05' },
+      { depto: 'TARIJA', codigo: '06' },
+      { depto: 'SANTA CRUZ', codigo: '07' },
+      { depto: 'BENI', codigo: '08' },
+      { depto: 'PANDO', codigo: '09' }
     ];
 
     this.selectedDepartamento = {

@@ -416,7 +416,7 @@ export class SupervisionLoteSimpleComponent implements OnInit {
           tabla_id: localStorage.getItem('tabla_id_sup'),
           usuverificador: localStorage.getItem('login'),
         }
-
+//alert(this.codigocodifItem);
         this.codificacionService.updatePreguntaSimpleCorreccion(body).subscribe(
           (data2: any) => {
 

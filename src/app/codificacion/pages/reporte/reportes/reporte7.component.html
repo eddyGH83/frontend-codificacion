@@ -16,18 +16,15 @@
     <p-table [value]="registros" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
         currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} registros"
         [rowsPerPageOptions]="[5,10,25,50]">
-
-
-
         <ng-template pTemplate="header">
             <tr> <!-- Departamento	Pregunta	Automatica	Asistida	Pendiente	Total -->
-                <th style="width:20%">SUPERVISOR</th>
+                <th style="width:15%">SUPERVISOR</th>
                 <th style="width:20%">VARIABLE</th>
-                <th style="width:20%">SUPERVISION COD. ASISTIDA</th>
-                <th style="width:20%">PENDIENTE COD. ASISTIDA</th>
-                <th style="width:20%">SUPERVISION COD. AUTOMATICO</th>
-                <th style="width:20%">PENDIENTE COD. AUTOMATICO</th>
-                <th style="width:20%">TOTAL</th>
+                <th style="width:12%">SUPERVISION COD. ASISTIDA</th>
+                <th style="width:12%">PENDIENTE COD. ASISTIDA</th>
+                <th style="width:12%">SUPERVISION COD. AUTOMATICA</th>
+                <th style="width:12%">PENDIENTE COD. AUTOMATICA</th>
+                <th style="width:15%">TOTAL</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-reg>
@@ -41,10 +38,6 @@
                 <td>{{reg.total}}</td>
             </tr>
         </ng-template>
-        
-
-
-
         <ng-template pTemplate="paginatorleft">
             <!-- <p-button type="button" (click)="reporteDatos()" icon="pi pi-refresh" styleClass="p-button-text"
                 label="Actualizar"></p-button> -->

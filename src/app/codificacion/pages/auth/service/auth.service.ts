@@ -14,14 +14,25 @@ export class AuthService {
   private _apiUrl: string = environment.base_url;
 
 
+
+
+  // Variable global para almacenar los datos del usuario logueado
+  usuario_global: any;
+  
   constructor(private http: HttpClient) { }
 
+// Método para obtener datos del usuario loqueado
+  get usuarioLogueado() {
+    return { ...this.usuario_global };
+  }
 
-  // Autenticacion de usuario
-  /* autenticacion(usuario: any): Observable<any> {
-    const url = `${this._apiUrl}autenticacion`;
-    return this.http.post<any>(url, usuario);
-  } */
+  // Método para establecer el valor de la variable global usuario_global
+  set usuarioLogueado(usuario: any) {
+    this.usuario_global = usuario;
+  }
+
+
+
 
   // Menu
   devuelveMenu(usuario: any): Observable<any> {

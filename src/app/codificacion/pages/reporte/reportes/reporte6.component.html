@@ -18,11 +18,13 @@
     [rowsPerPageOptions]="[5,10,25,50]">
     <ng-template pTemplate="header">
         <tr> <!-- Departamento	Pregunta	Automatica	Asistida	Pendiente	Total -->
-            <th style="width:20%">DEPARTAMENTO</th>
+            <th style="width:15%">DEPARTAMENTO</th>
             <th style="width:20%">VARIABLE</th>
-            <th style="width:20%">SUPERVISADO</th>
-            <th style="width:20%">PENDIENTE</th>
-            <th style="width:20%">TOTAL</th>
+            <th style="width:12%">SUPERVISION COD. ASISTIDA</th>
+            <th style="width:12%">PENDIENTE COD. ASISTIDA</th>
+            <th style="width:12%">SUPERVISION COD. AUTOMATICA</th>
+            <th style="width:12%">PENDIENTE COD. AUTOMATICA</th>
+            <th style="width:15%">TOTAL</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-reg>
@@ -31,6 +33,8 @@
             <td>{{reg.pregunta}}</td>
             <td>{{reg.supervisado}}</td>
             <td>{{reg.pendiente}}</td>
+            <td>{{reg.supervisado_aut}}</td>
+            <td>{{reg.pendiente_aut}}</td>
             <td>{{reg.total}}</td>
         </tr>
     </ng-template>

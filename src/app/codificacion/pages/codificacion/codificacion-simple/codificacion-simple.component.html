@@ -27,7 +27,7 @@
                         </tr>
                     </ng-template>
                 </p-table>
-                <p class="ml-2 mt-2"><strong style="color:rgb(46, 46, 46)">PREGUNTA: </strong> <span
+                <p class="ml-2 mt-2"><strong style="color:rgb(46, 46, 46)">Pregunta: </strong> <span
                         class="image-text"></span>
                     <p-chip label="{{nroPreg}}" styleClass="mr-2"></p-chip>
                     {{descPreg}}
@@ -54,7 +54,7 @@
                 </p-table>
                 <br>
                 <p [innerHTML]="contexto"></p>
-                <p><strong>Edad: </strong> {{edad}}</p>
+                <!-- <p><strong>Edad: </strong> {{edad}}</p> -->
             </div>
         </div>
 
@@ -66,14 +66,14 @@
 
     <!-- BOTONES -->
     <div class="text-700 text-center">
-        <button pButton pRipple label="Anular anterior" icon="pi pi-trash" (click)="anularAnterior()"
-            class="p-button-danger mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
-        <button (click)="primero()" pButton pRipple label="Primero" icon="pi pi-fast-backward"
+        <!-- <button pButton pRipple label="Anular anterior" icon="pi pi-trash" (click)="anularAnterior()"
+            class="p-button-danger mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button> -->
+        <button (click)="atras()" pButton pRipple label="Atras" icon="pi pi-backward"
             class="p-button-info mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
         <button (click)="siguiente()" pButton pRipple label="Siguiente" icon="pi pi-forward"
             class="p-button-info mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
-        <button pButton pRipple type="button" label="{{nAux}} / {{totalCarga}}" disabled
-            class="p-button-outlined p-button-rounded p-button-secondary mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button>
+        <!-- <button pButton pRipple type="button" label="{{nAux}} / {{totalCarga}}" disabled
+            class="p-button-outlined p-button-rounded p-button-secondary mb-4 mt-3  px-5 py-3 mr-2 white-space-nowrap"></button> -->
     </div>
 
     <!-- TABLA DE CODIFICACIÓN Y CATALOGOS -->

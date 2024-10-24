@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   base_url: 'http://10.1.2.2:3015/api', // 'http://10.10.10.26:3014/api' // 'http://10.1.2.2:3015/api' //'http://10.10.10.26:3014/api'// 'http://10.1.2.2:3015/api'  // 'http://10.1.2.2:3015/api'//  'http://10.1.2.2:3014/api'// // 'http://10.16.0.57:3014/api' //  //'http://10.10.10.26:3014/api' // 'http://10.16.0.57:3014/' //'https://wseguimiento.ine.gob.bo/'// 'http://10.16.0.57:3005/'
-  base_odbc:'http://10.1.2.2:3015'
+  base_odbc: 'http://10.1.2.2:3015'
 };
 
 /*
